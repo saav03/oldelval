@@ -1,0 +1,118 @@
+.subtitle {
+  background: lightblue;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  margin-top: 10px;
+}
+
+.border_obs::after {
+  content: "";
+  display: block;
+  width: 50%;
+  margin: 0 auto;
+  border-bottom: 2px solid rgb(142, 196, 240);
+}
+
+.btn_checked {
+  background: #5cb35c;
+  font-weight: 500;
+  box-shadow: inset 0px 0px 5px 0px rgb(99 137 99);
+}
+
+.btn_checked:hover {
+  background: #5cb35c;
+}
+
+#btn_add_plan,
+#btn_add_obs_positiva {
+  border: none;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  transition: 0.3s all ease-in-out;
+}
+
+#btn_add_plan {
+  background: #fbdca4;
+  border-radius: 0 0 0 10px;
+}
+
+#btn_add_obs_positiva {
+  background: #c7fba4;
+  border-radius: 0 0 10px 0;
+}
+
+#btn_add_obs_positiva:hover {
+  background: #aaf07c;
+}
+
+#btn_add_plan:hover {
+  background: #f1c97d;
+}
+
+#btn_add_plan svg,
+#btn_add_obs_positiva svg {
+  margin-left: 5px;
+}
+
+/** PLANES DE ACCIÓN **/
+
+#caja_plan_accion::before {
+  content: "";
+  display: block;
+  border-top: 5px solid rgb(238, 192, 106);
+}
+
+#caja_plan_accion::after {
+  content: "";
+  display: block;
+  border-bottom: 5px solid rgb(238, 192, 106);
+}
+
+#contenedor_plan {
+  background: #ffefd1;
+  width: 99.999999999%;
+  margin: 0 auto;
+}
+
+.btn_riesgo {
+  margin-top: 23px;
+  border: none;
+  background: #8fd98f;
+  padding: 8px;
+  border-radius: 5px;
+  color: white;
+}
+
+/** == Observación Positiva == **/
+
+#caja_plan_accion_positiva::before {
+  content: "";
+  display: block;
+  border-bottom: 5px solid rgb(134, 231, 150);
+}
+
+#caja_plan_accion_positiva::after {
+  content: "";
+  display: block;
+  border-bottom: 5px solid rgb(134, 231, 150);
+}
+
+#contenedor_plan_positivo {
+  background: #dcffd1;
+  width: 99.999999999%;
+  margin: 0 auto;
+}
+
+.descargo-borde {
+  height: 50px;
+  border-left: 3px solid #c0c0c0;
+  margin-left: 50px;
+  margin-top: 5px;
+  width: 20px;
+  border-bottom: 3px solid #c0c0c0;
+}
