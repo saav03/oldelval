@@ -179,12 +179,12 @@ class TarjetaObservaciones extends BaseController
                         $this->cargarArchivos('files', 'uploads/tarjetaObs/', 'obs_tarjeta', $bd_info, $this->request->getPost('files-description'));
                     }
 
-                    $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs);
+                    // $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs);
 
                     /* == Envío un correo al responsable asignado en la tarjeta == */
-                    switch ($posee_obs) {
+                    /* switch ($posee_obs) {
                         case '1':
-                            $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs, $id_hallazgo);
+                            $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs, $id_hallazgo['id']);
                             $this->sendMail($datos, 1);
                             $this->sendMail($datos, 2);
                             break;
@@ -196,15 +196,15 @@ class TarjetaObservaciones extends BaseController
                             $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs);
                             $this->sendMail($datos, 1);
                             break;
-                    }
+                    } */
                 }
             } else if ($posee_obs != 1 && $posee_obs != 2 && empty($datos_obs)) {
                 $results = $this->model_tarjeta->addSubmit($datos_tarjeta);
                 $id_tarjeta_obs = $results['last_id'];
 
-                $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs);
+                // $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs);
                 /* == Envío un correo a quien creó la tarjeta sin plan de acción == */
-                $this->sendMail($datos, 1);
+                // $this->sendMail($datos, 1);
             }
 
             newMov(6, 1, $id_tarjeta_obs); //Movimiento
@@ -235,8 +235,8 @@ class TarjetaObservaciones extends BaseController
 
         $results_descargo = $this->model_tarjeta->addDescargo($datos_descargo);
 
-        $datos['datos'] = $this->model_mail_tarjeta->getInfoNewDescargo($id_hallazgo);
-        $this->sendMail($datos, 3);
+        // $datos['datos'] = $this->model_mail_tarjeta->getInfoNewDescargo($id_hallazgo);
+        // $this->sendMail($datos, 3);
         /* == Se cargan adjuntos si es que realmente existen == */
         if ($this->request->getPost('files-description')) {
             $bd_info = array(
@@ -270,8 +270,8 @@ class TarjetaObservaciones extends BaseController
         ];
 
         $results_descargo = $this->model_tarjeta->editDescargo($datos_rta_descargo, $id_descargo);
-        $datos_mail['datos'] = $this->model_mail_tarjeta->getRespuestaDescargo($id_descargo);
-        $this->sendMail($datos_mail, 4);
+        // $datos_mail['datos'] = $this->model_mail_tarjeta->getRespuestaDescargo($id_descargo);
+        // $this->sendMail($datos_mail, 4);
     }
 
     /**

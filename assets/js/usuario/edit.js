@@ -47,7 +47,7 @@ select_grupos.addEventListener('change', function () {
     form.append('id_usuario', id_usuario);
     
     const response = await fetch(
-      `${GET_BASE_URL()}/getPermisosTest`, {
+      `${GET_BASE_URL()}/oldelval/getPermissionsGrousUsers`, {
         method: 'POST',
         body: form
       }
@@ -78,7 +78,7 @@ select_grupos.addEventListener('change', function () {
     arbol = $("#tree").tree({
       textField: "nombre",
       dragAndDrop: true,
-      cascadeCheck: false,
+      cascadeCheck: true,
       checkedField: "pertenece",
       primaryKey: "id",
       uiLibrary: "bootstrap5",

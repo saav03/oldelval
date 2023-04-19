@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-muted text-center header-perfil">
-                        Ultima Modificación: <?= $last_mod['fecha_hora_format'] ? $last_mod['fecha_hora_format'] : "-- -- --"; ?>hs por <?= $last_mod['nombre_editor'] . ' ' . $last_mod['apellido_editor'] ?>
+                        Ultima Modificación: <?= isset($last_mod['fecha_hora_format']) ? $last_mod['fecha_hora_format'] : "-- / -- / -- "; ?> <?= isset($last_mod['nombre_editor']) ? 'hs por ' . $last_mod['nombre_editor'] . ' ' . $last_mod['apellido_editor'] : '' ?>
                     </div>
                 </div>
             </div>

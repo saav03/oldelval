@@ -166,19 +166,20 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-          <img src="<?= session()->get('img_perfil') != "" ? base_url('assets/images/perfil/'.session()->get('img_perfil')) : base_url('assets/images/perfil/no-pic.png'); ?>" alt="" class="rounded-circle">
+          <img src="<?= session()->get('img_perfil') != "" ? base_url('uploads/fotosperfil/'.session()->get('img_perfil')) : base_url('assets/images/perfil/no-pic.png'); ?>" alt="" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2"><?= session()->get('nombre') ?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6><?= session()->get('nombrecompleto') ?></h6>
-              <span><?php 
+              <!-- <span><!?php 
              $names = array_column(session()->get('grupos'),'nombre');
              foreach($names as $name){
               echo $name.' ';
              }
-             ?></span>
+             ?></span> -->
+             <span><?= session()->get('competencia'); ?></span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -190,29 +191,29 @@
                 <span>Mi Perfil</span>
               </a>
             </li>
-            <li>
+            <!-- <li>
               <hr class="dropdown-divider">
-            </li>
+            </li> -->
 
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
-            </li>
+            </li> -->
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                 <i class="bi bi-question-circle"></i>
                 <span>Need Help?</span>
               </a>
-            </li>
-            <li>
+            </li> -->
+            <!-- <li>
               <hr class="dropdown-divider">
-            </li>
+            </li> -->
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="<?= base_url("logout") ?>">

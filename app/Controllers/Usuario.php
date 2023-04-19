@@ -49,6 +49,8 @@ class Usuario extends BaseController
             $data['last_mod'] = $this->model_general->get_mov($id);
 
             return template('usuario/view', $data);
+        } else {
+            return redirect()->to('/');
         }
     }
 
@@ -304,7 +306,7 @@ class Usuario extends BaseController
             $results = $this->model_usuario->edit($datos, $id_usuario);
             if ($results['status']) {
                 $last_id = $results['last_id'];
-                newMov(1, 3, $last_id, 'Datos del Usuario'); //Movimiento
+                newMov(1, 3, $id_usuario, 'Datos del Usuario'); //Movimiento
             }
         }
 

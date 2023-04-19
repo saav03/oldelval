@@ -12,7 +12,7 @@
 <aside>
     <div class="perfil ">
         <div class="foto-perfil">
-            <img src="<?= session()->get('img_perfil') != "" ? base_url('assets/images/perfil/' . session()->get('img_perfil')) : base_url('assets/images/perfil/no-pic.png'); ?>" alt="" class="foto-perfil rounded-circle">
+            <img src="<?= session()->get('img_perfil') != "" ? base_url('uploads/fotosperfil/' . session()->get('img_perfil')) : base_url('assets/images/perfil/no-pic.png'); ?>" alt="" class="foto-perfil rounded-circle">
         </div>
         <div class="nombre-perfil">
             <h3><?= session()->get('nombre') ?></h3>
@@ -31,15 +31,10 @@
         <li class="nav-item profile-item">
             <a class="nav-link nav-perfil" href="#p-h" name="p-h">Historial de ingresos</a>
         </li>
-        <?php if (vista_access('vista_editpermiso')): ?>
-        <li class="nav-item profile-item">
-            <a class="nav-link nav-perfil" href="#p-p" name="p-p">Grupos | Permisos</a>
-        </li>
-        <?php endif; ?>
     </ul>
-    <div style="margin-left: 15px;">
-        <button data-bs-toggle="modal" data-bs-target="#exampleModal" id="btnModalUsuario" class="btn_modify" data-id="<?= $datos_basicos[0]['id_usuario'] ?>">Editar mis datos</button>
-    </div>
+    <!-- <div style="margin-left: 15px;">
+        <button data-bs-toggle="modal" data-bs-target="#exampleModal" id="btnModalUsuario" class="btn_modify" data-id="<!?= $datos_basicos[0]['id_usuario'] ?>">Editar mis datos</button>
+    </div> -->
 </aside>
 
 <!-- Modal -->
@@ -90,17 +85,9 @@
     function editarUsuario(checkedIds, unCheckedIds) {
         let form = new FormData(document.getElementById('form_edit'));
 
-        for (let i = 0; i < checkedIds.length; i++) {
-            form.append('checkedIds[]', checkedIds[i]);
-        }
-
-        for (let i = 0; i < unCheckedIds.length; i++) {
-            form.append('unCheckedIds[]', unCheckedIds[i]);
-        }
-
         return $.ajax({
             type: "POST",
-            url: "<?= base_url('usuario/editUser') ?>",
+            url: "<?= base_url('Usuario/editUser') ?>",
             data: form,
             processData: false,
             contentType: false,

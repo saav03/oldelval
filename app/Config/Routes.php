@@ -149,7 +149,7 @@ $routes->get('Usuario','Usuario::index');
 $routes->get('/new_user','Usuario::addView');
 $routes->get('/Usuario/view/(:num)','Usuario::view/$1');
 $routes->post('/getPermisos','Usuario::getAllPermisosGroup');
-$routes->post('/getPermisosTest','Usuario::getAllPermisosGroupAndUsers');
+$routes->post('/getPermissionsGrousUsers','Usuario::getAllPermisosGroupAndUsers');
 $routes->post('/getAllPermisosUser','Usuario::getAllPermisosUser');
 $routes->match(['get', 'post'],"/addNewUser",'Usuario::add');
 $routes->match(['get', 'post'],"Usuario/editUser",'Usuario::edit');

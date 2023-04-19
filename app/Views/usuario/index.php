@@ -94,7 +94,7 @@
             return $.ajax({
                 type: "POST",
                 data: new FormData(),
-                url: "<?= base_url('Usuario/desactivarUsuario/') ?>" + id,
+                url: "<?= base_url('Usuario/desactivarUsuario/') ?>" + "/" + id,
                 processData: false,
                 contentType: false,
                 beforeSend: function() {

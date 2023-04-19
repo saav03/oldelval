@@ -102,5 +102,7 @@ class Model_usuario extends Model
 
     public function desactivar($id)
     {
+        $db = db_connect();
+        $db->query("UPDATE usuario SET activo = CASE WHEN activo = 1 THEN 0 ELSE 1 END WHERE id = " . $id);
     }
 }

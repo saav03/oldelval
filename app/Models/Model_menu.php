@@ -87,7 +87,7 @@ class model_menu extends Model
 		$hijos = [];
 		//Obtengo los hijos directos de $padre. Seria como un Array.find((e) => {e.padre == padre}); de js
 		for ($i = 0; $i < count($menu); $i++) {
-			if ($menu[$i]['id_menu_padre'] == $padre) {
+			if (isset($menu[$i]['id_menu_padre']) && $menu[$i]['id_menu_padre'] == $padre) {
 				$hijos[] = $menu[$i];
 			}
 		}

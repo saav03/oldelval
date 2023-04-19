@@ -59,6 +59,7 @@ class Login extends BaseController
                 'nombre' => $exito['nombre'],
                 'nombrecompleto' => $exito['nombrecompleto'],
                 'id_usuario' => $exito['id'],
+                'competencia' => $exito['competencia'],
                 'grupos' => $grupos,
                 'permisos_plus' => $permisos_ids,
                 'img_perfil' => $exito['img_perfil'],

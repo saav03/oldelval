@@ -90,14 +90,6 @@
     function editarUsuario(checkedIds, unCheckedIds) {
         let form = new FormData(document.getElementById('form_edit'));
 
-        /* for (let i = 0; i < checkedIds.length; i++) {
-            form.append('checkedIds[]', checkedIds[i]);
-        }
-
-        for (let i = 0; i < unCheckedIds.length; i++) {
-            form.append('unCheckedIds[]', unCheckedIds[i]);
-        } */
-
         return $.ajax({
             type: "POST",
             url: "<?= base_url('Usuario/editUser') ?>",
@@ -118,9 +110,12 @@
                 if (result.isConfirmed) {
                     editarUsuario(checkedIds, unCheckedIds)
                         .done(function(data) {
-                            // console.log(data)
+                            customSuccessAlert('Edición Exitosa', 'El usuario se modificó con éxito', 'swal_edicion').then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
                         })
-                    customSuccessAlert('Edición Exitosa', 'El usuario se modificó con éxito', 'swal_edicion');
                 }
             })
     });

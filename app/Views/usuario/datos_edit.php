@@ -35,7 +35,7 @@
                 <span class="rounded">
                     <div class="text-center img-placeholder " onClick="triggerClick()">
                     </div>
-                    <img style="cursor: pointer;" src="<?= $imagen_perfil != 'NULL' ? base_url('uploads/fotosPerfil/').'/'. $imagen_perfil : base_url('assets/images/perfil/no-pic.png') ?>" onClick="triggerClick()" id="profileDisplay">
+                    <img style="cursor: pointer;" src="<?= $imagen_perfil != NULL ? base_url('uploads/fotosPerfil/') . '/' . $imagen_perfil : base_url('assets/images/perfil/no-pic.png'); ?>" onClick="triggerClick()" id="profileDisplay">
                 </span>
                 <input type="file" name="profileImage" size="20" onChange="displayImage(this)" id="profileImage" class="form-control" style="display: none;">
             </div>
@@ -69,7 +69,7 @@
 
         <div class="col-xs-12 col-md-4">
             <label for="grupos" class="mb-1 fw-semibold">Competencia <small><em>(Opcional)</em></small></label>
-            <input type="text" class="form-control sz_inp" value="Supervisor" name="competencia" id="competencia" placeholder="Ingrese su competencia">
+            <input type="text" class="form-control sz_inp" value="<?= $competencia; ?>" name="competencia" id="competencia" placeholder="Ingrese su competencia">
         </div>
         <br>
         <div class="col-xs-12 col-md-4">

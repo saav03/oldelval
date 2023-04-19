@@ -34,7 +34,7 @@
                 <span class="rounded">
                     <div class="text-center img-placeholder " onClick="triggerClick()">
                     </div>
-                    <img style="cursor: pointer;" src="<?= base_url('assets/images/perfil/no-pic.png') ?>" onClick="triggerClick()" id="profileDisplay">
+                    <img style="cursor: pointer;" src="<?= $imagen_perfil != NULL ? base_url('uploads/fotosPerfil/') . '/' . $imagen_perfil : base_url('assets/images/perfil/no-pic.png'); ?>" onClick="triggerClick()" id="profileDisplay">
                 </span>
                 <input type="file" name="profileImage" size="20" onChange="displayImage(this)" id="profileImage" class="form-control" style="display: none;">
             </div>

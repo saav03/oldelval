@@ -43,7 +43,7 @@ btn_add_descargo.addEventListener("click", (e) => {
             "swal_edicion"
           ).then((result) => {
             if (result.isConfirmed) {
-              // window.location.reload();
+              window.location.reload();
             }
           });
         })
@@ -97,7 +97,7 @@ btn_aceptar_motivo_descargo.addEventListener("click", (e) => {
             "swal_edicion"
           ).then((result) => {
             if (result.isConfirmed) {
-              // window.location.reload();
+              window.location.reload();
             }
           });
         })
@@ -150,7 +150,7 @@ btn_cerrar_obs.addEventListener("click", (e) => {
             "swal_edicion"
           ).then((result) => {
             if (result.isConfirmed) {
-              // window.location.reload();
+              window.location.reload();
             }
           });
         })
