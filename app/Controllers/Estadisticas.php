@@ -7,6 +7,7 @@ use CodeIgniter\Controller;
 use App\Models;
 use SebastianBergmann\Template\Template;
 use Config\Validation;
+use DateTime;
 
 class Estadisticas extends BaseController
 {
@@ -104,11 +105,14 @@ class Estadisticas extends BaseController
 
         /* == Fecha actual == */
         $today = date("Y-m-d");
+        // $today = new DateTime("2023-05-05 00:00:00");
+        // $formateandoAndo = $today->format("Y-m-d");
+
         $today_int = strtotime($today);
         $today_month = date('m', $today_int);
 
         foreach ($periodos as $key => $p) {
-            if ($p['fecha_ini'] < $today) {
+            if ($p['fecha_ini'] <= $today) {
 
                 $periodos_disponibles[] = $p;
                 $fecha_ini_int = strtotime($p['fecha_ini']);
@@ -121,7 +125,6 @@ class Estadisticas extends BaseController
                     $periodos_disponibles[$key]['atrasado'] = 'Atrasado';
                 }
                 if ($mes_periodo != $today_month) {
-
                 }
             }
         }
@@ -149,8 +152,8 @@ class Estadisticas extends BaseController
             'periodo' => $this->request->getPost('periodo'),
             'proyecto' => $this->request->getPost('proyecto'),
             'modulo' => $this->request->getPost('modulo'),
-            'estacion' => $this->request->getPost('estacion_bombeo'),
-            'sistema' => $this->request->getPost('sistema'),
+            'estacion' => empty($this->request->getPost('estacion_bombeo')) ? null : $this->request->getPost('estacion_bombeo'),
+            'sistema' => empty($this->request->getPost('sistema')) ? null : $this->request->getPost('sistema'),
         ];
 
         $datos_estadisticas = $this->verificacion($datos, 'validation_estadistica');
@@ -175,6 +178,36 @@ class Estadisticas extends BaseController
 
             /** == Cargar Encabezado en BD == **/
             $results = $this->model_estadisticas->addPlanillaFormulario($datos);
+
+            /** == Cargar Adjuntos de la Est.Capacitacion en BD == **/
+            if ($id_tipo == 2) {
+                $upload_ruta = "uploads/estadisticas/";
+                $desc_adjuntos = $this->request->getPost('adj_desc');
+                for ($i = 0; $i < count($_FILES["adj_capacitaciones"]["name"]); $i++) {
+
+                    /* == Si no está vacio.. == */
+                    if (!empty($_FILES["adj_capacitaciones"]["name"][$i])) {
+                        $target_file = $upload_ruta . basename($_FILES["adj_capacitaciones"]["name"][$i]);
+                        $archivoTemporal = $_FILES["adj_capacitaciones"]["tmp_name"][$i];
+
+                        $extension = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                        $nombre = "adj_capacitacion-" . date('Y-m-d-H-i-s') . "." . $extension;
+                        $uploadPath = $upload_ruta . $nombre;
+
+                        if (in_array(strtolower($extension), ["pdf", "doc", "docx", "docm", "xls", "xlsx", "xlsb"])) {
+                            if (move_uploaded_file($archivoTemporal, $uploadPath)) {
+                                $archivoCargado = true;
+                            }
+                        }
+                        $dato_bd = [
+                            'id_estadistica' => $results['last_id'],
+                            'adjunto' => $nombre,
+                            'descripcion' => $desc_adjuntos[$i],
+                        ];
+                        $this->model_general->insertG('adj_estadisticas', $dato_bd);
+                    }
+                }
+            }
 
             newMov(7, 1, $results['last_id']); //Movimiento
 

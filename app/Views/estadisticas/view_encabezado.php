@@ -86,13 +86,17 @@
             </div>
             <div class="divBox_contain">
                 <select name="estacion" id="estacion" class="form-control sz_inp inp_estilos" disabled>
-                    <?php foreach ($estaciones as $e) :
-                        if ($e['id'] == $estadistica[0]['estacion']) { ?>
-                            <option value="<?= $e['id'] ?>" selected><?= $e['nombre'] ?></option>
-                        <?php } else { ?>
-                            <option value="<?= $e['id'] ?>"><?= $e['nombre'] ?></option>
-                        <?php } ?>
-                    <?php endforeach ?>
+                    <?php if ($estadistica[0]['estacion'] != null) { ?>
+                        <?php foreach ($estaciones as $e) :
+                            if ($e['id'] == $estadistica[0]['estacion']) { ?>
+                                <option value="<?= $e['id'] ?>" selected><?= $e['nombre'] ?></option>
+                            <?php } else { ?>
+                                <option value="<?= $e['id'] ?>"><?= $e['nombre'] ?></option>
+                            <?php } ?>
+                        <?php endforeach ?>
+                    <?php } else { ?>
+                        <option value="">No se especificó</option>
+                    <?php }  ?>
                 </select>
             </div>
         </div>
@@ -104,13 +108,19 @@
             </div>
             <div class="divBox_contain">
                 <select name="estacion" id="estacion" class="form-control sz_inp inp_estilos" disabled>
-                    <?php foreach ($sistemas as $s) :
-                        if ($s['id'] == $estadistica[0]['sistema']) { ?>
-                            <option value="<?= $s['id'] ?>" selected><?= $s['nombre'] ?></option>
-                        <?php } else { ?>
-                            <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
-                        <?php } ?>
-                    <?php endforeach ?>
+                    <?php if ($estadistica[0]['sistema'] != null) { ?>
+
+                        <?php foreach ($sistemas as $s) :
+                            if ($s['id'] == $estadistica[0]['sistema']) { ?>
+                                <option value="<?= $s['id'] ?>" selected><?= $s['nombre'] ?></option>
+                            <?php } else { ?>
+                                <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
+                            <?php } ?>
+                        <?php endforeach ?>
+
+                    <?php } else { ?>
+                        <option value="">No se especificó</option>
+                    <?php }  ?>
                 </select>
             </div>
         </div>

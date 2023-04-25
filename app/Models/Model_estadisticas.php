@@ -32,9 +32,13 @@ class Model_estadisticas extends Model
 
 		$query[0]['indicadores'] = [];
 
+		if ($id_tipo == 2) {
+			$query['adjuntos'] = $this->getUploadsFromEstadistica($id_estadistica);
+		}
+
 		foreach ($titulos as $key => $t) {
 			$subtitulos = $this->getDataSubtitulo($id_tipo, $t['id']);
-			
+
 			$indicadores_titulos = $this->getDataIndicadoresTituloPlanilla($id_tipo, $t['id'], $id_estadistica);
 
 			foreach ($indicadores_titulos as $ind_title) {
@@ -75,12 +79,12 @@ class Model_estadisticas extends Model
 			->join(' estadisticas_subtitulo', 'estadisticas_subtitulo.id=rel_ind.id_subtitulo', 'left')
 			->join(' estadisticas_titulo', 'estadisticas_titulo.id=rel_ind.id_titulo', 'left')
 			->join('estadisticas_indicadores', 'estadisticas_indicadores.id=rel_ind.id_indicador', 'inner');
-			if ($es_kpi) {
-				$builder->where('rel_ind.es_kpi', 1);
-			} else {
-				$builder->where('rel_ind.es_kpi', 0);
-			}
-			$builder->where('rel_ind.id_estadistica', $id_estadistica);
+		if ($es_kpi) {
+			$builder->where('rel_ind.es_kpi', 1);
+		} else {
+			$builder->where('rel_ind.es_kpi', 0);
+		}
+		$builder->where('rel_ind.id_estadistica', $id_estadistica);
 		$query = $builder->get()->getResultArray();
 		return $query;
 	}
@@ -135,6 +139,7 @@ class Model_estadisticas extends Model
 				}
 			}
 		}
+		
 		return $query;
 	}
 	public function getDataTitulo($id_tipo)
@@ -158,14 +163,16 @@ class Model_estadisticas extends Model
 	public function getDataIndicadores($id_tipo, $es_kpi = false)
 	{
 		$builder = $this->db->table('estadisticas_indicadores indicador');
-		$builder->select("id, nombre, id_tipo, id_subtitulo, id_titulo")
+		$builder->select("id, nombre, id_tipo, id_subtitulo, orden, id_titulo")
 			->where("indicador.id_tipo", $id_tipo);
-			if ($es_kpi) {
-				$builder->where('indicador.es_kpi', 1);
-			} else {
-				$builder->where('indicador.es_kpi', 0);
-			}
-			$builder->where("indicador.estado", 1);
+		if ($es_kpi) {
+			$builder->where('indicador.es_kpi', 1);
+		} else {
+			$builder->where('indicador.es_kpi', 0);
+		}
+		$builder->where("indicador.estado", 1);
+		$builder->orderBy("indicador.orden", "ASC");
+		
 		return $builder->get()->getResultArray();
 	}
 	public function getDataIndicadoresTitulo($id_tipo, $id_titulo)
@@ -175,7 +182,17 @@ class Model_estadisticas extends Model
 			->where("indicador.id_tipo", $id_tipo)
 			->where("indicador.id_titulo", $id_titulo)
 			->where("indicador.id_subtitulo", NULL)
-			->where("indicador.estado", 1);
+			->where("indicador.estado", 1)
+			->orderBy("indicador.orden", "ASC");
+		return $builder->get()->getResultArray();
+	}
+
+	protected function getUploadsFromEstadistica($id_estadistica)
+	{
+		$builder = $this->db->table('adj_estadisticas adj');
+		$builder->select("*")
+			->where("adj.id_estadistica", $id_estadistica)
+			->where("adj.estado", 1);
 		return $builder->get()->getResultArray();
 	}
 
@@ -281,14 +298,15 @@ class Model_estadisticas extends Model
 				->join('empresas', 'empresas.id=e.contratista', 'inner')
 				->join('proyectos', 'proyectos.id=e.proyecto', 'inner')
 				->join('usuario u_carga', 'u_carga.id=e.usuario_carga', 'inner')
-				->orderBy('e.id', 'ASC')
+				->orderBy('e.id', 'DESC')
 				->limit($tamanioPagina, $offset);
 		}
 		$query = $builder->get();
 		return $query->getResultArray();
 	}
 
-	public function changeState($id_estadistica){
-		$this->db->query("UPDATE `estadisticas_planilla` SET `estado` = CASE WHEN estado = 1 THEN 0 ELSE 1 END WHERE `estadisticas_planilla`.`id` = ".$id_estadistica);
+	public function changeState($id_estadistica)
+	{
+		$this->db->query("UPDATE `estadisticas_planilla` SET `estado` = CASE WHEN estado = 1 THEN 0 ELSE 1 END WHERE `estadisticas_planilla`.`id` = " . $id_estadistica);
 	}
 }

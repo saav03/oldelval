@@ -1,4 +1,5 @@
 <link href="<?= base_url() ?>/assets/css/estadisticas/add/add.css" rel="stylesheet">
+
 <div class="container">
     <form action="" method="POST" id="form_submit">
         <div class="blister-title-container">
@@ -99,6 +100,8 @@
                                                                 <input type="hidden" value="<?= $ind['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_titulo]">
                                                                 <input type="hidden" value="<?= $subt['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_subtitulo]">
                                                                 <input type="hidden" value="<?= $ind_subt['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_indicador]">
+
+
                                                                 <input type="number" value="0" min="0" name="indicador_subt[<?= $ind_subt['id'] ?>][valor]" id="indicador_<?= $ind_subt['id'] ?>" data-id-subt="<?= $subt['id'] ?>" class="form-control sz_inp text-center  <?= $ind_subt['id'] == 21 || $ind_subt['id'] == 22 ? 'ind_subt_total' : 'all_ind_subts' ?>" <?= $ind_subt['id'] == 21 || $ind_subt['id'] == 22 ? 'readonly' : '' ?> style="font-size: 12.5px!important;">
                                                             </div>
                                                         </div>
@@ -122,13 +125,28 @@
                         <?php if (isset($ind['indicadores'])) : ?>
                             <div class="row" style="width: 90%; margin: 0 auto;">
                                 <?php foreach ($ind['indicadores'] as $ind_title) : ?>
+                                    <?php
+                                    $estilo = '';
+                                    $txt = '';
 
-                                    <div class="div_indicador">
+                                    if ($ind_title['id'] == 31) {
+                                        $estilo = 'border-left: 6px solid #7cc37c;border-radius: 3px; margin-bottom: 5px;';
+                                        $txt = '<small><em> (Bien)</em></small>';
+                                    } else if ($ind_title['id'] == 32) {
+                                        $estilo = 'border-left: 6px solid #f9d76a;border-radius: 3px; margin-bottom: 5px;';
+                                        $txt = '<small><em> (Regular)</em></small>';
+                                    } else if ($ind_title['id'] == 33) {
+                                        $estilo = 'border-left: 6px solid #bf6262;border-radius: 3px; margin-bottom: 5px;';
+                                        $txt = '<small><em> (Mal)</em></small>';
+                                    }
+                                    ?>
+
+                                    <div class="div_indicador" style="<?= $estilo ?>">
                                         <div class="div-personal_ind">
                                             <div class="d-flex align-items-center">
                                                 <div class="dot"></div>
                                                 <div class="text-start">
-                                                    <p class="name_indicador"><?= $ind_title['nombre'] ?> </p>
+                                                    <p class="name_indicador"><?= $ind_title['nombre'] . $txt ?> </p>
                                                 </div>
                                             </div>
                                             <div class="div-ind_icono">
@@ -138,7 +156,9 @@
                                                 </small>
                                                 <input type="hidden" value="<?= $ind['id'] ?>" name="indicador_title[<?= $ind_title['id'] ?>][id_titulo]">
                                                 <input type="hidden" value="<?= $ind_title['id'] ?>" name="indicador_title[<?= $ind_title['id'] ?>][id_indicador]">
+
                                                 <input type="number" value="0" min="0" name="indicador_title[<?= $ind_title['id'] ?>][valor]" id="indicador_title<?= $ind_title['id'] ?>" class="form-control  sz_inp text-center" style="font-size: 12.5px!important;">
+
                                             </div>
                                         </div>
                                         <div class="collapse" id="collapseIndTitle_<?= $ind_title['id'] ?>">
@@ -153,43 +173,57 @@
                         <?php endif; ?>
                         <br>
 
-                        <div class="title_indicador">
-                            <h6>KPIs del Mes</h6>
-                        </div>
-                        <?php if (isset($planilla['indices'])) : ?>
-                            <?php foreach ($planilla['indices'] as $indice) : ?>
-                                <div class="row" style="width: 90%; margin: 10px auto;">
-                                    <div class="div_indicador_view">
+                    <?php endforeach; ?>
+                    <div class="title_indicador">
+                        <h6>KPIs del Mes</h6>
+                    </div>
+                    <?php if (isset($planilla['indices'])) : ?>
+                        <?php foreach ($planilla['indices'] as $indice) : ?>
+                            <div class="row" style="width: 90%; margin: 10px auto;">
+                                <div class="div_indicador_view">
 
-                                        <div class="div-personal_ind">
-                                            <div class="d-flex align-items-center">
-                                                <div class="dot"></div>
-                                                <div class="text-start">
-                                                    <p class="name_indicador"><?= $indice['nombre'] ?></p>
-                                                </div>
-                                            </div>
-                                            <div class="div-ind_icono">
-                                                <small data-bs-toggle="collapse" data-bs-target="#collapse_indSubt<?= $indice['id'] ?>" aria-expanded="false" aria-controls="collapse_indSubt<?= $indice['id'] ?>">
-                                                    <i class="fas fa-comment"></i>
-                                                </small>
-                                                <input type="hidden" value="<?= $indice['id'] ?>" name="indice[<?= $indice['id'] ?>][id_indicador]">
-                                                <input type="number" value="0" min="0" name="indice[<?= $indice['id'] ?>][valor]" id="indice_<?= $indice['id'] ?>" data-id-subt="1" class="form-control ind-just_read sz_inp text-center" style="font-size: 12.5px!important;" readonly>
+                                    <div class="div-personal_ind">
+                                        <div class="d-flex align-items-center">
+                                            <div class="dot"></div>
+                                            <div class="text-start">
+                                                <p class="name_indicador"><?= $indice['nombre'] ?> <i class="fa-regular fa-circle-question fa-lg i-question_modal" data-id='<?= $indice['id'] ?>' data-bs-toggle="modal" data-bs-target="#modal_indices"></i></p>
                                             </div>
                                         </div>
-                                        <div class="collapse" id="collapse_indSubt<?= $indice['id'] ?>">
-                                            <div class="form-floating">
-                                                <textarea class="form-control" name="indice[<?= $indice['id'] ?>][nota]" id="textarea" rows="2"></textarea>
-                                                <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
-                                            </div>
+                                        <div class="div-ind_icono">
+                                            <small data-bs-toggle="collapse" data-bs-target="#collapse_indSubt<?= $indice['id'] ?>" aria-expanded="false" aria-controls="collapse_indSubt<?= $indice['id'] ?>">
+                                                <i class="fas fa-comment"></i>
+                                            </small>
+                                            <input type="hidden" value="<?= $indice['id'] ?>" name="indice[<?= $indice['id'] ?>][id_indicador]">
+                                            <input type="number" value="0" min="0" name="indice[<?= $indice['id'] ?>][valor]" id="indice_<?= $indice['id'] ?>" data-id-subt="1" class="form-control ind-just_read sz_inp text-center" style="font-size: 12.5px!important;" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="collapse_indSubt<?= $indice['id'] ?>">
+                                        <div class="form-floating">
+                                            <textarea class="form-control" name="indice[<?= $indice['id'] ?>][nota]" id="textarea" rows="2"></textarea>
+                                            <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                         </div>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                        <div class="d-flex justify-content-center mt-3 mb-3">
-                            <input type="submit" class="btn btn_modify" id="btnSubmitEstadistica" value="Cargar Estadística">
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+                    <!-- Modal Indice KPI -->
+                    <div class="modal fade" id="modal_indices" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header justify-content-center" style="padding: 7px!important; background-color: lightblue; border: 2px solid white;">
+                                    <p class="modal-title" style="font-size: 17px;"><i class="fa-solid fa-circle-info fa-sm"></i> Fórmula Utilizada</p>
+                                </div>
+                                <div class="modal-body" id="indice_contain"></div>
+                            </div>
                         </div>
-                    <?php endforeach; ?>
+                    </div>
+
+
+                    <div class="d-flex justify-content-center mt-3 mb-3">
+                        <input type="submit" class="btn btn_modify" id="btnSubmitEstadistica" value="Cargar Estadística">
+                    </div>
                     <br>
                 </div>
             </div>
@@ -272,4 +306,5 @@ GESTION VEHICULAR
 </script>
 
 <script src="<?= base_url() ?>/assets/js/estadisticas/add.js"></script>
+<script src="<?= base_url() ?>/assets/js/estadisticas/modal_indices.js"></script>
 <script src="<?= base_url() ?>/assets/js/estadisticas/submit.js"></script>

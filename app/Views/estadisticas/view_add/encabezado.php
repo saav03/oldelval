@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-3 col-xs-12 mt-2">
-        <label class="mb-1 fw-semibold" for="area">Contratista <small>(*)</small></label>
+        <label class="mb-1 fw-semibold" for="area">Empresa <small>(*)</small></label>
         <select name="contratista" id="contratista" class="form-select sz_inp">
             <option value="">-- Seleccione --</option>
             <?php foreach ($contratistas as $c) : ?>
@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="col-md-4 col-xs-12 mt-2">
-        <label class="mb-1 fw-semibold" for="area">Estación de Bombeo <small>(*)</small></label>
+        <label class="mb-1 fw-semibold" for="area">Estación de Bombeo</label>
         <div id="selector_estaciones_div">
 
             <select name="estacion_bombeo" id="estacion_bombeo" class="form-select sz_inp">
@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="col-md-4 col-xs-12 mt-2">
-        <label class="mb-1 fw-semibold" for="area">Sistema de Oleoductos <small>(*)</small></label>
+        <label class="mb-1 fw-semibold" for="area">Sistema de Oleoductos</label>
         <select name="sistema" id="sistema" class="form-select sz_inp">
             <option value="">-- Seleccione --</option>
             <?php foreach ($sistemas as $s) : ?>

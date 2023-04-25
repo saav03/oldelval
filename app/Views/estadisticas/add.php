@@ -1,12 +1,5 @@
 <link href="<?= base_url() ?>/assets/css/estadisticas/add/add.css" rel="stylesheet">
-<?php 
 
-/* echo '<pre>';
-var_dump($_SESSION);
-echo '</pre>';
-exit; */
-
-?>
 <div class="container">
     <form action="" method="POST" id="form_submit">
         <div class="blister-title-container">
@@ -176,7 +169,7 @@ exit; */
                                         <div class="d-flex align-items-center">
                                             <div class="dot"></div>
                                             <div class="text-start">
-                                                <p class="name_indicador"><?= $indice['nombre'] ?></p>
+                                                <p class="name_indicador"><?= $indice['nombre'] ?> <i class="fa-regular fa-circle-question fa-lg i-question_modal" data-id='<?= $indice['id'] ?>' data-bs-toggle="modal" data-bs-target="#modal_indices"></i></p>
                                             </div>
                                         </div>
                                         <div class="div-ind_icono">
@@ -197,6 +190,18 @@ exit; */
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
+                </div>
+
+                <!-- Modal Indice KPI -->
+                <div class="modal fade" id="modal_indices" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header justify-content-center" style="padding: 7px!important; background-color: lightblue; border: 2px solid white;">
+                                <p class="modal-title" style="font-size: 17px;"><i class="fa-solid fa-circle-info fa-sm"></i> Fórmula Utilizada</p>
+                            </div>
+                            <div class="modal-body" id="indice_contain"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="d-flex justify-content-center mt-3 mb-3">
@@ -229,3 +234,4 @@ exit; */
 <script src="<?= base_url() ?>/assets/js/estadisticas/add.js"></script>
 <script src="<?= base_url() ?>/assets/js/estadisticas/indices_kpi.js"></script>
 <script src="<?= base_url() ?>/assets/js/estadisticas/submit.js"></script>
+<script src="<?= base_url() ?>/assets/js/estadisticas/modal_indices.js"></script>

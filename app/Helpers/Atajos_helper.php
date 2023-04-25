@@ -28,7 +28,7 @@ function campoFlotante($col, $negrita, $contenido, $type_inp)
     $html .= '</div>';
     $html .= '<div class="divBox_contain">';
     $html .= '<input type="hidden" value="' . $contenido . '">';
-    $html .= '<input type="' . $type_inp .'" class="form-control inp_estilos" value="' . $contenido . '" readonly>';
+    $html .= '<input type="' . $type_inp . '" class="form-control inp_estilos" value="' . $contenido . '" readonly>';
     $html .= '</div>';
     $html .= '</div>';
     $html .= '</div>';
@@ -36,3 +36,25 @@ function campoFlotante($col, $negrita, $contenido, $type_inp)
     echo $html;
 }
 
+/**
+ * 
+ */
+function generarIconUpload($adjunto)
+{
+    $extension = strtolower(pathinfo($adjunto, PATHINFO_EXTENSION));
+    
+    $ruta = '';
+    $html = '';
+    if ($extension == 'doc') {
+        $ruta = base_url('assets/img/Word.svg'); 
+    } else if ($extension == 'pdf') {
+        $ruta = base_url('assets/img/PDF.svg'); 
+    } else if ($extension == 'xls' || $extension == 'xlsx') {
+        $ruta = base_url('assets/img/Excel.svg'); 
+    }
+    $html .= '<img class="img_clip" src="' . $ruta . '" style="margin-right: 20px;" alt="Clip cargar archivo">';
+    $html .= '<p class="m-0">' . $adjunto . '</p>';
+    return $html;
+    /* <img class="img_clip" src="<?= base_url('assets/img/Word.svg') ?>" style="margin-right: 20px;" alt="Clip cargar archivo">
+                            <p class="m-0">Nombre archivo.doc</p> */
+}

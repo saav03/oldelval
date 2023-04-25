@@ -50,17 +50,17 @@ switch ($estadistica[0]['tipo']) {
                         </div>
                         <div class="div-ind_icono">
                             <?php if ($ind['nota'] != '') : ?>
-                                <small data-bs-toggle="collapse" data-bs-target="#collapse_ind_gral_1" aria-expanded="false" aria-controls="collapse_ind_gral_1">
+                                <small data-bs-toggle="collapse" data-bs-target="#collapse_ind_gral_<?= $ind['id_indicador'] ?>" aria-expanded="false" aria-controls="collapse_ind_gral_1">
                                     <i class="fas fa-comment"></i>
                                 </small>
                             <?php endif; ?>
-                            <input type="hidden" value="1" name="indicador_gral[1][id_indicador]">
-                            <input type="number" value="<?= $ind['valor'] ?>" min="0" name="indicador_gral[1][valor]" id="indicador_gral_1" class="form-control sz_inp text-center ind-just_read" style="font-size: 12.5px!important;" readonly>
+                            <input type="hidden" value="1" name="indicador_gral[<?= $ind['id_indicador'] ?>][id_indicador]">
+                            <input type="number" value="<?= $ind['valor'] ?>" min="0" name="indicador_gral[<?= $ind['id_indicador'] ?>][valor]" id="indicador_gral_<?= $ind['id_indicador'] ?>" class="form-control sz_inp text-center ind-just_read" style="font-size: 12.5px!important;" readonly>
                         </div>
                     </div>
-                    <div class="collapse" id="collapse_ind_gral_1">
+                    <div class="collapse" id="collapse_ind_gral_<?= $ind['id_indicador'] ?>">
                         <div class="form-floating">
-                            <textarea class="form-control" id="textarea" name="indicador_gral[1][nota]" rows="2"></textarea>
+                            <textarea class="form-control" id="textarea" name="indicador_gral[<?= $ind['id_indicador'] ?>][nota]" rows="2"></textarea>
                             <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                         </div>
                     </div>
@@ -120,12 +120,26 @@ switch ($estadistica[0]['tipo']) {
 
             <?php if (isset($ind['indicadores'])) : ?>
                 <?php foreach ($ind['indicadores'] as $ind_title) : ?>
+                    <?php
+                    $estilo = '';
+                    $txt = '';
 
+                    if ($ind_title['id_indicador'] == 31) {
+                        $estilo = 'border-left: 6px solid #7cc37c;border-radius: 3px; margin-bottom: 5px;';
+                        $txt = '<small><em> (Bien)</em></small>';
+                    } else if ($ind_title['id_indicador'] == 32) {
+                        $estilo = 'border-left: 6px solid #f9d76a;border-radius: 3px; margin-bottom: 5px;';
+                        $txt = '<small><em> (Regular)</em></small>';
+                    } else if ($ind_title['id_indicador'] == 33) {
+                        $estilo = 'border-left: 6px solid #bf6262;border-radius: 3px; margin-bottom: 5px;';
+                        $txt = '<small><em> (Mal)</em></small>';
+                    }
+                    ?>
                     <div class="row" style="width: 95%; margin: 0 auto;">
-                        <div class="div_indicador_view">
+                        <div class="div_indicador_view" style="<?= $estilo ?>">
                             <div class="div-personal_ind">
                                 <div class="text-start">
-                                    <p class="name_indicador"><?= $ind_title['nombre'] ?></p>
+                                    <p class="name_indicador"><?= $ind_title['nombre'] . $txt ?></p>
                                 </div>
                                 <div class="div-ind_icono">
                                     <?php if ($ind_title['nota'] != '') : ?>
@@ -134,7 +148,7 @@ switch ($estadistica[0]['tipo']) {
                                         </small>
                                     <?php endif; ?>
                                     <input type="hidden" value="1" name="indicador_gral[<?= $ind_title['id_indicador'] ?>][id_indicador]">
-                                    <input type="number" value="<?= $ind_title['valor'] ?>" min="0" name="indicador_gral[1][valor]" id="indicador_gral_<?= $ind_title['id_indicador'] ?>" class="form-control sz_inp text-center ind-just_read" style="font-size: 12.5px!important;" readonly>
+                                    <input type="number" value="<?= $ind_title['valor'] ?>" min="0" name="indicador_gral[<?= $ind_title['id_indicador'] ?>][valor]" id="indicador_gral_<?= $ind_title['id_indicador'] ?>" class="form-control sz_inp text-center ind-just_read" style="font-size: 12.5px!important;" readonly>
                                 </div>
                             </div>
                             <div class="collapse" id="collapse_ind_gral_<?= $ind_title['id_indicador'] ?>">
@@ -189,6 +203,40 @@ switch ($estadistica[0]['tipo']) {
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
+
+
+        <!-- Muestro los adjuntos en caso de existir (Solamente para las capacitaciones) -->
+        <?php if (isset($estadistica['adjuntos'])) { ?>
+            <br>
+
+            <div class="row data_est">
+                <p>Adjuntos</p>
+            </div>
+            <?php if ($estadistica['adjuntos']) { ?>
+                <?php foreach ($estadistica['adjuntos'] as $adj) : ?>
+                    <section style="width: 90%; margin: 0 auto;">
+                        <div class="row justify-content-center" id="container_uploads">
+                            <div class="row align-items-center mb-3" style="box-shadow: 0px 0px 6px 0px rgb(239 236 236); border-radius: 10px;">
+                                <div class="d-flex col-xs-12 col-md-10 justify-content-between">
+                                    <div class="d-flex justify-content-evenly align-items-center">
+                                        <?= generarIconUpload($adj['adjunto']); ?>
+                                    </div>
+                                    <textarea cols="30" rows="2" class="form-control sz_inp" style="width: 70%;border: 1px solid #f3f3f3;" readonly><?= !empty($adj['descripcion']) ? $adj['descripcion'] : 'No se cargó una descripción' ?></textarea>
+                                </div>
+                                <div class="col-xs-12 col-md-2 text-center" title="Descargar adjunto">
+                                    <a class="btn-del_inc" href="<?= base_url("uploads/estadisticas/" . $adj['adjunto']) ?>" download><i class="fa-solid fa-download" style="font-size: 20px!important;"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                <?php endforeach; ?>
+            <?php } else { ?>
+                <div class="row">
+                    <p class="text-center m-0"><em>No se han cargado adjuntos</em></p>
+                </div>
+            <?php } ?>
+
+        <?php }  ?>
 
         <!-- Modal -->
         <div class="modal fade" id="modal_answer" tabindex="-1" aria-hidden="true">

@@ -166,7 +166,73 @@ legend {
   font-weight: 500;
   transition: all .2s ease-in-out;
 }
+
 #btnSubmitEstadistica:hover {
   border: 2px solid lightblue;
   background: #f2fcff;
+}
+
+/* == Adjuntos Estadísticas Capacitaciones == */
+
+.div_img_clip {
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  background: lightgray;
+  border-radius: 5px 0 0 5px;
+  padding: 9px;
+  box-shadow: 1px 0px 5px 0px rgb(229 226 226 / 75%);
+}
+
+.div_img_clip svg {
+  font-size: 20px;
+}
+
+.img_clip {
+  width: 38px;
+}
+
+.adjuntar_archivo {
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+.adjuntar_archivo p {
+  padding: 9px 25px 9px 25px;
+  margin: 0;
+  box-shadow: 1px 0px 5px 0px rgb(229 226 226 / 75%);
+  border-radius: 0 20px 20px 0;
+}
+
+.adjuntar_archivo:hover {
+  background-color: #f9f9f9;
+  border-radius: 0 20px 20px 0;
+  box-shadow: 1px 0px 5px 0px rgb(229 226 226 / 75%);
+}
+
+.btn-del_inc {
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  color: #606060;
+  transition: all .3s ease-in;
+}
+
+.btn-del_inc svg {
+  font-size: 15px;
+}
+
+.btn-del_inc:hover {
+  background-color: #f3f3f3;
+}
+
+.i-question_modal {
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+.i-question_modal:hover {
+  color: rgb(120, 196, 221);
 }

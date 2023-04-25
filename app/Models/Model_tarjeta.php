@@ -175,10 +175,10 @@ class Model_tarjeta extends Model
 				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left')
 				->join('proyectos', 'proyectos.id=tar_obs.proyecto', 'inner')
 				->join('modulos', 'modulos.id=tar_obs.modulo', 'left')
-				->join('estaciones_bombeo', 'estaciones_bombeo.id=tar_obs.estacion_bombeo', 'inner')
-				->join('sistemas_oleoductos', 'sistemas_oleoductos.id=tar_obs.sistema_oleoducto', 'inner')
+				->join('estaciones_bombeo', 'estaciones_bombeo.id=tar_obs.estacion_bombeo', 'left')
+				->join('sistemas_oleoductos', 'sistemas_oleoductos.id=tar_obs.sistema_oleoducto', 'left')
 				->where('tar_obs.estado', 1)
-				->orderBy('tar_obs.id', 'ASC')
+				->orderBy('tar_obs.id', 'DESC')
 				->limit($tamanioPagina, $offset);
 
 			/* == Si no tiene el permiso para agregar una observación entonces para el histórico filtra por el responsable == */
@@ -196,11 +196,11 @@ class Model_tarjeta extends Model
 	public function getDataTarjeta($id_obs)
 	{
 		$builder = $this->db->table('tarjeta_observaciones tar_obs');
-		$builder->select('tar_obs.id id_tarjeta, tar_obs.observador, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, tar_obs.fecha_deteccion, tar_obs.tipo_obs observacion, tar_obs.descripcion tar_descripcion, tar_obs.situacion, tar_obs.estado tar_estado, tar_obs.usuario_carga')
+		$builder->select('tar_obs.id id_tarjeta, tar_obs.observador, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, DATE_FORMAT(tar_obs.fecha_deteccion, "%d/%m/%Y") fecha_deteccion, tar_obs.tipo_obs observacion, tar_obs.descripcion tar_descripcion, tar_obs.situacion, tar_obs.estado tar_estado, tar_obs.usuario_carga')
 			->join('proyectos', 'proyectos.id=tar_obs.proyecto', 'inner')
 			->join('modulos', 'modulos.id=tar_obs.modulo', 'left')
-			->join('estaciones_bombeo', 'estaciones_bombeo.id=tar_obs.estacion_bombeo', 'inner')
-			->join('sistemas_oleoductos', 'sistemas_oleoductos.id=tar_obs.sistema_oleoducto', 'inner')
+			->join('estaciones_bombeo', 'estaciones_bombeo.id=tar_obs.estacion_bombeo', 'left')
+			->join('sistemas_oleoductos', 'sistemas_oleoductos.id=tar_obs.sistema_oleoducto', 'left')
 			->where('tar_obs.id', $id_obs)
 			->where('tar_obs.estado', 1);
 		$query = $builder->get();

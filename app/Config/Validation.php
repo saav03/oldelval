@@ -230,7 +230,8 @@ class Validation extends BaseConfig
             ]
         ],
         // El módulo no es requerido
-        'estacion_bombeo' => [
+        /* La estación de bombeo tanto como el sistema de oleoducto puede ser requerido o no */
+        /* 'estacion_bombeo' => [
             'label' => 'Estación de Bombeo',
             'rules' => ['required'],
             'errors' => [
@@ -243,7 +244,7 @@ class Validation extends BaseConfig
             'errors' => [
                 'required' => 'No se especificó el sistema de oleoducto',
             ]
-        ],
+        ], */
     ];
 
     public $validation_hallazgo = [
@@ -351,7 +352,8 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó el proyecto',
             ]
         ],
-        'estacion' => [
+        /* Ninguno de los dos campos abajo son requeridos, debido a que puede ser uno u otro */
+        /* 'estacion' => [
             'label' => 'Estacion',
             'rules' => ['required'],
             'errors' => [
@@ -364,6 +366,6 @@ class Validation extends BaseConfig
             'errors' => [
                 'required' => 'No se especificó el sistema',
             ]
-        ],
+        ], */
     ];
 }
