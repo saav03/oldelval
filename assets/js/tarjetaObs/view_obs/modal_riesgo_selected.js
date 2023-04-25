@@ -53,7 +53,6 @@ for (let i = 0; i < input_celdas.length; i++) {
               celdas[i].classList.add("color_alto");
               break;
             case "4":
-              console.log("Entra aca");
               celdas[i].classList.add("color_extremo");
               break;
           }

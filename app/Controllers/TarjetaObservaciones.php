@@ -77,8 +77,8 @@ class TarjetaObservaciones extends BaseController
             'descripcion'    => $this->request->getPost('descripcion'),
             'proyecto'    => $this->request->getPost('proyecto'),
             'modulo'    => $this->request->getPost('modulo'),
-            'estacion_bombeo'    => $this->request->getPost('estacion_bombeo'),
-            'sistema_oleoducto'    => $this->request->getPost('sistema_oleoducto'),
+            'estacion_bombeo'    => empty($this->request->getPost('estacion_bombeo')) ? null : $this->request->getPost('estacion_bombeo'),
+            'sistema_oleoducto'    => empty($this->request->getPost('sistema_oleoducto')) ? null : $this->request->getPost('sistema_oleoducto'),
         ];
 
         $verificacion_tarjeta = $this->verificacion($datos_tarjeta, 'validation_tarjeta');
@@ -111,9 +111,7 @@ class TarjetaObservaciones extends BaseController
 
                 $verificacion_obs_negativa = $this->verificacion($datos_obs, 'validation_hallazgo');
 
-
                 if (!$verificacion_obs_negativa['exito']) {
-
                     $datos_obs = [];
                     $errores = $verificacion_obs_negativa['errores'];
                     echo json_encode($errores);
@@ -198,17 +196,17 @@ class TarjetaObservaciones extends BaseController
                             break;
                     } */
                 }
+                newMov(6, 1, $id_tarjeta_obs); //Movimiento
+
             } else if ($posee_obs != 1 && $posee_obs != 2 && empty($datos_obs)) {
                 $results = $this->model_tarjeta->addSubmit($datos_tarjeta);
                 $id_tarjeta_obs = $results['last_id'];
 
+                newMov(6, 1, $id_tarjeta_obs); //Movimiento
                 // $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs);
                 /* == Envío un correo a quien creó la tarjeta sin plan de acción == */
                 // $this->sendMail($datos, 1);
             }
-
-            newMov(6, 1, $id_tarjeta_obs); //Movimiento
-
         } else {
             $errores = $verificacion_tarjeta['errores'];
             echo json_encode($errores);
@@ -398,6 +396,7 @@ class TarjetaObservaciones extends BaseController
     protected function verificacion($datos, $nombre_validacion)
     {
         $verificacion = [];
+        $this->validation->reset();
         if ($this->validation->run($datos, $nombre_validacion) === FALSE) {
             $this->response->setStatusCode(400);
             $verificacion['exito'] = false;

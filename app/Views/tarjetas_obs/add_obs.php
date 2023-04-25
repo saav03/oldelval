@@ -25,7 +25,7 @@
                         <div class="row">
                             <div class="col-xs-12 col-md-4">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Fecha de Detección <small>(*)</small></label>
-                                <input type="date" name="fecha_deteccion" id="fecha_deteccion" class="form-control sz_inp" required>
+                                <input type="date" name="fecha_deteccion" id="fecha_deteccion" class="form-control sz_inp" max="<?= date('Y-m-d') ?>" required>
                                 <div class="valid-feedback"></div>
                                 <div class="invalid-feedback">
                                     La fecha de detección es requerida
@@ -53,7 +53,7 @@
                             </div>
                             <div class="col-xs-12 col-md-4">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Observador</label>
-                                <input type="text" name="observador" id="observador" class="form-control sz_inp" placeholder="Observador (Opcional)">
+                                <input type="text" name="observador" id="observador" class="form-control sz_inp simulate_dis" placeholder="Observador (Opcional)" value="<?= $this->session->get('nombrecompleto'); ?>" readonly>
                             </div>
                         </div>
 
@@ -98,9 +98,9 @@
                             </div>
 
                             <div class="col-xs-12 col-md-6">
-                                <label for="" class="mb-1 mt-3 fw-semibold sz_inp">Estaciones de Bombeo <small>(*)</small></label>
+                                <label for="" class="mb-1 mt-3 fw-semibold sz_inp">Estaciones de Bombeo</label>
                                 <div id="selector_estaciones_div">
-                                    <select name="estacion_bombeo" id="estacion_bombeo" class="form-select sz_inp" required>
+                                    <select name="estacion_bombeo" id="estacion_bombeo" class="form-select sz_inp">
                                         <option value="">-- Seleccione --</option>
                                         <?php foreach ($estaciones as $e) : ?>
                                             <option value="<?= $e['id'] ?>"><?= $e['nombre'] ?></option>
@@ -115,8 +115,8 @@
                             </div>
 
                             <div class="col-xs-12 col-md-6">
-                                <label for="" class="mb-1 mt-3 fw-semibold sz_inp">Sistema de Oleoductos <small>(*)</small></label>
-                                <select name="sistema_oleoducto" id="sistema_oleoducto" class="form-select sz_inp" required>
+                                <label for="" class="mb-1 mt-3 fw-semibold sz_inp">Sistema de Oleoductos</label>
+                                <select name="sistema_oleoducto" id="sistema_oleoducto" class="form-select sz_inp">
                                     <option value="">-- Seleccione --</option>
                                     <?php foreach ($sistemas as $s) : ?>
                                         <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
@@ -133,9 +133,10 @@
                         <br>
 
                         <p class="subtitle">Indicadores</p>
-                        <div class="row text-center">
+                        <div class="d-flex justify-content-between align-items-center" style="width: 90%;margin: 0 auto;">
                             <!-- <p style="text-align: center;">AGREGAR CONTENIDO</p> -->
-                            <div class="row">
+                            
+                            <div class="row text-center">
                                 <?php foreach ($indicadores as $indicador) : ?>
                                     <div class="col-xs-12 col-md-4 mt-3">
                                         <input type="checkbox" name="indicadores[<?= $indicador['id'] ?>]" id="foco<?= $indicador['id'] ?>">

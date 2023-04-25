@@ -42,8 +42,18 @@ const tableOptions = {
         return modulo;
       }
     },
-    "estacion",
-    "sistema",
+    {
+      key: (row) => {
+        if (row['estacion']) {return row['estacion']} else {return '---'}
+      },
+    },
+    {
+      key: (row) => {
+        if (row['sistema']) {return row['sistema']} else {return '---'}
+      },
+    },
+    // "estacion",
+    // "sistema",
     "fecha_deteccion",
     {
       key: (row) => {

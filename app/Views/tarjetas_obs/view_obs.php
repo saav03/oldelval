@@ -3,9 +3,6 @@
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/view_obs.css" rel="stylesheet">
 
 <?php
-
-            use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
-
 $t = $tarjeta;
 $descargos['descargos'] = $tarjeta['hallazgo']['descargos'];
 $situacion = $t['situacion'] == 1 ? 'Abierta' : 'Cerrada';
@@ -40,7 +37,7 @@ if (!is_null($t['cierre'])) {
                 </div>
                 <div class="col-xs-12 col-md-4">
                     <p class="subtitle">Fecha de Detección</p>
-                    <p class="content_text"><?= $t['fecha_deteccion']; ?></p> <!-- Debería formatear la fecha para que se vea más lindo -->
+                    <p class="content_text"><?= $t['fecha_deteccion']; ?></p>
                 </div>
                 <div class="col-xs-12 col-md-4">
                     <p class="subtitle">Tipo de Observación</p>
@@ -67,11 +64,11 @@ if (!is_null($t['cierre'])) {
                     </div>
                     <div class="col-xs-12 col-md-6 mt-3">
                         <p class="subtitle">Estación de Bombeo</p>
-                        <p class="content_text"><?= $t['estacion'] ?></p>
+                        <p class="content_text"><?= isset($t['estacion']) ? $t['estacion'] : 'No se especificó' ?></p>
                     </div>
                     <div class="col-xs-12 col-md-6 mt-3">
                         <p class="subtitle">Sistema de Oleoducto</p>
-                        <p class="content_text"><?= $t['sistema'] ?></p>
+                        <p class="content_text"><?= isset($t['sistema']) ? $t['sistema'] : 'No se especificó' ?></p>
                     </div>
                 </div>
             </div>
