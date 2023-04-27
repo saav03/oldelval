@@ -19,6 +19,7 @@ class Estadisticas extends BaseController
         $this->model_logs = model('Model_logs');
         $this->model_usuario = model('Model_usuario');
         $this->model_estadisticas = model('Model_estadisticas');
+        $this->model_empresas = model('Model_empresas');
         $this->model_general = model('Model_general');
     }
 
@@ -136,7 +137,8 @@ class Estadisticas extends BaseController
         $data['proyectos'] =  $this->model_general->getAllEstadoActivo('proyectos');
         $data['estaciones'] =  $this->model_general->getAllEstadoActivo('estaciones_bombeo');
         $data['sistemas'] =  $this->model_general->getAllEstadoActivo('sistemas_oleoductos');
-        $data['contratistas'] =  $this->model_general->getAllEstadoActivo(' empresas');
+        $data['contratista'] =  $this->model_empresas->getEmpresas($this->session->get('empresa'));
+        $data['contratistas'] =  $this->model_empresas->getEmpresas(0);
         $data['planilla'] = $this->model_estadisticas->getDataPlanillaIncidente($id_tipo);
         return $data;
     }

@@ -77,18 +77,48 @@ if (!is_null($t['cierre'])) {
 
             <p class="subtitle">Indicadores</p>
 
-            <div class="row text-center">
-                <?php if (count($indicadores) > 0) { ?>
-                    <?php foreach ($indicadores as $indicador) : ?>
-                        <div class="col-xs-12 col-md-3 p-4">
-                            <p><i class="far fa-check-square" style="margin-right: 3px;"></i><?= $indicador['nombre'] ?></p>
-                        </div>
-                    <?php endforeach; ?>
-                <?php } else { ?>
-                    <div class="col-xs-12 col-md-12">
-                        <p class="text-center"><em>No se han seleccionado indicadores</em></p>
+            <div class="row" style="width: 95%; margin: 0 auto;">
+                <div class="card-body">
+                    <div class="activity">
+                        <?php $i = 1;
+                        $tipo = '';
+                        $clase = '';
+                        $icon = '';
+                        foreach ($indicadores as $ind) : ?>
+                            <?php
+
+                            switch ($ind['rta']) {
+                                case '1':
+                                    $tipo = '(Bien)';
+                                    $clase = 'icon-bien';
+                                    $icon = 'fa-solid fa-check';
+                                    break;
+                                case '0':
+                                    $tipo = '(Mal)';
+                                    $clase = 'icon-mal';
+                                    $icon = 'fa-solid fa-xmark';
+                                    break;
+                                case '-1':
+                                    $tipo = '(N/A)';
+                                    $clase = 'icon-na';
+                                    $icon = 'fa-solid fa-minus';
+                                    break;
+                            }
+                            ?>
+                            <div class="activity-item d-flex">
+                                <div class="tipo_check <?= $clase; ?>">
+                                    <i class="<?= $icon; ?>"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <?= $ind['nombre_indicador']; ?>
+                                    <small><em><?= $tipo; ?></em></small>
+                                </div>
+                            </div>
+                        <?php $i++;
+                        endforeach; ?>
+
                     </div>
-                <?php }  ?>
+                </div>
             </div>
 
             <br>
@@ -237,7 +267,7 @@ if (!is_null($t['cierre'])) {
     </div>
 
     <div class="d-flex justify-content-end">
-        <a href="<?= base_url('TarjetaObs'); ?>" class="btn_modify btn_volver" >Volver</a>
+        <a href="<?= base_url('TarjetaObs'); ?>" class="btn_modify btn_volver">Volver</a>
     </div>
 </div>
 <script src="<?= base_url() ?>/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

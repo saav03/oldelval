@@ -147,6 +147,7 @@ class Usuario extends BaseController
             'nombre'    => $this->request->getPost('nombre'),
             'apellido'    => $this->request->getPost('apellido'),
             'fecha_nacimiento'    => $this->request->getPost('fec_nac'),
+            'empresa'    => $this->request->getPost('empresa'),
             'localidad'    => $this->request->getPost('localidad'),
             'imagen_perfil'    => $foto,
             'telefono'    => $this->request->getPost('telefono') ? $this->request->getPost('telefono') : 0,
@@ -343,10 +344,13 @@ class Usuario extends BaseController
         return $respuesta;
     }
 
-    public function desactivar($id_usuario)
+    public function changeStateUser($id_usuario)
     {
-        $this->model_usuario->desactivar($id_usuario);
+        $this->model_usuario->changeStateUser($id_usuario);
+        newMov(1, 3, $id_usuario, 'Actualizar Estado'); // Movimiento Activar o Desactivar
+
     }
+
 
     public function ingresos()
     {

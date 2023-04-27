@@ -236,3 +236,7 @@ legend {
 .i-question_modal:hover {
   color: rgb(120, 196, 221);
 }
+
+#btn_selectEmpresa {
+  cursor: pointer;
+}

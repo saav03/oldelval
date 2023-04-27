@@ -132,19 +132,72 @@
 
                         <br>
 
+                        <style>
+                            .btn-group-toggle {
+                                border: 1px solid lightgray;
+                            }
+
+                            .rojo,
+                            .verde,
+                            .amarillo {
+                                font-size: 13px;
+                                border: none;
+                            }
+
+                            .rojo {
+                                border-right: 1px solid lightgray;
+                            }
+
+                            .verde {
+                                border-right: 1px solid lightgray;
+                                border-radius: 4px 0 0 4px;
+                            }
+
+                            .amarillo {
+                                border-radius: 0 4px 4px 0;
+                            }
+
+                            .verde_check:checked+.verde {
+                                box-shadow: inset 0px 0px 17px 0px rgba(124, 184, 76, 1);
+                                background-color: #E9FFCA;
+                                border: none;
+                                border-bottom: 3px solid rgb(102 181 114);
+                            }
+
+                            .rojo_check:checked+.rojo {
+                                box-shadow: inset 0px 0px 17px 0px rgba(189, 53, 53, 1);
+                                background-color: #F1B7B3;
+                                border: none;
+                                border-bottom: 3px solid rgb(159 59 59);
+                            }
+
+                            .amarillo_checked:checked+.amarillo {
+                                box-shadow: inset 0px 0px 17px 0px rgba(233, 220, 118);
+                                background-color: #f9f3d6;
+                                border: none;
+                                border-bottom: 3px solid rgba(235, 202, 120, 1);
+                            }
+                        </style>
+
                         <p class="subtitle">Indicadores</p>
-                        <div class="d-flex justify-content-between align-items-center" style="width: 90%;margin: 0 auto;">
-                            <!-- <p style="text-align: center;">AGREGAR CONTENIDO</p> -->
-                            
-                            <div class="row text-center">
-                                <?php foreach ($indicadores as $indicador) : ?>
-                                    <div class="col-xs-12 col-md-4 mt-3">
-                                        <input type="checkbox" name="indicadores[<?= $indicador['id'] ?>]" id="foco<?= $indicador['id'] ?>">
-                                        <label for="foco<?= $indicador['id'] ?>"><?= $indicador['nombre'] ?></label>
-                                    </div>
-                                <?php endforeach; ?>
+                        <?php $i = 1; foreach ($indicadores as $ind) : ?>
+                            <div class="d-flex justify-content-between align-items-center pb-2 pt-2" style="width: 90%;margin: 0 auto; border-bottom: 1px solid lightgray; font-size: 13px;">
+                                <div>
+                                    <p class="m-0"><small><em><b>(<?= $i; ?>)</b></em></small> <?= $ind['nombre']; ?></p>
+                                </div>
+                                <div class="btn-group btn-group-toggle" role="group" aria-label="Basic radio toggle button group">
+                                    <input type="radio" class="btn-check verde_check" name="btn_indicador[<?= $ind['id'] ?>]" value="1" id="btn_bien_<?= $ind['id'] ?>" autocomplete="off">
+                                    <label class="btn verde" for="btn_bien_<?= $ind['id'] ?>">Bien</label>
+
+                                    <input type="radio" class="btn-check rojo_check" name="btn_indicador[<?= $ind['id'] ?>]" value="0" id="btn_mal_<?= $ind['id'] ?>" autocomplete="off">
+                                    <label class="btn rojo" for="btn_mal_<?= $ind['id'] ?>">Mal</label>
+
+                                    <input type="radio" class="btn-check amarillo_checked" name="btn_indicador[<?= $ind['id'] ?>]" value="-1" id="btn_na_<?= $ind['id'] ?>" autocomplete="off" checked>
+                                    <label class="btn amarillo" for="btn_na_<?= $ind['id'] ?>">N/A</label>
+                                </div>
                             </div>
-                        </div>
+                        <?php $i++; endforeach; ?>
+
                         <br>
                         <br>
 

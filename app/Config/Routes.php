@@ -157,7 +157,7 @@ $routes->match(['get', 'post'],"Usuario/editUser",'Usuario::edit');
 $routes->get('/all_users','Usuario::index');
 $routes->match(['get', 'post'],'/api/usuarios/get/(:num)/(:num)','Usuario::getPaged/$1/$2');
 $routes->match(['get', 'post'],'/api/usuarios/getTotal/','Usuario::getPaged');
-$routes->post('/Usuario/desactivarUsuario/(:num)','Usuario::desactivar/$1');
+$routes->post('/Usuario/changeStateUser/(:num)','Usuario::changeStateUser/$1');
 $routes->post('/usuario/editarPermisosUsuario','Usuario::editarPermisosUsuario');
 
 

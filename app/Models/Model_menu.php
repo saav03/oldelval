@@ -13,6 +13,7 @@ class model_menu extends Model
 
 	public function getPermisosForMenu($id_usuario, $superadmin = NULL)
 	{
+		$result = [];
 		$builder = $this->db->table('gg_menu ggm');
 		$builder->select('ggm.id id, ggm.nombre, is_heading, id_menu_padre, icono, blank, ruta, js_id')
 		->join('gg_permisos ggp', 'ggp.id_menu=ggm.id', 'inner')

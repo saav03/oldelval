@@ -165,7 +165,7 @@ class Model_tarjeta extends Model
 		if ($soloMax) {
 			$builder->select("COUNT(*) cantidad");
 			$builder->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
-					->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left');
+				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left');
 			if (!vista_access('add_obs')) {
 				$builder->where("user_responsable.id", session()->get('id_usuario'));
 			}
@@ -301,10 +301,14 @@ class Model_tarjeta extends Model
 	public function getDataIndicadoresTarjeta($id_obs)
 	{
 		$builder = $this->db->table('tarjeta_indicadores');
-		$builder->select('tarjeta_indicadores.*')
+		$builder->select('tarjeta_rel_indicadores.*, tarjeta_indicadores.nombre nombre_indicador')
 			->join('tarjeta_rel_indicadores', 'tarjeta_rel_indicadores.id_indicador=tarjeta_indicadores.id', 'inner')
 			->where('tarjeta_rel_indicadores.id_tarjeta', $id_obs);
-		return $builder->get()->getResultArray();
+			return $builder->get()->getResultArray();
+		/* $builder = $this->db->table('tarjeta_indicadores');
+		$builder->select('tarjeta_indicadores.*')
+			->join('tarjeta_rel_indicadores', 'tarjeta_rel_indicadores.id_indicador=tarjeta_indicadores.id', 'inner')
+			->where('tarjeta_rel_indicadores.id_tarjeta', $id_obs); */
 	}
 
 	public function addDescargo($datos)

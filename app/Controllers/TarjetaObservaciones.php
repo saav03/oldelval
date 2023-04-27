@@ -69,6 +69,7 @@ class TarjetaObservaciones extends BaseController
     public function submitTarjeta()
     {
 
+
         $datos_tarjeta  = [
             'fecha_deteccion'    => $this->request->getPost('fecha_deteccion'),
             'tipo_obs'     => $this->request->getPost('tipo_obs'),
@@ -145,15 +146,14 @@ class TarjetaObservaciones extends BaseController
                     $id_tarjeta_obs = $results['last_id'];
 
                     /* == Inserto los Indicadores (Si es que existen) == */
-                    $indicadores = $this->request->getPost('indicadores');
-                    if (!is_null($indicadores)) {
-                        foreach ($indicadores as $key => $indicador) {
-                            $data = [
-                                'id_tarjeta' => $id_tarjeta_obs,
-                                'id_indicador' => $key,
-                            ];
-                            $this->model_general->insertG('tarjeta_rel_indicadores', $data);
-                        }
+                    $indicadores = $this->request->getPost('btn_indicador');
+                    foreach ($indicadores as $key => $indicador) {
+                        $data = [
+                            'id_tarjeta' => $id_tarjeta_obs,
+                            'id_indicador' => $key,
+                            'rta' => $indicador,
+                        ];
+                        $this->model_general->insertG('tarjeta_rel_indicadores', $data);
                     }
 
                     $datos_obs['id_tarjeta'] = $id_tarjeta_obs;

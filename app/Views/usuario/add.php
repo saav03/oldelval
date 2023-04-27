@@ -8,7 +8,7 @@
     .border-perfil {
         position: relative;
         margin: 0 40px;
-        padding: 13px 0;
+        padding: 10px 0;
         overflow: hidden;
         border-top: 1px solid #f2f2f2;
 

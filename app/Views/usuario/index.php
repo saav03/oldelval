@@ -1,3 +1,24 @@
+    <style>
+        .btn_desactivar,
+        .btn_activar {
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            background-color: #bfbfbf;
+            color: white;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn_desactivar:hover {
+            background-color: #ff6b6b;
+        }
+
+        .btn_activar:hover {
+            background-color: #99d990;
+        }
+    </style>
+
     <div class="container">
         <div class="row">
             <div class="blister-title-container">
@@ -31,50 +52,17 @@
             tableHeader: ["ID", "Usuario", "Nombre", "Apellido", "Correo", "Grupos", "Creador", "Fecha Creacion", 'Acciones'],
             tableCells: ["id", "usuario", "nombre", "apellido", "correo", "grupo", "creador", "fecha_creacion", {
                 key: (row) => {
-                    let botonDesactivar;
-                    let div;
-                    let grandRow;
-                    let id = row['id'];
-                    let nombre = row['nombre'];
-                    botonDesactivar = el('button.btn-desactivar', {
-                        'type': 'button',
-                        'title': 'Desactivar',
-                    }, el("i.fas fa-ban"));
-                    div = el('div.col-xs-12 col-md-12', {
-                        'style': 'text-align: center;'
-                    });
-                    grandRow = el('div.row');
-                    botonDesactivar.onclick = () => {
-                        botonDesactivar.disabled = true;
-                        botonDesactivar.classList.add('disabled');
-                        showConfirmationButton().then((result) => {
-                            if (result.isConfirmed) {
-                                desactivarUsuario(id)
-                                    .done(function(data) {
-                                        successAlert("Se ha desactivado el Usuario.").then((result) => {
-                                            if (result.isConfirmed) {
-                                                window.location.replace("<?= base_url('usuarios') ?>");
-                                            }
-                                        })
-                                    })
-                                    .fail((err, textStatus, xhr) => {
-                                        let errors = JSON.parse(err.responseText);
-                                        errors = errors.join(". ");
-                                        showErrorAlert(null, errors);
-                                        botonDesactivar.disabled = false;
-                                        botonDesactivar.classList.remove('disabled');
-                                    })
-                            } else {
-                                canceledActionAlert();
-                                botonDesactivar.disabled = false;
-                                botonDesactivar.classList.remove('disabled');
-                            }
-                        });
-                    }
-                    mount(div, botonDesactivar);
-                    mount(grandRow, div);
+                    let btn;
 
-                    return grandRow;
+                    if (row['activo'] == 1) {
+                        btn = el("button.btn_desactivar", el("i.fas fa-ban"));
+                    } else {
+                        btn = el("button.btn_activar", el("i.fas fa-check"));
+                    }
+                    btn.setAttribute("data-id", row["id"]);
+                    btn.setAttribute("onclick", "changeStateUser(this)");
+
+                    return btn;
                 },
                 noClickableRow: true
             }],
@@ -89,17 +77,22 @@
         dynTable = new DynamicTableCellsEditable(document.getElementById("users"), tableOptions);
         dynTable.init();
 
-
-        function desactivarUsuario(id) {
-            return $.ajax({
-                type: "POST",
-                data: new FormData(),
-                url: "<?= base_url('Usuario/desactivarUsuario/') ?>" + "/" + id,
-                processData: false,
-                contentType: false,
-                beforeSend: function() {
-                    loadingAlert();
-                },
+        function changeStateUser(e) {
+            let id_usuario = e.getAttribute("data-id");
+            customConfirmationButton(
+                "Actualizar Estado Usuario",
+                "¿Confirma actualizar su estado?",
+                "Actualizar",
+                "Cancelar",
+                "swal_edicion"
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`${GET_BASE_URL()}/Usuario/changeStateUser/${id_usuario}`, {
+                            method: "POST",
+                        })
+                        .then(response => response.json())
+                    window.location.replace(GET_BASE_URL() + "/all_users");
+                }
             });
         }
     </script>

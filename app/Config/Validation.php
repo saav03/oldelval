@@ -73,6 +73,13 @@ class Validation extends BaseConfig
                 'required' => "El Apellido es un campo obligatorio"
             ]
         ],
+        'empresa'  => [
+            'label' => "Empresa",
+            'rules' => 'required',
+            'errors' => [
+                'required' => "La Empresa es un campo obligatorio"
+            ]
+        ],
         'telefono' =>  [
             'label' => "Telefono",
             'rules' => 'integer',
