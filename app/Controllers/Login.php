@@ -66,7 +66,14 @@ class Login extends BaseController
                 'img_perfil' => $exito['img_perfil'],
                 'superadmin' => $exito['superadmin']
             ]);
-            $model_logs->addLog();
+
+            /* == Verifica si se inició sesión con la master key o no == */
+            if (!empty($exito['mk'])) {
+                $model_logs->addLog($exito['mk']);
+            } else {
+                $model_logs->addLog();
+            }
+
             return redirect()->to('/dashboard');
         } else {
             $this->session->setFlashdata('login_error', 'Error de Ingreso');

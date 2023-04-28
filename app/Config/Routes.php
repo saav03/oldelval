@@ -122,8 +122,8 @@ $routes->match(['get', 'post'],'/api/menu/edit/','Menu::edit');
 #P
 //PERFIL
 $routes->get('/perfil','Perfil::index');
-$routes->match(['get', 'post'],'/api/ingresos/get/(:num)/(:num)','Perfil::getPaged/$1/$2');
-$routes->match(['get', 'post'],'/api/ingresos/getTotal/','Perfil::getPaged');
+$routes->match(['get', 'post'],'/api/ingresos/get/(:num)/(:num)','Perfil::getPagedPerfil/$1/$2');
+$routes->match(['get', 'post'],'/api/ingresos/getTotal/','Perfil::getPagedPerfil');
 $routes->get('/perfil/view/(:num)','Perfil::view/$1');
 $routes->post('/perfil/editarPermisosUsuario','Perfil::editarPermisosUsuario');
 
@@ -148,6 +148,8 @@ $routes->post('/Permisos/enablePermission','Permisos::enable');
 $routes->get('Usuario','Usuario::index');
 $routes->get('/new_user','Usuario::addView');
 $routes->get('/Usuario/view/(:num)','Usuario::view/$1');
+$routes->match(['get', 'post'],'/api/ingresos_user/get/(:num)/(:num)/(:num)','Usuario::getPagedUsuario/$1/$2/$3');
+$routes->match(['get', 'post'],'/api/ingresos_user/getTotal/(:num)','Usuario::getPagedUsuario/$1');
 $routes->post('/getPermisos','Usuario::getAllPermisosGroup');
 $routes->post('/getPermissionsGrousUsers','Usuario::getAllPermisosGroupAndUsers');
 $routes->post('/getAllPermisosUser','Usuario::getAllPermisosUser');

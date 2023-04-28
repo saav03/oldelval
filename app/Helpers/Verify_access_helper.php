@@ -48,7 +48,7 @@ function vista_access($permiso)
             if (is_array($permiso)) { //si es array consulta elemento por elemento hasta encontrar
 
                 foreach ($permiso as $p) {
-                    if (in_array($p, session()->get('permisos_plus'))) { // <------------------------------ACA hay que traer la columna de los permisos
+                    if (in_array($p, session()->get('permisos_usuario'))) { // <------------------------------ACA hay que traer la columna de los permisos
                         $acceso = true;
                         break;
                     } else {
@@ -57,7 +57,7 @@ function vista_access($permiso)
                     }
                 }
             } else { //Si es un elemento consulta si pertenece al permiso
-                if (in_array($permiso, session()->get('permisos_plus'))) {
+                if (in_array($permiso, session()->get('permisos_usuario'))) {
                     $acceso = true;
                 } else {
                     $acceso = false;

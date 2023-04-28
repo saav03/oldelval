@@ -59,6 +59,13 @@
 
 <script src="<?= base_url('assets/js/dynamic-table-cells-editable.js') ?>"></script>
 
+<?php 
+/* echo '<pre>';
+var_dump($datos_basicos[0]);
+echo '</pre>';
+exit; */
+?>
+
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-xs-12">

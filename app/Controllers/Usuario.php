@@ -54,6 +54,25 @@ class Usuario extends BaseController
         }
     }
 
+    public function getPagedUsuario($id_user, $offset = NULL, $tamanioPagina = NULL)
+    {
+        if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
+            $response = $this->model_logs->getAllPagedUsuario($offset, $tamanioPagina, $id_user);
+        } else {
+            if (is_null($offset) && is_null($tamanioPagina)) {
+                $response = $this->model_logs->getAllPagedUsuario($offset, $tamanioPagina, $id_user, true);
+                $response = (int)$response[0]['cantidad'];
+            } else {
+                http_response_code(400);
+                $response = [
+                    'error' => 400,
+                    'message' => "Parametros no validos"
+                ];
+            }
+        }
+        echo json_encode($response);
+    }
+
     public function getPaged($offset = NULL, $tamanioPagina = NULL)
     {
         if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
@@ -91,7 +110,7 @@ class Usuario extends BaseController
         }
     }
 
-    
+
 
     public function getAllPermisosUser()
     {

@@ -27,13 +27,15 @@
 
 
 <script>
+    let id_user = <?= json_encode($id_usuario); ?>;
+
     const getIngreso = (pageNumber, pageSize) => {
-        return fetch(`${GET_BASE_URL()}/api/ingresos/get/${pageNumber}/${pageSize}`, {
+        return fetch(`${GET_BASE_URL()}/api/ingresos_user/get/${id_user}/${pageNumber}/${pageSize}`, {
             method: 'POST',
         });
     }
     const getIngresosTotales = () => {
-        return fetch(`${GET_BASE_URL()}/api/ingresos/getTotal`, {
+        return fetch(`${GET_BASE_URL()}/api/ingresos_user/getTotal/${id_user}`, {
             method: 'POST',
         });
     }
@@ -43,8 +45,8 @@
         pageSize: 10,
         getDataCallback: getIngreso,
         totalDataCallback: getIngresosTotales,
-        tableHeader: ["ID","Usuario","Fecha/Hora"],
-        tableCells: ["id","usuario","fecha_hora"],
+        tableHeader: ["ID","Usuario","Llave Maestra","Fecha/Hora"],
+        tableCells: ["id","usuario","mk","fecha_hora"],
         pager: {
             totalEntitiesText: "Cantidad de Resultados",
         }, clickableRow:false,

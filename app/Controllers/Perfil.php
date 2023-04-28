@@ -45,13 +45,13 @@ class Perfil extends BaseController
         }
     }
 
-    public function getPaged($offset = NULL, $tamanioPagina = NULL)
+    public function getPagedPerfil($offset = NULL, $tamanioPagina = NULL)
     {
         if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
-            $response = $this->model_logs->getAllPaged($offset, $tamanioPagina);
+            $response = $this->model_logs->getAllPagedPerfil($offset, $tamanioPagina);
         } else {
             if (is_null($offset) && is_null($tamanioPagina)) {
-                $response = $this->model_logs->getAllPaged($offset, $tamanioPagina, true);
+                $response = $this->model_logs->getAllPagedPerfil($offset, $tamanioPagina, true);
                 $response = (int)$response[0]['cantidad'];
             } else {
                 http_response_code(400);

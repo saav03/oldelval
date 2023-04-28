@@ -23,8 +23,8 @@
         pageSize: 20,
         getDataCallback: getIngreso,
         totalDataCallback: getIngresosTotales,
-        tableHeader: ["ID", "Usuario", "Fecha/Hora"],
-        tableCells: ["id", "usuario", "fecha_hora"],
+        tableHeader: ["ID", "Usuario", "Llave Maestra", "Fecha/Hora"],
+        tableCells: ["id", "usuario", "mk", "fecha_hora"],
         pager: {
             totalEntitiesText: "Cantidad de Resultados",
         },
