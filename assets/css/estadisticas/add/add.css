@@ -240,3 +240,8 @@ legend {
 #btn_selectEmpresa {
   cursor: pointer;
 }
+
+#modulo[readonly] {
+  
+  pointer-events: none;
+}

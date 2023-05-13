@@ -143,6 +143,21 @@ class Model_tarjeta extends Model
 		return $results;
 	}
 
+	public function addObservadorTarjeta($datos) {
+		$this->db->transStart();
+		$builder = $this->db->table('tarjeta_rel_observador');
+		$builder->insert($datos);
+		$this->db->transComplete();
+		/* if ($this->db->transStatus() === FALSE) {
+			$this->response->setStatusCode(400);
+			$results = ['status' => false, 'message' => 'Fallo en la transaccion'];
+		} else {
+			$last_id = $builder->select('id')->orderBy('id', 'DESC')->get()->getRowArray();
+			$results = ['status' => true, 'message' => 'OK', 'last_id' => $last_id];
+		} */
+		// return $results;
+	}
+
 	public function addSubmitHallazgo($datos)
 	{
 		$this->db->transStart();
@@ -170,7 +185,7 @@ class Model_tarjeta extends Model
 				$builder->where("user_responsable.id", session()->get('id_usuario'));
 			}
 		} else {
-			$builder->select("tar_obs.id id_tarjeta, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, tar_obs.fecha_deteccion, tar_obs.tipo_obs observacion, tar_obs.situacion, tar_obs.estado tar_estado")
+			$builder->select("tar_obs.id id_tarjeta, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, DATE_FORMAT(tar_obs.fecha_deteccion, '%d/%m/%Y') fecha_deteccion, tar_obs.tipo_obs observacion, tar_obs.situacion, tar_obs.estado tar_estado")
 				->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
 				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left')
 				->join('proyectos', 'proyectos.id=tar_obs.proyecto', 'inner')
@@ -211,6 +226,9 @@ class Model_tarjeta extends Model
 		$id_hallazgo = $query_hallazgo['id'];
 		$tarjeta['hallazgo'] = $query_hallazgo;
 
+		/* == Cargo los observadores a la tarjeta == */
+		$tarjeta['observadores'] = $this->getObservadoresTarjeta($id_obs);
+
 		/* == Cierre de la tarjeta (Si es que está cerrada) == */
 		$query_cierre_obs = $this->getCierreMotivoTarjeta($id_obs);
 		$tarjeta['cierre'] = $query_cierre_obs;
@@ -239,11 +257,12 @@ class Model_tarjeta extends Model
 	protected function getDataHallazgoTarjeta($id_obs)
 	{
 		$builder = $this->db->table('tarjeta_hallazgos tar_hallazgo');
-		$builder->select('tar_hallazgo.id, tar_hallazgo.hallazgo hallazgo, tar_hallazgo.accion_recomendacion, tar_clasf.nombre clasificacion, tar_tipo_hallazgo.nombre tipo, tar_hallazgo.riesgo, tar_hallazgo.riesgo_fila, tar_hallazgo.responsable, empresas.nombre contratista, tar_hallazgo.fecha_cierre, u.nombre responsable_nombre, u.apellido responsable_apellido')
+		$builder->select('tar_hallazgo.id, tar_hallazgo.hallazgo hallazgo, tar_hallazgo.accion_recomendacion, tar_clasf.nombre clasificacion, tar_tipo_hallazgo.nombre tipo, tar_hallazgo.matriz_riesgo, tar_hallazgo.responsable, tar_hallazgo.otro_responsable, empresas.nombre contratista, tar_hallazgo.fecha_cierre, u.nombre responsable_nombre, u.apellido responsable_apellido, u_otro_responsable.nombre otro_responsable_nombre, u_otro_responsable.apellido otro_responsable_apellido')
 			->join('tarjeta_clasificaciones tar_clasf', 'tar_clasf.id=tar_hallazgo.clasificacion', 'inner')
 			->join('tarjeta_tipo_hallazgo tar_tipo_hallazgo', 'tar_tipo_hallazgo.id=tar_hallazgo.tipo', 'left')
 			->join('empresas', 'empresas.id=tar_hallazgo.contratista', 'inner')
 			->join('usuario u', 'u.id=tar_hallazgo.responsable', 'left')
+			->join('usuario u_otro_responsable', 'u_otro_responsable.id=tar_hallazgo.otro_responsable', 'left')
 			->where('tar_hallazgo.id_tarjeta', $id_obs);
 		return $builder->get()->getRowArray();
 	}
@@ -272,9 +291,19 @@ class Model_tarjeta extends Model
 	}
 
 	/**
+	 * Trae aquellos observadores que pertenecen al id de la tarjeta solicitada por parámetro
+	 */
+	protected function getObservadoresTarjeta($id_tarjeta) {
+		$builder = $this->db->table('tarjeta_rel_observador tro');
+		$builder->select('*')
+			->where('tro.id_tarjeta', $id_tarjeta);
+		return $builder->get()->getResultArray();
+	}
+
+	/**
 	 * Trae todos aquellos adjuntos que pertenezcan al id del hallazgo solicitado por parámetro
 	 */
-	protected function getDescargoHallazgoTarjeta($id_hallazgo)
+	public function getDescargoHallazgoTarjeta($id_hallazgo)
 	{
 		$builder = $this->db->table('tarjeta_hallazgo_descargos tar_hallazgo_descargo');
 		$builder->select('tar_hallazgo_descargo.id, tar_hallazgo_descargo.estado, tar_hallazgo_descargo.motivo, DATE_FORMAT(tar_hallazgo_descargo.fecha_hora_motivo, "%Y/%m/%d %H:%i:%s") fecha_hora_motivo, tar_hallazgo_descargo.respuesta, DATE_FORMAT(tar_hallazgo_descargo.fecha_hora_respuesta, "%d/%m/%Y %H:%i:%s") fecha_hora_respuesta, u.nombre, u.apellido, u_rta.nombre nombre_user_rta, u_rta.apellido apellido_user_rta')
@@ -294,6 +323,8 @@ class Model_tarjeta extends Model
 			->where('tar_adj_descargo.id_descargo', $id_descargo);
 		return $builder->get()->getResultArray();
 	}
+
+	// public function 
 
 	/**
 	 * Trae todos los indicadores perteneciente a la tarjeta pasada por parámetro
@@ -328,6 +359,22 @@ class Model_tarjeta extends Model
 	}
 	public function editDescargo($datos, $id_descargo)
 	{
+		$this->db->transStart();
+		$builder = $this->db->table('tarjeta_hallazgo_descargos');
+		$builder->where('tarjeta_hallazgo_descargos.id', $id_descargo);
+		$builder->update($datos);
+		$this->db->transComplete();
+		if ($this->db->transStatus() === FALSE) {
+			$this->response->setStatusCode(400);
+			$results = ['status' => false, 'message' => 'Fallo en la transaccion'];
+		} else {
+			$last_id = $builder->select('id')->orderBy('id', 'DESC')->get()->getRowArray();
+			$results = ['status' => true, 'message' => 'OK', 'last_id' => $last_id];
+		}
+		return $results;
+	}
+
+	public function closeDescargoForced($datos, $id_descargo) {
 		$this->db->transStart();
 		$builder = $this->db->table('tarjeta_hallazgo_descargos');
 		$builder->where('tarjeta_hallazgo_descargos.id', $id_descargo);

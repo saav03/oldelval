@@ -12,15 +12,20 @@ function generarPlanAccion(section, container) {
   let sectionPadre = document.getElementById(section);
   contenedor = el("div#" + container);
   div = el("div.row");
-  divCaja = el("div.col-xs-12", { id: "caja_plan_accion" });
-  divContainer = el("div.row p-3", { id: "contenedor_plan" });
-  option = el("option", { value: "" }, "-- Seleccione --");
+  divCaja = el("div.col-xs-12", {
+    id: "caja_plan_accion"
+  });
+  divContainer = el("div.row p-3", {
+    id: "contenedor_plan"
+  });
+  option = el("option", {
+    value: ""
+  }, "-- Seleccione --");
 
   /* == TEXTAREA HALLAZGO == */
   divGenerico = el("div.col-xs-12.col-md-6");
   labelGenerico = el(
-    "label.mb-1 fw-semibold sz_inp",
-    {},
+    "label.mb-1 fw-semibold sz_inp", {},
     "Hallazgo ",
     el("small", "(*)")
   );
@@ -41,8 +46,7 @@ function generarPlanAccion(section, container) {
   /* == TEXTAREA PLAN DE ACCION == */
   divGenerico = el("div.col-xs-12.col-md-6");
   labelGenerico = el(
-    "label.mb-1 fw-semibold sz_inp",
-    {},
+    "label.mb-1 fw-semibold sz_inp", {},
     "Plan de Acción ",
     el("small", "(*)")
   );
@@ -64,22 +68,23 @@ function generarPlanAccion(section, container) {
   /* == SELECT CLASIFICACION DEL HALLAZGO == */
   divGenerico = el("div.col-xs-12 col-md-4 mt-3");
   labelGenerico = el(
-    "label.mb-1 fw-semibold sz_inp",
-    {},
+    "label.mb-1 fw-semibold sz_inp", {},
     "Clasificación de Hallazgo ",
     el("small", "(*)")
   );
-  selectGenerico = el("select.form-control sz_inp", {
+  selectGenerico = el("select.form-select sz_inp", {
     name: "clasificacion",
     id: "clasificacion",
     required: 'true'
   });
 
   mount(selectGenerico, option);
-  
+
   clasificaciones.forEach(c => {
-    let optionC = el('option', {value: c.id}, c.nombre);
-    mount(selectGenerico, optionC); 
+    let optionC = el('option', {
+      value: c.id
+    }, c.nombre);
+    mount(selectGenerico, optionC);
   });
 
   mount(divGenerico, labelGenerico);
@@ -90,23 +95,26 @@ function generarPlanAccion(section, container) {
   /* == SELECT TIPO DEL HALLAZGO == */
   divGenerico = el("div.col-xs-12 col-md-4 mt-3");
   labelGenerico = el(
-    "label.mb-1 fw-semibold sz_inp",
-    {},
+    "label.mb-1 fw-semibold sz_inp", {},
     "Tipo de hallazgo ",
     el("small", "(*)")
   );
-  selectGenerico = el("select.form-control sz_inp", {
+  selectGenerico = el("select.form-select sz_inp", {
     name: "tipo",
     id: "tipo",
     required: 'true'
   });
 
-  option = el("option", { value: "" }, "-- Seleccione --");
+  option = el("option", {
+    value: ""
+  }, "-- Seleccione --");
   mount(selectGenerico, option);
 
   tipo_hallazgo.forEach(t => {
-    let optionC = el('option', {value: t.id}, t.nombre);
-    mount(selectGenerico, optionC); 
+    let optionC = el('option', {
+      value: t.id
+    }, t.nombre);
+    mount(selectGenerico, optionC);
   });
 
   mount(divGenerico, labelGenerico);
@@ -115,64 +123,117 @@ function generarPlanAccion(section, container) {
   mount(divContainer, divGenerico);
 
   /* == SIGNIFICANCIA RIESGO == */
-  divGenerico = el("div.col-xs-12 col-md-4 mt-3");
-  let divRow = el("div.row");
-  let divCol6 = el("div.col-xs-12 col-md-6");
+  /* == LO COMENTO POR AHORA | VICTOR ME DIJO QUE AGREGUE MUY BAJO, BAJO, MEDIO, ALTO == */
+  // divGenerico = el("div.col-xs-12 col-md-4 mt-3");
+  // let divRow = el("div.row");
+  // let divCol6 = el("div.col-xs-12 col-md-6");
 
+  // labelGenerico = el(
+  //   "label.mb-1 fw-semibold sz_inp", {},
+  //   "Significancia ",
+  //   el("small", "(*)")
+  // );
+  // inputGenerico = el("input.form-control sz_inp", {
+  //   name: "riesgo",
+  //   id: "riesgo",
+  //   readonly: "true",
+  //   placeholder: "Calcule el riesgo",
+  //   // required: 'true'
+  // });
+
+  // let inputFilaRiesgo = el("input.form-control sz_inp", {
+  //   type: 'hidden',
+  //   name: "riesgo_fila",
+  //   id: "riesgo_fila",
+  // });
+
+  // mount(divCol6, labelGenerico);
+  // mount(divCol6, inputGenerico);
+  // mount(divCol6, inputFilaRiesgo);
+
+  // mount(divRow, divCol6);
+  // let btnRiesgo = el("button.btn_riesgo", {
+  //   'data-bs-target': '#matrizRiesgoModal',
+  //   'data-bs-toggle': "modal"
+  // }, el('i.fas fa-exclamation-triangle'), " Calcular Riesgo");
+  // btnRiesgo.setAttribute('onclick', 'prevenirDefault(event)');
+  // divCol6 = el("div.col-xs-12 col-md-6");
+  // mount(divCol6, btnRiesgo);
+  // mount(divRow, divCol6);
+
+  // mount(divGenerico, divRow);
+  // mount(divContainer, divGenerico);
+
+  divGenerico = el("div.col-xs-12 col-md-4 mt-3");
   labelGenerico = el(
-    "label.mb-1 fw-semibold sz_inp",
-    {},
+    "label.mb-1 fw-semibold sz_inp", {},
     "Significancia ",
     el("small", "(*)")
   );
-  inputGenerico = el("input.form-control sz_inp", {
+  selectGenerico = el("select.form-select sz_inp", {
     name: "riesgo",
     id: "riesgo",
-    readonly: "true",
-    placeholder: "Calcule el riesgo",
-    // required: 'true'
+    required: 'true'
   });
 
-  let inputFilaRiesgo = el("input.form-control sz_inp", {
-    type: 'hidden',
-    name: "riesgo_fila",
-    id: "riesgo_fila",
+  option = el("option", {
+    value: ""
+  }, "-- Seleccione --");
+  mount(selectGenerico, option);
+
+  let riesgos = [
+    {
+      id: '1',
+      valor: 'Muy Bajo',
+    },
+    {
+      id: '2',
+      valor: 'Bajo',
+    },
+    {
+      id: '3',
+      valor: 'Medio',
+    },
+    {
+      id: '4',
+      valor: 'Alto',
+    }
+  ];
+  riesgos.forEach(r => {
+    let optionC = el('option', {
+      value: r.id
+    }, r.valor);
+    mount(selectGenerico, optionC);
   });
 
-  mount(divCol6, labelGenerico);
-  mount(divCol6, inputGenerico);
-  mount(divCol6, inputFilaRiesgo);
+  mount(divGenerico, labelGenerico);
+  mount(divGenerico, selectGenerico);
 
-  mount(divRow, divCol6);
-  let btnRiesgo = el("button.btn_riesgo", {'data-bs-target': '#matrizRiesgoModal', 'data-bs-toggle':"modal"}, el('i.fas fa-exclamation-triangle'), " Calcular Riesgo");
-  btnRiesgo.setAttribute('onclick', 'prevenirDefault(event)');
-  divCol6 = el("div.col-xs-12 col-md-6");
-  mount(divCol6, btnRiesgo);
-  mount(divRow, divCol6);
-
-  mount(divGenerico, divRow);
   mount(divContainer, divGenerico);
 
   /* == SELECT CONTRATISTA == */
-  divGenerico = el("div.col-xs-12 col-md-4 mt-3");
+  divGenerico = el("div.col-xs-12 col-md-3 mt-3");
   labelGenerico = el(
-    "label.mb-1 fw-semibold sz_inp",
-    {},
+    "label.mb-1 fw-semibold sz_inp", {},
     "Contratista ",
     el("small", "(*)")
   );
-  selectGenerico = el("select.form-control sz_inp", {
+  selectGenerico = el("select.form-select sz_inp", {
     name: "contratista",
     id: "contratista",
     required: 'true'
   });
 
-  option = el("option", { value: "" }, "-- Seleccione --");
+  option = el("option", {
+    value: ""
+  }, "-- Seleccione --");
   mount(selectGenerico, option);
 
   contratista.forEach(c => {
-    let optionC = el('option', {value: c.id}, c.nombre);
-    mount(selectGenerico, optionC); 
+    let optionC = el('option', {
+      value: c.id
+    }, c.nombre);
+    mount(selectGenerico, optionC);
   });
 
   mount(divGenerico, labelGenerico);
@@ -181,25 +242,58 @@ function generarPlanAccion(section, container) {
   mount(divContainer, divGenerico);
 
   /* == SELECT RESPONSABLE == */
-  divGenerico = el("div.col-xs-12 col-md-4 mt-3");
+  divGenerico = el("div.col-xs-12 col-md-3 mt-3");
   labelGenerico = el(
-    "label.mb-1 fw-semibold sz_inp",
-    {},
-    "Responsable ",
+    "label.mb-1 fw-semibold sz_inp", {},
+    "Responsable de dar tratamiento ",
     el("small", "(*)")
   );
-  selectGenerico = el("select.form-control sz_inp", {
+  selectGenerico = el("select.form-select sz_inp", {
     name: "responsable",
     id: "responsable",
     required: 'true'
   });
 
-  option = el("option", { value: "" }, "-- Seleccione --");
+  option = el("option", {
+    value: ""
+  }, "-- Seleccione --");
   mount(selectGenerico, option);
 
   responsable.forEach(r => {
-    let optionC = el('option', {value: r.id}, r.nombre);
-    mount(selectGenerico, optionC); 
+    let optionC = el('option', {
+      value: r.id
+    }, r.nombre + ' ' + r.apellido);
+    mount(selectGenerico, optionC);
+  });
+
+  mount(divGenerico, labelGenerico);
+  mount(divGenerico, selectGenerico);
+
+  mount(divContainer, divGenerico);
+
+  /* == SELECT SEGUNDO RESPONSABLE == */
+  divGenerico = el("div.col-xs-12 col-md-3 mt-3");
+  labelGenerico = el(
+    "label.mb-1 fw-semibold sz_inp", {},
+    "Relevo de Responsable ",
+    el("small", "(Si corresponde)")
+  );
+  selectGenerico = el("select.form-select sz_inp", {
+    name: "otro_responsable",
+    id: "otro_responsable",
+    required: 'true'
+  });
+
+  option = el("option", {
+    value: ""
+  }, "-- Seleccione --");
+  mount(selectGenerico, option);
+
+  responsable.forEach(r => {
+    let optionC = el('option', {
+      value: r.id
+    }, r.nombre + ' ' + r.apellido);
+    mount(selectGenerico, optionC);
   });
 
   mount(divGenerico, labelGenerico);
@@ -208,10 +302,9 @@ function generarPlanAccion(section, container) {
   mount(divContainer, divGenerico);
 
   /* == FECHA CIERRE == */
-  divGenerico = el("div.col-xs-12 col-md-4 mt-3");
+  divGenerico = el("div.col-xs-12 col-md-2 mt-3");
   labelGenerico = el(
-    "label.mb-1 fw-semibold sz_inp",
-    {},
+    "label.mb-1 fw-semibold sz_inp", {},
     "Fecha de Cierre ",
     el("small", "(*)")
   );
@@ -228,13 +321,12 @@ function generarPlanAccion(section, container) {
   /* == ADJUNTOS == */
   divGenerico = el("div.col-xs-12 mt-3");
   labelGenerico = el(
-    "label.mb-1 fw-semibold sz_inp",
-    {},
+    "label.mb-1 fw-semibold sz_inp", {},
     "Adjuntos"
   );
   let parrafo = el('p', 'Formatos permitidos: PNG JPG JPEG PDF - Maximo 3 archivos por carga');
   let contenedorAdj = el('div#contenedorAdj');
-  
+
   mount(divGenerico, labelGenerico);
 
   mount(divGenerico, contenedorAdj);
@@ -249,16 +341,16 @@ function generarPlanAccion(section, container) {
   let cantidad = 0;
   new fileDropAdder(contenedorAdj, 'prueba', 'gallery').init();
 
-/*   let icono = el('i.fas fa-upload');
-  let h5 = el('h5', 'Subir Archivo');
-  let pArrastre = el('p', {style: 'font-size: 14px;'}, 'Arrastre y suelte los archivos aquí');
-  inputGenerico = el('input#fileElem', {type: 'file', multiple: 'true'});
-  inputGenerico.setAttribute('onchange', 'handleFiles(this.files)'); */
+  /*   let icono = el('i.fas fa-upload');
+    let h5 = el('h5', 'Subir Archivo');
+    let pArrastre = el('p', {style: 'font-size: 14px;'}, 'Arrastre y suelte los archivos aquí');
+    inputGenerico = el('input#fileElem', {type: 'file', multiple: 'true'});
+    inputGenerico.setAttribute('onchange', 'handleFiles(this.files)'); */
 
-/*   mount(divDropArea, icono);
-  mount(divDropArea, h5);
-  mount(divDropArea, pArrastre);
-  mount(divDropArea, inputGenerico); */
+  /*   mount(divDropArea, icono);
+    mount(divDropArea, h5);
+    mount(divDropArea, pArrastre);
+    mount(divDropArea, inputGenerico); */
 
   // mount(divGenerico, labelGenerico);
   // mount(divGenerico, parrafo);

@@ -320,6 +320,8 @@ exit; */
         ind_total_hs_capacitacion.value = (parseInt(ind_hs_capacitacion.value) * parseInt(ind_cant_participantes.value));
     });
 
+    let estaciones_estadisticas = <?= json_encode($estaciones); ?>;
+    let sistemas_estadisticas = <?= json_encode($sistemas); ?>;
 </script>
 <script src="<?= base_url() ?>/assets/js/estadisticas/add.js"></script>
 <script src="<?= base_url() ?>/assets/js/estadisticas/submit.js"></script>

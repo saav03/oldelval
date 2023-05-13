@@ -1,3 +1,5 @@
+<link href="<?= base_url() ?>/assets/css/permisos/permisos.css" rel="stylesheet">
+
 <div class="container">
     <div class="row">
         <div class="blister-title-container">

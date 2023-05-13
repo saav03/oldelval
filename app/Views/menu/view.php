@@ -75,6 +75,7 @@
         initialIcon.forEach(node => document.getElementById('icon_preview').appendChild(node));
     }
     const initialOrderOptions = menuElems.filter(menu => menu.id_menu_padre == my_parent);
+    console.log(initialOrderOptions);
     if (initialOrderOptions.length > 0)
         firstOrderNumber = Number.parseInt(initialOrderOptions[0].orden);
     else

@@ -15,11 +15,11 @@
 
 /* Este es para los campos flotantes de las estadisticas, capaz sea mejor sacarlo de aca */
 .inp_estilos {
-  border: none!important;
-  font-size: 14px!important;
+  border: none !important;
+  font-size: 14px !important;
   text-align: center;
   margin: 0;
-  padding: 0!important;
+  padding: 0 !important;
 }
 
 .btn_modify,
@@ -38,20 +38,29 @@
 .btn_modify {
   background-color: #225ca7;
 }
+
 .btn_modify:hover {
   background-color: #2e65ad;
 }
 
 .btn_mod_danger {
-  background-color: #cf3d36;
+  border-radius: 0;
+  padding: 10px;
+  background-color: rgb(146, 146, 146);
+
+  transition: all .2s ease-in;
+  /* background-color: #cf3d36; */
 }
+
 .btn_mod_danger:hover {
-  background-color: #d12f26;
+  /* background-color: #f9f9f9; */
+  background-color: #e2817c;
 }
 
 .btn_mod_warning {
   background-color: #ffc107;
 }
+
 .btn_mod_warning:hover {
   background-color: #ffca2c;
 }
@@ -59,21 +68,29 @@
 .btn_mod_close {
   background-color: #7a7a7ac7;
 }
+
 .btn_mod_close:hover {
   background-color: #7a7a7ae0;
 }
 
 .btn_mod_success {
-  background-color: #5ac35b;
+  border-radius: 0;
+  padding: 10px;
+  background-color: rgb(146, 146, 146);
+  transition: all .2s ease-in;
+  /* background-color: #5ac35b; */
 }
+
 .btn_mod_success:hover {
-  background-color: #51b352;
+  background-color: #abdfad;
+  /* background-color: #51b352; */
 }
 
 .btn_volver {
   text-decoration: none;
   cursor: pointer;
 }
+
 .btn_volver:hover {
   color: white;
 }
@@ -116,6 +133,7 @@
   font-weight: bold;
   letter-spacing: 1.6px;
 }
+
 .subtitle-view::after {
   content: "";
   height: 1.8px;
@@ -141,28 +159,30 @@
 
 /** Botón Desactivar **/
 .btn-desactivar {
-  background-color: rgb(253 80 75)!important;
-  
+  background-color: rgb(253 80 75) !important;
+
 }
+
 .btn-desactivar:hover {
-  background-color: rgb(235, 58, 52)!important;
+  background-color: rgb(235, 58, 52) !important;
 }
 
 /** Botón Activar **/
 .btn-activar {
-  background-color: rgb(95, 228, 95)!important;
+  background-color: rgb(95, 228, 95) !important;
 }
 
 .btn-activar:hover {
-  background-color: rgb(42, 201, 63)!important;
+  background-color: rgb(42, 201, 63) !important;
 }
 
 /** Botón Editar **/
 .btn-editar {
-  background-color: rgb(102, 178, 223)!important;
+  background-color: rgb(102, 178, 223) !important;
 }
+
 .btn-editar:hover {
-  background-color: rgb(81, 164, 212)!important;
+  background-color: rgb(81, 164, 212) !important;
 }
 
 .edit_select {
@@ -182,7 +202,7 @@
 
 .td-estado_act {
   background: #45CB85;
-  
+
 }
 
 .td-estado_des {
@@ -191,21 +211,26 @@
 
 /** SWAL EDITADO **/
 .swal_edicion {
-  width: 29em;
-  background-color: #F1FBFC;
+  width: 29em !important;
+  background-color: #F1FBFC !important;
 }
 
 .swal_edicion .swal2-icon {
-  font-size: 11px;
+  font-size: 11px !important;
 }
 
 .swal_edicion .swal2-title {
-  font-size: 19px;
-  font-weight: 600;
+  font-size: 19px !important;
+  font-weight: 600 !important;
 }
 
 .swal_edicion .swal2-actions button {
-  font-size: 14px;
+  font-size: 14px !important;
+}
+
+.simulate_dis {
+  background: #f9f9f9;
+  box-shadow: inset 0px 0px 18px 0px rgb(239 239 239);
 }
 
 /*--------------------------------------------------------------
@@ -277,6 +302,7 @@ h6 {
   text-align: center;
   padding: 15px;
 }
+
 .blister-title {
   font-weight: 700;
   letter-spacing: 0.8px;
@@ -560,9 +586,11 @@ h6 {
 .breadcrumb .breadcrumb-item::before {
   color: #899bbd;
 }
+
 .breadcrumb-forced .breadcrumb-item::before {
-  color: whitesmoke!important;
+  color: whitesmoke !important;
 }
+
 .breadcrumb .active {
   color: #51678f;
   font-weight: 600;
@@ -700,7 +728,7 @@ h6 {
   list-style: none;
 }
 
-.header-nav > ul {
+.header-nav>ul {
   margin: 0;
   padding: 0;
 }
@@ -869,6 +897,7 @@ h6 {
 }
 
 @media (min-width: 1200px) {
+
   #main,
   #footer {
     margin-left: 300px;
@@ -882,6 +911,7 @@ h6 {
 }
 
 @media (min-width: 1200px) {
+
   .toggle-sidebar #main,
   .toggle-sidebar #footer {
     margin-left: 0;
@@ -999,18 +1029,20 @@ h6 {
 --------------------------------------------------------------*/
 /* Filter dropdown */
 
-.row-dashboard{
+.row-dashboard {
   height: 175px;
-    z-index: -1;
-    background-color: #012970;
-    position: relative;
-    opacity: 0.7;
-    margin-bottom: -145px;
-    border-radius: 5px;
+  z-index: -1;
+  background-color: #012970;
+  position: relative;
+  opacity: 0.7;
+  margin-bottom: -145px;
+  border-radius: 5px;
 }
-.row-dashboard-forced-white{
-  color: whitesmoke!important;
+
+.row-dashboard-forced-white {
+  color: whitesmoke !important;
 }
+
 .dashboard .filter {
   position: absolute;
   right: 0px;
@@ -1084,10 +1116,12 @@ h6 {
   color: #ff771d;
   background: #ffecdf;
 }
+
 .dashboard .danger-card .card-icon {
   color: #dc3545;
   background: #ffd6d6;
 }
+
 /* Activity */
 .dashboard .activity {
   font-size: 14px;
@@ -1136,7 +1170,7 @@ h6 {
 }
 
 /* News & Updates */
-.dashboard .news .post-item + .post-item {
+.dashboard .news .post-item+.post-item {
   margin-top: 15px;
 }
 

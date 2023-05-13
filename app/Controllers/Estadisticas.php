@@ -1,26 +1,24 @@
 <?php
 
 namespace App\Controllers;
-
 use App\Controllers\BaseController;
-use CodeIgniter\Controller;
-use App\Models;
-use SebastianBergmann\Template\Template;
 use Config\Validation;
-use DateTime;
 
 class Estadisticas extends BaseController
 {
 
     public function __construct()
     {
+        $this->db = \Config\Database::connect();
         $this->session = \Config\Services::session();
         $this->validation = \Config\Services::validation();
         $this->model_logs = model('Model_logs');
-        $this->model_usuario = model('Model_usuario');
-        $this->model_estadisticas = model('Model_estadisticas');
-        $this->model_empresas = model('Model_empresas');
         $this->model_general = model('Model_general');
+        $this->model_estadisticas = model('Model_estadisticas');
+        $this->model_usuario = model('Model_usuario');
+        $this->model_empresas = model('Model_empresas');
+        $this->model_proyectos = model('Model_proyectos');
+        $this->model_estacion = model('Model_estacion');
     }
 
     public function index()
@@ -143,6 +141,31 @@ class Estadisticas extends BaseController
         return $data;
     }
 
+    /**
+     * Trae los modulos filtrados pertenecientes a un proyecto
+     */
+    public function getModulosFilter()
+    {
+        $id_proyecto = $this->request->getPost('id_proyecto');
+        $modulos =  $this->model_proyectos->getModulosFilter($id_proyecto);
+        echo json_encode($modulos);
+    }
+
+    /**
+     * Trae las estaciones filtradas pertenecientes a un módulo
+     * (No funciona)
+     * Por algún motivo me aparece un error, el siguiente:
+     * 'You must set the database table to be used with your query.'
+     * Quien lo lea a futuro y lo pueda arreglar genial. Por el momento se utiliza el controlador
+     * de TarjetaObservaciones el cual si funciona :s
+     */
+    public function getEstacionesFilter()
+    {
+        $id_modulo = $this->request->getPost('id_modulo');
+        $estaciones = $this->model_estacion->getEstacionesFilter($id_modulo);
+        echo json_encode($estaciones);
+    }
+
     public function submitEstadistica()
     {
 
@@ -153,9 +176,9 @@ class Estadisticas extends BaseController
             'contratista' => $this->request->getPost('contratista'),
             'periodo' => $this->request->getPost('periodo'),
             'proyecto' => $this->request->getPost('proyecto'),
-            'modulo' => $this->request->getPost('modulo'),
-            'estacion' => empty($this->request->getPost('estacion_bombeo')) ? null : $this->request->getPost('estacion_bombeo'),
-            'sistema' => empty($this->request->getPost('sistema')) ? null : $this->request->getPost('sistema'),
+            'modulo' => $this->request->getPost('modulo') == '-1' ? -1 : $this->request->getPost('modulo'),
+            'estacion' => $this->request->getPost('estacion_bombeo') == '-1' ? -1 : $this->request->getPost('estacion_bombeo'),
+            'sistema' => $this->request->getPost('sistema') == '-1' ? -1 : $this->request->getPost('sistema'),
         ];
 
         $datos_estadisticas = $this->verificacion($datos, 'validation_estadistica');

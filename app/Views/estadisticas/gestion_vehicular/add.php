@@ -303,6 +303,9 @@ GESTION VEHICULAR
             ifav.value = total.toFixed(2);
         });
     }
+
+    let estaciones_estadisticas = <?= json_encode($estaciones); ?>;
+    let sistemas_estadisticas = <?= json_encode($sistemas); ?>;
 </script>
 
 <script src="<?= base_url() ?>/assets/js/estadisticas/add.js"></script>

@@ -46,7 +46,7 @@ class Model_permisos extends Model
                 ->limit($tamanioPagina, $offset);
         }
 
-        $builder->join('usuario uc', 'uc.id = ggp.usuario', 'INNER');
+        $builder->join('usuario uc', 'uc.id = ggp.usuario', 'LEFT');
         $resultado = $builder->get();
         return $resultado->getResultArray();
     }
@@ -223,6 +223,7 @@ class Model_permisos extends Model
 
     public function updateMethod($data, $recordId)
     { //Se llamaba update pero coincide con un metodo de codeigniter, ahora se llama updateMethod
+        
         $builder = $this->db->table('gg_permisos');
         $builder->where('id', $recordId);
         $builder->update($data);

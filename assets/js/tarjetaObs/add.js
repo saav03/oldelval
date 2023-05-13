@@ -36,12 +36,16 @@ function listenTipoObs(e) {
     section_plan_accion.style.display = "none";
     // situacion.setAttribute('disabled', true);
     situacion.value = 0;
+    situacion.classList.add('simulate_dis');
+    situacion.style.pointerEvents = 'none';
   } else {
     btns_obs_positive.style.display = "none";
     btn_no_positive.classList.remove("btn_checked");
     btn_yes_positive.classList.remove("btn_checked");
     section_obs_positiva.style.display = "none";
     btns_add_plan_accion.style.display = "block";
+    situacion.classList.remove('simulate_dis');
+    situacion.style.pointerEvents = 'all';
     // situacion.removeAttribute('disabled');
   }
   posee_obs.value = 0;
@@ -58,11 +62,20 @@ btn_yes.addEventListener("click", (e) => {
 
 btn_no.addEventListener("click", (e) => {
   e.preventDefault();
-  if (
-    confirm(
-      "Si elige que no la observación actual se eliminará. ¿Está seguro de ésta acción?"
-    )
-  ) {
+  if (section_plan_accion.style.display == 'block') {
+    customConfirmationButton(
+      "Nueva Selección",
+      "Si elige que no la observación actual se eliminará. ¿Está seguro de ésta acción?",
+      "Cambiar",
+      "Cancelar",
+      "swal_edicion"
+    ).then((result) => {
+      btn_no.classList.add("btn_checked");
+      section_plan_accion.style.display = "none";
+      btn_yes.classList.remove("btn_checked");
+      posee_obs.value = 0;
+    });
+  } else {
     btn_no.classList.add("btn_checked");
     section_plan_accion.style.display = "none";
     btn_yes.classList.remove("btn_checked");
@@ -80,12 +93,21 @@ btn_yes_positive.addEventListener("click", (e) => {
 });
 
 btn_no_positive.addEventListener("click", (e) => {
-  if (
-    confirm(
-      "Si elige que no la observación actual se eliminará. ¿Está seguro de ésta acción?"
-    )
-  ) {
-    e.preventDefault();
+  e.preventDefault();
+  if (section_obs_positiva.style.display == 'block') {
+    customConfirmationButton(
+      "Nueva Selección",
+      "Si elige que no la observación actual se eliminará. ¿Está seguro de ésta acción?",
+      "Cambiar",
+      "Cancelar",
+      "swal_edicion"
+    ).then((result) => {
+      btn_no_positive.classList.add("btn_checked");
+      section_obs_positiva.style.display = "none";
+      btn_yes_positive.classList.remove("btn_checked");
+      posee_obs.value = 0;
+    });
+  } else {
     btn_no_positive.classList.add("btn_checked");
     section_obs_positiva.style.display = "none";
     btn_yes_positive.classList.remove("btn_checked");
@@ -99,6 +121,8 @@ const selector_modulos_div = document.getElementById("selector_modulos_div");
 const selector_estaciones_div = document.getElementById(
   "selector_estaciones_div"
 );
+const selector_sistemas_div = document.getElementById("selector_sistemas_div");
+
 let selector, divValid, divInvalid, optionMod, divSetModules, optionDefault;
 
 /**
@@ -116,62 +140,130 @@ function filtrarModulos(e) {
     });
 
     const data = await response.json();
-
-    if (data.length == 0) {
-      crearSelectorEstaciones(estaciones);
-    }
     crearSelectorMod(data);
+
+    crearSelectorEstaciones(estaciones, e.value);
+    crearSelectorSistemas(sistemas, e.value);
   };
   getDataModulos();
 }
 
+/**
+ * Crea el selector de los módulos, siempre va a iniciar en 'No Aplica',
+ * en caso de que el proyecto seleccionado es 'Sostenimiento' el módulo no va a ser requerido
+ */
 function crearSelectorMod(data) {
   divSetModules = el("div");
-  optionDefault = el("option", { value: "" }, "-- Seleccione --");
-  selector = el("select.form-control sz_inp", {
+
+  selector = el("select.form-select sz_inp", {
     name: "modulo",
     id: "modulo",
   });
+
+  if (data.length > 0) { // Si existen módulos, entonces..
+    optionDefault = el("option", {
+      value: ""
+    }, "-- Seleccione --");
+    mount(selector, optionDefault);
+    data.forEach((m) => {
+      optionMod = el("option", {
+        value: m.id
+      }, m.nombre);
+      mount(selector, optionMod);
+    });
+  } else { // Caso contrario, el selector 'No Aplica' por defecto
+    optionDefault = el("option", {
+      value: "-1"
+    }, "-- No Aplica --");
+    mount(selector, optionDefault);
+    selector.classList.add('simulate_dis');
+    selector.setAttribute('readonly', true);
+  }
+
   selector.setAttribute("onchange", "filtrarEstacionesMod(this)");
-  divValid = el("div.valid-feedback");
-  divInvalid = el("div.invalid-feedback", "El módulo es requerido");
-
-  mount(selector, optionDefault);
-
-  data.forEach((m) => {
-    optionMod = el("option", { value: m.id }, m.nombre);
-    mount(selector, optionMod);
-  });
 
   mount(divSetModules, selector);
-  mount(divSetModules, divValid);
-  mount(divSetModules, divInvalid);
   setChildren(selector_modulos_div, divSetModules);
 }
 
-function crearSelectorEstaciones(data) {
+/**
+ * Crea un selector de las estaciones de bombeos, dependiendo los parámetros que se le pasen
+ * van a ser requeridos o no en la base de datos.
+ */
+function crearSelectorEstaciones(data, id_proyecto) {
   divSetModules = el("div");
-  optionDefault = el("option", { value: "" }, "-- Seleccione --");
-  selector = el("select.form-control sz_inp", {
+
+  if (id_proyecto == 1) {
+    optionDefault = el("option", {
+      value: ""
+    }, "-- No Aplica --");
+  } else {
+    optionDefault = el("option", {
+      value: "-1"
+    }, "-- No Aplica --");
+  }
+
+  selector = el("select.form-select sz_inp", {
     name: "estacion_bombeo",
     id: "estacion_bombeo",
   });
-  divValid = el("div.valid-feedback");
-  divInvalid = el("div.invalid-feedback", "La estación de bombeo es requerida");
 
   mount(selector, optionDefault);
 
   data.forEach((m) => {
-    optionMod = el("option", { value: m.id }, m.nombre);
+    optionMod = el("option", {
+      value: m.id
+    }, m.nombre);
     mount(selector, optionMod);
   });
 
+  selector.setAttribute("onchange", "validacionEstaciones()");
+
   mount(divSetModules, selector);
-  mount(divSetModules, divValid);
-  mount(divSetModules, divInvalid);
   setChildren(selector_estaciones_div, divSetModules);
 }
 
+/**
+ * Crea un selector de los sistemas de oleoductos, dependiendo los parámetros que se le pasen
+ * van a ser requeridos o no en la base de datos.
+ */
+function crearSelectorSistemas(data, id_proyecto) {
+  divSetModules = el("div");
+
+  if (id_proyecto == 1) {
+    optionDefault = el("option", {
+      value: ""
+    }, "-- No Aplica --");
+  } else {
+    optionDefault = el("option", {
+      value: "-1"
+    }, "-- No Aplica --");
+  }
+
+  selector = el("select.form-select sz_inp", {
+    name: "sistema_oleoducto",
+    id: "sistema_oleoducto",
+  });
+
+  mount(selector, optionDefault);
+
+  data.forEach((m) => {
+    optionMod = el("option", {
+      value: m.id
+    }, m.nombre);
+    mount(selector, optionMod);
+  });
+
+  selector.setAttribute("onchange", "validacionSistemas()");
+
+  mount(divSetModules, selector);
+  setChildren(selector_sistemas_div, divSetModules);
+}
+
+/**
+ * Cada vez que el selector de módulos escucha por un cambio, va a realizar un filtro
+ * para buscar las estaciones que pertenece a ese módulo.
+ */
 function filtrarEstacionesMod(e) {
   let url = GET_BASE_URL() + "/TarjetaObs/getEstacionesFilter";
   let formData = new FormData();
@@ -186,7 +278,8 @@ function filtrarEstacionesMod(e) {
     const data = await response.json();
 
     if (data.length > 0) {
-      crearSelectorEstaciones(data);
+      estaciones_filtradas = data;
+      crearSelectorEstaciones(data, 1);
     } else {
       crearSelectorEstaciones(estaciones);
     }
@@ -194,6 +287,125 @@ function filtrarEstacionesMod(e) {
   getDataEstaciones();
 }
 
+/**
+ * Se creo con el fin de que si elijo una estación, entonces automaticamente
+ * el selector de sistema de oleoductos volverá al option por defecto 'No Aplica' 
+ */
+function validacionEstaciones(e = '') {
+  divSetModules = el("div");
+
+  optionDefault = el("option", {
+    value: "-1"
+  }, "-- No Aplica --");
+
+  selector = el("select.form-select sz_inp", {
+    name: "sistema_oleoducto",
+    id: "sistema_oleoducto",
+  });
+
+  mount(selector, optionDefault);
+
+  sistemas.forEach((s) => {
+    optionMod = el("option", {
+      value: s.id
+    }, s.nombre);
+    mount(selector, optionMod);
+  });
+
+  selector.setAttribute("onchange", "validacionSistemas()");
+
+  mount(divSetModules, selector);
+  setChildren(selector_sistemas_div, divSetModules);
+}
+
+/**
+ * Se creo con el fin de que si elijo un sistema de oleoducto, entonces automaticamente
+ * el selector de estaciones de bombeo volverá al option por defecto 'No Aplica' 
+ */
+function validacionSistemas(e = '') {
+  divSetModules = el("div");
+
+  optionDefault = el("option", {
+    value: "-1"
+  }, "-- No Aplica --");
+
+  selector = el("select.form-select sz_inp", {
+    name: "estacion_bombeo",
+    id: "estacion_bombeo",
+  });
+
+  mount(selector, optionDefault);
+
+  let value_modulo = document.getElementById('modulo').value;
+
+  if (value_modulo == 4) {
+    estaciones_filtradas.forEach((s) => {
+      optionMod = el("option", {
+        value: s.id
+      }, s.nombre);
+      mount(selector, optionMod);
+    });
+  } else {
+    estaciones.forEach((s) => {
+      optionMod = el("option", {
+        value: s.id
+      }, s.nombre);
+      mount(selector, optionMod);
+    });
+  }
+
+  selector.setAttribute("onchange", "validacionEstaciones()");
+
+  mount(divSetModules, selector);
+  setChildren(selector_estaciones_div, divSetModules);
+}
+
 function prevenirDefault(event) {
   event.preventDefault();
+}
+
+/* ================================================================================================================================= */
+
+/*
+===========================
+Sección Nuevos Observadores
+===========================
+*/
+
+const btn_add_obs = document.getElementById('btn_add_obs');
+const seccion_observadores = document.getElementById('seccion_observadores');
+const container_observadores = document.getElementById('container_observadores');
+const obs_new_title = document.querySelector('.obs-new_title');
+btn_add_obs.addEventListener('click', e => {
+  e.preventDefault();
+  crearSeccionNewObservador();
+})
+
+function crearSeccionNewObservador() {
+  if (!container_observadores.hasChildNodes()) {
+    obs_new_title.style.display = 'block';
+  }
+  let divObservadores = el('div.row d-flex justify-content-end observadores_inps mt-2');
+  let div = el('div.col-xs-12 col-md-4 d-flex');
+  let btnTrash = el('button.obs-btn_trash', el('i.fa-solid fa-trash'));
+  btnTrash.addEventListener('click', b => {
+    let observadores_inps = document.querySelectorAll('.observadores_inps');
+    b.preventDefault();
+    let div_padre = btnTrash.parentElement.parentElement
+    div_padre.remove();
+    console.log(observadores_inps.length);
+    if (observadores_inps.length == 1) {
+      obs_new_title.style.display = 'none';
+    }
+  });
+  let inputNameObs = el('input.form-control sz_inp', {
+    type: 'text',
+    placeholder: 'Ingrese el nombre',
+    name: 'observadores[]'
+  });
+
+  mount(div, btnTrash);
+  mount(div, inputNameObs);
+  mount(divObservadores, div);
+  mount(container_observadores, divObservadores);
 }

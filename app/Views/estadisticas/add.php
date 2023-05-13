@@ -1,4 +1,11 @@
 <link href="<?= base_url() ?>/assets/css/estadisticas/add/add.css" rel="stylesheet">
+<?php 
+/* echo '<pre>';
+var_dump($planilla);
+echo '</pre>';
+exit; */
+?>
+
 <div class="container">
     <form action="" method="POST" id="form_submit">
         <div class="blister-title-container">
@@ -48,7 +55,7 @@
                                             <i class="fas fa-comment"></i>
                                         </small>
                                         <input type="hidden" value="<?= $ind['id'] ?>" name="indicador_gral[<?= $ind['id'] ?>][id_indicador]">
-                                        <input type="number" value="0" min="0" name="indicador_gral[<?= $ind['id'] ?>][valor]" id="indicador_gral_<?= $ind['id'] ?>" class="form-control sz_inp text-center " style="font-size: 12.5px!important;">
+                                        <input type="number" value="0" min="0" name="indicador_gral[<?= $ind['id'] ?>][valor]" id="indicador_gral_<?= $ind['id'] ?>" class="form-control sz_inp text-center <?= ($ind['class_indices'] != NULL) ? $ind['class_indices'] : ''; ?>" style="font-size: 12.5px!important;">
                                     </div>
                                 </div>
                                 <div class="collapse" id="collapse_ind_gral_<?= $ind['id'] ?>">
@@ -60,10 +67,6 @@
                             </div>
                         </div>
                     <?php endforeach; ?>
-
-                    <style>
-
-                    </style>
 
                     <?php foreach ($planilla[0]['titulos'] as $ind) : ?>
                         <div class="title_indicador">
@@ -100,7 +103,7 @@
                                                                 <input type="hidden" value="<?= $ind['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_titulo]">
                                                                 <input type="hidden" value="<?= $subt['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_subtitulo]">
                                                                 <input type="hidden" value="<?= $ind_subt['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_indicador]">
-                                                                <input type="number" value="0" min="0" name="indicador_subt[<?= $ind_subt['id'] ?>][valor]" id="indicador_<?= $ind_subt['id'] ?>" data-id-subt="<?= $subt['id'] ?>" class="form-control sz_inp text-center  <?= $ind_subt['id'] == 6 ? 'ind_subt_total' : 'all_ind_subts' ?>" <?= $ind_subt['id'] == 6 ? 'readonly' : '' ?> style="font-size: 12.5px!important;">
+                                                                <input type="number" value="0" min="0" name="indicador_subt[<?= $ind_subt['id'] ?>][valor]" id="indicador_<?= $ind_subt['id'] ?>" data-id-subt="<?= $subt['id'] ?>" class="form-control sz_inp text-center <?= $ind_subt['id'] == 6 ? 'ind_subt_total' : 'all_ind_subts' ?> <?= ($ind_subt['class_indices'] != NULL) ? $ind_subt['class_indices'] : ''; ?>" <?= $ind_subt['id'] == 6 ? 'readonly' : '' ?> style="font-size: 12.5px!important;">
                                                             </div>
                                                         </div>
                                                         <div class="collapse" id="collapse_indSubt<?= $ind_subt['id'] ?>">
@@ -113,7 +116,6 @@
                                                 <?php endforeach; ?>
                                             </div>
                                     </fieldset>
-
 
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -139,7 +141,7 @@
                                                 </small>
                                                 <input type="hidden" value="<?= $ind['id'] ?>" name="indicador_title[<?= $ind_title['id'] ?>][id_titulo]">
                                                 <input type="hidden" value="<?= $ind_title['id'] ?>" name="indicador_title[<?= $ind_title['id'] ?>][id_indicador]">
-                                                <input type="number" value="0" min="0" name="indicador_title[<?= $ind_title['id'] ?>][valor]" id="indicador_title<?= $ind_title['id'] ?>" class="form-control  sz_inp text-center" style="font-size: 12.5px!important;">
+                                                <input type="number" value="0" min="0" name="indicador_title[<?= $ind_title['id'] ?>][valor]" id="indicador_title<?= $ind_title['id'] ?>" class="form-control sz_inp text-center <?= ($ind_title['class_indices'] != NULL) ? $ind_title['class_indices'] : ''; ?>" style="font-size: 12.5px!important;">
                                             </div>
                                         </div>
                                         <div class="collapse" id="collapseIndTitle_<?= $ind_title['id'] ?>">
@@ -229,6 +231,9 @@
             ind_subt_total.value = total;
         });
     }
+
+    let estaciones_estadisticas = <?= json_encode($estaciones); ?>;
+    let sistemas_estadisticas = <?= json_encode($sistemas); ?>;
 </script>
 <script src="<?= base_url() ?>/assets/js/estadisticas/add.js"></script>
 <script src="<?= base_url() ?>/assets/js/estadisticas/indices_kpi.js"></script>

@@ -60,6 +60,13 @@ $routes->match(['get', 'post'],'/auditoria/addPlanilla','Auditorias::addPlanilla
 //DASHBOARD
 $routes->match(['get', 'post'],'/dashboard','Dashboard::index');
 #E
+
+// ESTADISTICA GENERAL
+$routes->post('/estadisticas/getModulosFilter/','Estadisticas::getModulosFilter');
+
+/* ¿Por qué no puedo filtrar las estaciones con el controlador de Estadísticas? */
+$routes->post('/TarjetaObs/getEstacionesFilter/','TarjetaObservaciones::getEstacionesFilter');
+
 //ESTADÍSTICAS INCIDENTES
 $routes->get('/estadisticas','Estadisticas::index');
 $routes->get('/estadisticas/view/(:num)/(:num)','Estadisticas::view/$1/$2');
@@ -130,11 +137,12 @@ $routes->post('/perfil/editarPermisosUsuario','Perfil::editarPermisosUsuario');
 //PERMISOS
 $routes->get('/permisos','Permisos::index');
 $routes->get('/permisos/add','Permisos::add');
+$routes->get('/permisos/edit/(:num)','Permisos::edit/$1');
 $routes->match(['get', 'post'],'/permisos/getData/(:num)','Permisos::getDataPermiso/$1');
 $routes->match(['get', 'post'],'/api/permisos/get/(:num)/(:num)','Permisos::getPaged/$1/$2');
 $routes->match(['get', 'post'],'/api/permisos/getTotal/','Permisos::getPaged');
 $routes->post('/permisos/addNewPermission','Permisos::submit');
-$routes->post('/permisos/editPermission','Permisos::edit');
+$routes->post('/permisos/editPermission','Permisos::editPermission');
 $routes->post('/addNewPermissionGroup','Permisos::addGroupPermission');
 $routes->post('/Permisos/disablePermission','Permisos::disable');
 $routes->post('/Permisos/enablePermission','Permisos::enable');

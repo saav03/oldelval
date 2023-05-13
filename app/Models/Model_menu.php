@@ -25,22 +25,6 @@ class model_menu extends Model
 		}
 		$builder->groupBy('ggm.id')
 		->orderBy('ggm.orden ASC');
-		/* $query = $builder->getCompiledSelect();
-			echo '<pre>';
-			var_dump($query);
-			echo '</pre>';
-			exit; */
-		/* $builder = $this->db->table('usuario u');
-		$builder->select('ggm.id id, ggm.nombre, is_heading, id_menu_padre, icono, blank, ruta, js_id')
-			->join('gg_rel_usuario_permiso ggrup', 'ggrup.id_usuario=u.id', 'inner')
-			->join('gg_permisos ggp', 'ggp.id=ggrup.id_permiso', 'inner')
-			->join('gg_menu ggm', 'ggm.id=ggp.id_menu', 'inner');
-		if (!$superadmin) {
-			$builder->where('u.id', $id_usuario)
-				->where('ggrup.estado', 1);
-		}
-		$builder->groupBy('ggm.id')
-			->orderBy('ggm.orden ASC'); */
 		$query = $builder->get()->getResultArray();
 		if (!empty($query)) {
 			$result = $this->menuArray($query);

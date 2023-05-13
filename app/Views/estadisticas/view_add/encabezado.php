@@ -1,12 +1,3 @@
-<?php 
-
-/* echo '<pre>';
-var_dump($_SESSION);
-echo '</pre>';
-exit; */
-
-?>
-
 <div class="row">
     <div class="col-md-3 col-xs-12 mt-2">
         <?php if ($this->session->get('empresa') == 1 && acceso('add_cargar_est_empresa')) { ?>
@@ -30,7 +21,7 @@ exit; */
                 </select>
             </div>
 
-        <?php } else if (!acceso('add_cargar_est_empresa')&& $this->session->get('empresa') != 0) { ?>
+        <?php } else if (!acceso('add_cargar_est_empresa') && $this->session->get('empresa') != 0) { ?>
             <label class="mb-1 fw-semibold" for="area">Empresa <small>(*)</small></label>
 
             <select class="form-select sz_inp" name="contratista" disabled>
@@ -64,7 +55,7 @@ exit; */
 
     <div class="col-md-2 col-xs-12">
         <label class="mb-1 fw-semibold mt-2" for="fecha_hoy">Fecha Carga<small>(*)</small></label>
-        <input type="date" class="form-control text-center sz_inp" name="fecha_hoy" id="fecha_hoy" value="<?= date('Y-m-d') ?>" readonly>
+        <input type="date" class="form-control text-center sz_inp simulate_dis" name="fecha_hoy" id="fecha_hoy" value="<?= date('Y-m-d') ?>" readonly>
     </div>
 
     <div class="col-md-4 col-xs-12 mt-2">
@@ -80,8 +71,8 @@ exit; */
     <div class="col-md-4 col-xs-12 mt-2">
         <label class="mb-1 fw-semibold" for="area">Módulos <small>(*)</small></label>
         <div id="selector_modulos_div">
-            <select name="modulo" id="modulo" class="form-select sz_inp" disabled required>
-                <option value="">-- Seleccione --</option>
+            <select name="modulo" id="modulo" class="form-select sz_inp simulate_dis" readonly required>
+                <option value="-1">-- No Aplica --</option>
             </select>
         </div>
     </div>
@@ -89,9 +80,8 @@ exit; */
     <div class="col-md-4 col-xs-12 mt-2">
         <label class="mb-1 fw-semibold" for="area">Estación de Bombeo</label>
         <div id="selector_estaciones_div">
-
-            <select name="estacion_bombeo" id="estacion_bombeo" class="form-select sz_inp">
-                <option value="">-- Seleccione --</option>
+            <select name="estacion_bombeo" id="estacion_bombeo" class="form-select sz_inp" onchange="validacionEstaciones(this)">
+                <option value="">-- No Aplica --</option>
                 <?php foreach ($estaciones as $e) : ?>
                     <option value="<?= $e['id'] ?>"><?= $e['nombre'] ?></option>
                 <?php endforeach ?>
@@ -101,12 +91,14 @@ exit; */
 
     <div class="col-md-4 col-xs-12 mt-2">
         <label class="mb-1 fw-semibold" for="area">Sistema de Oleoductos</label>
-        <select name="sistema" id="sistema" class="form-select sz_inp">
-            <option value="">-- Seleccione --</option>
-            <?php foreach ($sistemas as $s) : ?>
-                <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
-            <?php endforeach ?>
-        </select>
+        <div id="selector_sistemas_div">
+            <select name="sistema" id="sistema" class="form-select sz_inp" onchange="validacionSistemas(this)">
+                <option value="">-- No Aplica --</option>
+                <?php foreach ($sistemas as $s) : ?>
+                    <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
     </div>
 
 </div>
@@ -117,22 +109,24 @@ exit; */
     let inp_oldelval = document.getElementById('inp_oldelval');
     let selector_oldelval = document.getElementById('selector_oldelval');
     let selector_all_empresas = document.getElementById('selector_all_empresas');
-    
-    btn_selectEmpresa.addEventListener('click', () => {
 
-        if (selector_oldelval.style.display != 'none') {
-            selector_oldelval.style.display = 'none';
-            selector_all_empresas.style.display = 'block';
-            selector_all_empresas.removeAttribute('disabled');
-            inp_oldelval.setAttribute('disabled', true);
-            selectEmpresaContent.textContent = 'Seleccionar Oldelval';
-        } else {
-            selectEmpresaContent.textContent = 'Seleccionar Otra';
-            selector_oldelval.style.display = 'block';
-            selector_all_empresas.style.display = 'none';
-        }
+    if (btn_selectEmpresa) {
+        btn_selectEmpresa.addEventListener('click', () => {
 
-    });
+            if (selector_oldelval.style.display != 'none') {
+                selector_oldelval.style.display = 'none';
+                selector_all_empresas.style.display = 'block';
+                selector_all_empresas.removeAttribute('disabled');
+                inp_oldelval.setAttribute('disabled', true);
+                selectEmpresaContent.textContent = 'Seleccionar Oldelval';
+            } else {
+                selectEmpresaContent.textContent = 'Seleccionar Otra';
+                selector_oldelval.style.display = 'block';
+                selector_all_empresas.style.display = 'none';
+            }
+
+        });
+    }
 
     let estaciones = <?= json_encode($estaciones); ?>;
 </script>

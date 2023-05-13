@@ -36,7 +36,7 @@
                                 <select name="tipo_obs" id="tipo_obs" onchange="listenTipoObs(this)" class="form-select sz_inp" required>
                                     <option value="">-- Seleccione --</option>
                                     <option value="1">Positiva</option>
-                                    <option value="2">Posibilidad de Mejora</option>
+                                    <option value="2">Oportunidad de Mejora</option>
                                 </select>
                                 <div class="valid-feedback"></div>
                                 <div class="invalid-feedback">
@@ -53,11 +53,44 @@
                             </div>
                             <div class="col-xs-12 col-md-4">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Observador</label>
+
                                 <input type="text" name="observador" id="observador" class="form-control sz_inp simulate_dis" placeholder="Observador (Opcional)" value="<?= $this->session->get('nombrecompleto'); ?>" readonly>
                             </div>
                         </div>
 
-                        <br>
+                        <section id="seccion_observadores">
+                            <div class="row text-center mt-4 obs-new_title" style="display: none;">
+                                <h6 class="fw-semibold">Nuevos Observadores</h6>
+                            </div>
+                            <div class="row d-flex justify-content-end">
+                                <div class="mt-2" id="container_observadores"></div>
+                            </div>
+                            <!--
+                            <div class="row d-flex justify-content-end">
+                                <div class="mt-2">
+                                    <div class="row d-flex justify-content-end observadores_inps mt-2">
+                                        <div class="col-xs-12 col-md-4 d-flex">
+                                            <button class="obs-btn_trash"><i class="fa-solid fa-trash"></i></button>
+                                            <input type="text" class="form-control sz_inp" value="Luciano Colombo">
+                                        </div>
+                                    </div>
+
+                                    <div class="row d-flex justify-content-end observadores_inps mt-2">
+                                        <div class="col-xs-12 col-md-4 d-flex">
+                                            <button class="obs-btn_trash"><i class="fa-solid fa-trash"></i></button>
+                                            <input type="text" class="form-control sz_inp" value="Luciano Colombo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </section>
+
+                        <div class="row d-flex justify-content-end">
+                            <div class="col-xs-12 col-md-4 d-flex justify-content-end mt-2">
+                                <button id="btn_add_obs">¿Desea agregar un observador? <i class="fa-solid fa-circle-plus"></i></button>
+                            </div>
+                        </div>
+
                         <br>
 
                         <div class="row">
@@ -85,7 +118,7 @@
                             </div>
 
                             <div class="col-xs-12 col-md-6">
-                                <label for="" class="mb-1 fw-semibold sz_inp">Modulos <small>(*)</small></label>
+                                <label for="" class="mb-1 fw-semibold sz_inp">Modulos</label>
                                 <div id="selector_modulos_div">
                                     <select name="modulo" id="modulo" class="form-select sz_inp" disabled required>
                                         <option value="">-- Seleccione --</option>
@@ -116,15 +149,17 @@
 
                             <div class="col-xs-12 col-md-6">
                                 <label for="" class="mb-1 mt-3 fw-semibold sz_inp">Sistema de Oleoductos</label>
-                                <select name="sistema_oleoducto" id="sistema_oleoducto" class="form-select sz_inp">
-                                    <option value="">-- Seleccione --</option>
-                                    <?php foreach ($sistemas as $s) : ?>
-                                        <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <div class="valid-feedback"></div>
-                                <div class="invalid-feedback">
-                                    El sistema de oleoducto es requerido
+                                <div id="selector_sistemas_div">
+                                    <select name="sistema_oleoducto" id="sistema_oleoducto" class="form-select sz_inp">
+                                        <option value="">-- Seleccione --</option>
+                                        <?php foreach ($sistemas as $s) : ?>
+                                            <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <div class="valid-feedback"></div>
+                                    <div class="invalid-feedback">
+                                        El sistema de oleoducto es requerido
+                                    </div>
                                 </div>
                             </div>
 
@@ -132,55 +167,9 @@
 
                         <br>
 
-                        <style>
-                            .btn-group-toggle {
-                                border: 1px solid lightgray;
-                            }
-
-                            .rojo,
-                            .verde,
-                            .amarillo {
-                                font-size: 13px;
-                                border: none;
-                            }
-
-                            .rojo {
-                                border-right: 1px solid lightgray;
-                            }
-
-                            .verde {
-                                border-right: 1px solid lightgray;
-                                border-radius: 4px 0 0 4px;
-                            }
-
-                            .amarillo {
-                                border-radius: 0 4px 4px 0;
-                            }
-
-                            .verde_check:checked+.verde {
-                                box-shadow: inset 0px 0px 17px 0px rgba(124, 184, 76, 1);
-                                background-color: #E9FFCA;
-                                border: none;
-                                border-bottom: 3px solid rgb(102 181 114);
-                            }
-
-                            .rojo_check:checked+.rojo {
-                                box-shadow: inset 0px 0px 17px 0px rgba(189, 53, 53, 1);
-                                background-color: #F1B7B3;
-                                border: none;
-                                border-bottom: 3px solid rgb(159 59 59);
-                            }
-
-                            .amarillo_checked:checked+.amarillo {
-                                box-shadow: inset 0px 0px 17px 0px rgba(233, 220, 118);
-                                background-color: #f9f3d6;
-                                border: none;
-                                border-bottom: 3px solid rgba(235, 202, 120, 1);
-                            }
-                        </style>
-
-                        <p class="subtitle">Indicadores</p>
-                        <?php $i = 1; foreach ($indicadores as $ind) : ?>
+                        <p class="subtitle">Guía de Detección</p>
+                        <?php $i = 1;
+                        foreach ($indicadores as $ind) : ?>
                             <div class="d-flex justify-content-between align-items-center pb-2 pt-2" style="width: 90%;margin: 0 auto; border-bottom: 1px solid lightgray; font-size: 13px;">
                                 <div>
                                     <p class="m-0"><small><em><b>(<?= $i; ?>)</b></em></small> <?= $ind['nombre']; ?></p>
@@ -196,7 +185,8 @@
                                     <label class="btn amarillo" for="btn_na_<?= $ind['id'] ?>">N/A</label>
                                 </div>
                             </div>
-                        <?php $i++; endforeach; ?>
+                        <?php $i++;
+                        endforeach; ?>
 
                         <br>
                         <br>
@@ -274,6 +264,7 @@
 </div>
 <script>
     let estaciones = <?= json_encode($estaciones); ?>;
+    let sistemas = <?= json_encode($sistemas); ?>;
     let clasificaciones = <?= json_encode($clasificaciones); ?>;
     let tipo_hallazgo = <?= json_encode($tipo_hallazgo); ?>;
     let contratista = <?= json_encode($contratistas); ?>;

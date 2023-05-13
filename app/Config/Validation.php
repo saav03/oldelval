@@ -283,7 +283,7 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó el tipo de hallazgo',
             ]
         ],
-        'riesgo' => [
+        'matriz_riesgo' => [
             'label' => 'Riesgo',
             'rules' => ['required'],
             'errors' => [
@@ -359,8 +359,14 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó el proyecto',
             ]
         ],
-        /* Ninguno de los dos campos abajo son requeridos, debido a que puede ser uno u otro */
-        /* 'estacion' => [
+        'modulo' => [
+            'label' => 'Modulo',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'No se especificó el modulo',
+            ]
+        ],
+        'estacion' => [
             'label' => 'Estacion',
             'rules' => ['required'],
             'errors' => [
@@ -373,6 +379,30 @@ class Validation extends BaseConfig
             'errors' => [
                 'required' => 'No se especificó el sistema',
             ]
-        ], */
+        ],
+    ];
+
+    public $validation_permission = [
+        'nombre' => [
+            'label' => 'nombre',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'No se especificó el nombre del permiso',
+            ]
+        ],
+        'id_permiso_padre' => [
+            'label' => 'subpermiso',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'No se especificó el SubPermiso',
+            ]
+        ],
+        'tipo_modulo' => [
+            'label' => 'tipo_modulo',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'No se especificó el tipo de modulo',
+            ]
+        ]
     ];
 }

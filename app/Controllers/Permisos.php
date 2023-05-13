@@ -50,6 +50,57 @@ class Permisos extends BaseController
         }
     }
 
+    public function edit($id_permiso)
+    {
+        if (!session()->get('isLogin')) {
+            return redirect()->to('login');
+        } else {
+            $data['allPermisos'] = $this->model_permisos->getAll();
+            $permiso = $this->model_permisos->getDataPermiso($id_permiso);
+            $padre = [];
+            if ($permiso['id_permiso_padre'] != 0) {
+                //Tiene submenu
+                $padre = $this->model_permisos->getDataPermiso($permiso['id_permiso_padre']);
+            }
+            $data['permiso'] = $permiso;
+            $data['padre'] = $padre;
+            $data['permisos'] = $this->model_permisos->getAll();
+            $data['permisos_parents'] = $this->model_permisos->getPosibleParents();
+            return template('permisos/edit', $data);
+        }
+    }
+
+    public function editPermission()
+    {
+
+        $fecha_hora = date('Y-m-d H:i:s');
+        // if (acceso(1)) {
+        $data_to_edit = array(
+            'nombre' => $this->request->getPost("nombre"),
+            'id_permiso_padre' => $this->request->getPost("subpermiso"),
+            'orden' => $this->request->getPost("orden_permiso"),
+            'tipo_modulo' => $this->request->getPost("tipo_modulo"),
+        );
+
+        $result = $this->verificacion($data_to_edit, 'validation_permission');
+
+        extract($result);
+
+        if ($exito) {
+            $id = $this->request->getPost("id");
+            $data_to_edit['usuario'] = session()->get('id_usuario');
+            $data_to_edit['fecha_carga'] = $fecha_hora;
+
+            $this->model_permisos->updateAndReorder($data_to_edit, $id);
+
+            echo $id;
+        } else {
+            http_response_code(400);
+            echo json_encode($errores);
+        }
+        // }
+    }
+
     public function submit()
     {
         $resultado = "";
@@ -73,7 +124,7 @@ class Permisos extends BaseController
         echo json_encode($resultado);
     }
 
-    public function edit()
+    /* public function edit()
     {
 
         $id_permiso = $this->request->getPost("id_permiso");
@@ -98,7 +149,7 @@ class Permisos extends BaseController
 
         echo json_encode($resultado);
 
-    }
+    } */
 
     public function getPaged($offset = NULL, $tamanioPagina = NULL)
     {
@@ -218,7 +269,8 @@ class Permisos extends BaseController
     /**
      * Agrega permisos nuevos a cada usuario que corresponden al grupo asignado en parámetros
      */
-    protected function addGroupPermissionToUser($id_grupo, $permisos) {
+    protected function addGroupPermissionToUser($id_grupo, $permisos)
+    {
         $new_permissions = [];
         $allUsers = $this->model_grupo->getAllUsersFromGroup($id_grupo);
 
@@ -234,5 +286,18 @@ class Permisos extends BaseController
         echo '<pre>';
         var_dump($new_permissions);
         echo '</pre>';
+    }
+
+    protected function verificacion($datos, $nombre_validacion)
+    {
+        $verificacion = [];
+        if ($this->validation->run($datos, $nombre_validacion) === FALSE) {
+            $this->response->setStatusCode(400);
+            $verificacion['exito'] = false;
+            $verificacion['errores'] = $this->validation->getErrors();
+        } else {
+            $verificacion['exito'] = true;
+        }
+        return $verificacion;
     }
 }

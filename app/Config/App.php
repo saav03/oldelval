@@ -5,6 +5,9 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Session\Handlers\FileHandler;
 
+// defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+
 class App extends BaseConfig
 {
     /**
@@ -24,7 +27,8 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://localhost/oldelval/';
+    // public $baseURL = 'http://localhost/oldelval/';
+    public $baseURL = 'https://oldelval-cass.com/';
     // public $baseURL = 'http://10.10.11.197/oldelval/';
 
 

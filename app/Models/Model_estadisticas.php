@@ -163,7 +163,7 @@ class Model_estadisticas extends Model
 	public function getDataIndicadores($id_tipo, $es_kpi = false)
 	{
 		$builder = $this->db->table('estadisticas_indicadores indicador');
-		$builder->select("id, nombre, id_tipo, id_subtitulo, orden, id_titulo")
+		$builder->select("id, nombre, id_tipo, id_subtitulo, orden, id_titulo, class_indices")
 			->where("indicador.id_tipo", $id_tipo);
 		if ($es_kpi) {
 			$builder->where('indicador.es_kpi', 1);
@@ -178,7 +178,7 @@ class Model_estadisticas extends Model
 	public function getDataIndicadoresTitulo($id_tipo, $id_titulo)
 	{
 		$builder = $this->db->table('estadisticas_indicadores indicador');
-		$builder->select("id, nombre, id_tipo, id_subtitulo, id_titulo")
+		$builder->select("id, nombre, id_tipo, id_subtitulo, id_titulo, class_indices")
 			->where("indicador.id_tipo", $id_tipo)
 			->where("indicador.id_titulo", $id_titulo)
 			->where("indicador.id_subtitulo", NULL)

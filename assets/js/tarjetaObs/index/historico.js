@@ -44,12 +44,12 @@ const tableOptions = {
     },
     {
       key: (row) => {
-        if (row['estacion']) {return row['estacion']} else {return '---'}
+        if (row['estacion']) {return row['estacion']} else {return 'No Aplica'}
       },
     },
     {
       key: (row) => {
-        if (row['sistema']) {return row['sistema']} else {return '---'}
+        if (row['sistema']) {return row['sistema']} else {return 'No Aplica'}
       },
     },
     // "estacion",

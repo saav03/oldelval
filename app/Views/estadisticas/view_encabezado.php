@@ -71,8 +71,8 @@
                     <?php foreach ($modulos as $m) :
                         if ($m['id'] == $estadistica[0]['modulo']) { ?>
                             <option value="<?= $m['id'] ?>" selected><?= $m['nombre'] ?></option>
-                        <?php } else { ?>
-                            <option value="<?= $m['id'] ?>"><?= $m['nombre'] ?></option>
+                        <?php } else if ($estadistica[0]['modulo'] == -1) { ?>
+                            <option>No Aplica</option>
                         <?php } ?>
                     <?php endforeach ?>
                 </select>
@@ -90,8 +90,8 @@
                         <?php foreach ($estaciones as $e) :
                             if ($e['id'] == $estadistica[0]['estacion']) { ?>
                                 <option value="<?= $e['id'] ?>" selected><?= $e['nombre'] ?></option>
-                            <?php } else { ?>
-                                <option value="<?= $e['id'] ?>"><?= $e['nombre'] ?></option>
+                            <?php } else if ($estadistica[0]['estacion'] == -1) { ?>
+                                <option>No Aplica</option>
                             <?php } ?>
                         <?php endforeach ?>
                     <?php } else { ?>
@@ -113,8 +113,8 @@
                         <?php foreach ($sistemas as $s) :
                             if ($s['id'] == $estadistica[0]['sistema']) { ?>
                                 <option value="<?= $s['id'] ?>" selected><?= $s['nombre'] ?></option>
-                            <?php } else { ?>
-                                <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
+                            <?php } else if ($estadistica[0]['sistema'] == -1) { ?>
+                                <option>No Aplica</option>
                             <?php } ?>
                         <?php endforeach ?>
 
