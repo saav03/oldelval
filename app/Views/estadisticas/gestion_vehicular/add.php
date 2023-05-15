@@ -52,7 +52,7 @@
                                             <i class="fas fa-comment"></i>
                                         </small>
                                         <input type="hidden" value="<?= $ind['id'] ?>" name="indicador_gral[<?= $ind['id'] ?>][id_indicador]">
-                                        <input type="number" value="0" min="0" name="indicador_gral[<?= $ind['id'] ?>][valor]" id="indicador_gral_<?= $ind['id'] ?>" class="form-control sz_inp text-center " style="font-size: 12.5px!important;">
+                                        <input type="number" value="0" min="0" name="indicador_gral[<?= $ind['id'] ?>][valor]" id="indicador_gral_<?= $ind['id'] ?>" class="form-control sz_inp text-center <?= ($ind['class_indices'] != NULL) ? $ind['class_indices'] : ''; ?>" style="font-size: 12.5px!important;">
                                     </div>
                                 </div>
                                 <div class="collapse" id="collapse_ind_gral_<?= $ind['id'] ?>">
@@ -102,7 +102,7 @@
                                                                 <input type="hidden" value="<?= $ind_subt['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_indicador]">
 
 
-                                                                <input type="number" value="0" min="0" name="indicador_subt[<?= $ind_subt['id'] ?>][valor]" id="indicador_<?= $ind_subt['id'] ?>" data-id-subt="<?= $subt['id'] ?>" class="form-control sz_inp text-center  <?= $ind_subt['id'] == 21 || $ind_subt['id'] == 22 ? 'ind_subt_total' : 'all_ind_subts' ?>" <?= $ind_subt['id'] == 21 || $ind_subt['id'] == 22 ? 'readonly' : '' ?> style="font-size: 12.5px!important;">
+                                                                <input type="number" value="0" min="0" name="indicador_subt[<?= $ind_subt['id'] ?>][valor]" id="indicador_<?= $ind_subt['id'] ?>" data-id-subt="<?= $subt['id'] ?>" class="form-control sz_inp text-center <?= ($ind_subt['class_indices'] != NULL) ? $ind_subt['class_indices'] : ''; ?> <?= $ind_subt['id'] == 21 || $ind_subt['id'] == 22 ? 'ind_subt_total' : 'all_ind_subts' ?>" <?= $ind_subt['id'] == 21 || $ind_subt['id'] == 22 ? 'readonly' : '' ?> style="font-size: 12.5px!important;">
                                                             </div>
                                                         </div>
                                                         <div class="collapse" id="collapse_indSubt<?= $ind_subt['id'] ?>">
@@ -157,7 +157,7 @@
                                                 <input type="hidden" value="<?= $ind['id'] ?>" name="indicador_title[<?= $ind_title['id'] ?>][id_titulo]">
                                                 <input type="hidden" value="<?= $ind_title['id'] ?>" name="indicador_title[<?= $ind_title['id'] ?>][id_indicador]">
 
-                                                <input type="number" value="0" min="0" name="indicador_title[<?= $ind_title['id'] ?>][valor]" id="indicador_title<?= $ind_title['id'] ?>" class="form-control  sz_inp text-center" style="font-size: 12.5px!important;">
+                                                <input type="number" value="0" min="0" name="indicador_title[<?= $ind_title['id'] ?>][valor]" id="indicador_title<?= $ind_title['id'] ?>" class="form-control  sz_inp text-center <?= ($ind_title['class_indices'] != NULL) ? $ind_title['class_indices'] : ''; ?>" style="font-size: 12.5px!important;">
 
                                             </div>
                                         </div>
@@ -174,6 +174,13 @@
                         <br>
 
                     <?php endforeach; ?>
+
+                    <style>
+                        .alert_color {
+                            color: #f7a000;
+                        }
+                    </style>
+
                     <div class="title_indicador">
                         <h6>KPIs del Mes</h6>
                     </div>
@@ -189,12 +196,21 @@
                                                 <p class="name_indicador"><?= $indice['nombre'] ?> <i class="fa-regular fa-circle-question fa-lg i-question_modal" data-id='<?= $indice['id'] ?>' data-bs-toggle="modal" data-bs-target="#modal_indices"></i></p>
                                             </div>
                                         </div>
+                                        <?php if ($indice['class_indices'] == 'ind_con_regular') { ?>
+                                            <div id="div_ind_regular" style="display: none;">
+                                                <p class="m-0 p-0 alert_color"><small><em>(Se excede del 0.3%)</em></small></p>
+                                            </div>
+                                        <?php } else if ($indice['class_indices'] == 'ind_con_mal') {  ?>
+                                            <div id="div_ind_mal" style="display: none;">
+                                                <p class="m-0 p-0 alert_color"><small><em>(Se excede del 0.1%)</em></small></p>
+                                            </div>
+                                        <?php }  ?>
                                         <div class="div-ind_icono">
                                             <small data-bs-toggle="collapse" data-bs-target="#collapse_indSubt<?= $indice['id'] ?>" aria-expanded="false" aria-controls="collapse_indSubt<?= $indice['id'] ?>">
                                                 <i class="fas fa-comment"></i>
                                             </small>
                                             <input type="hidden" value="<?= $indice['id'] ?>" name="indice[<?= $indice['id'] ?>][id_indicador]">
-                                            <input type="number" value="0" min="0" name="indice[<?= $indice['id'] ?>][valor]" id="indice_<?= $indice['id'] ?>" data-id-subt="1" class="form-control ind-just_read sz_inp text-center" style="font-size: 12.5px!important;" readonly>
+                                            <input type="number" value="0" min="0" name="indice[<?= $indice['id'] ?>][valor]" id="indice_<?= $indice['id'] ?>" data-id-subt="1" class="form-control ind-just_read sz_inp text-center <?= ($indice['class_indices'] != NULL) ? $indice['class_indices'] : ''; ?>" style="font-size: 12.5px!important;" readonly>
                                         </div>
                                     </div>
                                     <div class="collapse" id="collapse_indSubt<?= $indice['id'] ?>">
@@ -310,4 +326,5 @@ GESTION VEHICULAR
 
 <script src="<?= base_url() ?>/assets/js/estadisticas/add.js"></script>
 <script src="<?= base_url() ?>/assets/js/estadisticas/modal_indices.js"></script>
+<script src="<?= base_url() ?>/assets/js/estadisticas/gestion_vehicular/ind_gestion_vehicular.js"></script>
 <script src="<?= base_url() ?>/assets/js/estadisticas/submit.js"></script>

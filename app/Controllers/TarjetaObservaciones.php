@@ -29,8 +29,12 @@ class TarjetaObservaciones extends BaseController
 
         $data['tabla'] = $this->model_tarjeta->getMatrizRiesgo();
         $data['tarjeta'] =  $this->model_tarjeta->getDataTarjeta($id);
-        $data['riesgos'] = $this->getRiesgos($data['tarjeta']['hallazgo']['matriz_riesgo']);
         $data['indicadores'] =  $this->model_tarjeta->getDataIndicadoresTarjeta($id);
+
+        if (isset($data['tarjeta']['hallazgo'])) {
+            $data['riesgos'] = $this->getRiesgos($data['tarjeta']['hallazgo']['matriz_riesgo']);
+        }
+
         return template('tarjetas_obs/view_obs', $data);
     }
 
@@ -169,23 +173,12 @@ class TarjetaObservaciones extends BaseController
             }
 
             if (count($datos_obs) > 0) {
+
                 $results = $this->model_tarjeta->addSubmit($datos_tarjeta);
 
                 if ($results['status']) {
 
                     $id_tarjeta_obs = $results['last_id'];
-
-                    /* == Inserto los Indicadores (Si es que existen) == */
-                    $indicadores = $this->request->getPost('btn_indicador');
-                    foreach ($indicadores as $key => $indicador) {
-                        $data = [
-                            'id_tarjeta' => $id_tarjeta_obs,
-                            'id_indicador' => $key,
-                            'rta' => $indicador,
-                        ];
-                        $this->model_general->insertG('tarjeta_rel_indicadores', $data);
-                    }
-
                     $datos_obs['id_tarjeta'] = $id_tarjeta_obs;
                     $datos_obs['fecha_hora_carga'] = date('Y-m-d H:i:s');
                     $datos_obs['usuario_carga'] = session()->get('id_usuario');
@@ -217,10 +210,10 @@ class TarjetaObservaciones extends BaseController
                             $this->sendMail($datos, 2);
 
                             if ($this->request->getPost('otro_responsable') != '') {
-                                $datos['datos_otro_responsable'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs, $id_hallazgo['id'], true);
+                                $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs, $id_hallazgo['id'], true);
                                 $this->sendMail($datos, 5);
                             }
-                            
+
                             break;
                         case '2':
                             $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs);
@@ -233,38 +226,49 @@ class TarjetaObservaciones extends BaseController
                     }
                 }
 
-                /* == Inserta nuevos observadores que se relacionen con la tarjeta == */
-                if ($observadores != NULL) {
-                    foreach ($observadores as $observador) {
-                        $data_observadores = [
-                            'id_tarjeta' => $id_tarjeta_obs,
-                            'observador' => $observador
-                        ];
-                        $this->model_tarjeta->addObservadorTarjeta($data_observadores);
-                    }
-                }
-
                 newMov(6, 1, $id_tarjeta_obs); //Movimiento
 
             } else if ($posee_obs != 1 && $posee_obs != 2 && empty($datos_obs)) {
+                
                 $results = $this->model_tarjeta->addSubmit($datos_tarjeta);
                 $id_tarjeta_obs = $results['last_id'];
 
-                /* == Inserta nuevos observadores que se relacionen con la tarjeta == */
-                if ($observadores != NULL) {
-                    foreach ($observadores as $observador) {
-                        $data_observadores = [
-                            'id_tarjeta' => $id_tarjeta_obs,
-                            'observador' => $observador
-                        ];
-                        $this->model_tarjeta->addObservadorTarjeta($data_observadores);
-                    }
-                }
+                $datos_motivo_cierre  = [
+                    'motivo'    => 'Tarjeta Cerrada',
+                    'cierre_manual'    => 0,
+                    'id_tarjeta_obs' => $id_tarjeta_obs,
+                    'fecha_hora_cierre' => date('Y-m-d H:i:s'),
+                    'id_usuario_cierre' => session()->get('id_usuario'),
+                ];
+        
+                $this->model_tarjeta->addMotivoCierre($datos_motivo_cierre);
 
                 newMov(6, 1, $id_tarjeta_obs); //Movimiento
                 $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta_obs);
                 /* == Envío un correo a quien creó la tarjeta sin plan de acción == */
                 $this->sendMail($datos, 1);
+            }
+
+            /* == Inserto los Indicadores (Si es que existen) == */
+            $indicadores = $this->request->getPost('btn_indicador');
+            foreach ($indicadores as $key => $indicador) {
+                $data = [
+                    'id_tarjeta' => $id_tarjeta_obs,
+                    'id_indicador' => $key,
+                    'rta' => $indicador,
+                ];
+                $this->model_general->insertG('tarjeta_rel_indicadores', $data);
+            }
+
+            /* == Inserta nuevos observadores que se relacionen con la tarjeta == */
+            if ($observadores != NULL) {
+                foreach ($observadores as $observador) {
+                    $data_observadores = [
+                        'id_tarjeta' => $id_tarjeta_obs,
+                        'observador' => $observador
+                    ];
+                    $this->model_tarjeta->addObservadorTarjeta($data_observadores);
+                }
             }
         } else {
             $errores = $verificacion_tarjeta['errores'];
@@ -580,14 +584,14 @@ class TarjetaObservaciones extends BaseController
     {
         // $this->sendMail();
         // echo 'Se envió todo correcto';
-        $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada(18,18);
+        $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada(2, 1, 3);
         echo '<pre>';
         var_dump($datos);
         echo '</pre>';
         // $id = $datos['datos'][0]['id_obs'];
-        // $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . 2;
+        $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . 2;
         // $correos[] = $datos['datos'][0]['correo_carga'];
-        $this->sendMail($datos, 1);
-        // return view('emails/tarjetaObs/nueva', $datos);
+        // $this->sendMail($datos, 1);
+        view('emails/tarjetaObs/otroResponsable', $datos);
     }
 }

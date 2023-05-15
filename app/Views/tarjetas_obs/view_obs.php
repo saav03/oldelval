@@ -6,27 +6,30 @@
 
 $t = $tarjeta;
 
-$descargos['descargos'] = $tarjeta['hallazgo']['descargos'];
+$descargos['descargos'] = isset($tarjeta['hallazgo']['descargos']) ? $tarjeta['hallazgo']['descargos'] : [];
 $situacion = $t['situacion'] == 1 ? 'Abierta' : 'Cerrada';
 
 if (!is_null($t['cierre'])) {
-    $fecha1 = new DateTime($t['hallazgo']['fecha_cierre']);
+    $fecha1 = isset($t['hallazgo']['fecha_cierre']) ? new DateTime($t['hallazgo']['fecha_cierre']) : new DateTime($t['cierre']['fecha_hora_cierre']);
     $fecha2 = new DateTime($t['cierre']['fecha_hora_cierre']);
-    $fecha1_tiempo = strtotime($t['hallazgo']['fecha_cierre']);
+    $fecha1_tiempo = isset($t['hallazgo']['fecha_cierre']) ? strtotime($t['hallazgo']['fecha_cierre']) : strtotime($t['cierre']['fecha_hora_cierre']);
     $fecha2_tiempo = strtotime($t['cierre']['fecha_hora_cierre']);
 
     if ($fecha1_tiempo > $fecha2_tiempo) {
         $rta_cierre_obs = true;
         $diff = $fecha1->diff($fecha2);
-    } else {
+    } else if ($fecha1_tiempo < $fecha2_tiempo) {
         $rta_cierre_obs = false;
+        $diff = $fecha1->diff($fecha2);
+    } else if ($fecha1_tiempo == $fecha2_tiempo) {
+        $rta_cierre_obs = true;
         $diff = $fecha1->diff($fecha2);
     }
 }
 
 ?>
 
-<div class="container ">
+<div class="container">
     <div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 53%);">
         <div class="card-header" style="background: white; padding: 16px; font-weight: 600; letter-spacing: 1.5px; text-align: center;">
             Tarjeta de Observación N°<?= $t['id_tarjeta'] ?> - <?= $situacion ?>
@@ -119,53 +122,7 @@ if (!is_null($t['cierre'])) {
         </div>
     </div>
 
-
-    <!-- <p class="subtitle">Guía de Detección</p>
-
-            <div class="row" style="width: 95%; margin: 0 auto;">
-                <div class="card-body">
-                    <div class="activity">
-                        <!?php $i = 1;
-                        $tipo = '';
-                        $clase = '';
-                        $icon = '';
-                        foreach ($indicadores as $ind) : ?>
-                            <!?php
-
-                            switch ($ind['rta']) {
-                                case '1':
-                                    $tipo = '(Bien)';
-                                    $clase = 'icon-bien';
-                                    $icon = 'fa-solid fa-check';
-                                    break;
-                                case '0':
-                                    $tipo = '(Mal)';
-                                    $clase = 'icon-mal';
-                                    $icon = 'fa-solid fa-xmark';
-                                    break;
-                                case '-1':
-                                    $tipo = '(N/A)';
-                                    $clase = 'icon-na';
-                                    $icon = 'fa-solid fa-minus';
-                                    break;
-                            }
-                            ?>
-                            <div class="activity-item d-flex">
-                                <div class="tipo_check <!?= $clase; ?>">
-                                    <i class="<!?= $icon; ?>"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <!?= $ind['nombre_indicador']; ?>
-                                    <small><em><!?= $tipo; ?></em></small>
-                                </div>
-                            </div>
-                        <!?php $i++;
-                        endforeach; ?>
-
-                    </div>
-                </div>
-            </div> -->
-
+    <?php if (isset($t['hallazgo'])): ?>
     <div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 53%);">
         <div class="card-header subtitle" style="font-weight: 600; letter-spacing: 1.5px; text-align: center;">
             Observación
@@ -182,6 +139,7 @@ if (!is_null($t['cierre'])) {
             <?php endif; ?>
         </div>
     </div>
+    <?php endif; ?>
 
     <!-- == Modal para agregar descargo == -->
     <div class="modal fade" id="modal_add_descargo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -197,7 +155,7 @@ if (!is_null($t['cierre'])) {
                             <div class="col-xs-12 col-md-12">
                                 <label for="new_descargo" class="mb-1 fw-semibold sz_inp">Respuesta / Descargo</label>
                                 <textarea name="new_descargo" id="new_descargo" cols="30" rows="4" class="form-control sz_inp" placeholder="Ingrese la respuesta deseada"></textarea>
-                                <input type="hidden" name="id_hallazgo" id="id_hallazgo_descargo" value="<?= $t['hallazgo']['id'] ?>">
+                                <input type="hidden" name="id_hallazgo" id="id_hallazgo_descargo" value="<?= isset($t['hallazgo']['id']) ? $t['hallazgo']['id'] : '' ?>">
                             </div>
                             <div class="col-xs-12 col-md-12 mt-3">
                                 <div id="container_adj"></div>
@@ -233,7 +191,7 @@ if (!is_null($t['cierre'])) {
                                 <textarea name="motivo_cierre_obs" id="motivo_cierre_obs" cols="30" rows="4" class="form-control sz_inp" placeholder="Ingrese el motivo por el cual cierra la observación"></textarea>
                                 <input type="hidden" name="descargos_id[]" id="descargos_id">
                                 <input type="hidden" name="cierre_forzado" id="cierre_forzado" value="0">
-                                <input type="hidden" name="id_hallazgo" value="<?= $t['hallazgo']['id'] ?>">
+                                <input type="hidden" name="id_hallazgo" value="<?= isset($t['hallazgo']['id']) ? $t['hallazgo']['id'] : '' ?>">
                                 <input type="hidden" name="id_tarjeta_close" value="<?= $t['id_tarjeta'] ?>">
                             </div>
 

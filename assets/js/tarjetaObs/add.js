@@ -34,7 +34,6 @@ function listenTipoObs(e) {
     btn_no.classList.remove("btn_checked");
     btn_yes.classList.remove("btn_checked");
     section_plan_accion.style.display = "none";
-    // situacion.setAttribute('disabled', true);
     situacion.value = 0;
     situacion.classList.add('simulate_dis');
     situacion.style.pointerEvents = 'none';
@@ -43,13 +42,30 @@ function listenTipoObs(e) {
     btn_no_positive.classList.remove("btn_checked");
     btn_yes_positive.classList.remove("btn_checked");
     section_obs_positiva.style.display = "none";
-    btns_add_plan_accion.style.display = "block";
+    // btns_add_plan_accion.style.display = "block";
     situacion.classList.remove('simulate_dis');
     situacion.style.pointerEvents = 'all';
-    // situacion.removeAttribute('disabled');
+
+    /* Si la observación está cerrada, entonces plan de acción no va agregarse */
+    if (situacion.value == 0) {
+      btns_add_plan_accion.style.display = "none";
+      section_plan_accion.style.display = "none";
+    } else {
+      btns_add_plan_accion.style.display = "block";
+    }
+
   }
   posee_obs.value = 0;
 }
+
+situacion.addEventListener('change', e => {
+  if (situacion.value == 1) {
+    btns_add_plan_accion.style.display = "block";
+  } else {
+    btns_add_plan_accion.style.display = "none";
+    section_plan_accion.style.display = "none";
+  }
+})
 
 btn_yes.addEventListener("click", (e) => {
   e.preventDefault();

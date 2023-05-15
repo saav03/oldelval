@@ -254,6 +254,103 @@ for (let i = 0; i < i_question_modal.length; i++) {
                 `;
                 indice_contain.innerHTML = txt;
                 break;
+            case '38':
+                txt = `
+                    <p id="math-formula-IC">
+                        <math alttext="{\text 'IC' = ({∑\text 'HH de capacitacion'\ }/ ∑\text 'HH Trabajadas') × 100" display="block" class="ma-block">
+                            <mrow>
+                                <mtext>IC (Regular)</mtext>
+                                <mo>=</mo>
+                                <mrow>
+                                    <mrow>
+                                        <mo>(</mo>
+                                        <mfrac>
+                                            <mrow class="ma-repel-adj">
+                                                <mrow>
+                                                    <mtext>N° Conductores Regular * 100</mtext>
+                                                    <mi mathvariant="normal" class="ma-upright"> </mi>
+                                                </mrow>
+                                            </mrow>
+                                            <mrow class="ma-repel-adj">
+                                                <mtext>Total de Conductores</mtext>
+                                            </mrow>
+                                        </mfrac>
+                                        <mo>)</mo>
+                                    </mrow>
+                                </mrow>
+                            </mrow>
+                        </math>
+                    </p>
+                    <div class="text-center">
+                    <small><em>(El mismo no debe exceder el 0.3%)</em></small>
+
+                    </div>
+                `;
+                indice_contain.innerHTML = txt;
+                break;
+            case '39':
+                txt = `
+                    <p id="math-formula-IC">
+                        <math alttext="{\text 'IC' = ({∑\text 'HH de capacitacion'\ }/ ∑\text 'HH Trabajadas') × 100" display="block" class="ma-block">
+                            <mrow>
+                                <mtext>IC (Bien)</mtext>
+                                <mo>=</mo>
+                                <mrow>
+                                    <mrow>
+                                        <mo>(</mo>
+                                        <mfrac>
+                                            <mrow class="ma-repel-adj">
+                                                <mrow>
+                                                    <mtext>N° Conductores Bien * 100</mtext>
+                                                    <mi mathvariant="normal" class="ma-upright"> </mi>
+                                                </mrow>
+                                            </mrow>
+                                            <mrow class="ma-repel-adj">
+                                                <mtext>Total de Conductores</mtext>
+                                            </mrow>
+                                        </mfrac>
+                                        <mo>)</mo>
+                                    </mrow>
+                                </mrow>
+                            </mrow>
+                        </math>
+                    </p>
+                `;
+                indice_contain.innerHTML = txt;
+                break;
+            case '40':
+                txt = `
+                    <p id="math-formula-IC">
+                        <math alttext="{\text 'IC' = ({∑\text 'HH de capacitacion'\ }/ ∑\text 'HH Trabajadas') × 100" display="block" class="ma-block">
+                            <mrow>
+                                <mtext>IC (Mal)</mtext>
+                                <mo>=</mo>
+                                <mrow>
+                                    <mrow>
+                                        <mo>(</mo>
+                                        <mfrac>
+                                            <mrow class="ma-repel-adj">
+                                                <mrow>
+                                                    <mtext>N° Conductores Mal * 100</mtext>
+                                                    <mi mathvariant="normal" class="ma-upright"> </mi>
+                                                </mrow>
+                                            </mrow>
+                                            <mrow class="ma-repel-adj">
+                                                <mtext>Total de Conductores</mtext>
+                                            </mrow>
+                                        </mfrac>
+                                        <mo>)</mo>
+                                    </mrow>
+                                </mrow>
+                            </mrow>
+                        </math>
+                    </p>
+                    <div class="text-center">
+                    <small><em>(El mismo no debe exceder el 0.1%)</em></small>
+                    </div>
+                `;
+                indice_contain.innerHTML = txt;
+                break;
         }
         // console.log(i_question_modal[i].getAttribute('data-id'));
     })

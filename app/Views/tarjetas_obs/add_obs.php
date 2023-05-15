@@ -46,7 +46,6 @@
                             <div class="col-xs-12 col-md-2">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Situación Observación <small>(*)</small></label>
                                 <select name="situacion" id="situacion" class="form-select sz_inp" required>
-                                    <option value="">-- Seleccione --</option>
                                     <option value="1">Abierta</option>
                                     <option value="0">Cerrada</option>
                                 </select>

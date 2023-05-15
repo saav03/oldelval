@@ -215,3 +215,20 @@
   color: orange;
   background-color: #f3df69;
 }
+
+fieldset {
+  margin: 10px auto;
+  border: 1px solid #e5e5e5;
+}
+
+legend {
+  color: #505050;
+  font-size: 14px;
+  padding: 3px 5px;
+  width: auto;
+  border-radius: 4px;
+  float: inherit;
+  margin: 0 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}

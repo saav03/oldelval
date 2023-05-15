@@ -143,7 +143,8 @@ class Model_tarjeta extends Model
 		return $results;
 	}
 
-	public function addObservadorTarjeta($datos) {
+	public function addObservadorTarjeta($datos)
+	{
 		$this->db->transStart();
 		$builder = $this->db->table('tarjeta_rel_observador');
 		$builder->insert($datos);
@@ -223,8 +224,26 @@ class Model_tarjeta extends Model
 
 		/* == Cargo el hallazgo == */
 		$query_hallazgo = $this->getDataHallazgoTarjeta($id_obs);
-		$id_hallazgo = $query_hallazgo['id'];
-		$tarjeta['hallazgo'] = $query_hallazgo;
+		
+		if ($query_hallazgo != NULL) {
+			$id_hallazgo = $query_hallazgo['id'];
+			$tarjeta['hallazgo'] = $query_hallazgo;
+
+			/* == Cargo los adjuntos del hallazgo == */
+			$query_hallazgo_adj = $this->getAdjHallazgoTarjeta($id_hallazgo);
+			$tarjeta['hallazgo']['adjuntos'] = $query_hallazgo_adj;
+
+			/* == Cargo los descargos del hallazgo == */
+			$query_hallazgo_descargo = $this->getDescargoHallazgoTarjeta($id_hallazgo);
+
+			foreach ($query_hallazgo_descargo as $key => $d) {
+				/* == Cargo los adjuntos de todos los hallazgos == */
+				$adjuntos_descargo = $this->getAdjDescargosHallazgo($d['id']);
+				$query_hallazgo_descargo[$key]['descargos_adj'] = $adjuntos_descargo;
+			}
+
+			$tarjeta['hallazgo']['descargos'] = $query_hallazgo_descargo;
+		}
 
 		/* == Cargo los observadores a la tarjeta == */
 		$tarjeta['observadores'] = $this->getObservadoresTarjeta($id_obs);
@@ -233,20 +252,8 @@ class Model_tarjeta extends Model
 		$query_cierre_obs = $this->getCierreMotivoTarjeta($id_obs);
 		$tarjeta['cierre'] = $query_cierre_obs;
 
-		/* == Cargo los adjuntos del hallazgo == */
-		$query_hallazgo_adj = $this->getAdjHallazgoTarjeta($id_hallazgo);
-		$tarjeta['hallazgo']['adjuntos'] = $query_hallazgo_adj;
 
-		/* == Cargo los descargos del hallazgo == */
-		$query_hallazgo_descargo = $this->getDescargoHallazgoTarjeta($id_hallazgo);
 
-		foreach ($query_hallazgo_descargo as $key => $d) {
-			/* == Cargo los adjuntos de todos los hallazgos == */
-			$adjuntos_descargo = $this->getAdjDescargosHallazgo($d['id']);
-			$query_hallazgo_descargo[$key]['descargos_adj'] = $adjuntos_descargo;
-		}
-
-		$tarjeta['hallazgo']['descargos'] = $query_hallazgo_descargo;
 
 		return $tarjeta;
 	}
@@ -293,7 +300,8 @@ class Model_tarjeta extends Model
 	/**
 	 * Trae aquellos observadores que pertenecen al id de la tarjeta solicitada por parámetro
 	 */
-	protected function getObservadoresTarjeta($id_tarjeta) {
+	protected function getObservadoresTarjeta($id_tarjeta)
+	{
 		$builder = $this->db->table('tarjeta_rel_observador tro');
 		$builder->select('*')
 			->where('tro.id_tarjeta', $id_tarjeta);
@@ -335,7 +343,7 @@ class Model_tarjeta extends Model
 		$builder->select('tarjeta_rel_indicadores.*, tarjeta_indicadores.nombre nombre_indicador')
 			->join('tarjeta_rel_indicadores', 'tarjeta_rel_indicadores.id_indicador=tarjeta_indicadores.id', 'inner')
 			->where('tarjeta_rel_indicadores.id_tarjeta', $id_obs);
-			return $builder->get()->getResultArray();
+		return $builder->get()->getResultArray();
 		/* $builder = $this->db->table('tarjeta_indicadores');
 		$builder->select('tarjeta_indicadores.*')
 			->join('tarjeta_rel_indicadores', 'tarjeta_rel_indicadores.id_indicador=tarjeta_indicadores.id', 'inner')
@@ -374,7 +382,8 @@ class Model_tarjeta extends Model
 		return $results;
 	}
 
-	public function closeDescargoForced($datos, $id_descargo) {
+	public function closeDescargoForced($datos, $id_descargo)
+	{
 		$this->db->transStart();
 		$builder = $this->db->table('tarjeta_hallazgo_descargos');
 		$builder->where('tarjeta_hallazgo_descargos.id', $id_descargo);
