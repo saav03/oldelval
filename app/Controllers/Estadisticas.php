@@ -323,6 +323,22 @@ class Estadisticas extends BaseController
         }
     }
 
+    /**
+     * Agrega el Indice IF AAP
+     */
+    public function submitIndiceIFAAP() {
+        $data = [
+            'id_estadistica' => $this->request->getPost('id_estadistica'),
+            'id_indicador' => 14,
+            'valor' => $this->request->getPost('valor'),
+            'nota' => $this->request->getPost('motivo'),
+            'id_tipo' => 1,
+            'es_kpi' => 1,
+            'usuario_carga' => session()->get('id_usuario')
+        ];
+        $this->model_general->insertG('estadisticas_rel_planilla_indicadores', $data);
+    }
+
     public function changeState($id_estadistica)
     {
         $this->model_estadisticas->changeState($id_estadistica);

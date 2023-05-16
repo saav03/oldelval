@@ -155,23 +155,14 @@ if ($tarjeta['cierre'] == null) : ?>
             <div class="row">
                 <p class="txt_adjunto">Sector de Descargos/Respuestas</p>
                 <!-- == Botón para agregar descargo (Abre un Modal) == -->
-                <?php if (empty($tarjeta['hallazgo']['descargos'])) {
-
-                    if ($tarjeta['situacion'] != 0) { ?>
-                        <?php if ($tarjeta['usuario_carga'] != session()->get('id_usuario') && $tarjeta['hallazgo']['responsable'] == session()->get('id_usuario') || $tarjeta['hallazgo']['otro_responsable'] == session()->get('id_usuario')) : ?>
-                            <div class="row" id="btns_descargos">
-                                <div style="margin: 15px 0 0 71px;">
-                                    <button class="btn_modify" id="add_descargo" data-bs-toggle="modal" data-bs-target="#modal_add_descargo">Agregar Descargo</button>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-
-                    <?php } ?>
-
-                <?php } else { ?>
-                    <!-- == Si es que ya existe una respuesta a esta observación, se visualiza esta vista == -->
-                    <?= view('tarjetas_obs/view_obs/descargo_obs', $descargos) ?> <!-- descargo_obs.php -->
-                <?php }  ?>
+                <?= view('tarjetas_obs/view_obs/descargo_obs', $descargos) ?> <!-- descargo_obs.php -->
+                <?php if ($tarjeta['usuario_carga'] != session()->get('id_usuario') && is_null($tarjeta['cierre']) && $tarjeta['hallazgo']['responsable'] == session()->get('id_usuario') || $tarjeta['hallazgo']['otro_responsable'] == session()->get('id_usuario')) : ?>
+                    <div class="row" id="btns_descargos">
+                        <div style="margin: 15px 0 0 71px;">
+                            <button class="btn_modify" id="add_descargo" data-bs-toggle="modal" data-bs-target="#modal_add_descargo">Agregar Descargo</button>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 

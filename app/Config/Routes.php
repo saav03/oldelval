@@ -77,7 +77,9 @@ $routes->match(['get', 'post'],"/addNewFormulario",'Estadisticas::cargarTipoPlan
 $routes->match(['get', 'post'],"/addFormulario",'Estadisticas::addFormulario');
 $routes->match(['get', 'post'],'/api/estadisticas/get/(:num)/(:num)','Estadisticas::getPaged/$1/$2');
 $routes->match(['get', 'post'],'/api/estadisticas/getTotal/','Estadisticas::getPaged');
+
 $routes->post('/Estadistica/submit/','Estadisticas::submitEstadistica');
+$routes->post('/Estadistica/submitIndiceIFAAP/','Estadisticas::submitIndiceIFAAP');
 
 // ESTADÍSTICAS GESTION VEHICULAR
 $routes->match(['get', 'post'],'/addGestionVehicular','Estadisticas::addGestionVehicular');

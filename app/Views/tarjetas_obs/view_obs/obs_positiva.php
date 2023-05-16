@@ -6,19 +6,37 @@
 $t = $tarjeta['hallazgo'];
 ?>
 
-<div id="caja_plan_accion_positiva">
-    <div class="row p-3" id="contenedor_plan_positivo">
+<div>
+    <div class="row">
         <div class="col-xs-12 col-md-12">
-            <label class="mb-1 fw-semibold sz_inp">Descripción de lo Observado</label>
-            <textarea class="form-control sz_inp" name="hallazgo" id="hallazgo" cols="30" rows="5"><?= $t['hallazgo'] ?></textarea>
+            <fieldset>
+                <legend>
+                    Descripción del hallazgo observado
+                </legend>
+                <div class="row" style="padding: 10px 50px;">
+                    <textarea class="form-control sz_inp" name="hallazgo" id="hallazgo" cols="30" rows="5" style="border: 1px solid #f1f1f1;" disabled><?= $t['hallazgo'] ?></textarea>
+                </div>
+            </fieldset>
         </div>
-        <div class="col-xs-12 col-md-6 mt-3">
-            <label class="mb-1 fw-semibold sz_inp">Clasificación de Hallazgo</label>
-            <input class="form-control sz_inp" type="text" id="clasificacion" value="<?= $t['clasificacion'] ?>" readonly>
+        <div class="col-xs-12 col-md-6">
+            <fieldset style="border-right: 0;">
+                <legend style="width: 100%;">
+                    Clasificación de Hallazgo
+                </legend>
+                <div class="row" style="padding: 4px 50px;">
+                    <input class="form-control sz_inp" type="text" id="clasificacion" value="<?= $t['clasificacion'] ?>" style="border: none;" readonly>
+                </div>
+            </fieldset>
         </div>
-        <div class="col-xs-12 col-md-6 mt-3">
-            <label class="mb-1 fw-semibold sz_inp">Contratista</label>
-            <input class="form-control sz_inp" type="text" id="contratista" value="<?= $t['contratista'] ?>" readonly>
+        <div class="col-xs-12 col-md-6">
+            <fieldset style="border-right: 0;">
+                <legend style="width: 100%;">
+                    Contratista
+                </legend>
+                <div class="row" style="padding: 4px 50px;">
+                    <input class="form-control sz_inp" type="text" id="clasificacion" value="<?= $t['contratista'] ?>" style="border: none;" readonly>
+                </div>
+            </fieldset>
         </div>
 
         <div>
@@ -32,6 +50,7 @@ $t = $tarjeta['hallazgo'];
                             <a href="<?= base_url("uploads/tarjetaObs/") . '/' . $adj['adjunto'] ?>" target="_blank">
                                 <img id="img_descargo" src="<?= base_url("uploads/tarjetaObs/") . '/' . $adj['adjunto'] ?>" alt="">
                             </a>
+
                             <?php if ($adj['desc_adjunto'] != '') { ?>
                                 <p class="mt-2"><?= $adj['desc_adjunto'] ?></p>
                             <?php } else { ?>

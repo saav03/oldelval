@@ -559,10 +559,10 @@ class TarjetaObservaciones extends BaseController
         $message = $vista;
         // $correos[] = 'mdinamarca@blister.com.ar';
         $config['protocol'] = 'smtp';
-        $config["SMTPHost"] = 'sd-1860055-l.dattaweb.com';
+        $config["SMTPHost"] = 'oldelval-cass.com';
         $config['mailType'] = 'html';
-        $config["SMTPUser"] = 'no-reply@shell-hsse.com';
-        $config["SMTPPass"] = '6jKgSi9Bqh';
+        $config["SMTPUser"] = '_mainaccount@oldelval-cass.com';
+        $config["SMTPPass"] = '{uTxa35Z?%Ay';
         $config["SMTPPort"] = '465'; //'587';
         $config['charset'] = 'utf-8';
         $config['wordwrap'] = TRUE;
@@ -573,7 +573,7 @@ class TarjetaObservaciones extends BaseController
         // $correos[] = 'blistersoftware@gmail.com';
 
         $email->initialize($config);
-        $email->setFrom('no-reply@shell-hsse.com', 'OLDELVAL');
+        $email->setFrom('_mainaccount@oldelval-cass.com', 'OLDELVAL');
         $email->setBCC($correos);
         $email->setSubject($subject);
         $email->setMessage($message);
@@ -589,9 +589,9 @@ class TarjetaObservaciones extends BaseController
         var_dump($datos);
         echo '</pre>';
         // $id = $datos['datos'][0]['id_obs'];
-        $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . 2;
+        // $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . 2;
         // $correos[] = $datos['datos'][0]['correo_carga'];
-        // $this->sendMail($datos, 1);
+        $this->sendMail($datos, 1);
         view('emails/tarjetaObs/otroResponsable', $datos);
     }
 }

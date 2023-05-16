@@ -111,3 +111,22 @@
   border-top: 1px solid #d1f4ff;
   border-bottom: 1px solid #d1f4ff;
 }
+
+.subtitle {
+  background: lightblue;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  margin-top: 10px;
+}
+#btnSubmitIndice {
+  background: #b8caff;
+  border: none;
+  padding: 5px;
+  color: white;
+}
+#btnSubmitIndice:hover {
+  background: #a1b5ee;
+}

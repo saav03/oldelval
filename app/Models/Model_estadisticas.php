@@ -74,10 +74,11 @@ class Model_estadisticas extends Model
 	protected function getIndicadoresPlanilla($id_tipo, $id_estadistica, $es_kpi = false)
 	{
 		$builder = $this->db->table('estadisticas_rel_planilla_indicadores rel_ind');
-		$builder->select('rel_ind.id rel_id_indicador, estadisticas_indicadores.id id_indicador, estadisticas_indicadores.nombre nombre, rel_ind.id_estadistica estadistica, rel_ind.valor, rel_ind.nota, rel_ind.id_tipo, estadisticas_subtitulo.id id_subtitulo, estadisticas_titulo.id id_titulo')
+		$builder->select('rel_ind.id rel_id_indicador, estadisticas_indicadores.id id_indicador, estadisticas_indicadores.nombre nombre, rel_ind.id_estadistica estadistica, rel_ind.valor, rel_ind.nota, rel_ind.id_tipo, estadisticas_subtitulo.id id_subtitulo, estadisticas_titulo.id id_titulo, usuario.nombre nombre_u_creacion, usuario.apellido apellido_u_creacion, DATE_FORMAT(rel_ind.fecha_hora_carga, "%d/%m/%Y") as fecha_carga_format')
 			->where('rel_ind.id_tipo', $id_tipo)
 			->join(' estadisticas_subtitulo', 'estadisticas_subtitulo.id=rel_ind.id_subtitulo', 'left')
 			->join(' estadisticas_titulo', 'estadisticas_titulo.id=rel_ind.id_titulo', 'left')
+			->join("usuario", 'usuario.id=rel_ind.usuario_carga', 'inner')
 			->join('estadisticas_indicadores', 'estadisticas_indicadores.id=rel_ind.id_indicador', 'inner');
 		if ($es_kpi) {
 			$builder->where('rel_ind.es_kpi', 1);
@@ -202,8 +203,9 @@ class Model_estadisticas extends Model
 	public function getDataIndicadoresTituloPlanilla($id_tipo, $id_titulo, $id_estadistica)
 	{
 		$builder = $this->db->table('estadisticas_rel_planilla_indicadores indicador');
-		$builder->select("estadisticas_indicadores.id id_indicador, estadisticas_indicadores.nombre, indicador.id_estadistica estadistica, indicador.valor, indicador.nota, indicador.id_subtitulo, indicador.id_titulo")
+		$builder->select("estadisticas_indicadores.id id_indicador, estadisticas_indicadores.nombre, indicador.id_estadistica estadistica, indicador.valor, indicador.nota, indicador.id_subtitulo, indicador.id_titulo, usuario.nombre nombre_u_creacion, usuario.apellido apellido_u_creacion")
 			->join("estadisticas_indicadores", 'estadisticas_indicadores.id=indicador.id_indicador', 'inner')
+			->join("usuario", 'usuario.id=indicador.usuario_carga', 'inner')
 			->where("indicador.id_tipo", $id_tipo)
 			->where("indicador.id_estadistica", $id_estadistica)
 			->where("indicador.id_titulo", $id_titulo)
