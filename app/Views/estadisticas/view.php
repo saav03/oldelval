@@ -15,7 +15,9 @@ switch ($estadistica[0]['tipo']) {
 }
 
 ?>
+
 <div class="container">
+
     <div class="row">
         <div class="col-md-12">
             <h5 class="subtitle-view">Estadistica <?= $tipo_estadistica ?> N°<?= $estadistica[0]['id_estadistica'] ?></h5>
@@ -23,15 +25,18 @@ switch ($estadistica[0]['tipo']) {
     </div>
 
     <p class="text-end"><span><em>Periodo: </em><?= $estadistica[0]['periodo'] ?></span></p>
-    <div class="card" style="border: 1px solid #f6f6f6; box-shadow: 0px 0 30px rgb(1 41 112 / 5%);">
+    <div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 39%);">
         <div class="card-body">
             <?= view('estadisticas/view_encabezado') ?>
         </div>
+    </div>
+</div>
 
-        <div class="row data_est">
-            <p>Datos de la Estadística</p>
-        </div>
-
+<div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 39%);">
+    <div class="card-header subtitle" style="font-weight: 600; letter-spacing: 1.5px; text-align: center; margin: 0;">
+        Datos de la Estadística
+    </div>
+    <div class="card-body">
         <div class="indicadores_valor p-3">
             <div>
                 Indicador
@@ -60,7 +65,7 @@ switch ($estadistica[0]['tipo']) {
                     </div>
                     <div class="collapse" id="collapse_ind_gral_<?= $ind['id_indicador'] ?>">
                         <div class="form-floating">
-                            <textarea class="form-control" id="textarea" name="indicador_gral[<?= $ind['id_indicador'] ?>][nota]" rows="2"></textarea>
+                            <textarea class="form-control" id="textarea" name="indicador_gral[<?= $ind['id_indicador'] ?>][nota]" rows="2" readonly></textarea>
                             <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                         </div>
                     </div>
@@ -153,7 +158,7 @@ switch ($estadistica[0]['tipo']) {
                             </div>
                             <div class="collapse" id="collapse_ind_gral_<?= $ind_title['id_indicador'] ?>">
                                 <div class="form-floating" style="font-size: 12.5px!important;">
-                                    <textarea style="font-size: 12.5px!important;" class="form-control ind-just_read" id="textarea" name="indicador_gral[<?= $ind_title['id_indicador'] ?>][nota]" rows="2"><?= $ind_title['nota'] ?></textarea>
+                                    <textarea style="font-size: 12.5px!important;" class="form-control ind-just_read" id="textarea" name="indicador_gral[<?= $ind_title['id_indicador'] ?>][nota]" rows="2" readonly><?= $ind_title['nota'] ?></textarea>
                                     <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                 </div>
                             </div>
@@ -164,16 +169,26 @@ switch ($estadistica[0]['tipo']) {
             <?php endif; ?>
 
         <?php endforeach; ?>
+    </div>
+</div>
 
-        <br>
-
-        <div class="row data_est">
-            <p>KPIs del Mes</p>
-        </div>
-
+<div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 39%);">
+    <div class="card-header subtitle" style="font-weight: 600; letter-spacing: 1.5px; text-align: center; margin: 0;">
+        KPIs del Mes
+    </div>
+    <div class="card-body">
         <?php if (isset($estadistica['indices'])) : ?>
-            <?php foreach ($estadistica['indices'] as $indice) : ?>
+            <?php foreach ($estadistica['indices'] as $indice) :
+            ?>
                 <div class="row" style="width: 95%; margin: 10px auto;">
+                    <?php if ($indice['id_indicador'] == 14) {
+                        $id_indice_ifaap = $indice['id_indicador']; ?>
+                        <div class="row" style="margin-left: 5px; letter-spacing: .4px;">
+                            <span><small><em> <b>Agregado por</b>: <?= $indice['nombre_u_creacion'] . ' ' . $indice['apellido_u_creacion']; ?> | <b>Fecha de carga</b>: <?= $indice['fecha_carga_format']; ?></em></small> </span>
+                        </div>
+                    <?php } else {
+                        $id_indice_ifaap = ''; ?>
+                    <?php } ?>
                     <div class="div_indicador_view">
 
                         <div class="div-personal_ind">
@@ -195,7 +210,7 @@ switch ($estadistica[0]['tipo']) {
                         </div>
                         <div class="collapse" id="collapse_indSubt<?= $indice['id_indicador'] ?>">
                             <div class="form-floating" style="font-size: 12.5px!important;">
-                                <textarea style="font-size: 12.5px!important;" class="form-control" name="indicador_subt[<?= $indice['id_indicador'] ?>][nota]" id="textarea" rows="2"><?= $indice['nota'] ?></textarea>
+                                <textarea style="font-size: 12.5px!important;" class="form-control" name="indicador_subt[<?= $indice['id_indicador'] ?>][nota]" id="textarea" rows="2" readonly><?= $indice['nota'] ?></textarea>
                                 <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                             </div>
                         </div>
@@ -204,14 +219,74 @@ switch ($estadistica[0]['tipo']) {
             <?php endforeach; ?>
         <?php endif; ?>
 
+        <br>
 
-        <!-- Muestro los adjuntos en caso de existir (Solamente para las capacitaciones) -->
-        <?php if (isset($estadistica['adjuntos'])) { ?>
-            <br>
+        <?php if (acceso('vista_editpermiso') && $id_indice_ifaap != 14 && $estadistica[0]['tipo'] == 1) : ?>
+            <div class="card">
+                <div class="card-header" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="background:#e5e5e5; border-bottom: 0;">
+                    Ingresar Indice de Frecuencia de Accidentes de Alto Potencial (IF AAP)
+                    </a>
+                </div>
+                <div class="collapse" id="collapseExample">
+                    <div class="card-body" style="border: 1px solid lightgray;border-top: 0;border-radius: 0 0 4px 4px;">
 
-            <div class="row data_est">
-                <p>Adjuntos</p>
+                        <div class="row align-items-center">
+                            <div class="col-xs-12 col-md-3">
+                                <label class="mb-1 fw-semibold">N°Accidente operativo de alto potencial</label>
+                                <input type="number" class="form-control sz_inp" id="num_accidente_alto_potencial" placeholder="N°Accidente operativo de alto potencial">
+                            </div>
+                            <div class="col-xs-12 col-md-1 text-center" style="margin-top: 20px;">
+                                <label></label>
+                                x
+                            </div>
+                            <div class="col-xs-12 col-md-2">
+                                <label></label>
+                                <input type="number" class="form-control sz_inp simulate_dis text-center" value="1000000" name="millon_alto_potencial" readonly>
+                            </div>
+                            <div class="col-xs-12 col-md-1 text-center" style="margin-top: 20px;">
+                                <label></label>
+                                ÷
+                            </div>
+                            <div class="col-xs-12 col-md-2">
+                                <label class="mb-1 fw-semibold">Horas hombre trabajadas</label>
+                                <input type="number" class="form-control sz_inp simulate_dis text-center" id="num_horas_trabajadas" value="<?= $estadistica[0]['indicadores'][1]['valor'] ?>" readonly>
+                            </div>
+                            <div class="col-xs-12 col-md-1 text-center " style="margin-top: 20px;">
+                                <label></label>
+                                =
+                            </div>
+                            <div class="col-xs-12 col-md-2">
+                                <label class="mb-1 fw-semibold">Resultado</label>
+                                <input type="number" id="resultado_indice" class="form-control sz_inp simulate_dis text-center" readonly>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label class="mb-1 fw-semibold">Motivo</label>
+                                <textarea id="motivo_indice_ifaap" cols="10" rows="3" class="form-control sz_inp" placeholder="Ingrese el motivo por el cual se agrega este índice (Opcional)"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-2">
+                            <div>
+                                <input type="button" value="Agregar" id="btnSubmitIndice">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<!-- Muestro los adjuntos en caso de existir (Solamente para las capacitaciones) -->
+<?php if (isset($estadistica['adjuntos'])) { ?>
+    <div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 39%);">
+        <div class="card-header subtitle" style="font-weight: 600; letter-spacing: 1.5px; text-align: center; margin: 0;">
+            Adjuntos
+        </div>
+        <div class="card-body">
             <?php if ($estadistica['adjuntos']) { ?>
                 <?php foreach ($estadistica['adjuntos'] as $adj) : ?>
                     <section style="width: 90%; margin: 0 auto;">
@@ -235,30 +310,99 @@ switch ($estadistica[0]['tipo']) {
                     <p class="text-center m-0"><em>No se han cargado adjuntos</em></p>
                 </div>
             <?php } ?>
+        </div>
+    </div>
 
-        <?php }  ?>
+<?php }  ?>
 
-        <!-- Modal -->
-        <div class="modal fade" id="modal_answer" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 style="margin: 0;"><i class="fas fa-info-circle"></i> Fórmula Utilizada</h6>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h6 class="text-center">Indice de Incidencia de Accidentes Personales (II AP)</h6>
-                        <br>
-                        <p class="m-0 text-center" style="font-size: 12px; font-weight: bold;">(Trabajadores accidentados x 1000) / trabajadores expuestos</p>
-                        <br>
-                        <p class="m-0 text-center" style="font-size: 12px;">Expresa la cantidad de trabajadores afectados por accidentes in-itinere, lumbalgias, accidentes operativos con y sin días perdidos y accidentes no operativos, en un período de un año, por cada mil trabajadores expuestos.</p>
-                    </div>
-                </div>
+<!-- Modal -->
+<!-- <div class="modal fade" id="modal_answer" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 style="margin: 0;"><i class="fas fa-info-circle"></i> Fórmula Utilizada</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="text-center">Indice de Incidencia de Accidentes Personales (II AP)</h6>
+                <br>
+                <p class="m-0 text-center" style="font-size: 12px; font-weight: bold;">(Trabajadores accidentados x 1000) / trabajadores expuestos</p>
+                <br>
+                <p class="m-0 text-center" style="font-size: 12px;">Expresa la cantidad de trabajadores afectados por accidentes in-itinere, lumbalgias, accidentes operativos con y sin días perdidos y accidentes no operativos, en un período de un año, por cada mil trabajadores expuestos.</p>
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="d-flex justify-content-end">
     <button class="btn_modify" onclick="window.location.href = `${GET_BASE_URL()}/estadisticas`">Volver</button>
 </div>
-</div>
+
+<script>
+    /*
+====================
+Submit Indice IF APP
+====================
+*/
+
+    let id_estadistica = <?= json_encode($estadistica[0]['id_estadistica']); ?>;
+
+    const num_accidente_alto_potencial = document.getElementById('num_accidente_alto_potencial');
+    const cant_horas_hombres_trabajadas = document.getElementById('num_horas_trabajadas');
+    const resultado_indice = document.getElementById('resultado_indice');
+    const btnSubmitIndice = document.getElementById('btnSubmitIndice');
+
+    num_accidente_alto_potencial.addEventListener('change', e => {
+        let total = 0;
+        total = (parseInt(num_accidente_alto_potencial.value) * 1000000) / parseInt(cant_horas_hombres_trabajadas.value);
+        resultado_indice.value = total.toFixed(2);
+    });
+
+    function submitResultadoIndice(form) {
+        return $.ajax({
+            type: "POST",
+            url: GET_BASE_URL() + "/Estadistica/submitIndiceIFAAP",
+            data: form,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                loadingAlert();
+            },
+        });
+    }
+
+    btnSubmitIndice.addEventListener('click', e => {
+        e.preventDefault();
+        let form = new FormData();
+        form.append('id_estadistica', id_estadistica);
+        form.append('valor', resultado_indice.value);
+        form.append('motivo', document.getElementById('motivo_indice_ifaap').value);
+        customConfirmationButton(
+            "Cargar Indice IFAAP",
+            "¿Confirma la carga del índice?",
+            "Cargar",
+            "Cancelar",
+            "swal_edicion"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                submitResultadoIndice(form)
+                    .done(function(data) {
+                        customSuccessAlert(
+                            "Registro Exitoso",
+                            "El Indice se registró correctamente",
+                            "swal_edicion"
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    })
+                    .fail((err, textStatus, xhr) => {
+                        let errors = Object.values(JSON.parse(err.responseText));
+                        errors = errors.join(". ");
+                        customShowErrorAlert(null, errors, 'swal_edicion');
+                    });
+            }
+        });
+
+    });
+</script>

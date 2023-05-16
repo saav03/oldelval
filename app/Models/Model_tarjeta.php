@@ -224,7 +224,7 @@ class Model_tarjeta extends Model
 
 		/* == Cargo el hallazgo == */
 		$query_hallazgo = $this->getDataHallazgoTarjeta($id_obs);
-		
+
 		if ($query_hallazgo != NULL) {
 			$id_hallazgo = $query_hallazgo['id'];
 			$tarjeta['hallazgo'] = $query_hallazgo;
