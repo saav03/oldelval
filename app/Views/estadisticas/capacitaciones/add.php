@@ -103,7 +103,7 @@ exit; */
                                                                 <input type="hidden" value="<?= $ind['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_titulo]">
                                                                 <input type="hidden" value="<?= $subt['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_subtitulo]">
                                                                 <input type="hidden" value="<?= $ind_subt['id'] ?>" name="indicador_subt[<?= $ind_subt['id'] ?>][id_indicador]">
-                                                                <input type="number" value="0" min="0" name="indicador_subt[<?= $ind_subt['id'] ?>][valor]" id="indicador_<?= $ind_subt['id'] ?>" data-id-subt="<?= $subt['id'] ?>" class="form-control sz_inp text-center>
+                                                                <input type="number" value="0" min="0" name="indicador_subt[<?= $ind_subt['id'] ?>][valor]" id="indicador_<?= $ind_subt['id'] ?>" data-id-subt="<?= $subt['id'] ?>" class="form-control sz_inp text-center">
                                                             </div>
                                                         </div>
                                                         <div class="collapse" id="collapse_indSubt<?= $ind_subt['id'] ?>">
@@ -291,12 +291,12 @@ exit; */
 
 <script>
     /* == (Indice de Capacitación IC) == */
-    const ind_cant_participantes = document.getElementById("indicador_title24");
-    const ind_hs_capacitacion = document.getElementById("indicador_title25");
-    const ind_hs_trabajadas = document.getElementById("indicador_title36");
+    const ind_cant_participantes = document.getElementById("indicador_24");
+    const ind_hs_capacitacion = document.getElementById("indicador_25");
+    const ind_hs_trabajadas = document.getElementById("indicador_36");
     let ic = document.getElementById("indice_34");
     
-    const ind_total_hs_capacitacion = document.getElementById("indicador_title30");
+    const ind_total_hs_capacitacion = document.getElementById("indicador_30");
 
     /* == (Horas Objetivo de Capacitación) == */
     let hora_objetivo = document.getElementById("indice_35");

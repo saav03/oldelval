@@ -14,6 +14,7 @@ switch ($estadistica[0]['tipo']) {
         break;
 }
 
+$id_indice_ifaap = '';
 ?>
 
 <div class="container">
