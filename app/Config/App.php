@@ -27,8 +27,8 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://localhost/oldelval/';
-    // public $baseURL = 'https://oldelval-cass.com/';
+    // public $baseURL = 'http://localhost/oldelval/';
+    public $baseURL = 'https://oldelval-cass.com/';
     // public $baseURL = 'http://10.10.11.197/oldelval/';
 
 
