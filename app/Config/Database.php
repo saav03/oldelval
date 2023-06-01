@@ -33,15 +33,13 @@ class Database extends Config
     public $default = [
         'DSN'      => '',
         'hostname' => 'localhost',
-        'username' => 'oldelvalcass_user',
-        // 'username' => 'root',
-        'password' => '-C@LkVwQmX.@',
-        // 'password' => '',
+        'username' => 'root',
+        'password' => '',
         'database' => 'oldelvalcass_db',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,
-        'DBDebug'  => (ENVIRONMENT !== 'development'),
+        'DBDebug'  => (ENVIRONMENT !== 'production'),
         'charset'  => 'utf8',
         'DBCollat' => 'utf8_general_ci',
         'swapPre'  => '',
@@ -60,7 +58,7 @@ class Database extends Config
      */
     public $tests = [
         'DSN'         => '',
-        'hostname'    => 'localhost',
+        'hostname'    => '127.0.0.1',
         'username'    => '',
         'password'    => '',
         'database'    => ':memory:',

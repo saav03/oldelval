@@ -1,0 +1,93 @@
+/** addplanilla.php **/
+.label_question {
+    background-color: #d36e65;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 100%;
+    margin-right: 6px;
+    color: white;
+}
+
+#btnAddQuestion {
+    background: #e7847b;
+    border: none;
+    padding: 5px 20px;
+    color: white;
+    transition: all .2s ease-in-out;
+    border-radius: 5px;
+}
+
+#btnAddQuestion:hover {
+    background: #e38178;
+    color: wheat;
+}
+
+.del_question {
+    background-color: #d36e65;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 6px;
+    color: white;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.del_question:hover {
+    background-color: #c1635b;
+}
+
+.btn-del_question {
+    background: #d36e65;
+    border: none;
+    color: white;
+    padding: 3px 10px;
+}
+
+.title_container {
+    border-top: 5px solid #d36e65;
+    margin-top: 0px;
+    background-color: #fff;
+}
+
+#preguntas {
+    padding: 5px;
+}
+
+#add_bloque_preguntas {
+    background: #87ceeb;
+    border-radius: 5px;
+    border: none;
+    padding: 8px 13px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    transition: .2s all ease-in;
+}
+
+#add_bloque_preguntas:hover {
+    background: #79beda;
+}
+
+.num_pregunta {
+    background: #5096b7;
+    border-radius: 100%;
+    width: 40px;
+    height: 37px;
+    color: white;
+    text-align: center;
+    margin: 0 5px;
+    padding: 9px 0px;
+}
+
+.div_gral {
+    text-align: center;
+    color: white;
+    background: #8dc9d3;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 3px;
+    letter-spacing: 1.2px;
+}

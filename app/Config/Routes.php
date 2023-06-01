@@ -49,10 +49,31 @@ $routes->setAutoRoute(true);
 $routes->get('accessList','Usuario::ingresos');
 $routes->match(['get', 'post'],'/api/access/get/(:num)/(:num)','Usuario::getPagedAccess/$1/$2');
 $routes->match(['get', 'post'],'/api/access/getTotal/','Usuario::getPagedAccess');
+$routes->match(['get', 'post'],'/api/auditorias/getBloqueAud/(:num)','Auditorias::getBloqueAud/$1');
 
 /* == Auditorías == */
+$routes->get('/auditorias','Auditorias::index');
+$routes->get('/auditorias/view_aud_control/(:num)','Auditorias::view_aud_control/$1');
+$routes->get('/auditorias/view_aud_vehicular/(:num)','Auditorias::view_aud_vehicular/$1');
+// Tablas historicos -> | Auditorías Control | Auditorías Checklist Vehicular
+$routes->match(['get', 'post'],'/api/auditorias/getControl/(:num)/(:num)','Auditorias::getPagedControl/$1/$2');
+$routes->match(['get', 'post'],'/api/auditorias/getTotalControl/','Auditorias::getPagedControl');
+
+$routes->match(['get', 'post'],'/api/auditorias/getVehicular/(:num)/(:num)','Auditorias::getPagedVehicular/$1/$2');
+$routes->match(['get', 'post'],'/api/auditorias/getTotalVehicular/','Auditorias::getPagedVehicular');
+$routes->post('/auditorias/changeState/(:num)/(:num)','Auditorias::changeState/$1/$2');
+
+
 $routes->match(['get', 'post'],'/auditoria/add','Auditorias::add');
 $routes->match(['get', 'post'],'/auditoria/addPlanilla','Auditorias::addPlanilla');
+$routes->match(['get', 'post'],'/Auditorias/submit','Auditorias::submitCrearNewAuditoria');
+$routes->match(['get', 'post'],'/Auditorias/autocomplete','Auditorias::autocomplete_responsable');
+$routes->post('/Auditorias/submitUpload/','Auditorias::submitUpload');
+
+/* == Auditorías Control == */
+$routes->post('/audcontrol/submitCloseObs','Aud_Control::submitCerrarHallazgo');
+$routes->post('/audcontrol/submitDescargo','Aud_Control::submitDescargo');
+$routes->post('/audcontrol/submitRtaDescargo','Aud_Control::submitRtaDescargo');
 
 #B
 #C

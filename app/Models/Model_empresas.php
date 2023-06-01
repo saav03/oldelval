@@ -3,7 +3,7 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class Model_estacion extends Model {
+class Model_empresas extends Model {
 
     public function getEmpresas($id_empresa = 0) {
         $builder = $this->db->table('empresas');

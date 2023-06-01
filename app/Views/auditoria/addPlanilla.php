@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="<?= base_url('assets/css/auditorias/add.css') ?>">
-
+<link rel="stylesheet" href="<?= base_url('assets/css/auditorias/add_planilla.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/auditorias/aud_gral.css') ?>">
 <div class="container">
     <div class="row">
         <div class="blister-title-container">
@@ -7,67 +7,52 @@
         </div>
     </div>
 
-    <!-- Encabezado -->
-    <div class="card">
-        <!-- <div class="card-header text-center header-perfil" style="background-color: #00b8e645 !important;">
-            <h6 style="margin: 0px;" id="titulo"><b>Datos Generales</b></h6>
-        </div> -->
-
-        <div class="card-body">
-            <div class="col-xs-12 col-md-4">
-                <div class="form-group">
-                    <label class="mb-1 fw-semibold">Ingrese el tipo de auditoría</label>
-                    <input type="text" class="form-control sz_inp" placeholder="Ingrese el tipo">
-                </div>
+    <form id="form_create_aud">
+        <div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 53%);">
+            <div class="card-header subtitle" style="font-weight: 600; letter-spacing: 1.5px; text-align: center; background-color: #f5e1ce!important;">
+                Complete los siguientes datos
             </div>
-        </div>
-    </div>
+            <div class="card-body" style="background:#fffdfc;">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label class="mb-1 fw-semibold">Ingrese el nombre que va a tener la auditoría</label>
+                            <input type="text" class="form-control sz_inp" name="title_auditoria" placeholder="Ingrese el nombre">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label class="mb-1 fw-semibold">Ingrese que tipo de Auditoria va a realizar</label>
+                            <select name="tipo_aud" class="form-select sz_inp">
+                                <option value="">-- Seleccione --</option>
+                                <option value="1">Auditoría de Control</option>
+                                <option value="0">Auditoría CheckList Vehicular</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="card">
-        <div class="card-header text-center" style="background-color: #00b8e645 !important;">
-            <h6 style="margin: 0px;" id="titulo"><b>Complete los siguientes datos</b></h6>
-        </div>
+                <br>
 
-        <div class="card-body">
+                <hr style="color: #bbb;">
 
-        </div>
-    </div>
-</div>
+                <div id="container_bloque_preguntas"></div>
 
-<div class="right_col" role="main">
-    <div class="page-title">
-        <div class="title_left">
-            <h3>Crear LOD-1 Medio Ambiente</h3>
-        </div>
-    </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-4">
+                        <button id="add_bloque_preguntas">&#x271a; Agregar Bloque de Preguntas</button>
+                    </div>
+                </div>
 
-    <div class="x_panel">
-        <h4>Complete los siguientes datos</h4>
-        <hr>
-
-        <form id="form_preguntas" method="POST">
-            <div class="row">
-                <div class="col-xs-12 col-md-4">
-                    <div class="form-group">
-                        <label for="">Ingrese el tipo de LOD-1</label>
-                        <input type="text" class="form-control" name="title_lod" placeholder="Ingrese el tipo">
+                <div class="row">
+                    <div class="d-flex justify-content-end">
+                        <button id="btnSubmitCrearAuditoria" class="btn_modify">Crear Nueva Auditoría</button>
                     </div>
                 </div>
             </div>
-            <hr>
-            <div id="bloque_preguntas"></div>
-            <div class="row">
-                <div class="col-xs-12 col-md-4">
-                    <button id="add_bloque_preguntas">&#x271a; Agregar Bloque de Preguntas</button>
-                </div>
-            </div>
-
-            <div style="display: flex; justify-content: flex-end; margin-top: 30px;">
-                <input class="btn btn-primary" id="btn_submit_lod1" type="submit" value="Crear Nuevo LOD-1">
-            </div>
-        </form>
-
-    </div>
+        </div>
+    </form>
 </div>
 
-<script src="<?= base_url("assets/js/auditorias/addPlanilla.js") ?>"></script>
+<script src="<?= base_url("assets/js/auditorias/create_planilla.js") ?>"></script>
+<script src="<?= base_url("assets/js/auditorias/submit_crear_planilla.js") ?>"></script>

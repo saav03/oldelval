@@ -1,12 +1,6 @@
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/view_obs.css" rel="stylesheet">
 
 <!-- == Descargo (Si es que existe) perteneciente a la observación == -->
-
-<?php
-$d = $descargos;
-$usuario_carga = $tarjeta['usuario_carga'];
-?>
-
 <div>
     <?php $i = 0;
     foreach ($descargos as $d) : $i++; ?>
@@ -19,7 +13,7 @@ $usuario_carga = $tarjeta['usuario_carga'];
                 </div>
                 <div>
                     <p class="m-0 p-o">
-                        <?= $d['fecha_hora_motivo'] ?></em> - <?= $d['nombre'] . ' ' . $d['apellido'] ?>
+                        <?= $d['fecha_hora_motivo'] ?></em> - <?= $d['usuario_descargo'] ?>
                     </p>
                 </div>
             </div>
@@ -43,7 +37,10 @@ $usuario_carga = $tarjeta['usuario_carga'];
                             <?php foreach ($d['descargos_adj'] as $d_adj) : ?>
 
                                 <div class="col-xs-12 col-md-4 text-center">
-                                    <img id="img_descargo" src="<?= base_url("uploads/tarjetaObs/descargos/" . $d_adj['adjunto']) ?>">
+                                    <a href="<?= base_url("uploads/auditorias/descargos") . '/' . $d_adj['adjunto'] ?>" target="_blank">
+                                        <img id="img_descargo" src="<?= base_url("uploads/auditorias/descargos") . '/' . $d_adj['adjunto'] ?>" alt="">
+                                    </a>
+                                    <!-- <img id="img_descargo" src="<!?= base_url("uploads/auditorias/descargos/" . $d_adj['adjunto']) ?>"> -->
                                     <?php if ($d_adj['desc_adjunto'] != '') { ?>
                                         <p class="mt-2"><?= $d_adj['desc_adjunto'] ?></p>
                                     <?php } else { ?>
@@ -63,20 +60,19 @@ $usuario_carga = $tarjeta['usuario_carga'];
         <br>
         <!-- == Botones de Acciones == -->
 
-        <!-- <!?php if (!is_null($tarjeta['cierre'])) : ?> -->
         <?php if (is_null($d['respuesta'])) { ?>
             <!-- Si el usuario es el mismo que cargó la tarjeta y aún la tarjeta no está cerrada visualiza los botones para aceptar/rechazar los descargos -->
-            <?php if ($tarjeta['usuario_carga'] == session()->get('id_usuario') && is_null($tarjeta['cierre'])) : ?>
+            <?php if ($h['id_usuario_carga'] == session()->get('id_usuario') && is_null($h['cierre'])) : ?>
                 <div class="row btns_descargos mb-2" id="btns_descargos" style="margin-left: 44px;">
                     <div style="margin: 15px 0 0 71px;">
-                        <button class="btn_mod_success aceptar_descargo" id="aceptar_descargo_<?= $d['id'] ?>" data-id='<?= $d['id'] ?>'>Aceptar Descargo</button>
-                        <button class="btn_mod_danger rechazar_descargo" id="rechazar_descargo_<?= $d['id'] ?>" data-id='<?= $d['id'] ?>'>Rechazar Descargo</button>
+                        <button class="btn_mod_success aceptar_descargo" id="aceptar_descargo_<?= $d['id_descargo'] ?>" data-id='<?= $d['id_descargo'] ?>'>Aceptar Descargo</button>
+                        <button class="btn_mod_danger rechazar_descargo" id="rechazar_descargo_<?= $d['id_descargo'] ?>" data-id='<?= $d['id_descargo'] ?>'>Rechazar Descargo</button>
                     </div>
                 </div>
                 <!-- == Motivo si se acepta/rechaza un descargo == -->
                 <div class="container_motivo" style="display: none;">
 
-                    <form id="form_motivo_descargo_<?= $d['id'] ?>" method="POST">
+                    <form id="form_motivo_descargo_<?= $d['id_descargo'] ?>" method="POST">
                         <div class="row">
                             <div class="col-xs-12 col-md-2"></div>
                             <div class="col-xs-12 col-md-10">
@@ -95,13 +91,12 @@ $usuario_carga = $tarjeta['usuario_carga'];
                             </div>
                         </div>
                     </form>
-
                 </div>
             <?php endif; ?>
         <?php } else { ?>
             <!-- == Esto ya es el motivo, si es que ya se aceptó/rechazó el descargo == -->
             <br>
-            <?php if ($d['estado'] == 1) { ?> <!-- Aceptó -->
+            <?php if ($d['estado_descargo'] == 1) { ?> <!-- Aceptó -->
 
                 <div class="card" style="width: 80%; margin: 0 0 0 auto;">
                     <div class="card-header flex-column text-center" style="color: #3ea746; background-color: #a9ffc745;">
@@ -113,7 +108,7 @@ $usuario_carga = $tarjeta['usuario_carga'];
                         </div>
                         <div>
                             <p class="m-0 p-o">
-                                Aceptado el <?= $d['fecha_hora_respuesta']; ?> por <?= $d['nombre_user_rta'] . ' ' . $d['apellido_user_rta'] ?>
+                                Aceptado el <?= $d['fecha_hora_respuesta']; ?> por <?= $d['usuario_respuesta'] ?>
                             </p>
                         </div>
                     </div>
@@ -143,7 +138,7 @@ $usuario_carga = $tarjeta['usuario_carga'];
                         </div>
                         <div>
                             <p class="m-0 p-o">
-                                Rechazado el <?= $d['fecha_hora_respuesta']; ?> por <?= $d['nombre_user_rta'] . ' ' . $d['apellido_user_rta'] ?>
+                                Rechazado el <?= $d['fecha_hora_respuesta']; ?> por <?= $d['usuario_respuesta'] ?>
                             </p>
                         </div>
                     </div>
@@ -169,7 +164,3 @@ $usuario_carga = $tarjeta['usuario_carga'];
 </div>
 
 <script src="<?= base_url() ?>/assets/js/helpers.js"></script>
-<script>
-    // let fecha_formateada_respuesta = new Date("<!?php echo $d['fecha_hora_respuesta']; ?>");
-    // fecha_formateada_respuesta = formatearFecha(fecha_formateada_respuesta);
-</script>
