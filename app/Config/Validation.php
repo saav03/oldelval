@@ -405,4 +405,200 @@ class Validation extends BaseConfig
             ]
         ]
     ];
+
+    /* Validar Auditorías */
+    public $validation_subtitle_aud = [
+        'subtitle' => [
+            'label' => 'subtitle',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'Los titulos de cada bloque no puede ir vacío',
+            ]
+        ],
+    ];
+    public $validation_title_aud = [
+        'nombre' => [
+            'label' => 'nombre',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'No se especificó el nombre de la auditoría',
+            ]
+        ],
+    ];
+    public $validation_preguntas_aud = [
+        'preguntas' => [
+            'label' => 'preguntas',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'Las preguntas no pueden estar vacías',
+            ]
+        ],
+    ];
+    public $validation_aud_control = [
+        'contratista' => [
+            'label' => 'contratista',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La contratista es requerida',
+            ]
+        ],
+        'supervisor_responsable' => [
+            'label' => 'supervisor_responsable',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El supervisor es requerido',
+            ]
+        ],
+        'cant_personal' => [
+            'label' => 'cant_personal',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La cantidad del personal es requerido',
+            ]
+        ],
+        'num_informe' => [
+            'label' => 'num_informe',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El N° de Informe es requerido',
+            ]
+        ],
+        'proyecto' => [
+            'label' => 'proyecto',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El proyecto es requerido',
+            ]
+        ],
+    ];
+    public $validation_aud_vehicular = [
+        'equipo' => [
+            'label' => 'equipo',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El Equipo es requerido',
+            ]
+        ],
+        'conductor' => [
+            'label' => 'conductor',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El conductor es requerido',
+            ]
+        ],
+        'num_interno' => [
+            'label' => 'num_interno',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El N° Interno es requerido',
+            ]
+        ],
+        'marca' => [
+            'label' => 'marca',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La marca es requerida',
+            ]
+        ],
+        'modelo' => [
+            'label' => 'modelo',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El modelo es requerido',
+            ]
+        ],
+        'patente' => [
+            'label' => 'patente',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La patente es requerida',
+            ]
+        ],
+        'titular' => [
+            'label' => 'titular',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El titular es requerido',
+            ]
+        ],
+        'fecha' => [
+            'label' => 'fecha',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La fecha es requerida',
+            ]
+        ],
+        'hora' => [
+            'label' => 'hora',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La hora es requerida',
+            ]
+        ],
+        'proyecto' => [
+            'label' => 'proyecto',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El proyecto es requerido',
+            ]
+        ],
+        'resultado_inspeccion' => [
+            'label' => 'resultado_inspeccion',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El Resultado de la Inspección es requerido',
+            ]
+        ]
+    ];
+    public $validation_aud_plan = [
+        'hallazgo' => [
+            'label' => 'hallazgo',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El Hallazgo es requerido',
+            ]
+        ],
+        'plan_accion' => [
+            'label' => 'plan_accion',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El Plan de Acción es requerido',
+            ]
+        ],
+        'efecto_impacto' => [
+            'label' => 'efecto_impacto',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El Efecto / Impacto es requerido',
+            ]
+        ],
+        'contratista' => [
+            'label' => 'contratista',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La Contratista es requerida',
+            ]
+        ],
+        'responsable' => [
+            'label' => 'responsable',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El Responsable es requerido',
+            ]
+        ],
+        /* 'significancia' => [
+            'label' => 'significancia',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El Riesgo es requerido',
+            ]
+        ], */
+        'fecha_cierre' => [
+            'label' => 'fecha_cierre',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La Fecha de Cierre es requerida',
+            ]
+        ],
+    ];
 }

@@ -7,7 +7,8 @@
             background-image: url(<?= base_url("assets/images/login/background-01.jpg") ?>) !important;
             background-size: cover !important;
             background-position-y: center !important;
-            font-family: 'Poppins' !important;
+            /* font-family: 'Poppins' !important; */
+            font-family: 'Quicksand', sans-serif !important;
             font-size: 14px;
         }
 

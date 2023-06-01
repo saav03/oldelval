@@ -252,9 +252,6 @@ class Model_tarjeta extends Model
 		$query_cierre_obs = $this->getCierreMotivoTarjeta($id_obs);
 		$tarjeta['cierre'] = $query_cierre_obs;
 
-
-
-
 		return $tarjeta;
 	}
 

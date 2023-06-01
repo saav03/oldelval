@@ -54,7 +54,7 @@
                                         <hr>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Fecha de Detección: </b><?= $datos[0]['fecha_deteccion'] ?></p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Tipo de Observación: </b><?= $datos[0]['tipo_obs'] == 1 ? 'Observación Positiva' : 'Posibilidad de Mejora' ?></p>
-                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Observador: </b>Mirko Dinamarca</p>
+                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Observador: </b><?= $datos[0]['nombre_u_carga'] . ' ' . $datos[0]['apellido_u_carga'] ?></p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Proyecto: </b><?= $datos[0]['proyecto'] ?></p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Responsable: </b><?= isset($datos['responsable']) ? $datos['responsable']['nombre_u_responsable'] . ' ' . $datos['responsable']['apellido_u_responsable'] : '-'  ?></p>
 

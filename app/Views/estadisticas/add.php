@@ -1,11 +1,4 @@
 <link href="<?= base_url() ?>/assets/css/estadisticas/add/add.css" rel="stylesheet">
-<?php 
-/* echo '<pre>';
-var_dump($planilla);
-echo '</pre>';
-exit; */
-?>
-
 <div class="container">
     <form action="" method="POST" id="form_submit">
         <div class="blister-title-container">

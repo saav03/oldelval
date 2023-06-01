@@ -1,5 +1,5 @@
 /*redom: el, mount, text, setAttr*/
-class fileAdder {
+class addFiles {
     constructor(container, inputName, {maxFileNumber = 3, allowedFiles = ['image', 'pdf'], hasDescriptionInput = true} = {}){
         this.container = container;
         this.inputName = inputName;
@@ -21,7 +21,7 @@ class fileAdder {
             -Mostrar boton nuevo adjunto
         */
        if(this.maxFileNumber <=0 || !Array.isArray(this.allowedFiles) || (Array.isArray(this.allowedFiles) && this.allowedFiles.length < 1)){
-            alert("Error al renderizar fileAdder: Parametros incorrectos");
+            alert("Error al renderizar addFiles: Parametros incorrectos");
        }else{
             const safeAllowedFiles = this.allowedFiles.map(type => type.toLowerCase());
             this.allowedFiles = safeAllowedFiles;
@@ -33,12 +33,12 @@ class fileAdder {
     }
 
     createAddButton(){
-        const addButton = el("button.btn btn-info", {type: "button"}, el("span", ["Adjuntar Archivo ", el("i.far fa-images")]));
+        const addButton = el("button.btn btn_add", {type: "button"}, el("span", ["Adjuntar Archivo ", el("i.fa fa-arrow-circle-up")]));
         return addButton;
     }
 
     createPreviewContainer(){
-        const previewContainer = el("div.previewContainer"); //Se podria estilar
+        const previewContainer = el("div"); //Se podria estilar
         return previewContainer;
     }
 
@@ -89,7 +89,7 @@ class fileAdder {
                     const descBox = this.makeDescriptionBox();
                     mount(curPreviewContainer, descBox);
                 }
-                const deleteButton = el("button.btn btn-danger fileAdderDelete", el("span", ["", el("i.fa fa-times")]));
+                const deleteButton = el("button.btn btn-danger fileAdderDelete", el("span", el('i.fa-solid fa-trash')));
                 const deleteButtonDiv = el("div");
                 deleteButton.onclick = () => {
                     this.previewContainer.removeChild(curPreviewContainer);
@@ -107,16 +107,17 @@ class fileAdder {
     }
 
     makeDescriptionBox(){
-       return el("textarea.form-control fileAdderDescription", {name: `${this.inputName}-description[]`, placeholder: "Descripción del adjunto (opcional)", rows: 2});
+       return el("textarea.form-control fileAddDescription", {name: `${this.inputName}-description[]`, placeholder: "Descripción del adjunto (opcional)", rows: 2});
     }
 
     makePreview(fileType, reader){
         let preview;
         if(this.isPDF(fileType)){
-            preview = el("img.fileAdderPDF");
-            setAttr(preview, {src: base_url()+'assets/images/pdf-icon.png'});
+            // preview = el("img.fileAdderPDF");
+            // setAttr(preview, {src: base_url()+'assets/images/pdf-icon.png'});
+            preview = el('i.fa fa-file-pdf-o fileAddPDF');
         }else{
-            preview = el("img.fileAdderImage");
+            preview = el("img.fileAddImage");
             setAttr(preview, {src: reader.target.result});
         }
         return preview;

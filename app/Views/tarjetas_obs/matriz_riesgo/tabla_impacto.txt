@@ -1,0 +1,138 @@
+<table style="width: 100%;">
+    <thead style="text-align: center; border-bottom: 3px solid white;">
+        <th rowspan="2" style="padding: 0px 10px;">Impacto</th>
+        <th colspan="5">Impacto</th>
+        <tr>
+            <th>Nivel de Afectación</th>
+            <th>Económico</th>
+            <th>Ambiental</th>
+            <th>Recursos Humanos</th>
+            <th>Denominación</th>
+        </tr>
+    </thead>
+
+    <tbody style="text-align: center;">
+        <tr class="fila_impacto" data-id="3">
+            <td>
+                <div class="ul_test">
+                    <div class="div_test d-flex flex-column justify-content-center ">
+                        <label for="f-option_3">3</label>
+                        <input type="radio" id="f-option_3" value="3" name="selector">
+                        <div class="check"></div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                Riesgo cuya materialización no compromete de ninguna forma la imagen de la organización. Su materialización puede tener un pequeño o nulo efecto en el desarrollo del proceso y que no afectaría el cumplimiento de los objetivos en el año en curso.
+            </td>
+            <td>
+                USD 0-10k
+            </td>
+            <td>
+                Derrames operativos controlados (derrames sin impacto ambiental / Contenidos)
+            </td>
+            <td> Conflicto gremial o social que genera la aplicación de medidas no rutinarias para continuar con el servicio. / Accidentes personales (leves) sin pérdida de días
+            </td>
+            <td>
+                Afecta levemente (Está controlado actualmente).
+            </td>
+        </tr>
+        <tr class="fila_impacto" data-id="9">
+            <td>
+                <div class="ul_test">
+                    <div class="div_test d-flex flex-column justify-content-center ">
+                        <label for="f-option_9">9</label>
+                        <input type="radio" id="f-option_9" value="9" name="selector">
+                        <div class="check"></div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                Riesgo cuya materialización no compromete de ninguna forma la imagen de la organización. Su materialización puede tener un pequeño o nulo efecto en el desarrollo del proceso y que no afectaría el cumplimiento de los objetivos en el año en curso.
+            </td>
+            <td>
+                USD 10k-100k
+            </td>
+            <td>
+                Impacto Ambiental < 5m3 </td>
+            <td>
+                Conflictos que demandan la atención de la compañía por la repercusión social que implican. / Accidente (moderado) con pérdida de días.
+            </td>
+            <td>
+                Afecta con consecuencias moderadas que son reversibles.
+            </td>
+        </tr>
+        <tr class="fila_impacto" data-id="18">
+            <td>
+                <div class="ul_test">
+                    <div class="div_test d-flex flex-column justify-content-center ">
+                        <label for="f-option_18">18</label>
+                        <input type="radio" id="f-option_18" value="18" name="selector">
+                        <div class="check"></div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                Riesgo cuya materialización tendrá un impacto importante en el presupuesto y/o compromete fuertemente la imagen de la organización. Su materialización dañaría significativamente el desarrollo del proceso y el cumplimiento de los objetivos, impidiendo que se ejecuten total o parcialmente en forma normal en el año en curso
+            </td>
+            <td>
+                USD 100k-1.000k
+            </td>
+            <td>
+                Impacto Ambiental Significativo 5m3 < IA < 500 m3 </td>
+            <td>
+                Situaciones que implican un compromiso mayor para su resolución. Consecuencias de consideración / Accidente (graves) con pérdida de días
+            </td>
+            <td>
+                Afecta con consecuencias moderadas que no son reversibles.
+            </td>
+        </tr>
+        <tr class="fila_impacto" data-id="27">
+            <td>
+                <div class="ul_test">
+                    <div class="div_test d-flex flex-column justify-content-center ">
+                        <label for="f-option_27">27</label>
+                        <input type="radio" id="f-option_27" value="27" name="selector">
+                        <div class="check"></div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                Riesgo cuya materialización puede generar pérdidas financieras ($) que tendrán un impacto catastrófico en el presupuesto y/o comprometan totalmente la imagen de la organización. Su materialización dañaría gravemente el desarrollo del proceso y el cumplimiento de los objetivos, impidiendo finalmente que estos se logren en el año en curso
+            </td>
+            <td>
+                USD > 1.000k Perdidas financieras considerables
+            </td>
+            <td>
+                Catástrofe ambiental > 500 m3 Afectación de áreas sensibles </td>
+            <td>
+                Situaciones que implican conflictos sociales mayores. / Accidentes con consecuencias fatales
+            </td>
+            <td>
+                Afecta con consecuencias graves que no son reversibles Interrupcion total del servicio. La compañía no puede garantizar la continuidad de la prestación del servicio
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    /* == Constantes == */
+    const fila_impacto = document.querySelectorAll('.fila_impacto');
+    const selector = document.getElementsByName('selector');
+
+    for (let i = 0; i < fila_impacto.length; i++) {
+
+        fila_impacto[i].addEventListener('click', e => {
+
+            for (let j = 0; j < fila_impacto.length; j++) {
+                fila_impacto[j].style.background = 'white';
+                selector[j].checked = false;
+            }
+
+            let impacto = fila_impacto[i].getAttribute('data-id');
+            fila_impacto[i].style.background = '#f2faf4';
+            selector[i].checked = true;
+        });
+
+    }
+</script>

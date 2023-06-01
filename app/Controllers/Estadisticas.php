@@ -216,7 +216,7 @@ class Estadisticas extends BaseController
                         $archivoTemporal = $_FILES["adj_capacitaciones"]["tmp_name"][$i];
 
                         $extension = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-                        $nombre = "adj_capacitacion-" . date('Y-m-d-H-i-s') . "." . $extension;
+                        $nombre = "adj_capacitacion-". date('Y-m-d-H-i-s') . "." . $extension;
                         $uploadPath = $upload_ruta . $nombre;
 
                         if (in_array(strtolower($extension), ["pdf", "doc", "docx", "docm", "xls", "xlsx", "xlsb"])) {

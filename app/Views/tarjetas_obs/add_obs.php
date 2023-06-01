@@ -202,6 +202,58 @@
                             </div>
                         </div>
 
+                        <!-- Modal Matriz de Riesgo -->
+                        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Launch demo modal
+                        </button>
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <div class="d-flex align-items-center">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel" style="border-right: 2px solid #d6dbe2; padding-right: 15px; width: 21%; color: #475569;">Gestión de Riesgo</h1>
+                                            <p class="mb-0" style="margin-left: 20px;">
+                                                Se apoya en el concepto de ser una fuente fidedigna de información sobre la cual tomar decisiones, priorizar acciones y definir los cursos de acción de la organización.
+                                            </p>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false" style="position: relative;">
+                                            <div class="carousel-inner">
+                                                <div class="carousel-item active">
+                                                    <div style="margin: 0 auto;">
+                                                        <!?= view('tarjetas_obs/matriz_riesgo/tabla_impacto') ?>
+                                                    </div>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <div style="margin: 0 auto;">
+                                                        hola
+                                                    </div>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <div style="margin: 0 auto;">
+                                                        hola
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev" style="width: 5%; border-radius: 10px 0 0 10px; height: 205px; margin: auto 0; position: absolute; left: -71px;">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next" style="width: 5%; border-radius: 0 10px 10px 0; height: 205px; margin: auto 0; position: absolute; right: -71px;">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
                         <div class="row" id="btns_obs_positive" style="display: none;">
                             <div class="col-xs-12 col-md-4 text-center">
                                 <p class="border_obs">La observación actual ¿Posee una hallazgo positivo?</p>

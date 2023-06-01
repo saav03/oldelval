@@ -229,7 +229,7 @@ class TarjetaObservaciones extends BaseController
                 newMov(6, 1, $id_tarjeta_obs); //Movimiento
 
             } else if ($posee_obs != 1 && $posee_obs != 2 && empty($datos_obs)) {
-                
+                $datos_tarjeta['situacion'] = 0;
                 $results = $this->model_tarjeta->addSubmit($datos_tarjeta);
                 $id_tarjeta_obs = $results['last_id'];
 
@@ -562,7 +562,7 @@ class TarjetaObservaciones extends BaseController
         $config["SMTPHost"] = 'oldelval-cass.com';
         $config['mailType'] = 'html';
         $config["SMTPUser"] = '_mainaccount@oldelval-cass.com';
-        $config["SMTPPass"] = '{uTxa35Z?%Ay';
+        $config["SMTPPass"] = 'OoBlister2@2@';
         $config["SMTPPort"] = '465'; //'587';
         $config['charset'] = 'utf-8';
         $config['wordwrap'] = TRUE;

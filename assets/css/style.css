@@ -22,6 +22,16 @@
   padding: 0 !important;
 }
 
+.subtitle {
+  background: lightblue!important;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  margin: 0;
+}
+
 .btn_modify,
 .btn_mod_danger,
 .btn_mod_warning,
@@ -37,6 +47,10 @@
 
 .btn_modify {
   background-color: #225ca7;
+}
+.btn_modify[disabled] {
+  background-color: #7993ab !important;
+  cursor: not-allowed;
 }
 
 .btn_modify:hover {
@@ -242,7 +256,7 @@
 
 body {
   /* font-family: 'Poppins', sans-serif; */
-  font-family: "Poppins" !important;
+  font-family: 'Quicksand', sans-serif!important;
   font-size: 14px !important;
   background: #f6f9ff;
   color: #444444;
@@ -500,7 +514,8 @@ h6 {
   font-size: 18px;
   font-weight: 500;
   color: #012970;
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
+  font-family: 'Quicksand', sans-serif!important;
 }
 
 .card-title span {
@@ -520,7 +535,8 @@ h6 {
 /* Alerts */
 .alert-heading {
   font-weight: 500;
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
+  font-family: 'Quicksand', sans-serif!important;
   font-size: 20px;
 }
 
