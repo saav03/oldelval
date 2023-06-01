@@ -314,28 +314,10 @@ switch ($estadistica[0]['tipo']) {
     </div>
 
 <?php }  ?>
-
-<!-- Modal -->
-<!-- <div class="modal fade" id="modal_answer" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 style="margin: 0;"><i class="fas fa-info-circle"></i> Fórmula Utilizada</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <h6 class="text-center">Indice de Incidencia de Accidentes Personales (II AP)</h6>
-                <br>
-                <p class="m-0 text-center" style="font-size: 12px; font-weight: bold;">(Trabajadores accidentados x 1000) / trabajadores expuestos</p>
-                <br>
-                <p class="m-0 text-center" style="font-size: 12px;">Expresa la cantidad de trabajadores afectados por accidentes in-itinere, lumbalgias, accidentes operativos con y sin días perdidos y accidentes no operativos, en un período de un año, por cada mil trabajadores expuestos.</p>
-            </div>
-        </div>
-    </div>
-</div> -->
 <div class="d-flex justify-content-end">
     <button class="btn_modify" onclick="window.location.href = `${GET_BASE_URL()}/estadisticas`">Volver</button>
 </div>
+<br>
 
 <script>
     /*

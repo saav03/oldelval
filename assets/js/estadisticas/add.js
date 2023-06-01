@@ -8,6 +8,7 @@ const selector_sistemas_div = document.getElementById("selector_sistemas_div");
 const selector_estaciones_div = document.getElementById("selector_estaciones_div");
 
 let selector, divValid, divInvalid, optionMod, divSetModules, optionDefault, estaciones_filtradas;
+
 /**
  * Filtra entre proyectos y trae aquellos modulos pertenecientes al mismo
  */
@@ -22,11 +23,13 @@ function filtrarModulos(e) {
       body: formData,
     });
 
+    
     const data = await response.json();
+    console.log(data);
     crearSelectorMod(data);
 
     crearSelectorEstaciones(estaciones_estadisticas, e.value);
-    crearSelectorSistemas(sistemas_estadisticas, e.value);
+    // crearSelectorSistemas(sistemas_estadisticas, e.value);
   };
   getDataModulos();
 }
@@ -100,7 +103,7 @@ function crearSelectorEstaciones(data, id_proyecto) {
     mount(selector, optionMod);
   });
 
-  selector.setAttribute("onchange", "validacionEstaciones()");
+  // selector.setAttribute("onchange", "validacionEstaciones()");
 
   mount(divSetModules, selector);
   setChildren(selector_estaciones_div, divSetModules);

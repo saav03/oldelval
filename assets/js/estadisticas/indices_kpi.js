@@ -17,7 +17,6 @@ for (let i = 0; i < indicadores_ii_ap.length; i++) {
     for (let j = 0; j < indicadores_ii_ap.length; j++) {
       total = parseInt(total) + parseInt(indicadores_ii_ap[j].value)
     }
-    console.log(total);
     total_ii_ap = (total * 1000) / parseInt(ind_cant_personal.value);
     ii_ap.value = total_ii_ap.toFixed(2);
   });
@@ -27,7 +26,6 @@ ind_cant_personal.addEventListener("change", () => {
   for (let j = 0; j < indicadores_ii_ap.length; j++) {
     total = parseInt(total) + parseInt(indicadores_ii_ap[j].value)
   }
-  console.log(total);
   total_ii_ap = (total * 1000) / parseInt(ind_cant_personal.value);
   ii_ap.value = total_ii_ap.toFixed(2);
 });
@@ -66,7 +64,7 @@ ind_acc_dias_perdidos.addEventListener("change", () => {
 });
 
 /* == (IF AAP) == */
-const ind_acc_fatal = document.getElementById("indicador_8");
+/* const ind_acc_fatal = document.getElementById("indicador_8");
 let if_aap = document.getElementById("indice_14");
 
 ind_hs_hombres_trabajadas.addEventListener("change", () => {
@@ -80,7 +78,7 @@ ind_acc_fatal.addEventListener("change", () => {
   let horas_hombres_trabajadas = parseInt(ind_hs_hombres_trabajadas.value);
   let total = (accid_operativo_fatal * 1000000) / horas_hombres_trabajadas;
   if_aap.value = total.toFixed(2);
-});
+}); */
 
 /* == (IF AP SD) == */
 const ind_acc_sin_dias_perdidos = document.getElementById("indicador_6");
@@ -105,18 +103,26 @@ ind_hs_hombres_trabajadas.addEventListener("change", () => {
 });
 
 /* == (IG AP) == */
-const ind_dias_perdidos = document.getElementById("indicador_title11");
+// Días Perdidos [Por Accidentes Con Días Perdidos]
+let total_ig_ap = 0;
+const indicadores_ig_ap = document.querySelectorAll(".ind_ig_ap");
 let ig_ap = document.getElementById("indice_16");
 
+for (let i = 0; i < indicadores_ig_ap.length; i++) {
+  indicadores_ig_ap[i].addEventListener('change', () => {
+    let total = 0;
+    for (let j = 0; j < indicadores_ig_ap.length; j++) {
+      total = parseInt(total) + parseInt(indicadores_ig_ap[j].value)
+    }
+    total_ig_ap = (total * 1000000) / parseInt(ind_hs_hombres_trabajadas.value);
+    ig_ap.value = total_ig_ap.toFixed(2);
+  });
+}
 ind_hs_hombres_trabajadas.addEventListener("change", () => {
-  let cant_dias_perdidos = parseInt(ind_dias_perdidos.value);
-  let horas_hombres_trabajadas = parseInt(ind_hs_hombres_trabajadas.value);
-  let total = (cant_dias_perdidos * 1000000) / horas_hombres_trabajadas;
-  ig_ap.value = total.toFixed(2);
-});
-ind_dias_perdidos.addEventListener("change", () => {
-  let cant_dias_perdidos = parseInt(ind_dias_perdidos.value);
-  let horas_hombres_trabajadas = parseInt(ind_hs_hombres_trabajadas.value);
-  let total = (cant_dias_perdidos * 1000000) / horas_hombres_trabajadas;
-  ig_ap.value = total.toFixed(2);
+  let total = 0;
+  for (let j = 0; j < indicadores_ig_ap.length; j++) {
+    total = parseInt(total) + parseInt(indicadores_ig_ap[j].value)
+  }
+  total_ig_ap = (total * 1000000) / parseInt(ind_hs_hombres_trabajadas.value);
+  ig_ap.value = total_ig_ap.toFixed(2);
 });

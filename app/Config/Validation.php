@@ -373,13 +373,13 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó la estacion',
             ]
         ],
-        'sistema' => [
+        /* 'sistema' => [
             'label' => 'Sistema',
             'rules' => ['required'],
             'errors' => [
                 'required' => 'No se especificó el sistema',
             ]
-        ],
+        ], */
     ];
 
     public $validation_permission = [

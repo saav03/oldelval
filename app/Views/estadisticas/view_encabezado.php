@@ -79,6 +79,8 @@
             </div>
         </div>
     </div>
+    <div class="col-xs-12 col-md-3 text-center"></div>
+
     <div class="col-xs-12 col-md-6 text-center">
         <div class="divBox">
             <div class="divBox_title">
@@ -101,27 +103,29 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-md-6 text-center">
+    <div class="col-xs-12 col-md-3 text-center"></div>
+
+    <!--     <div class="col-xs-12 col-md-6 text-center">
         <div class="divBox">
             <div class="divBox_title">
                 <p>Sistema de Oleoducto</p>
             </div>
             <div class="divBox_contain">
                 <select name="estacion" id="estacion" class="form-control sz_inp inp_estilos" disabled>
-                    <?php if ($estadistica[0]['sistema'] != null) { ?>
+                    <!?php if ($estadistica[0]['sistema'] != null) { ?>
 
-                        <?php foreach ($sistemas as $s) :
+                        <!?php foreach ($sistemas as $s) :
                             if ($s['id'] == $estadistica[0]['sistema']) { ?>
-                                <option value="<?= $s['id'] ?>" selected><?= $s['nombre'] ?></option>
-                            <?php } else if ($estadistica[0]['sistema'] == -1) { ?>
+                                <option value="<!?= $s['id'] ?>" selected><!?= $s['nombre'] ?></option>
+                            <!?php } else if ($estadistica[0]['sistema'] == -1) { ?>
                                 <option>No Aplica</option>
-                            <?php } ?>
-                        <?php endforeach ?>
+                            <!?php } ?>
+                        <!?php endforeach ?>
 
-                    <?php } else { ?>
+                    <!?php } else { ?>
                         <option value="">No se especificó</option>
-                    <?php }  ?>
+                    <!?php }  ?>
                 </select>
             </div>
         </div>
-    </div>
+    </div> -->
