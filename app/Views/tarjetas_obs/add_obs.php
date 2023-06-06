@@ -2,6 +2,9 @@
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/drawAndDrop.css" rel="stylesheet">
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/modal_riesgo.css" rel="stylesheet">
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/checkAnimado.css" rel="stylesheet">
+<link href="<?= base_url() ?>/assets/css/virtual-select.min.css" rel="stylesheet">
+<link href="<?= base_url() ?>/assets/css/addFiles.css" rel="stylesheet">
+<link href="<?= base_url() ?>/assets/css/fileAdder.css" rel="stylesheet">
 
 <div class="container">
     <div class="row">
@@ -17,13 +20,25 @@
                 Carga de Observación
             </div>
 
-            <div class="row">
+            <div class="row mt-2">
                 <form id="form_submit" class="needs-validation" enctype="multipart/form-data" novalidate>
                     <div class="col-xs-12">
                         <p class="subtitle">Datos Generales</p>
 
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-xs-12 col-md-4">
+                                <div>
+                                    <label for="contratista" class="sz_inp fw-semibold" style="margin-bottom: 5.1px;">Seleccione la Contratista</label>
+                                    <select class="sz_inp" name="contratista" id="contratista" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
+                                        <?php
+                                        foreach ($contratistas as $e) {
+                                            echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-2">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Fecha de Detección <small>(*)</small></label>
                                 <input type="date" name="fecha_deteccion" id="fecha_deteccion" class="form-control sz_inp" max="<?= date('Y-m-d') ?>" required>
                                 <div class="valid-feedback"></div>
@@ -31,26 +46,18 @@
                                     La fecha de detección es requerida
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-md-2">
-                                <label for="" class="mb-1 fw-semibold sz_inp">Tipo de Observación <small>(*)</small></label>
-                                <select name="tipo_obs" id="tipo_obs" onchange="listenTipoObs(this)" class="form-select sz_inp" required>
-                                    <option value="">-- Seleccione --</option>
-                                    <option value="1">Positiva</option>
-                                    <option value="2">Oportunidad de Mejora</option>
-                                </select>
-                                <div class="valid-feedback"></div>
-                                <div class="invalid-feedback">
-                                    El tipo de observación es requerido
+
+                            <div class="col-xs-12 col-md-3 text-center">
+                                <label for="" class="mb-1 fw-semibold sz_inp text-center">Situación de la Observación <small>(*)</small></label>
+                                <div class="btn-group btn-group-toggle" style="width: 80%;" role="group" aria-label="">
+                                    <input id="abierta" type="radio" name="situacion" class="btn-check blanco_check" value="1" autocomplete="off">
+                                    <label class="btn blanco btnsToggle" for="abierta">Abierta</label>
+
+                                    <input id="cerrada" type="radio" name="situacion" class="btn-check blanco_check" value="0" autocomplete="off">
+                                    <label class="btn blanco btnsToggle" for="cerrada">Cerrada</label>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-md-2">
-                                <label for="" class="mb-1 fw-semibold sz_inp">Situación Observación <small>(*)</small></label>
-                                <select name="situacion" id="situacion" class="form-select sz_inp" required>
-                                    <option value="1">Abierta</option>
-                                    <option value="0">Cerrada</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-12 col-md-4">
+                            <div class="col-xs-12 col-md-3">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Observador</label>
 
                                 <input type="text" name="observador" id="observador" class="form-control sz_inp simulate_dis" placeholder="Observador (Opcional)" value="<?= $this->session->get('nombrecompleto'); ?>" readonly>
@@ -64,24 +71,7 @@
                             <div class="row d-flex justify-content-end">
                                 <div class="mt-2" id="container_observadores"></div>
                             </div>
-                            <!--
-                            <div class="row d-flex justify-content-end">
-                                <div class="mt-2">
-                                    <div class="row d-flex justify-content-end observadores_inps mt-2">
-                                        <div class="col-xs-12 col-md-4 d-flex">
-                                            <button class="obs-btn_trash"><i class="fa-solid fa-trash"></i></button>
-                                            <input type="text" class="form-control sz_inp" value="Luciano Colombo">
-                                        </div>
-                                    </div>
 
-                                    <div class="row d-flex justify-content-end observadores_inps mt-2">
-                                        <div class="col-xs-12 col-md-4 d-flex">
-                                            <button class="obs-btn_trash"><i class="fa-solid fa-trash"></i></button>
-                                            <input type="text" class="form-control sz_inp" value="Luciano Colombo">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </section>
 
                         <div class="row d-flex justify-content-end">
@@ -167,113 +157,194 @@
                         <br>
 
                         <p class="subtitle">Guía de Detección</p>
-                        <?php $i = 1;
-                        foreach ($indicadores as $ind) : ?>
-                            <div class="d-flex justify-content-between align-items-center pb-2 pt-2" style="width: 90%;margin: 0 auto; border-bottom: 1px solid lightgray; font-size: 13px;">
+                        <div style="width: 90%; margin: 0 auto;">
+                            <?php $i = 1;
+                            foreach ($indicadores as $ind) : ?>
                                 <div>
-                                    <p class="m-0"><small><em><b>(<?= $i; ?>)</b></em></small> <?= $ind['nombre']; ?></p>
-                                </div>
-                                <div class="btn-group btn-group-toggle" role="group" aria-label="Basic radio toggle button group">
-                                    <input type="radio" class="btn-check verde_check" name="btn_indicador[<?= $ind['id'] ?>]" value="1" id="btn_bien_<?= $ind['id'] ?>" autocomplete="off">
-                                    <label class="btn verde" for="btn_bien_<?= $ind['id'] ?>">Bien</label>
+                                    <div class="row text-center p-2 mt-2 align-items-center">
+                                        <div class="col-xs-12 col-md-7" style="text-align: start;">
+                                            <div>
+                                                <p class="m-0"><small><em><b>(<?= $i; ?>)</b></em></small> <b><?= $ind['nombre']; ?></b>  <?= $ind['descripcion']; ?></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-md-3 text-center">
+                                            <div class="btn-group btn-group-toggle" role="group" aria-label="Basic radio toggle button group">
+                                                <input type="radio" class="btn-check verde_check" name="guia_deteccion[<?= $ind['id'] ?>][rta]" value="1" id="btn_bien_<?= $ind['id'] ?>" autocomplete="off">
+                                                <label class="btn verde" for="btn_bien_<?= $ind['id'] ?>">Bien</label>
 
-                                    <input type="radio" class="btn-check rojo_check" name="btn_indicador[<?= $ind['id'] ?>]" value="0" id="btn_mal_<?= $ind['id'] ?>" autocomplete="off">
-                                    <label class="btn rojo" for="btn_mal_<?= $ind['id'] ?>">Mal</label>
+                                                <input type="radio" class="btn-check rojo_check" name="guia_deteccion[<?= $ind['id'] ?>][rta]" value="0" id="btn_mal_<?= $ind['id'] ?>" autocomplete="off">
+                                                <label class="btn rojo" for="btn_mal_<?= $ind['id'] ?>">Mal</label>
 
-                                    <input type="radio" class="btn-check amarillo_checked" name="btn_indicador[<?= $ind['id'] ?>]" value="-1" id="btn_na_<?= $ind['id'] ?>" autocomplete="off" checked>
-                                    <label class="btn amarillo" for="btn_na_<?= $ind['id'] ?>">N/A</label>
+                                                <input type="radio" class="btn-check amarillo_checked" name="guia_deteccion[<?= $ind['id'] ?>][rta]" value="-1" id="btn_na_<?= $ind['id'] ?>" autocomplete="off" checked>
+                                                <label class="btn amarillo" for="btn_na_<?= $ind['id'] ?>">N/A</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-md-2" style="text-align: end!important;">
+                                            <div class="div-ind_icono">
+                                                <small data-bs-toggle="collapse" data-bs-target="#collapse_guia<?= $ind['id'] ?>" aria-expanded="false" aria-controls="collapse_guia<?= $ind['id'] ?>">
+                                                    Comentario
+                                                    <i class="fas fa-comment"></i>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="collapse_guia<?= $ind['id'] ?>">
+                                        <div class="form-floating">
+                                            <textarea class="form-control" name="guia_deteccion[<?= $ind['id'] ?>][comentario]" id="textarea" rows="2"></textarea>
+                                            <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        <?php $i++;
-                        endforeach; ?>
+                            <?php $i++;
+                            endforeach; ?>
+                        </div>
 
                         <br>
                         <br>
 
                         <!-- == Acá comienzan los planes de acción (Vista a parte) == -->
 
-                        <div class="row" id="btns_add_plan_accion" style="display: none;">
-                            <div class="col-xs-12 col-md-4 text-center">
-                                <p class="border_obs">La observación actual ¿Posee acción inmediata?</p>
+                        <div class="row" id="terminos_observacion">
+                            <div class="col-xs-12 col-md-12 text-center">
+                                <p class="border_obs fw-semibold">¿Cómo evaluaría la observación actual en términos positivos / oportunidades de mejora?</p>
+                                <div id="alerta_obs_estado" class="mb-2 fw-semibold" style="letter-spacing: .4px; color: #9A4D4D;">
+                                    <span><small>Primero debe seleccionar si el estado de la observación es abierta o cerrada</small></span>
+                                </div>
                                 <div class="d-flex justify-content-center">
-                                    <button class="btn_modify" id="btn_yes" style="margin-right: 2px;">Si</button>
-                                    <button class="btn_modify" id="btn_no" style="margin-left: 2px;">No</button>
+                                    <label class="btn_modify btn_tipo_obs" id="label_tipo_positivo" disabled for="tipo_positivo" style="margin-right: 2px; width: 100%; max-width: 200px;">Positivo</label>
+                                    <input type="radio" name="tipo_observacion" disabled id="tipo_positivo" value="1" hidden>
+                                    <label class="btn_modify btn_tipo_obs" id="label_oportunidad_mejora" disabled for="oportunidad_mejora" style="margin-left: 2px; width: 100%;  max-width: 200px;">Oportunidad de Mejora</label>
+                                    <input type="radio" name="tipo_observacion" disabled id="oportunidad_mejora" value="2" hidden>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Modal Matriz de Riesgo -->
-                        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Launch demo modal
-                        </button>
-
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-
-                                    <div class="modal-header">
-                                        <div class="d-flex align-items-center">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel" style="border-right: 2px solid #d6dbe2; padding-right: 15px; width: 21%; color: #475569;">Gestión de Riesgo</h1>
-                                            <p class="mb-0" style="margin-left: 20px;">
-                                                Se apoya en el concepto de ser una fuente fidedigna de información sobre la cual tomar decisiones, priorizar acciones y definir los cursos de acción de la organización.
-                                            </p>
+                        <div class="row mt-3">
+                            <div class="col-xs-12 col-md-6">
+                                <fieldset style="border-right: none;">
+                                    <legend class="w-100">
+                                        Efecto / Impacto
+                                    </legend>
+                                    <div class="p-3 pt-1">
+                                        <label for="efecto_impacto" class="mb-2 sz_inp fw-semibold">Seleccione el efecto o impacto</label>
+                                        <select class="sz_inp rounded-select" name="efecto_impacto[]" id="efecto_impacto" style="width: 100%" multiple name="native-select" data-search="true" data-silent-initial-value-set="true">
+                                            <?php
+                                            foreach ($efectos as $e) {
+                                                echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <fieldset style="border-right: none;">
+                                    <legend class="w-100 d-flex align-items-center">
+                                        Riesgos Observados
+                                        <div class="contain-question_icon" data-bs-toggle="modal" data-bs-target="#modal_significancia">
+                                            <div class="question-icon">
+                                                <span>?</span>
+                                            </div>
                                         </div>
+                                    </legend>
+                                    <div class="text-center" style="padding: 19px 0!important;">
+                                        <div class="btn-group btn-group-toggle" style="width: 80%; margin-top: 3px;" role="group" aria-label="">
+                                            <input id="aceptable" disabled type="checkbox" name="significancia[]" class="btn-check btn_check_significancia blanco_check" value="1" autocomplete="off">
+                                            <label class="btn blanco btnsToggle riesgos" for="aceptable">Aceptable</label>
+
+                                            <input id="moderado" disabled type="checkbox" name="significancia[]" class="btn-check btn_check_significancia verde_check" value="2" autocomplete="off">
+                                            <label class="btn verde btnsToggle riesgos" for="moderado">Moderado</label>
+
+                                            <input id="significativo" disabled type="checkbox" name="significancia[]" class="btn-check btn_check_significancia amarillo_checked" value="3" autocomplete="off">
+                                            <label class="btn amarillo btnsToggle riesgos" for="significativo">Significativo</label>
+
+                                            <input id="intolerable" disabled type="checkbox" name="significancia[]" class="btn-check btn_check_significancia rojo_check" value="4" autocomplete="off">
+                                            <label class="btn rojo btnsToggle riesgos" for="intolerable">Intolerable</label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <!-- Modal Significancia -->
+                        <div class="modal fade" id="modal_significancia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header d-flex align-items-center justify-content-between">
+                                        <p class="p-0 m-0 fw-semibold">Descripción de Riesgos (Significancia)</p>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-
                                     <div class="modal-body">
-                                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false" style="position: relative;">
-                                            <div class="carousel-inner">
-                                                <div class="carousel-item active">
-                                                    <div style="margin: 0 auto;">
-                                                        <!?= view('tarjetas_obs/matriz_riesgo/tabla_impacto') ?>
-                                                    </div>
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <div style="margin: 0 auto;">
-                                                        hola
-                                                    </div>
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <div style="margin: 0 auto;">
-                                                        hola
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev" style="width: 5%; border-radius: 10px 0 0 10px; height: 205px; margin: auto 0; position: absolute; left: -71px;">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="visually-hidden">Previous</span>
-                                            </button>
-                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next" style="width: 5%; border-radius: 0 10px 10px 0; height: 205px; margin: auto 0; position: absolute; right: -71px;">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="visually-hidden">Next</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+                                        <table width="100%" style="border: 2px solid #dfdfdf;">
+                                            <thead>
+                                                <th style="width: 30%; border: 2px solid #dfdfdf; padding: 3px;">Significancia</th>
+                                                <th class="text-center" style="width: 70%; border: 2px solid #dfdfdf; padding: 3px;"">Descripción</th>
+                                            </thead>
 
-                        <div class="row" id="btns_obs_positive" style="display: none;">
-                            <div class="col-xs-12 col-md-4 text-center">
-                                <p class="border_obs">La observación actual ¿Posee una hallazgo positivo?</p>
-                                <div class="d-flex justify-content-center">
-                                    <button class="btn_modify" id="btn_yes_positive" style="margin-right: 2px;">Si</button>
-                                    <button class="btn_modify" id="btn_no_positive" style="margin-left: 2px;">No</button>
+                                            <tbody>
+                                                <tr style=" border-bottom: 1px solid #f1f1f1;">
+                                                <td style="background-color: #f9f9f9; font-weight: bold; text-align: center; letter-spacing: 1px; border-radius: 0; border-right: 2px solid #dfdfdf;">Aceptable</td>
+                                                <td>
+                                                    <b>No afecta o afecta levemente. </b><br>
+                                                    Lesión menor resuelta a través de primeros auxilios (Ej: lesiones superficiales, cortes leves, irritación ocular por polvo, magulladuras pequeñas). Sin perdidas o daños materiales
+                                                </td>
+                                                </tr>
+                                                <tr style="border-bottom: 1px solid #f1f1f1;">
+                                                    <td style="background-color: #d9ffd9; font-weight: bold; text-align: center; letter-spacing: 1px; border-radius: 0; border-right: 2px solid #dfdfdf;">Moderado</td>
+                                                    <td>
+                                                        <b>Afecta con consecuencias que son reversibles.</b><br>
+                                                        Lesión con pérdida de días o restricción de tareas (Ej.: esguinces, fracturas planas, quemaduras menores) Pérdidas o daños materiales bajos
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom: 1px solid #f1f1f1;">
+                                                    <td style="background-color: #fffcd9; font-weight: bold; text-align: center; letter-spacing: 1px; border-radius: 0; border-right: 2px solid #dfdfdf;">Significativo</td>
+                                                    <td>
+                                                        <b>Afecta con consecuencias que no son reversibles o son reversibles con tratamientos medicos.</b><br>
+                                                        Lesión severa con incapacidad laboral permanente total/parcial o que requiere de tratamiento médico de complejidad (Ej.: enfermedades profesionales, quemaduras con tratamientos complejos, fracturas expuestas, amputaciones, etc.) Pérdidas o daños materiales de escala apreciable.
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="background-color: #f5b4b4; font-weight: bold; text-align: center; letter-spacing: 1px; border-radius: 0; border-right: 2px solid #dfdfdf;">Intolerable</td>
+                                                    <td>
+                                                        <b>Afecta con consecuencias muy graves o que puede desencadenar en muertes.</b><br>
+                                                        Muerte de una o más personas, o de algún tercero. Perdida total o reconstrucción de Instalaciones.
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <input type="hidden" name="posee_obs" id="posee_obs" value="0"> <!-- Que esté en 0 significa que no hay (por defecto) -->
+                        <div class="row mt-3" id="generar_reconocimiento" style="display: none;">
+                            <div class="col-xs-12 col-md-12 text-center">
+                                <p class="border_obs fw-semibold">¿Desea destacar un reconocimiento positivo?</p>
+                                <div class="d-flex justify-content-center">
+                                    <label class="btn_modify" id="si_ejecutar_reconocimiento" style="margin-right: 2px; width: 100%; max-width: 70px;">Si</label>
+                                    <label class="btn_modify" id="no_ejecutar_reconocimiento" style="margin-left: 2px; width: 100%;  max-width: 70px;">No</label>
+                                    <input type="hidden" name="destacar_reconocimiento" id="destacar_reconocimiento" value="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3" id="obs_cerrada_sin_plan" style="display: none;">
+                            <div class="col-xs-12 col-md-12 text-center">
+                                <p class="fw-semibold mb-1">La Observación actual se registrará en su estado 'Cerrado'</p>
+                                <p class="fw-semibold">Por lo tanto, no habrá plan de acción para su ejecución</p>
+                            </div>
+                        </div>
 
                         <br>
 
                         <!-- Todos los Planes de acción  -->
 
-                        <section id="section_plan_accion">
+                        <section id="section_plan_accion" style="display: none;">
+                            <?= view('tarjetas_obs/plan_accion') ?>
                         </section>
 
-                        <section id="section_obs_positiva">
+                        <section id="section_obs_positiva" style="display: none;">
+                            <?= view('tarjetas_obs/reconocimiento') ?>
                         </section>
 
                         <br>
@@ -313,6 +384,7 @@
 
     </div>
 </div>
+
 <script>
     let estaciones = <?= json_encode($estaciones); ?>;
     let sistemas = <?= json_encode($sistemas); ?>;
@@ -322,6 +394,8 @@
     let responsable = <?= json_encode($responsables); ?>;
 </script>
 
+<script src="<?= base_url() ?>/assets/js/addFiles.js"></script>
+<script src="<?= base_url() ?>/assets/js/virtual-select.min.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/modal_riesgo.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/fileDropAdder.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/fileDropAdderPositive.js"></script>
@@ -329,4 +403,10 @@
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/submit.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/add_plan_accion.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/add_obs_positiva.js"></script>
-<!-- <script src="<?= base_url() ?>/assets/js/tarjetaObs/drawAndDrop.js"></script> -->
+
+<script>
+    new addFiles(document.getElementById("gallery"), 'adj_observacion').init();
+</script>
+<script>
+    new addFiles(document.getElementById("gallery_reconocimiento"), 'adj_observacion_positive').init();
+</script>

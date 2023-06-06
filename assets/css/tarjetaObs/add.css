@@ -1,8 +1,12 @@
+.border_obs {
+  font-size: 15px
+}
+
 .border_obs::after {
   content: "";
   display: block;
-  width: 50%;
-  margin: 0 auto;
+  width: 20%;
+  margin: 10px auto 0 auto;
   border-bottom: 2px solid rgb(142, 196, 240);
 }
 
@@ -14,6 +18,128 @@
 
 .btn_checked:hover {
   background: #5cb35c;
+}
+
+fieldset {
+  margin: 10px auto;
+  border: 1px solid #e5e5e5;
+}
+
+legend {
+  color: #505050;
+  font-size: 14px;
+  padding: 3px 5px;
+  width: auto;
+  border-radius: 4px;
+  float: inherit;
+  margin: 0 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+
+#efecto_impacto,
+#contratista_plan,
+#contratista,
+#responsable,
+#relevo_responsable,
+#contratista_reconocimiento {
+  max-width: 100%;
+  padding: 3px;
+  border-radius: 15px !important;
+  margin-top: -5px;
+}
+
+.rounded-select {
+  border-radius: 20px;
+}
+
+.riesgos {
+  transition: all .2s ease-in-out;
+}
+
+.riesgos.blanco:hover {
+  background-color: #F9F9F9;
+  border-bottom: 3px solid #f1f1f1;
+}
+
+.blanco_check:checked+.riesgos.blanco:hover {
+  border-bottom: 3px solid #CACACA;
+}
+
+.riesgos.verde:hover {
+  background-color: #eaffea;
+  border-bottom: 3px solid #d1f8d1;
+}
+
+.verde_check:checked+.riesgos.verde:hover {
+  border-bottom: 3px solid rgb(102 181 114);
+}
+
+.riesgos.amarillo:hover {
+  background-color: #FFF8CE;
+  border-bottom: 3px solid #FCE594;
+}
+
+.amarillo_checked:checked+.riesgos.amarillo:hover {
+  border-bottom: 3px solid rgba(235, 202, 120, 1);
+}
+
+.riesgos.rojo:hover {
+  background-color: #FFC5C5;
+  border-bottom: 3px solid #E28282;
+}
+
+.rojo_check:checked+.riesgos.rojo:hover {
+  border-bottom: 3px solid rgb(159 59 59);
+}
+
+.contain-question_icon {
+  margin-left: 5px;
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+.contain-question_icon:hover {
+  background-color: #c7e1ef;
+}
+
+.question-icon {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4b7f9c;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.question-icon span {
+  font-size: 15px;
+  font-weight: bold;
+  color: #4b7f9c;
+}
+
+#div-plan_accion {
+  background: #fffcf3;
+  border-top: 3px solid #ffe4b4;
+  border-bottom: 3px solid #ffe4b4;
+  border-radius: 10px;
+  margin: 0;
+  border-right: 1px solid #ffe4b4;
+  border-left: 1px solid #ffe4b4;
+}
+
+#div-reconocimiento {
+  background: #f3fff9;
+  border-top: 3px solid #a6ccb5;
+  border-bottom: 3px solid #a6ccb5;
+  border-radius: 10px;
+  margin: 0;
+  border-right: 1px solid #a6ccb5;
+  border-left: 1px solid #a6ccb5;
 }
 
 #btn_add_plan,
@@ -158,10 +284,17 @@
 
 .rojo,
 .verde,
-.amarillo {
+.amarillo,
+.blanco {
   font-size: 13px;
   border: none;
 }
+
+.blanco {
+  border-right: 1px solid lightgray;
+  border-radius: 4px 0 0 4px;
+}
+
 
 .rojo {
   border-right: 1px solid lightgray;
@@ -174,6 +307,17 @@
 
 .amarillo {
   border-radius: 0 4px 4px 0;
+}
+
+.btnsToggle {
+  border-bottom: 3px solid lightgray;
+}
+
+.blanco_check:checked+.blanco {
+  box-shadow: inset 0px 0px 32px 0px rgb(247, 247, 247);
+  background-color: #f9f9f9;
+  border: none;
+  border-bottom: 3px solid #CACACA;
 }
 
 .verde_check:checked+.verde {
@@ -195,6 +339,39 @@
   background-color: #f9f3d6;
   border: none;
   border-bottom: 3px solid rgba(235, 202, 120, 1);
+}
+
+.div-ind_icono {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.div-ind_icono small {
+  display: flex;
+  align-items: center;
+  background: #b7ceef;
+  font-weight: bold;
+  color: white;
+  margin-right: 10px;
+  letter-spacing: 0.5px;
+  border-radius: 3px;
+  padding: 2px 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.div-ind_icono small:hover {
+  background-color: #9dbdeb;
+}
+
+.div-ind_icono svg {
+  margin-left: 3px;
+}
+
+.collapse textarea,
+label {
+  font-size: 13px;
 }
 
 /** Gestión de Riesgo **/

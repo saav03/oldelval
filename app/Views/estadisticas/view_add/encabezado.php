@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-3 col-xs-12 mt-2">
+    <div class="col-md-4 col-xs-12 mt-2">
         <?php if ($this->session->get('empresa') == 1 && acceso('add_cargar_est_empresa')) { ?>
 
             <div id="container_selectEmpresas">
@@ -39,7 +39,7 @@
         <?php }   ?>
     </div>
 
-    <div class="col-md-3 col-xs-12 mt-2">
+    <div class="col-md-4 col-xs-12 mt-2">
         <label class="mb-1 fw-semibold" for="periodo">Periodo <small>(*)</small></label>
         <select class="form-select sz_inp text-center" name="periodo" id="periodo">
             <option value="">--Seleccione Periodo--</option>
@@ -53,7 +53,7 @@
         </select>
     </div>
 
-    <div class="col-md-2 col-xs-12">
+    <div class="col-md-4 col-xs-12">
         <label class="mb-1 fw-semibold mt-2" for="fecha_hoy">Fecha Carga<small>(*)</small></label>
         <input type="date" class="form-control text-center sz_inp simulate_dis" name="fecha_hoy" id="fecha_hoy" value="<?= date('Y-m-d') ?>" readonly>
     </div>
@@ -89,17 +89,18 @@
         </div>
     </div>
 
-    <div class="col-md-4 col-xs-12 mt-2">
+    <!-- | LO DESACTIVE POR SOLICITUD EN LA REUNIÓN 24.05.23 | -->
+    <!-- <div class="col-md-4 col-xs-12 mt-2">
         <label class="mb-1 fw-semibold" for="area">Sistema de Oleoductos</label>
         <div id="selector_sistemas_div">
             <select name="sistema" id="sistema" class="form-select sz_inp" onchange="validacionSistemas(this)">
                 <option value="">-- No Aplica --</option>
-                <?php foreach ($sistemas as $s) : ?>
-                    <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
-                <?php endforeach ?>
+                <!?php foreach ($sistemas as $s) : ?>
+                    <option value="<!?= $s['id'] ?>"><!?= $s['nombre'] ?></option>
+                <!?php endforeach ?>
             </select>
         </div>
-    </div>
+    </div> -->
 
 </div>
 

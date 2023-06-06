@@ -11,7 +11,7 @@ class Model_mail_tarjeta extends Model
     public function getInfoTarjetaCreada($id_obs, $id_obs_accion = '', $otro_responsable = false)
     {
         $builder = $this->db->table('tarjeta_observaciones tar_obs');
-        $builder->select('tar_obs.id id_obs, tar_obs.fecha_deteccion, tar_obs.tipo_obs, tar_obs.observador, p.nombre proyecto, u.nombre nombre_u_carga, u.apellido apellido_u_carga, u.correo correo_carga')
+        $builder->select('tar_obs.id id_obs, tar_obs.fecha_deteccion, tar_obs.tipo_observacion, tar_obs.observador, p.nombre proyecto, u.nombre nombre_u_carga, u.apellido apellido_u_carga, u.correo correo_carga')
             ->join('proyectos p', 'p.id=tar_obs.proyecto', 'inner')
             ->join('usuario u', 'u.id=tar_obs.usuario_carga', 'inner')
             ->where('tar_obs.id', $id_obs);
@@ -20,7 +20,7 @@ class Model_mail_tarjeta extends Model
         if (!empty($id_obs_accion)) {
             $query['responsable'] = $this->getPlanAccionTarjeta($id_obs_accion);
             if($otro_responsable)
-            $query['otro_responsable'] = $this->getPlanAccionTarjeta($id_obs_accion, true);
+            $query['relevo_responsable'] = $this->getPlanAccionTarjeta($id_obs_accion, true);
         }
 
         return $query;
@@ -29,7 +29,7 @@ class Model_mail_tarjeta extends Model
     protected function getPlanAccionTarjeta($id_obs_accion, $otro_responsable = false)
     {
         if ($otro_responsable) {
-            $responsable = 'otro_responsable';
+            $responsable = 'relevo_responsable';
         } else {
             $responsable = 'responsable';
         }
@@ -41,7 +41,7 @@ class Model_mail_tarjeta extends Model
         return $builder->get()->getResultArray()[0];
     }
 
-    public function getInfoNewDescargo($id_hallazgo)
+    public function getInfoNewDescargo($id_hallazgo, $id_descargo)
     {
         $builder = $this->db->table('tarjeta_hallazgo_descargos descargo');
         $builder->select('obs.id id_obs, u.nombre u_nombre_carga, u.apellido u_apellido_carga, u.correo correo_carga, u_responde.nombre u_nombre_responde, u_responde.apellido u_apellido_responde, descargo.id_hallazgo id_hallazgo, descargo.id id_descargo, descargo.motivo, descargo.estado estado_descargo, DATE_FORMAT(fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(hallazgo.fecha_cierre, "%d/%m/%Y") fecha_vencimiento')
@@ -49,7 +49,8 @@ class Model_mail_tarjeta extends Model
             ->join('tarjeta_observaciones obs', 'obs.id=hallazgo.id_tarjeta', 'inner')
             ->join('usuario u', 'u.id=obs.usuario_carga', 'inner')
             ->join('usuario u_responde', 'u_responde.id=descargo.id_usuario', 'inner')
-            ->where('descargo.id_hallazgo', $id_hallazgo);
+            ->where('descargo.id_hallazgo', $id_hallazgo)
+            ->where('descargo.id', $id_descargo);
         $query = $builder->get()->getRowArray();
         return $query;
     }

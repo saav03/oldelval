@@ -43,11 +43,11 @@
                                     <td style="padding:0 0 36px 0;color:#153643;">
                                         <h1 style="font-size:24px;margin:5px 0; text-align: center; letter-spacing: 1.2px;">Tarjeta de Observaciones</h1>
                                         <h1 style="font-size:18px;text-align: center; letter-spacing: 1.2px;">N°<?= $datos[0]['id_obs'] ?> </h1>
-                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;">Estimado <?= $datos['otro_responsable']['nombre_u_responsable'] . ' ' . $datos['otro_responsable']['apellido_u_responsable'] ?>, usted ha sido seleccionado como relevo para responder en esta observación (En caso de ser necesario)</p>
+                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;">Estimado <?= $datos['relevo_responsable']['nombre_u_responsable'] . ' ' . $datos['relevo_responsable']['apellido_u_responsable'] ?>, usted ha sido seleccionado como relevo para responder en esta observación (En caso de ser necesario)</p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px; text-align: center;">Datos de la Observación</p>
                                         <hr>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Fecha de Detección: </b><?= $datos[0]['fecha_deteccion'] ?></p>
-                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Tipo de Observación: </b><?= $datos[0]['tipo_obs'] == 1 ? 'Observación Positiva' : 'Posibilidad de Mejora' ?></p>
+                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Tipo de Observación: </b><?= $datos[0]['tipo_observacion'] == 1 ? 'Observación Positiva' : 'Posibilidad de Mejora' ?></p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Observador: </b><?= $datos[0]['nombre_u_carga'] . ' ' . $datos[0]['apellido_u_carga'] ?></p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Proyecto: </b><?= $datos[0]['proyecto'] ?></p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Usuario Carga: </b><?= $datos[0]['nombre_u_carga'] . ' ' . $datos[0]['apellido_u_carga'] ?></p>

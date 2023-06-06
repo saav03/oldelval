@@ -213,6 +213,13 @@ class Validation extends BaseConfig
     ];
 
     public $validation_tarjeta = [
+        'contratista' => [
+            'label' => 'Contratista',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'No se especificó la contratista de la Observacion',
+            ]
+        ],
         'fecha_deteccion' => [
             'label' => 'Fecha de Detección',
             'rules' => ['required'],
@@ -220,7 +227,7 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó la fecha de detección',
             ]
         ],
-        'tipo_obs' => [
+        'tipo_observacion' => [
             'label' => 'Tipo de Observación',
             'rules' => ['required'],
             'errors' => [
@@ -254,6 +261,16 @@ class Validation extends BaseConfig
         ], */
     ];
 
+    public $validation_ejecutar_plan = [
+        'desea_ejecutar_plan' => [
+            'label' => 'Plan de Accion',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'Seleccione si desea ejecutar un plan de accion',
+            ]
+        ]
+    ];
+
     public $validation_hallazgo = [
         'hallazgo' => [
             'label' => 'Hallazgo',
@@ -262,32 +279,11 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó el hallazgo',
             ]
         ],
-        'accion_recomendacion' => [
+        'plan_accion' => [
             'label' => 'Plan de Acción',
             'rules' => ['required'],
             'errors' => [
                 'required' => 'No se especificó el plan de acción',
-            ]
-        ],
-        'clasificacion' => [
-            'label' => 'Clasificación',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'No se especificó la clasificación',
-            ]
-        ],
-        'tipo' => [
-            'label' => 'Tipo de Hallazgo',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'No se especificó el tipo de hallazgo',
-            ]
-        ],
-        'matriz_riesgo' => [
-            'label' => 'Riesgo',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'No se especificó el riesgo',
             ]
         ],
         'contratista' => [
@@ -318,14 +314,7 @@ class Validation extends BaseConfig
             'label' => 'Descripción de lo observado',
             'rules' => ['required'],
             'errors' => [
-                'required' => 'No se especificó el hallazgo',
-            ]
-        ],
-        'clasificacion' => [
-            'label' => 'Clasificación',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'No se especificó la clasificacion',
+                'required' => 'No se especificó lo observado',
             ]
         ],
         'contratista' => [
@@ -333,6 +322,25 @@ class Validation extends BaseConfig
             'rules' => ['required'],
             'errors' => [
                 'required' => 'No se especificó la contratista',
+            ]
+        ],
+    ];
+
+    public $validation_destacar_reconocimiento = [
+        'destacar_reconocimiento' => [
+            'label' => 'Reconocimiento Positivo',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'Seleccione si desea destacar un reconocimiento positivo',
+            ]
+        ]
+    ];
+    public $validation_significancia_obs = [
+        'significancia' => [
+            'label' => 'significancia',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'Seleccione al menos un riesgo',
             ]
         ],
     ];
@@ -373,13 +381,13 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó la estacion',
             ]
         ],
-        'sistema' => [
+        /* 'sistema' => [
             'label' => 'Sistema',
             'rules' => ['required'],
             'errors' => [
                 'required' => 'No se especificó el sistema',
             ]
-        ],
+        ], */
     ];
 
     public $validation_permission = [

@@ -178,7 +178,7 @@ class Estadisticas extends BaseController
             'proyecto' => $this->request->getPost('proyecto'),
             'modulo' => $this->request->getPost('modulo') == '-1' ? -1 : $this->request->getPost('modulo'),
             'estacion' => $this->request->getPost('estacion_bombeo') == '-1' ? -1 : $this->request->getPost('estacion_bombeo'),
-            'sistema' => $this->request->getPost('sistema') == '-1' ? -1 : $this->request->getPost('sistema'),
+            // 'sistema' => $this->request->getPost('sistema') == '-1' ? -1 : $this->request->getPost('sistema'),
         ];
 
         $datos_estadisticas = $this->verificacion($datos, 'validation_estadistica');

@@ -1,137 +1,173 @@
-/*
- Dependiendo lo que seleccione en el selector 'Tipo de Observación' 
- se va a mostrar los botones para agregar ya sea obs positiva o un plan de acción   
-*/
-
 /* == Declaración de Constantes ==  */
-
 const btns_add_plan_accion = document.getElementById("btns_add_plan_accion");
 const btns_obs_positive = document.getElementById("btns_obs_positive");
 
 const section_plan_accion = document.getElementById("section_plan_accion");
 const section_obs_positiva = document.getElementById("section_obs_positiva");
 
-/** Botón para agregar plan de acción o no **/
+const situacion = document.getElementsByName("situacion");
+const terminos_observacion = document.getElementById("terminos_observacion");
 
-const btn_yes = document.getElementById("btn_yes");
-const btn_no = document.getElementById("btn_no");
+// Definición de Constantes - Selector Efecto Impacto
+const selector_efectos_impacto = document.querySelector('#efecto_impacto');
+// Definición de Constantes - Significancia
+const all_btn_significancia = document.querySelectorAll('.btn_check_significancia');
 
-/** Botón para agregar hallazgos positivos **/
+// Definición de Constantes - ¿Cómo evaluaría la observación actual en términos positivos / oportunidades de mejora?
+const tipo_observacion = document.getElementsByName("tipo_observacion");
+const btn_tipo_obs = document.querySelectorAll('.btn_tipo_obs');
+const alerta_obs_estado = document.getElementById('alerta_obs_estado');
 
-const btn_yes_positive = document.getElementById("btn_yes_positive");
-const btn_no_positive = document.getElementById("btn_no_positive");
 
-const posee_obs = document.getElementById("posee_obs");
-const situacion = document.getElementById("situacion");
+// == Definición de Constantes - ¿Desea destacar un reconocimiento positivo?
+const container_generar_reconocimiento = document.getElementById("generar_reconocimiento");
+const si_ejecutar_reconocimiento = document.getElementById("si_ejecutar_reconocimiento");
+const no_ejecutar_reconocimiento = document.getElementById("no_ejecutar_reconocimiento");
+const destacar_reconocimiento = document.getElementById("destacar_reconocimiento");
 
-/**
- * Escucha por el cambio del selector (Si es positiva la observación o no)
- */
-function listenTipoObs(e) {
-  if (e.value == 1) {
-    btns_obs_positive.style.display = "block";
-    btns_add_plan_accion.style.display = "none";
-    btn_no.classList.remove("btn_checked");
-    btn_yes.classList.remove("btn_checked");
-    section_plan_accion.style.display = "none";
-    situacion.value = 0;
-    situacion.classList.add('simulate_dis');
-    situacion.style.pointerEvents = 'none';
-  } else {
-    btns_obs_positive.style.display = "none";
-    btn_no_positive.classList.remove("btn_checked");
-    btn_yes_positive.classList.remove("btn_checked");
-    section_obs_positiva.style.display = "none";
-    // btns_add_plan_accion.style.display = "block";
-    situacion.classList.remove('simulate_dis');
-    situacion.style.pointerEvents = 'all';
+// == Definición de Constantes - Observación actual con estado cerrado
+const container_obs_cerrada = document.getElementById("obs_cerrada_sin_plan");
 
-    /* Si la observación está cerrada, entonces plan de acción no va agregarse */
-    if (situacion.value == 0) {
-      btns_add_plan_accion.style.display = "none";
-      section_plan_accion.style.display = "none";
-    } else {
-      btns_add_plan_accion.style.display = "block";
+// == Definición de Constantes - Inputs
+const input_tipo_positivo = document.getElementById("tipo_positivo");
+const label_tipo_positivo = document.getElementById("label_tipo_positivo");
+const input_oportunidad_mejora = document.getElementById("oportunidad_mejora");
+const label_oportunidad_mejora = document.getElementById("label_oportunidad_mejora");
+
+
+// Esto hace de que se habilite o no para agregar un reconocimiento positivo o una oportunidad de mejora
+for (let i = 0; i < situacion.length; i++) {
+  situacion[i].addEventListener('change', e => {
+    alerta_obs_estado.style.display = 'none';
+    for (let j = 0; j < btn_tipo_obs.length; j++) {
+      btn_tipo_obs[j].removeAttribute('disabled');
+      tipo_observacion[j].removeAttribute('disabled');
     }
 
-  }
-  posee_obs.value = 0;
+    // # Si es de estado cerrada, entonces no hay plan de acción, pero si puede generar un reconocimiento positivo
+    if (situacion[i].value == 0) {
+      label_tipo_positivo.removeAttribute('disabled');
+      input_tipo_positivo.removeAttribute('disabled');
+      section_plan_accion.style.display = 'none';
+
+      if (input_oportunidad_mejora.checked) {
+        section_plan_accion.style.display = "none";
+
+        container_obs_cerrada.style.display = 'block';
+
+      } else if (input_tipo_positivo.checked) {
+        container_obs_cerrada.style.display = 'none';
+        container_generar_reconocimiento.style.display = 'block';
+      }
+
+    } else { // # Si está abierta, entonces..
+      // # Si es una observación abierta, entonces no van haber hallazgos positivos, tiene que estar cerrada para eso
+      label_tipo_positivo.setAttribute('disabled', '');
+      input_tipo_positivo.setAttribute('disabled', '');
+      section_obs_positiva.style.display = 'none';
+
+      if (input_oportunidad_mejora.checked) {
+        section_plan_accion.style.display = "block";
+        container_obs_cerrada.style.display = 'none';
+
+      } else if (input_tipo_positivo.checked) {
+
+        container_obs_cerrada.style.display = 'none';
+        container_generar_reconocimiento.style.display = 'none';
+      }
+
+    }
+
+  });
 }
 
-situacion.addEventListener('change', e => {
-  if (situacion.value == 1) {
-    btns_add_plan_accion.style.display = "block";
-  } else {
-    btns_add_plan_accion.style.display = "none";
-    section_plan_accion.style.display = "none";
-  }
-})
+for (let i = 0; i < tipo_observacion.length; i++) {
+  tipo_observacion[i].addEventListener('change', e => {
+    if (tipo_observacion[i].value == 1) { // Reconocimiento Positivo
 
-btn_yes.addEventListener("click", (e) => {
-  e.preventDefault();
-  btn_yes.classList.add("btn_checked");
-  section_plan_accion.style.display = "block";
-  btn_no.classList.remove("btn_checked");
-  posee_obs.value = 1;
-  generarPlanAccion("section_plan_accion", "contenedor");
-});
+      // # Removemos el btn checkeado
+      for (let j = 0; j < btn_tipo_obs.length; j++) {
+        btn_tipo_obs[j].classList.remove('btn_checked');
+      }
+      btn_tipo_obs[i].classList.add('btn_checked');
 
-btn_no.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (section_plan_accion.style.display == 'block') {
-    customConfirmationButton(
-      "Nueva Selección",
-      "Si elige que no la observación actual se eliminará. ¿Está seguro de ésta acción?",
-      "Cambiar",
-      "Cancelar",
-      "swal_edicion"
-    ).then((result) => {
-      btn_no.classList.add("btn_checked");
-      section_plan_accion.style.display = "none";
-      btn_yes.classList.remove("btn_checked");
-      posee_obs.value = 0;
-    });
-  } else {
-    btn_no.classList.add("btn_checked");
-    section_plan_accion.style.display = "none";
-    btn_yes.classList.remove("btn_checked");
-    posee_obs.value = 0;
-  }
-});
+      // # Desactivamos los efectos / impactos en caso de ser un reconocimiento positivo
+      document.querySelector('#efecto_impacto').setValue(0);
+      document.getElementById('efecto_impacto').setAttribute('disabled', '');
 
-btn_yes_positive.addEventListener("click", (e) => {
+      // # También habilitamos solamente la significancia 'Aceptable'.
+      for (let j = 0; j < all_btn_significancia.length; j++) {
+        if (all_btn_significancia[j].classList.contains('blanco_check')) {
+          all_btn_significancia[j].removeAttribute('disabled');
+          all_btn_significancia[j].setAttribute('checked', '');
+        } else {
+          all_btn_significancia[j].checked = false;
+          all_btn_significancia[j].setAttribute('disabled', '');
+        }
+      }
+
+      container_generar_reconocimiento.style.display = 'none';
+      container_obs_cerrada.style.display = 'none';
+
+      // # Si la tarjeta está cerrada, entonces puede tener un reconocimiento positivo
+      if (document.getElementById('cerrada').checked) {
+        container_generar_reconocimiento.style.display = 'block';
+        container_obs_cerrada.style.display = 'none';
+      }
+
+    } else if (tipo_observacion[i].value == 2) { // Oportunidad de Mejora
+
+      // # Removemos el btn checkeado
+      for (let j = 0; j < btn_tipo_obs.length; j++) {
+        btn_tipo_obs[j].classList.remove('btn_checked');
+      }
+      btn_tipo_obs[i].classList.add('btn_checked');
+
+      // # Activamos los efectos / impactos en caso de ser una oportunidad de mejora
+      document.getElementById('efecto_impacto').removeAttribute('disabled');
+
+      // # También habilitamos todas las significancias.
+      for (let j = 0; j < all_btn_significancia.length; j++) {
+        all_btn_significancia[j].removeAttribute('disabled');
+        all_btn_significancia[j].checked = false;
+      }
+
+      // # Si la tarjeta no está cerrada, entonces..
+      if (!document.getElementById('cerrada').checked) {
+        section_plan_accion.style.display = 'block';
+        section_obs_positiva.style.display = 'none';
+        container_generar_reconocimiento.style.display = 'none';
+        container_obs_cerrada.style.display = 'none';
+      } else { // # Si la tarjeta está abierta, entonces hay plan de acción
+        section_plan_accion.style.display = 'none';
+        section_obs_positiva.style.display = 'none';
+        container_obs_cerrada.style.display = 'block';
+        container_generar_reconocimiento.style.display = 'none';
+      }
+
+    }
+  });
+}
+
+si_ejecutar_reconocimiento.addEventListener("click", (e) => {
   e.preventDefault();
-  btn_yes_positive.classList.add("btn_checked");
   section_obs_positiva.style.display = "block";
-  btn_no_positive.classList.remove("btn_checked");
-  posee_obs.value = 2;
-  generarObsPositiva("section_obs_positiva", "contenedor");
+  si_ejecutar_reconocimiento.classList.add("btn_checked");
+  no_ejecutar_reconocimiento.classList.remove("btn_checked");
+  destacar_reconocimiento.value = 1;
 });
-
-btn_no_positive.addEventListener("click", (e) => {
+no_ejecutar_reconocimiento.addEventListener("click", (e) => {
   e.preventDefault();
-  if (section_obs_positiva.style.display == 'block') {
-    customConfirmationButton(
-      "Nueva Selección",
-      "Si elige que no la observación actual se eliminará. ¿Está seguro de ésta acción?",
-      "Cambiar",
-      "Cancelar",
-      "swal_edicion"
-    ).then((result) => {
-      btn_no_positive.classList.add("btn_checked");
-      section_obs_positiva.style.display = "none";
-      btn_yes_positive.classList.remove("btn_checked");
-      posee_obs.value = 0;
-    });
-  } else {
-    btn_no_positive.classList.add("btn_checked");
-    section_obs_positiva.style.display = "none";
-    btn_yes_positive.classList.remove("btn_checked");
-    posee_obs.value = 0;
-  }
+  section_obs_positiva.style.display = "none";
+  no_ejecutar_reconocimiento.classList.add("btn_checked");
+  si_ejecutar_reconocimiento.classList.remove("btn_checked");
+  destacar_reconocimiento.value = 0;
 });
 
-/***************************************************************/
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+/**************************************************************************************************/
 
 const selector_modulos_div = document.getElementById("selector_modulos_div");
 const selector_estaciones_div = document.getElementById(
@@ -376,10 +412,6 @@ function validacionSistemas(e = '') {
   setChildren(selector_estaciones_div, divSetModules);
 }
 
-function prevenirDefault(event) {
-  event.preventDefault();
-}
-
 /* ================================================================================================================================= */
 
 /*
@@ -409,7 +441,6 @@ function crearSeccionNewObservador() {
     b.preventDefault();
     let div_padre = btnTrash.parentElement.parentElement
     div_padre.remove();
-    console.log(observadores_inps.length);
     if (observadores_inps.length == 1) {
       obs_new_title.style.display = 'none';
     }
@@ -425,3 +456,36 @@ function crearSeccionNewObservador() {
   mount(divObservadores, div);
   mount(container_observadores, divObservadores);
 }
+
+/** Efecto e Impacto **/
+VirtualSelect.init({
+  ele: '#efecto_impacto',
+  placeholder: 'Seleccione uno o mas efectos',
+});
+document.getElementById('efecto_impacto').setAttribute('disabled', '');
+VirtualSelect.init({
+  ele: '#contratista',
+  placeholder: 'Seleccione una contratista',
+});
+VirtualSelect.init({
+  ele: '#contratista_plan',
+  placeholder: 'Seleccione una contratista',
+});
+VirtualSelect.init({
+  ele: '#contratista_reconocimiento',
+  placeholder: 'Seleccione una contratista',
+});
+VirtualSelect.init({
+  ele: '#responsable',
+  placeholder: 'Seleccione un responsable',
+});
+VirtualSelect.init({
+  ele: '#relevo_responsable',
+  placeholder: 'Seleccione un relevo de responsable',
+});
+
+document.getElementById('contratista').setValue(0);
+document.getElementById('contratista_plan').setValue(0);
+document.getElementById('contratista_reconocimiento').setValue(0);
+document.getElementById('responsable').setValue(0);
+document.getElementById('relevo_responsable').setValue(0);
