@@ -43,7 +43,7 @@ a:hover {
 }
 
 .blanco_check:checked+.blanco {
-    box-shadow: inset 0px 0px 32px 0px rgba(184,184,184,1);
+    box-shadow: inset 0px 0px 32px 0px rgb(236, 236, 236);
     background-color: #f9f9f9;
     border: none;
     border-bottom: 3px solid #CACACA;

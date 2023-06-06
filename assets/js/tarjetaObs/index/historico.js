@@ -23,6 +23,7 @@ const tableOptions = {
     "Estación",
     "Sistema",
     "Fecha de Detección",
+    "Observador",
     "Observación",
     "Situación",
     // "Estado",
@@ -55,6 +56,7 @@ const tableOptions = {
     // "estacion",
     // "sistema",
     "fecha_deteccion",
+    "observador",
     {
       key: (row) => {
         let div, clase;

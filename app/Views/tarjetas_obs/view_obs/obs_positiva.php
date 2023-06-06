@@ -18,17 +18,7 @@ $t = $tarjeta['hallazgo'];
                 </div>
             </fieldset>
         </div>
-        <div class="col-xs-12 col-md-6">
-            <fieldset style="border-right: 0;">
-                <legend style="width: 100%;">
-                    Clasificación de Hallazgo
-                </legend>
-                <div class="row" style="padding: 4px 50px;">
-                    <input class="form-control sz_inp" type="text" id="clasificacion" value="<?= $t['clasificacion'] ?>" style="border: none;" readonly>
-                </div>
-            </fieldset>
-        </div>
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-12">
             <fieldset style="border-right: 0;">
                 <legend style="width: 100%;">
                     Contratista

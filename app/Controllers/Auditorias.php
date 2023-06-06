@@ -407,7 +407,6 @@ class Auditorias extends BaseController
                         'plan_accion' => $this->request->getPost('plan_accion'),
                         'efecto_impacto' => $this->request->getPost('efecto_impacto'),
                         'contratista' => $this->request->getPost('contratista_plan'),
-                        'efecto_impacto' => $this->request->getPost('efecto_impacto'),
                         'significancia' => $this->request->getPost('significancia'),
                         'responsable' => $this->request->getPost('responsable_plan'),
                         'relevo_responsable' => $this->request->getPost('relevo_responsable_plan'),
@@ -477,7 +476,6 @@ class Auditorias extends BaseController
 
         if ($efectos)
             $efectos_separados = explode(',', $efectos);
-
 
         $id_hallazgo = $this->model_general->insertG('obs_hallazgos', $datos);
 

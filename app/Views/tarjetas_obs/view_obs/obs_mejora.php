@@ -16,7 +16,7 @@ if ($tarjeta['cierre'] == null) : ?>
         <div class="row">
             <h5 class="text-center" style="color: #645b4a;"><i style="color: #e5af78;" class="fas fa-exclamation-circle icono_alerta"></i> Estimado/da <?= $t['responsable_nombre'] . ' ' . $t['responsable_apellido'] ?>, usted tiene una tarea pendiente a resolver</h5>
         </div>
-    <?php } else if ($t['otro_responsable'] == session()->get('id_usuario')) { ?>
+    <?php } else if ($t['relevo_responsable'] == session()->get('id_usuario')) { ?>
         <div class="row">
             <h5 class="text-center" style="color: #645b4a;"><i style="color: #e5af78;" class="fas fa-exclamation-circle icono_alerta"></i> Estimado/da <?= $t['otro_responsable_nombre'] . ' ' . $t['otro_responsable_apellido'] ?>, usted es relevo de <?= $t['responsable_nombre'] . ' ' . $t['responsable_apellido'] ?> en caso de ser necesario</h5>
         </div>
@@ -42,39 +42,7 @@ if ($tarjeta['cierre'] == null) : ?>
                     Plan de Acción
                 </legend>
                 <div class="row" style="padding: 10px 50px;">
-                    <textarea class="form-control sz_inp" name="hallazgo" id="hallazgo" cols="30" rows="5" style="border: 1px solid #f1f1f1;" disabled><?= $t['accion_recomendacion'] ?></textarea>
-                </div>
-            </fieldset>
-        </div>
-        <div class="col-xs-12 col-md-4">
-            <fieldset style="border-right: 0;">
-                <legend style="width: 100%;">
-                    Clasificación de Hallazgo
-                </legend>
-                <div class="row" style="padding: 4px 50px;">
-                    <input class="form-control sz_inp" type="text" id="clasificacion" value="<?= $t['clasificacion'] ?>" style="border: none;" readonly>
-                </div>
-            </fieldset>
-        </div>
-        <div class="col-xs-12 col-md-4">
-            <fieldset style="border-right: 0;">
-                <legend style="width: 100%;">
-                    Tipo de Hallazgo
-                </legend>
-                <div class="row" style="padding: 4px 50px;">
-                    <input class="form-control sz_inp" type="text" id="clasificacion" value="<?= $t['tipo'] ?>" style="border: none;" readonly>
-                </div>
-            </fieldset>
-        </div>
-        <div class="col-xs-12 col-md-4">
-            <fieldset style="border-right: 0;">
-                <legend style="width: 100%;">
-                    Significancia
-                </legend>
-                <div class="row align-items-center">
-                    <div class="col-xs-12 col-md-6" style="padding: 1px 10px 1px 50px;">
-                        <input class="form-control sz_inp" name="riesgo" id="riesgo" readonly="true" value="<?= $riesgos['valor']; ?>" style="border: none;">
-                    </div>
+                    <textarea class="form-control sz_inp" name="hallazgo" id="hallazgo" cols="30" rows="5" style="border: 1px solid #f1f1f1;" disabled><?= $t['plan_accion'] ?></textarea>
                 </div>
             </fieldset>
         </div>
@@ -155,14 +123,17 @@ if ($tarjeta['cierre'] == null) : ?>
             <div class="row">
                 <p class="txt_adjunto">Sector de Descargos/Respuestas</p>
                 <!-- == Botón para agregar descargo (Abre un Modal) == -->
-                <?= view('tarjetas_obs/view_obs/descargo_obs', $descargos) ?> <!-- descargo_obs.php -->
-                <?php if ($tarjeta['usuario_carga'] != session()->get('id_usuario') && is_null($tarjeta['cierre']) && $tarjeta['hallazgo']['responsable'] == session()->get('id_usuario') || $tarjeta['hallazgo']['otro_responsable'] == session()->get('id_usuario')) : ?>
-                    <div class="row" id="btns_descargos">
-                        <div style="margin: 15px 0 0 71px;">
-                            <button class="btn_modify" id="add_descargo" data-bs-toggle="modal" data-bs-target="#modal_add_descargo">Agregar Descargo</button>
+                <?= view('tarjetas_obs/view_obs/descargo_obs', $descargos); ?> <!-- descargo_obs.php -->
+                <?php if (is_null($tarjeta['cierre'])) : ?>
+                    <?php if ($tarjeta['usuario_carga'] != session()->get('id_usuario') && $tarjeta['hallazgo']['responsable'] == session()->get('id_usuario') || $tarjeta['hallazgo']['relevo_responsable'] == session()->get('id_usuario')) : ?>
+                        <div class="row" id="btns_descargos">
+                            <div style="margin: 15px 0 0 71px;">
+                                <button class="btn_modify" id="add_descargo" data-bs-toggle="modal" data-bs-target="#modal_add_descargo">Agregar Descargo</button>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 <?php endif; ?>
+
             </div>
         </div>
 

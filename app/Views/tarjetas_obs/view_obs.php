@@ -1,10 +1,13 @@
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/drawAndDrop.css" rel="stylesheet">
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/add.css" rel="stylesheet">
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/view_obs.css" rel="stylesheet">
+<link href="<?= base_url() ?>/assets/css/addFiles.css" rel="stylesheet">
+<link href="<?= base_url() ?>/assets/css/fileAdder.css" rel="stylesheet">
 
 <?php
 
 $t = $tarjeta;
+
 
 $descargos['descargos'] = isset($tarjeta['hallazgo']['descargos']) ? $tarjeta['hallazgo']['descargos'] : [];
 $situacion = $t['situacion'] == 1 ? 'Abierta' : 'Cerrada';
@@ -100,45 +103,139 @@ if (!is_null($t['cierre'])) {
             Guía de Detección
         </div>
         <div class="card-body">
-            <?php $i = 1;
-            foreach ($indicadores as $ind) : ?>
-                <div class="d-flex justify-content-between align-items-center pb-2 pt-2" style="width: 90%;margin: 0 auto; border-bottom: 1px solid lightgray; font-size: 13px;">
+
+            <div style="width: 90%; margin: 0 auto;">
+
+                <?php $i = 1;
+                foreach ($indicadores as $ind) : ?>
                     <div>
-                        <p class="m-0"><small><em><b>(<?= $i; ?>)</b></em></small> <?= $ind['nombre_indicador']; ?></p>
-                    </div>
-                    <div class="btn-group btn-group-toggle" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check verde_check" value="1" autocomplete="off" <?= ($ind['rta'] == '1') ? 'checked' : ''; ?>>
-                        <label class="btn verde <?= ($ind['rta'] != '1') ? 'simulate_dis' : ''; ?>" style="pointer-events: none;">Bien</label>
+                        <div class="row text-center p-2 mt-2 align-items-center">
+                            <div class="col-xs-12 col-md-7" style="text-align: start;">
+                                <div>
+                                    <p class="m-0"><small><em><b>(<?= $i; ?>)</b></em></small> <b><?= $ind['nombre']; ?></b> <?= $ind['descripcion']; ?></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-3 text-center">
+                                <div class="btn-group btn-group-toggle" role="group" aria-label="Basic radio toggle button group">
+                                    <input type="radio" class="btn-check verde_check" value="1" autocomplete="off" <?= ($ind['rta'] == '1') ? 'checked' : ''; ?>>
+                                    <label class="btn verde <?= ($ind['rta'] != '1') ? 'simulate_dis' : ''; ?>" style="pointer-events: none;">Bien</label>
 
-                        <input type="radio" class="btn-check rojo_check" value="0" autocomplete="off" <?= ($ind['rta'] == '0') ? 'checked' : ''; ?>>
-                        <label class="btn rojo <?= ($ind['rta'] != '0') ? 'simulate_dis' : ''; ?>" style="pointer-events: none;">Mal</label>
+                                    <input type="radio" class="btn-check rojo_check" value="0" autocomplete="off" <?= ($ind['rta'] == '0') ? 'checked' : ''; ?>>
+                                    <label class="btn rojo <?= ($ind['rta'] != '0') ? 'simulate_dis' : ''; ?>" style="pointer-events: none;">Mal</label>
 
-                        <input type="radio" class="btn-check amarillo_checked" value="-1" autocomplete="off" <?= ($ind['rta'] == '-1') ? 'checked' : ''; ?>>
-                        <label class="btn amarillo <?= ($ind['rta'] != '-1') ? 'simulate_dis' : ''; ?>" style="pointer-events: none;">N/A</label>
+                                    <input type="radio" class="btn-check amarillo_checked" value="-1" autocomplete="off" <?= ($ind['rta'] == '-1') ? 'checked' : ''; ?>>
+                                    <label class="btn amarillo <?= ($ind['rta'] != '-1') ? 'simulate_dis' : ''; ?>" style="pointer-events: none;">N/A</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-2" style="text-align: end!important;">
+                                <?php if ($ind['comentario']) : ?>
+                                    <div class="div-ind_icono">
+                                        <small data-bs-toggle="collapse" data-bs-target="#collapse_guia<?= $i ?>" aria-expanded="false" aria-controls="collapse_guia<?= $i ?>">
+                                            Comentario
+                                            <i class="fas fa-comment"></i>
+                                        </small>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php if ($ind['comentario']) : ?>
+                            <div class="collapse" id="collapse_guia<?= $i ?>">
+                                <div class="mt-2" style="width: 90%; margin: 0 auto;">
+                                    <p class="m-0 p-0 text-center fw-semibold">Comentario</p>
+                                    <textarea class="form-control sz_inp" rows="3" style="border: 1px solid #f1f1f1;" readonly><?= $ind['comentario']; ?></textarea>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
+                <?php $i++;
+                endforeach; ?>
+            </div>
+        </div>
+    </div>
+
+    <?php if (isset($t['hallazgo'])) : ?>
+        <div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 53%);">
+            <div class="card-header subtitle" style="font-weight: 600; letter-spacing: 1.5px; text-align: center;">
+                Observación
+            </div>
+            <div class="card-body">
+                <div class="col-xs-12 col-md-12">
+                    <fieldset style="border-right: none;">
+                        <legend class="w-100">
+                            Efecto / Impacto
+                        </legend>
+                        <div class="p-3 pt-1">
+                            <div class="row mt-3 justify-content-between" style="flex-wrap: wrap;">
+                                <?php if ($t['efectos']) { ?>
+                                    <?php foreach ($t['efectos'] as $efecto) : ?>
+                                        <div class="col-xs-12 col-md-4 text-center">
+                                            <p class="p-0"><i class="fa-solid fa-circle-check"></i> <?= $efecto['nombre_efecto']; ?></p>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php } else { ?>
+                                    <div class="col-xs-12">
+                                        <em>No aplican los efectos/impactos en una observación positiva</em>
+                                    </div>
+                                <?php }  ?>
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
-            <?php $i++;
-            endforeach; ?>
-        </div>
-    </div>
+                <div class="col-xs-12 col-md-12">
+                    <fieldset style="border-right: none;">
+                        <legend class="w-100">
+                            Riesgos Observados
+                        </legend>
 
-    <?php if (isset($t['hallazgo'])): ?>
-    <div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 53%);">
-        <div class="card-header subtitle" style="font-weight: 600; letter-spacing: 1.5px; text-align: center;">
-            Observación
+                        <div class="p-3 pt-1 text-center">
+                            <div class="btn-group btn-group-toggle" style="width: 80%;" role="group" aria-label="">
+                                <input id="aceptable" type="checkbox" name="significancia[]" class="btn-check blanco_check" value="1" autocomplete="off" disabled>
+                                <label class="btn blanco btnsToggle riesgos" for="aceptable">Aceptable</label>
+
+                                <input id="moderado" type="checkbox" name="significancia[]" class="btn-check verde_check" value="2" autocomplete="off" disabled>
+                                <label class="btn verde btnsToggle riesgos" for="moderado">Moderado</label>
+
+                                <input id="significativo" type="checkbox" name="significancia[]" class="btn-check amarillo_checked" value="3" autocomplete="off" disabled>
+                                <label class="btn amarillo btnsToggle riesgos" for="significativo">Significativo</label>
+
+                                <input id="intolerable" type="checkbox" name="significancia[]" class="btn-check rojo_check" value="4" autocomplete="off" disabled>
+                                <label class="btn rojo btnsToggle riesgos" for="intolerable">Intolerable</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <style>
+                    .observacion_realizada {
+                        text-align: center;
+                        font-size: 16px;
+                        font-weight: bold;
+                        letter-spacing: .7px;
+                        margin: 20px 0 0 0;
+
+                    }
+
+                    .observacion_realizada::after {
+                        content: '';
+                        display: block;
+                        width: 30%;
+                        margin: 0 auto;
+                        border-bottom: 2px solid lightblue;
+                    }
+                </style>
+
+                <?php if (!empty($t['hallazgo'])) : ?>
+                    <p class="observacion_realizada">Observación Realizada</p>
+                    <?php if ($t['observacion'] == 2) { ?>
+                        <!-- == Si es una observación con posibilidad de mejora, se visualiza == -->
+                        <?= view('tarjetas_obs/view_obs/obs_mejora', $tarjeta) ?> <!-- obs_mejora.php -->
+                    <?php } else { ?>
+                        <!-- == Si es una observación con posibilidad positiva, se visualiza == -->
+                        <?= view('tarjetas_obs/view_obs/obs_positiva') ?>
+                    <?php }  ?>
+                <?php endif; ?>
+            </div>
         </div>
-        <div class="card-body">
-            <?php if (!empty($t['hallazgo'])) : ?>
-                <?php if ($t['observacion'] == 2) { ?>
-                    <!-- == Si es una observación con posibilidad de mejora, se visualiza == -->
-                    <?= view('tarjetas_obs/view_obs/obs_mejora', $tarjeta) ?> <!-- obs_mejora.php -->
-                <?php } else { ?>
-                    <!-- == Si es una observación con posibilidad positiva, se visualiza == -->
-                    <?= view('tarjetas_obs/view_obs/obs_positiva') ?>
-                <?php }  ?>
-            <?php endif; ?>
-        </div>
-    </div>
     <?php endif; ?>
 
     <!-- == Modal para agregar descargo == -->
@@ -158,15 +255,12 @@ if (!is_null($t['cierre'])) {
                                 <input type="hidden" name="id_hallazgo" id="id_hallazgo_descargo" value="<?= isset($t['hallazgo']['id']) ? $t['hallazgo']['id'] : '' ?>">
                             </div>
                             <div class="col-xs-12 col-md-12 mt-3">
-                                <div id="container_adj"></div>
-                                <div id="gallery"></div>
+                                <div id="gallery_descargos" class="adj_gallery" style="margin-left: 10px;"></div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-
                         <button type="button" class="btn_mod_close" data-bs-dismiss="modal">Cancelar Respuesta</button>
-
                         <!-- == Con este btn se genera un envío de Ajax == -->
                         <input type="submit" id="btn_add_descargo" class="btn_modify" value="Enviar Respuesta">
                     </div>
@@ -212,42 +306,64 @@ if (!is_null($t['cierre'])) {
     </div>
 
     <br>
+
     <!-- == Cerrar la observación cuando las respuestas estén concluidas == -->
     <?php if (!is_null($tarjeta['cierre'])) { ?>
         <!-- == Fundamento de la observación si es que ya finalizó == -->
-
-        <div class="card">
-            <div class="card-header" style="font-weight: 600; letter-spacing: 1.5px; text-align: center; background-color: #d7d7d7;">
-                Tarjeta de Observación Cerrada (<?= $rta_cierre_obs ? 'A tiempo' : 'Fuera de Tiempo' ?>)
-            </div>
-            <div class="card-body">
-                <?php if ($tarjeta['cierre']['cierre_manual']) : ?>
-                    <div class="text-center mt-2 mb-2">
-
-                        <small><em>(Hubieron descargos sin responder)</em></small>
-                    </div>
-                <?php endif; ?>
-
-                <div class="text-center">
-                    <span class="text-center">Cerrada el día <?= $tarjeta['cierre']['fecha_hora_cierre'] ?> por <?= $tarjeta['cierre']['responsable_nombre'] . ' ' . $tarjeta['cierre']['responsable_apellido'] ?> (<?= $diff->days ?> <?= $rta_cierre_obs ? 'días antes' : 'días atrasados' ?>)</span>
+        <?php if ($tarjeta['tipo_observacion'] == 2) { ?>
+            <div class="card">
+                <div class="card-header" style="font-weight: 600; letter-spacing: 1.5px; text-align: center; background-color: #d7d7d7;">
+                    Tarjeta de Observación Cerrada (<?= $rta_cierre_obs ? 'A tiempo' : 'Fuera de Tiempo' ?>)
                 </div>
+                <div class="card-body">
+                    <?php if ($tarjeta['cierre']['cierre_manual']) : ?>
+                        <div class="text-center mt-2 mb-2">
 
-                <div class="col-xs-12 col-md-12">
-                    <fieldset>
-                        <legend>
-                            Fundamento del Cierre
-                        </legend>
-                        <div class="row" style="padding: 10px 50px;">
-                            <?= $tarjeta['cierre']['motivo'] ?>
+                            <small><em>(Hubieron descargos sin responder)</em></small>
                         </div>
-                    </fieldset>
+                    <?php endif; ?>
+
+                    <div class="text-center">
+                        <span class="text-center">Cerrada el día <?= $tarjeta['cierre']['fecha_hora_cierre'] ?> por <?= $tarjeta['cierre']['responsable_nombre'] . ' ' . $tarjeta['cierre']['responsable_apellido'] ?> (<?= $diff->days ?> <?= $rta_cierre_obs ? 'días antes' : 'días atrasados' ?>)</span>
+                    </div>
+
+                    <div class="col-xs-12 col-md-12">
+                        <fieldset>
+                            <legend>
+                                Fundamento del Cierre
+                            </legend>
+                            <div class="row" style="padding: 10px 50px;">
+                                <?= $tarjeta['cierre']['motivo'] ?>
+                            </div>
+                        </fieldset>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php } else { ?>
+            <div class="card">
+                <div class="card-header" style="font-weight: 600; letter-spacing: 1.5px; text-align: center; background-color: #d7d7d7;">
+                    Tarjeta de Observación Cerrada (Observación Positiva)
+                </div>
+                <div class="card-body">
+
+                    <div class="col-xs-12 col-md-12">
+                        <fieldset>
+                            <legend>
+                                Fundamento del Cierre
+                            </legend>
+                            <div class="row" style="padding: 10px 50px;">
+                                <?= $tarjeta['cierre']['motivo'] ?>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        <?php }  ?>
     <?php } else { ?>
         <?php if ($tarjeta['situacion'] != 0 && $tarjeta['usuario_carga'] == session()->get('id_usuario')) : ?>
             <div>
                 <button class="btn_modify" id="btn_cerrar_obs_completo">Cerrar Observación</button>
+                <input type="button" id="abrir_modal_cierre" data-bs-toggle="modal" data-bs-target="#modal_cierre_obs" hidden>
             </div>
         <?php endif; ?>
     <?php } ?>
@@ -257,14 +373,10 @@ if (!is_null($t['cierre'])) {
     </div>
 </div>
 
-</div>
-
-
-</div>
-<script src="<?= base_url() ?>/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    let modal_cierre_obs = new bootstrap.Modal('#modal_cierre_obs');
+    // let modal_cierre_obs = document.getElementById('#modal_cierre_obs');
+    let abrir_modal_cierre = document.getElementById('abrir_modal_cierre');
     let descargos = <?= json_encode($descargos['descargos']); ?>;
     let rta_descargo = true;
     const btn_cerrar_obs_completo = document.getElementById('btn_cerrar_obs_completo');
@@ -277,7 +389,7 @@ if (!is_null($t['cierre'])) {
 
         if (rta_descargo) {
             document.getElementById('cierre_forzado').value = 0;
-            modal_cierre_obs.show();
+            abrir_modal_cierre.click();
         } else {
             customConfirmationButton(
                 "Descargos sin Respuestas",
@@ -288,7 +400,7 @@ if (!is_null($t['cierre'])) {
             ).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('cierre_forzado').value = 1;
-                    modal_cierre_obs.show();
+                    abrir_modal_cierre.click();
                 } else {
                     document.getElementById('cierre_forzado').value = 0;
                 }
@@ -298,20 +410,32 @@ if (!is_null($t['cierre'])) {
     });
 </script>
 
+<!-- Checkea los checkbox de la significancia según los que trae de BD -->
 <script>
-    function prevenirDefault(event) {
-        event.preventDefault();
+    let significancia = <?= json_encode($t['significancia']); ?>;
+    let checkbox_significancia = document.getElementsByName('significancia[]');
+
+    for (let i = 0; i < checkbox_significancia.length; i++) {
+        for (let j = 0; j < significancia.length; j++) {
+            if (checkbox_significancia[i].value == significancia[j].id_significancia) {
+                checkbox_significancia[i].checked = true;
+                checkbox_significancia[i].disabled = false;
+            }
+        }
     }
-    // let riesgo = <!?= json_encode($tarjeta['hallazgo']['riesgo']) ?>;
-    // let riesgo_fila = <!?= json_encode($tarjeta['hallazgo']['riesgo_fila']) ?>;
 </script>
 
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/view_obs/modal_riesgo_selected.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/fileDropAdder.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/view_obs/descargo.js"></script>
+<script src="<?= base_url() ?>/assets/js/addFiles.js"></script>
 
 <script>
     let arrayImgs = [];
     let container_adj = document.getElementById('container_adj');
     new fileDropAdder(container_adj, 'prueba', 'gallery').init();
+</script>
+
+<script>
+    new addFiles(document.getElementById("gallery_descargos"), 'adj_descargo').init();
 </script>

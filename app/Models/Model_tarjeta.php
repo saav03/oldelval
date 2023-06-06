@@ -186,7 +186,7 @@ class Model_tarjeta extends Model
 				$builder->where("user_responsable.id", session()->get('id_usuario'));
 			}
 		} else {
-			$builder->select("tar_obs.id id_tarjeta, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, DATE_FORMAT(tar_obs.fecha_deteccion, '%d/%m/%Y') fecha_deteccion, tar_obs.tipo_obs observacion, tar_obs.situacion, tar_obs.estado tar_estado")
+			$builder->select("tar_obs.id id_tarjeta, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, DATE_FORMAT(tar_obs.fecha_deteccion, '%d/%m/%Y') fecha_deteccion, tar_obs.observador, tar_obs.tipo_observacion observacion, tar_obs.situacion, tar_obs.estado tar_estado")
 				->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
 				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left')
 				->join('proyectos', 'proyectos.id=tar_obs.proyecto', 'inner')
@@ -202,6 +202,7 @@ class Model_tarjeta extends Model
 				$builder->where("user_responsable.id", session()->get('id_usuario'));
 			}
 		}
+		
 		$query = $builder->get();
 		return $query->getResultArray();
 	}
@@ -212,7 +213,7 @@ class Model_tarjeta extends Model
 	public function getDataTarjeta($id_obs)
 	{
 		$builder = $this->db->table('tarjeta_observaciones tar_obs');
-		$builder->select('tar_obs.id id_tarjeta, tar_obs.observador, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, DATE_FORMAT(tar_obs.fecha_deteccion, "%d/%m/%Y") fecha_deteccion, tar_obs.tipo_obs observacion, tar_obs.descripcion tar_descripcion, tar_obs.situacion, tar_obs.estado tar_estado, tar_obs.usuario_carga')
+		$builder->select('tar_obs.id id_tarjeta, tar_obs.tipo_observacion, tar_obs.observador, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, DATE_FORMAT(tar_obs.fecha_deteccion, "%d/%m/%Y") fecha_deteccion, tar_obs.tipo_observacion observacion, tar_obs.descripcion tar_descripcion, tar_obs.situacion, tar_obs.estado tar_estado, tar_obs.usuario_carga')
 			->join('proyectos', 'proyectos.id=tar_obs.proyecto', 'inner')
 			->join('modulos', 'modulos.id=tar_obs.modulo', 'left')
 			->join('estaciones_bombeo', 'estaciones_bombeo.id=tar_obs.estacion_bombeo', 'left')
@@ -222,6 +223,12 @@ class Model_tarjeta extends Model
 		$query = $builder->get();
 		$tarjeta = $query->getRowArray();
 
+		/* == Cargo los efectos/impactos == */
+		$tarjeta['efectos'] = $this->getEfectosRelTarjeta($tarjeta['id_tarjeta']);
+		
+		/* == Cargo la significancia == */
+		$tarjeta['significancia'] = $this->getSignificanciaRelTarjeta($tarjeta['id_tarjeta']);
+		
 		/* == Cargo el hallazgo == */
 		$query_hallazgo = $this->getDataHallazgoTarjeta($id_obs);
 
@@ -261,15 +268,32 @@ class Model_tarjeta extends Model
 	protected function getDataHallazgoTarjeta($id_obs)
 	{
 		$builder = $this->db->table('tarjeta_hallazgos tar_hallazgo');
-		$builder->select('tar_hallazgo.id, tar_hallazgo.hallazgo hallazgo, tar_hallazgo.accion_recomendacion, tar_clasf.nombre clasificacion, tar_tipo_hallazgo.nombre tipo, tar_hallazgo.matriz_riesgo, tar_hallazgo.responsable, tar_hallazgo.otro_responsable, empresas.nombre contratista, tar_hallazgo.fecha_cierre, u.nombre responsable_nombre, u.apellido responsable_apellido, u_otro_responsable.nombre otro_responsable_nombre, u_otro_responsable.apellido otro_responsable_apellido')
-			->join('tarjeta_clasificaciones tar_clasf', 'tar_clasf.id=tar_hallazgo.clasificacion', 'inner')
+		$builder->select('tar_hallazgo.id, tar_hallazgo.hallazgo hallazgo, tar_hallazgo.plan_accion, tar_clasf.nombre clasificacion, tar_tipo_hallazgo.nombre tipo, tar_hallazgo.matriz_riesgo, tar_hallazgo.responsable, tar_hallazgo.relevo_responsable, empresas.nombre contratista, tar_hallazgo.fecha_cierre, u.nombre responsable_nombre, u.apellido responsable_apellido, u_otro_responsable.nombre otro_responsable_nombre, u_otro_responsable.apellido otro_responsable_apellido')
+			->join('tarjeta_clasificaciones tar_clasf', 'tar_clasf.id=tar_hallazgo.clasificacion', 'left')
 			->join('tarjeta_tipo_hallazgo tar_tipo_hallazgo', 'tar_tipo_hallazgo.id=tar_hallazgo.tipo', 'left')
 			->join('empresas', 'empresas.id=tar_hallazgo.contratista', 'inner')
 			->join('usuario u', 'u.id=tar_hallazgo.responsable', 'left')
-			->join('usuario u_otro_responsable', 'u_otro_responsable.id=tar_hallazgo.otro_responsable', 'left')
+			->join('usuario u_otro_responsable', 'u_otro_responsable.id=tar_hallazgo.relevo_responsable', 'left')
 			->where('tar_hallazgo.id_tarjeta', $id_obs);
 		return $builder->get()->getRowArray();
 	}
+
+	public function getEfectosRelTarjeta($id_tarjeta)
+    {
+        $builder = $this->db->table('tarjeta_rel_efecto tre');
+        $builder->select('tre.id id_rel_efecto, tre.id_efecto, e.nombre nombre_efecto')
+            ->join('efectos_impactos e', 'e.id=tre.id_efecto', 'inner')
+            ->where('id_tarjeta', $id_tarjeta);
+        return $builder->get()->getResultArray();
+    }
+	public function getSignificanciaRelTarjeta($id_tarjeta)
+    {
+        $builder = $this->db->table('tarjeta_rel_significancia trs');
+        $builder->select('trs.id id_rel_significancia, trs.id_significancia, s.nombre nombre_significancia')
+            ->join('significancia s', 's.id=trs.id_significancia', 'inner')
+            ->where('id_tarjeta', $id_tarjeta);
+        return $builder->get()->getResultArray();
+    }
 
 	/**
 	 * Trae el motivo de cierre de la observación solicita por parámetro
@@ -337,14 +361,10 @@ class Model_tarjeta extends Model
 	public function getDataIndicadoresTarjeta($id_obs)
 	{
 		$builder = $this->db->table('tarjeta_indicadores');
-		$builder->select('tarjeta_rel_indicadores.*, tarjeta_indicadores.nombre nombre_indicador')
+		$builder->select('tarjeta_rel_indicadores.*, tarjeta_indicadores.nombre, tarjeta_indicadores.descripcion')
 			->join('tarjeta_rel_indicadores', 'tarjeta_rel_indicadores.id_indicador=tarjeta_indicadores.id', 'inner')
 			->where('tarjeta_rel_indicadores.id_tarjeta', $id_obs);
 		return $builder->get()->getResultArray();
-		/* $builder = $this->db->table('tarjeta_indicadores');
-		$builder->select('tarjeta_indicadores.*')
-			->join('tarjeta_rel_indicadores', 'tarjeta_rel_indicadores.id_indicador=tarjeta_indicadores.id', 'inner')
-			->where('tarjeta_rel_indicadores.id_tarjeta', $id_obs); */
 	}
 
 	public function addDescargo($datos)
