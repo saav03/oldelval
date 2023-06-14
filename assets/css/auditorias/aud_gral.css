@@ -42,6 +42,14 @@ a:hover {
     border-bottom: 3px solid lightgray;
 }
 
+.btn_gral_check:checked+.blanco {
+    box-shadow: inset 0px 0px 15px -4px rgba(74, 111, 168, 1);
+    background-color: #dbe8ff;
+    border: none;
+    border-bottom: 3px solid #7ea0da;
+    font-weight: 500;
+}
+
 .blanco_check:checked+.blanco {
     box-shadow: inset 0px 0px 32px 0px rgb(236, 236, 236);
     background-color: #f9f9f9;
@@ -182,4 +190,50 @@ legend {
     width: 80%;
     margin: 10px auto;
     color: #64748B;
+}
+
+/** view_control.php | view_vehicular.php **/
+
+.drop_down,
+.drop_up {
+    font-size: 18px;
+    background: #f0f2f3;
+    padding: 5px 20px;
+    border-radius: 13%;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+#drop_down_1 {
+    display: none;
+}
+
+.drop_down:hover {
+    background: #f0f0f0;
+}
+
+.drop_up:hover {
+    background: #f0f0f0;
+}
+
+.arrow {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid lightgray;
+    transition: all .2s ease-in-out;
+    /* Cambia el color del borde según tus necesidades */
+}
+/* .arrow.up {
+    transform: rotate(180deg);
+} */
+.arrow.down {
+    transform: rotate(180deg);
+}
+
+.card_bloque {
+    max-height: 10px;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
 }

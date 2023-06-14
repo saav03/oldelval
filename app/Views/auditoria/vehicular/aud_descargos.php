@@ -1,6 +1,7 @@
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/view_obs.css" rel="stylesheet">
 
 <!-- == Descargo (Si es que existe) perteneciente a la observación == -->
+
 <div>
     <?php $i = 0;
     foreach ($descargos as $d) : $i++; ?>
@@ -78,7 +79,7 @@
                             <div class="col-xs-12 col-md-10">
                                 <label class="mb-1 fw-semibold sz_inp label_motivo" id="label_motivo"></label>
                                 <input type="hidden" class="tipo_rta_descargo" name="tipo_rta_descargo">
-                                <input type="hidden" name="tipo_obs" value="1">
+                                <input type="hidden" name="tipo_obs" value="0">
                                 <input type="hidden" class="inp_id_descargo" name="inp_id_descargo">
                                 <textarea class="form-control sz_inp" name="rta_descargo" id="motivo_descargo" cols="30" rows="3" placeholder="Ingrese el motivo.." required></textarea>
                             </div>

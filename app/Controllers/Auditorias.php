@@ -19,6 +19,9 @@ class Auditorias extends BaseController
         $this->model_usuario = model('Model_usuario');
         $this->model_auditorias = model('Model_auditorias');
         $this->model_general = model('Model_general');
+        $this->model_mail_auditoria = model('Model_mail_auditoria');
+        $this->model_aud_control = model('Model_aud_control');
+        $this->model_aud_vehicular = model('Model_aud_vehicular');
     }
 
     public function index()
@@ -38,76 +41,6 @@ class Auditorias extends BaseController
     }
 
     /**
-     * Dynamic Table para las Auditorías de Control
-     */
-    public function getPagedControl($offset = NULL, $tamanioPagina = NULL)
-    {
-
-        $params = [
-            'modelo_tipo_control' => $this->request->getPost("modelo_tipo_control"),
-            'contratista' => $this->request->getPost("contratista"),
-            'supervisor' => $this->request->getPost("supervisor"),
-            'proyecto_aud_control' => $this->request->getPost("proyecto_aud_control"),
-            'usuario_carga_control' => $this->request->getPost("usuario_carga_control"),
-            'fecha_desde_control' => $this->request->getPost("fecha_desde_control"),
-            'fecha_hasta_control' => $this->request->getPost("fecha_hasta_control")
-        ];
-
-        if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
-            $response = $this->model_auditorias->getAllPagedControl($offset, $tamanioPagina, $params);
-        } else {
-            if (is_null($offset) && is_null($tamanioPagina)) {
-                $response = $this->model_auditorias->getAllPagedControl($offset, $tamanioPagina, $params, true);
-                $response = (int)$response[0]['cantidad'];
-            } else {
-                http_response_code(400);
-                $response = [
-                    'error' => 400,
-                    'message' => "Parametros no validos"
-                ];
-            }
-        }
-        echo json_encode($response);
-    }
-
-    /**
-     * Dynamic Table para las Auditorías de CheckList Vehicular
-     */
-    public function getPagedVehicular($offset = NULL, $tamanioPagina = NULL)
-    {
-
-        $params = [
-            'id_aud_vehicular' => $this->request->getPost("id_aud_vehicular"),
-            'modelo_tipo_vehicular' => $this->request->getPost("modelo_tipo_vehicular"),
-            'equipo' => $this->request->getPost("equipo"),
-            'conductor' => $this->request->getPost("conductor"),
-            'num_interno_vehicular' => $this->request->getPost("num_interno_vehicular"),
-            'titular' => $this->request->getPost("titular"),
-            'proyecto_aud_vehicular' => $this->request->getPost("proyecto_aud_vehicular"),
-            'resultado_inspeccion' => $this->request->getPost("resultado_inspeccion"),
-            'usuario_carga_vehicular' => $this->request->getPost("usuario_carga_vehicular"),
-            'fecha_desde_vehicular' => $this->request->getPost("fecha_desde_vehicular"),
-            'fecha_hasta_vehicular' => $this->request->getPost("fecha_hasta_vehicular"),
-        ];
-
-        if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
-            $response = $this->model_auditorias->getAllPagedVehicular($offset, $tamanioPagina, $params);
-        } else {
-            if (is_null($offset) && is_null($tamanioPagina)) {
-                $response = $this->model_auditorias->getAllPagedVehicular($offset, $tamanioPagina, $params, true);
-                $response = (int)$response[0]['cantidad'];
-            } else {
-                http_response_code(400);
-                $response = [
-                    'error' => 400,
-                    'message' => "Parametros no validos"
-                ];
-            }
-        }
-        echo json_encode($response);
-    }
-
-    /**
      * Cambia el estado de la auditoría de ambos históricos (Aud.Control | Aud.Vehicular)
      */
     public function changeState($id_auditoria, $tipo_aud)
@@ -120,113 +53,120 @@ class Auditorias extends BaseController
     }
 
     /**
-     * Vista para la Auditoría de Control
+     * Generar un nuevo descargo
      */
-    public function view_aud_control($id_aud)
+    public function submitDescargo()
     {
-        if (!$this->session->get('isLogin')) {
-            return redirect()->to('login');
-        } else {
-            $data['auditoria'] =  $this->getBloqueForViewControl($id_aud);
-            $data['hallazgo'] =  $this->model_auditorias->getHallazgoAud($id_aud);
+        $helper = new Helper();
 
-            $h = $data['hallazgo'];
-            $diff = '';
-            $rta_cierre_obs = false;
-            
-            if (!is_null($h['cierre'])) {
-                $fecha1 = isset($h['fecha_cierre']) ? new DateTime($h['fecha_cierre']) : new DateTime($h['cierre']['fecha_hora_cierre']);
-                $fecha2 = new DateTime($h['cierre']['fecha_hora_cierre']);
-                $fecha1_tiempo = isset($h['fecha_cierre']) ? strtotime($h['fecha_cierre']) : strtotime($h['cierre']['fecha_hora_cierre']);
-                $fecha2_tiempo = strtotime($h['cierre']['fecha_hora_cierre']);
-            
-                if ($fecha1_tiempo > $fecha2_tiempo) {
-                    $rta_cierre_obs = true;
-                    $diff = $fecha1->diff($fecha2);
-                } else if ($fecha1_tiempo < $fecha2_tiempo) {
-                    $rta_cierre_obs = false;
-                    $diff = $fecha1->diff($fecha2);
-                } else if ($fecha1_tiempo == $fecha2_tiempo) {
-                    $rta_cierre_obs = true;
-                    $diff = $fecha1->diff($fecha2);
-                }
-            }
+        $id_hallazgo = $this->request->getPost('id_hallazgo');
+        $tipo_obs = $this->request->getPost('tipo_obs');
 
-            $data['hallazgo']['tiempo']['diff'] = $diff;
-            $data['hallazgo']['tiempo']['rta_cierre_obs'] = $rta_cierre_obs;
+        $datos_descargo  = [
+            'id_hallazgo' => $id_hallazgo,
+            'motivo'    => $this->request->getPost('new_descargo'),
+            'id_usuario' => session()->get('id_usuario'),
+        ];
 
+        $results = $this->model_auditorias->addDescargo($datos_descargo);
+        $id_descargo = $results['last_id']['id'];
 
-            return template('auditoria/view_control', $data);
+        # Envío de correo
+
+        if ($tipo_obs == 1) { # En caso de que sea una Auditoría de Control
+            $datos_emails = $this->model_mail_auditoria->getInfoNewDescargoAudControl($id_hallazgo, $id_descargo);
+            $url = base_url('/auditorias/view_aud_control/') . '/' . $datos_emails['id'];
+            $emails[] = $datos_emails['correo_carga'];
+            $helper->sendMail($datos_emails, 'Nuevo Descargo | Auditoría Control #', $url, 'emails/auditorias/control/descargo', $emails);
+        } else { # En caso de que sea una Auditoría de CheckList Vehicular
+            $datos_emails = $this->model_mail_auditoria->getInfoNewDescargoAudVehicular($id_hallazgo, $id_descargo);
+            $url = base_url('/auditorias/view_aud_vehicular/') . '/' . $datos_emails['id'];
+            $emails[] = $datos_emails['correo_carga'];
+            $helper->sendMail($datos_emails, 'Nuevo Descargo | CheckList Vehicular #', $url, 'emails/auditorias/vehicular/descargo', $emails);
         }
-    }
-    /**
-     * Vista para la Auditoría de CheckList Vehicular
-     */
-    public function view_aud_vehicular($id_aud)
-    {
-        if (!$this->session->get('isLogin')) {
-            return redirect()->to('login');
-        } else {
-            $data['tipo_obs_vehicular'] = $this->model_general->getAllEstadoActivo('tipo_obs_vehicular');
-            $data['auditoria'] =  $this->getBloqueForViewVehicular($id_aud);
-            return template('auditoria/view_vehicular', $data);
+
+        # Se cargan adjuntos si es que realmente existen
+        if ($this->request->getPost('adj_descargo-description')) {
+            $bd_info = array(
+                'table' => 'obs_descargos_adjuntos',
+                'file' => 'adjunto',
+                'description' => 'desc_adjunto',
+                'optional_ids' => ['id_descargo' => $id_descargo]
+            );
+            $helper->cargarArchivos('adj_descargo', 'uploads/auditorias/descargos/', 'adj_descargo', $bd_info, $this->request->getPost('adj_descargo-description'));
         }
+        return $results;
     }
 
     /**
-     * Genera todo el bloque completo de la auditoría con las preguntas y rtas
+     * Dar una respuesta a un descargo
      */
-    protected function getBloqueForViewControl($id_aud)
+    public function submitRtaDescargo()
     {
-        $auditoria = $this->model_auditorias->getBloqueCompletoAudControl($id_aud);
+        $helper = new Helper();
+        $id_descargo = $this->request->getPost('inp_id_descargo');
+        $tipo_obs = $this->request->getPost('tipo_obs');
 
-        if ($auditoria) {
-            $id_titulo_aud = $auditoria['modelo_tipo'];
-            $auditoria['bloque'] = $this->model_auditorias->getSubtitulosAuditorias($id_titulo_aud);
+        /* == Si es 1 se aceptó el descargo | Si es 2 se rechazó == */
+        $estado = ($this->request->getPost('tipo_rta_descargo') == 1) ? 1 : 2;
 
-            foreach ($auditoria['bloque'] as $key => $subtitulo) {
-                /* == Carga las preguntas == */
-                $auditoria['bloque'][$key]['preguntas_rtas'] = $this->model_auditorias->getIdPreguntasAuditorias($subtitulo['id'], $id_titulo_aud);
+        $datos_rta_descargo  = [
+            'estado'    => $estado,
+            'respuesta'    => $this->request->getPost('rta_descargo'),
+            'id_usuario_rta' => session()->get('id_usuario'),
+            'fecha_hora_respuesta' => date('Y-m-d H:i:s'),
+        ];
 
-                $preguntas = $auditoria['bloque'][$key]['preguntas_rtas'];
+        $this->model_auditorias->editDescargo($datos_rta_descargo, $id_descargo);
 
-                /* == Busca por id pregunta su correspondiente respuesta == */
-                foreach ($preguntas as $llave => $p) {
-                    $auditoria['bloque'][$key]['preguntas_rtas'][$llave]['respuesta'] = $this->model_auditorias->getRtasFromPreguntaAudControl($id_aud, $p['id_pregunta']);
-                }
-            }
-        } else {
-            $auditoria = [];
+        # Envío de correo
+
+        if ($tipo_obs == 1) { # En caso de que sea una Auditoría de Control
+            $datos_emails = $this->model_mail_auditoria->getRespuestaDescargoAudControl($id_descargo);
+            $url = base_url('/auditorias/view_aud_control/') . '/' . $datos_emails['id'];
+            $emails[] = $datos_emails['correo_responsable'];
+            $helper->sendMail($datos_emails, 'Nueva Respuesta | Auditoría Control #', $url, 'emails/auditorias/control/respuesta', $emails);
+        } else { # En caso de que sea una Auditoría de CheckList Vehicular
+            $datos_emails = $this->model_mail_auditoria->getRespuestaDescargoAudVehicular($id_descargo);
+            $url = base_url('/auditorias/view_aud_vehicular/') . '/' . $datos_emails['id'];
+            $emails[] = $datos_emails['correo_responsable'];
+            $helper->sendMail($datos_emails, 'Nueva Respuesta | CheckList Vehicular #', $url, 'emails/auditorias/vehicular/respuesta', $emails);
         }
-        return $auditoria;
     }
 
-    /**
-     * Genera todo el bloque completo de la auditoría con las preguntas y rtas
-     */
-    protected function getBloqueForViewVehicular($id_aud)
+    public function submitCerrarHallazgo()
     {
-        $auditoria = $this->model_auditorias->getBloqueCompletoAudVehicular($id_aud);
+        $id_hallazgo = $this->request->getPost('id_hallazgo');
+        $cierre_forzado = $this->request->getPost('cierre_forzado');
+        $descargos = $this->model_aud_control->getDescargosHallazgo($id_hallazgo);
 
-        if ($auditoria) {
-            $id_titulo_aud = $auditoria['modelo_tipo'];
-            $auditoria['bloque'] = $this->model_auditorias->getSubtitulosAuditorias($id_titulo_aud);
+        /* Cierra la observación */
+        $datos_actualizar = [
+            'situacion' => 0
+        ];
+        $this->model_general->updateG('obs_hallazgos', $id_hallazgo, $datos_actualizar);
 
-            foreach ($auditoria['bloque'] as $key => $subtitulo) {
-                /* == Carga las preguntas == */
-                $auditoria['bloque'][$key]['preguntas_rtas'] = $this->model_auditorias->getIdPreguntasAuditorias($subtitulo['id'], $id_titulo_aud);
-
-                $preguntas = $auditoria['bloque'][$key]['preguntas_rtas'];
-
-                /* == Busca por id pregunta su correspondiente respuesta == */
-                foreach ($preguntas as $llave => $p) {
-                    $auditoria['bloque'][$key]['preguntas_rtas'][$llave]['respuesta'] = $this->model_auditorias->getRtasFromPreguntaAudVehicular($id_aud, $p['id_pregunta']);
+        /* Cierra los descargos sin rta */
+        if ($cierre_forzado == 1) {
+            foreach ($descargos as $d) {
+                if ($d['estado_descargo'] == 0 && is_null($d['respuesta'])) {
+                    $datos_actualizar_hallazgo = [
+                        'estado' => '-1',
+                    ];
+                    $this->model_aud_control->cerrarDescargo($datos_actualizar_hallazgo, $d['id_descargo']);
                 }
             }
-        } else {
-            $auditoria = [];
         }
-        return $auditoria;
+
+        /* Cierre con el Motivo */
+        $datos_motivo_cierre  = [
+            'motivo'    => $this->request->getPost('motivo_cierre_obs'),
+            'cierre_manual'    => $cierre_forzado,
+            'id_hallazgo_obs' => $id_hallazgo,
+            'id_usuario_cierre' => session()->get('id_usuario'),
+        ];
+
+        $results_cierre = $this->model_aud_control->addMotivoCierre($datos_motivo_cierre);
     }
 
     /**
@@ -280,6 +220,10 @@ class Auditorias extends BaseController
      */
     public function submitCrearNewAuditoria()
     {
+        /* echo '<pre>';
+        var_dump($_POST);
+        echo '</pre>';
+        exit; */
         $results = $this->validacion_crear_planilla();
 
         if ($results['exito']) {
@@ -293,6 +237,26 @@ class Auditorias extends BaseController
 
             $contenedor = $this->request->getPost('contenedor');
             $aux = 1;
+
+            foreach ($contenedor as $key => $c) {
+                $data_subt = [
+                    'nombre' => $c['subtitle'],
+                    'id_titulo' => $id_title
+                ];
+                $id_subtitle = $this->model_general->insertG('auditorias_subtitulos', $data_subt);
+
+                foreach ($c['preguntas'] as $llave => $p) {
+                    $data_ask = [
+                        'pregunta' => $p,
+                        'subtitulo' => $id_subtitle,
+                        'orden' => $aux,
+                        'titulo' => $id_title
+                    ];
+                    $this->model_general->insertG('auditorias_preguntas', $data_ask);
+                    $aux++;
+                }
+            }
+            exit;
             for ($i = 0; $i < count($contenedor); $i++) {
 
                 $data_subt = [
@@ -366,150 +330,19 @@ class Auditorias extends BaseController
     }
 
     /**
-     * Carga la Auditoría (de Control o Vehicular a la BD)
-     * Dentro hace el llamado al método submitRtaPreguntasAud() el cual carga las respuestas
-     */
-    public function submitUpload()
-    {
-        $aud_tipo = $this->request->getPost('aud_tipo');
-        $oportunidad_mejora = $this->request->getPost('oportunidad_mejora');
-
-        $bloque_respuestas = $this->request->getPost('bloque_respuestas');
-        $comentarios_preguntas = $this->request->getPost('comentarios_preguntas');
-        $modelo_tipo = $this->request->getPost('tipo_auditoria');
-
-        if ($aud_tipo) { // Auditoría de Control
-            $datos = [
-                'modelo_tipo' => $modelo_tipo,
-                'contratista' => $this->request->getPost('contratista'),
-                'supervisor_responsable' => $this->request->getPost('supervisor_responsable'),
-                'cant_personal' => $this->request->getPost('cant_personal'),
-                'num_informe' => $this->request->getPost('num_informe'),
-                'proyecto' => $this->request->getPost('proyecto'),
-                'modulo' => $this->request->getPost('modulo'),
-                'estacion' => $this->request->getPost('estacion_bombeo'),
-                'sistema' => $this->request->getPost('sistema'),
-                'usuario_carga' => session()->get('id_usuario'),
-            ];
-
-            $result = $this->verificacion($datos, 'validation_aud_control');
-
-            if ($result['exito']) {
-
-                /* == Si posee plan de acción, entonces se agrega == */
-                if ($oportunidad_mejora) {
-
-                    /* Plan de Acción */
-                    $datos_plan_accion = [
-                        // 'id_auditoria' => $id_aud,
-                        'tipo_auditoria' => 1, // Esto es por el momento solo para la Auditoría de Control
-                        'hallazgo' => $this->request->getPost('hallazgo'),
-                        'plan_accion' => $this->request->getPost('plan_accion'),
-                        'efecto_impacto' => $this->request->getPost('efecto_impacto'),
-                        'contratista' => $this->request->getPost('contratista_plan'),
-                        'significancia' => $this->request->getPost('significancia'),
-                        'responsable' => $this->request->getPost('responsable_plan'),
-                        'relevo_responsable' => $this->request->getPost('relevo_responsable_plan'),
-                        'fecha_cierre' => $this->request->getPost('fecha_cierre'),
-                        'usuario_carga' => session()->get('id_usuario'),
-                    ];
-
-                    $result_plan = $this->verificacion($datos_plan_accion, 'validation_aud_plan');
-
-                    if ($result_plan['exito']) {
-
-                        $id_aud = $this->model_general->insertG('auditoria_control', $datos);
-                        $this->submitRtaPreguntasAud($id_aud, $aud_tipo, $modelo_tipo, $bloque_respuestas, $comentarios_preguntas);
-                        
-                        $datos_plan_accion['id_auditoria'] = $id_aud;
-                        $this->submitUploadPlanAccion($datos_plan_accion);
-
-                    } else {
-                        echo json_encode($result_plan['errores']);
-                    }
-                } else {
-                    $id_aud = $this->model_general->insertG('auditoria_control', $datos);
-                    $this->submitRtaPreguntasAud($id_aud, $aud_tipo, $modelo_tipo, $bloque_respuestas, $comentarios_preguntas);
-                }
-            } else {
-                echo json_encode($result['errores']);
-            }
-        } else { // Auditoría Vehicular
-            $datos = [
-                'modelo_tipo' => $modelo_tipo,
-                'equipo' => $this->request->getPost('equipo'),
-                'conductor' => $this->request->getPost('conductor'),
-                'num_interno' => $this->request->getPost('num_interno'),
-                'marca' => $this->request->getPost('marca'),
-                'modelo' => $this->request->getPost('modelo'),
-                'patente' => $this->request->getPost('patente'),
-                'titular' => $this->request->getPost('titular'),
-                'fecha' => $this->request->getPost('fecha_hoy'),
-                'hora' => $this->request->getPost('hora'),
-                'proyecto' => $this->request->getPost('proyecto'),
-                'tarea_que_realiza' => $this->request->getPost('tarea_realiza'),
-                'resultado_inspeccion' => $this->request->getPost('resultado_inspeccion'),
-                'medidas_implementar' => $this->request->getPost('medidas_implementar'),
-                'usuario_carga' => session()->get('id_usuario'),
-            ];
-
-            $tipo_obs = $this->request->getPost('tipo_obs');
-
-            $result = $this->verificacion($datos, 'validation_aud_vehicular');
-
-            if ($result['exito']) {
-                $id_aud = $this->model_general->insertG('auditoria_vehicular', $datos);
-                $this->submitRtaPreguntasAud($id_aud, $aud_tipo, $modelo_tipo, $bloque_respuestas, $comentarios_preguntas, $tipo_obs);
-            }
-        }
-    }
-
-    /**
      * Carga un plan de acción dependiendo la auditoría que se envía por parámetro
      */
-    public function submitUploadPlanAccion($datos)
+    public function submitUploadPlanAccion($datos, $significancia_parametros, $efectos_parametros)
     {
 
+        $helper = new Helper();
         $efectos_separados = [];
-        // $efectos = join(",", $this->request->getPost('efecto_impacto'));
-        $efectos = join(",", $datos['efecto_impacto']);
+        $efectos = join(",", $efectos_parametros);
 
         if ($efectos)
             $efectos_separados = explode(',', $efectos);
 
         $id_hallazgo = $this->model_general->insertG('obs_hallazgos', $datos);
-
-        /** == Cargar Adjuntos del plan de Acción (Si Corresponde) en BD == **/
-        $upload_ruta = "uploads/auditorias/hallazgos/";
-        $desc_adjuntos = $this->request->getPost('adj_observacion-description');
-        for ($i = 0; $i < count($_FILES["adj_observacion"]["name"]); $i++) {
-
-            /* == Si no está vacio.. == */
-            if (!empty($_FILES["adj_observacion"]["name"][$i])) {
-                $target_file = $upload_ruta . basename($_FILES["adj_observacion"]["name"][$i]);
-                $archivoTemporal = $_FILES["adj_observacion"]["tmp_name"][$i];
-
-                $extension = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-                $nombre = "adj_auditoria_" . $i . "_" . date('Y-m-d-H-i-s') . "." . $extension;
-                $uploadPath = $upload_ruta . $nombre;
-                $archivoCargado = false;
-
-                if (in_array(strtolower($extension), ["pdf", "jpg", "jpeg", "png", "doc", "docx", "docm", "xls", "xlsx", "xlsb"])) {
-                    if (move_uploaded_file($archivoTemporal, $uploadPath)) {
-                        $archivoCargado = true;
-                    }
-                }
-
-                if ($archivoCargado) {
-                    $dato_bd = [
-                        'id_hallazgo' => $id_hallazgo,
-                        'adjunto' => $nombre,
-                        'desc_adjunto' => $desc_adjuntos[$i],
-                    ];
-                    $this->model_general->insertG('obs_hallazgos_adj', $dato_bd);
-                }
-            }
-        }
 
         /* Si hay efectos asignados, los inserto en la tabla de relación */
         if (count($efectos_separados) > 0) {
@@ -522,11 +355,9 @@ class Auditorias extends BaseController
             }
         }
 
-        $significancia = $datos['significancia'];
-
         /* Si hay riesgos asignados, los inserto en la tabla de relación */
-        if (count($significancia) > 0) {
-            foreach ($significancia as $s) {
+        if (count($significancia_parametros) > 0) {
+            foreach ($significancia_parametros as $s) {
                 $data = [
                     'id_hallazgo' => $id_hallazgo,
                     'id_significancia' => $s,
@@ -534,6 +365,19 @@ class Auditorias extends BaseController
                 $this->model_general->insertG('obs_rel_hallazgo_significancia', $data);
             }
         }
+
+        # Se cargan adjuntos si es que realmente existen
+        if ($this->request->getPost('adj_observacion-description[]')) {
+            $bd_info = array(
+                'table' => 'obs_hallazgos_adj',
+                'file' => 'adjunto',
+                'description' => 'desc_adjunto',
+                'optional_ids' => ['id_hallazgo' => $id_hallazgo]
+            );
+            $helper->cargarArchivos('adj_observacion', 'uploads/auditorias/hallazgos/', 'adj_auditoria', $bd_info, $this->request->getPost('adj_observacion-description'));
+        }
+
+        return $id_hallazgo;
     }
 
     /**
@@ -603,5 +447,35 @@ class Auditorias extends BaseController
             $verificacion['exito'] = true;
         }
         return $verificacion;
+    }
+
+    public function testing()
+    {
+        $helper = new Helper();
+        # Para el usuario que carga.
+
+        // $datos = $this->model_aud_control->getDataHallazgoEmail(1, 2, 1);
+        // $url = base_url('/auditorias/view_aud_control/') . '/' . $datos['id'];
+        // $emails[]= $datos['correo_responsable'];
+        // $datos['url'] = $url;
+        // $emails = [];
+        // $emails[]= $datos['correo_usuario_carga'];
+        // $helper->sendMail($datos, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/nueva', $emails);
+        // echo view('emails/auditorias/control/nueva', $datos);
+
+        # Para el responsable
+        $datos_emails = $this->model_mail_auditoria->getRespuestaDescargoAudControl(11);
+        echo '<pre>';
+        var_dump($datos_emails);
+        echo '</pre>';
+        $emails[] = $datos_emails['correo_responsable'];
+        $url = base_url('/auditorias/view_aud_control/') . '/' . $datos_emails['id'];
+        $datos_emails['url'] = $url;
+        $helper->sendMail($datos_emails, 'Nueva Respuesta | Auditoría Control #', $url, 'emails/auditorias/control/respuesta', $emails);
+        // $url = base_url('/auditorias/view_aud_vehicular/') . '/' . $datos['id'];
+        // $emails = [];
+        // $emails[]= $datos['correo_relevo'];
+        // $helper->sendMail($datos, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/nueva', $emails);
+        echo view('emails/auditorias/vehicular/respuesta', $datos_emails);
     }
 }

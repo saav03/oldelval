@@ -17,10 +17,11 @@
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
-  width: 60%;
+  width: 45%;
   height: auto;
-  max-height: 150px;
+  max-height: 100px;
   object-fit: cover;
+  aspect-ratio: 4/3;
 }
 
 .txt_adjunto {

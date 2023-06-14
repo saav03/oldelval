@@ -79,8 +79,6 @@
                 <div class="drop_down">
                     <div id="arrow" class="arrow up"></div>
                 </div>
-                <!-- <i class="fa-solid fa-chevron-down drop_down" id="icon_down" style="display: none;"></i> -->
-                <!-- <i class="fa-solid fa-chevron-up drop_up" id="icon_up"></i> -->
             </label>
         </div>
     </div>
@@ -137,8 +135,10 @@
 </div>
 
 <section>
-    <?php $data['h'] = $hallazgo; ?>
-    <?= view('auditoria/control/aud_plan_control', $data); ?>
+    <?php if ($hallazgo != null) : ?>
+        <?php $data['h'] = $hallazgo; ?>
+        <?= view('auditoria/control/aud_plan_control', $data); ?>
+    <?php endif; ?>
 </section>
 
 <div class="mt-3 mb-3">

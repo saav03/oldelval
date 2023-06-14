@@ -23,7 +23,7 @@
 }
 
 .subtitle {
-  background: lightblue!important;
+  background: lightblue !important;
   padding: 5px;
   border-radius: 5px;
   text-align: center;
@@ -48,6 +48,7 @@
 .btn_modify {
   background-color: #225ca7;
 }
+
 .btn_modify[disabled] {
   background-color: #7993ab !important;
   cursor: not-allowed;
@@ -157,46 +158,79 @@
 }
 
 /** Botones Ver/Edición | Activar | Desactivar **/
+/* .btn-desactivar, */
+
 .btn-desactivar,
 .btn-activar,
 .btn-editar {
+  display: flex;
+  width: 35px;
+  height: 35px;
   color: white;
-  border: none;
-  padding: 0;
-  text-align: center;
-  border-radius: 100%;
-  width: 28px;
-  height: 28px;
-  font-size: 18px;
-  transition: all .3s ease-in-out;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: .5em;
+  border: 0px solid transparent;
+  background-color: lightgray;
+  border-radius: 5px;
+  transition: all 0.2s linear;
 }
 
 /** Botón Desactivar **/
-.btn-desactivar {
-  background-color: rgb(253 80 75) !important;
-
-}
-
 .btn-desactivar:hover {
-  background-color: rgb(235, 58, 52) !important;
+  color: rgb(231, 121, 121);
+  background-color: rgb(255, 209, 209);
+  box-shadow: 3.4px 2.5px 4.9px rgba(0, 0, 0, 0.025),
+    8.6px 6.3px 12.4px rgba(0, 0, 0, 0.035),
+    17.5px 12.8px 25.3px rgba(0, 0, 0, 0.045),
+    36.1px 26.3px 52.2px rgba(0, 0, 0, 0.055),
+    99px 72px 143px rgba(0, 0, 0, 0.08);
 }
 
 /** Botón Activar **/
-.btn-activar {
-  background-color: rgb(95, 228, 95) !important;
-}
 
 .btn-activar:hover {
-  background-color: rgb(42, 201, 63) !important;
+  color: rgb(174, 231, 121);
+  background-color: rgb(222, 255, 209);
+  box-shadow: 3.4px 2.5px 4.9px rgba(0, 0, 0, 0.025),
+    8.6px 6.3px 12.4px rgba(0, 0, 0, 0.035),
+    17.5px 12.8px 25.3px rgba(0, 0, 0, 0.045),
+    36.1px 26.3px 52.2px rgba(0, 0, 0, 0.055),
+    99px 72px 143px rgba(0, 0, 0, 0.08);
 }
 
 /** Botón Editar **/
-.btn-editar {
-  background-color: rgb(102, 178, 223) !important;
-}
 
 .btn-editar:hover {
-  background-color: rgb(81, 164, 212) !important;
+  color: rgb(121, 231, 204);
+  background-color: rgb(209, 255, 255);
+  box-shadow: 3.4px 2.5px 4.9px rgba(0, 0, 0, 0.025),
+    8.6px 6.3px 12.4px rgba(0, 0, 0, 0.035),
+    17.5px 12.8px 25.3px rgba(0, 0, 0, 0.045),
+    36.1px 26.3px 52.2px rgba(0, 0, 0, 0.055),
+    99px 72px 143px rgba(0, 0, 0, 0.08);
+}
+
+/* Botón PDF */
+.btn_pdf {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: .5em;
+  border: 0px solid transparent;
+  background-color: #c1c1c14f;
+  border-radius: 5px;
+  transition: all 0.2s linear;
+}
+
+.btn_pdf:hover {
+  box-shadow: 3.4px 2.5px 4.9px rgba(0, 0, 0, 0.025),
+    8.6px 6.3px 12.4px rgba(0, 0, 0, 0.035),
+    17.5px 12.8px 25.3px rgba(0, 0, 0, 0.045),
+    36.1px 26.3px 52.2px rgba(0, 0, 0, 0.055),
+    99px 72px 143px rgba(0, 0, 0, 0.08);
 }
 
 .edit_select {
@@ -256,7 +290,7 @@
 
 body {
   /* font-family: 'Poppins', sans-serif; */
-  font-family: 'Quicksand', sans-serif!important;
+  font-family: 'Quicksand', sans-serif !important;
   font-size: 14px !important;
   background: #f6f9ff;
   color: #444444;
@@ -515,7 +549,7 @@ h6 {
   font-weight: 500;
   color: #012970;
   /* font-family: "Poppins", sans-serif; */
-  font-family: 'Quicksand', sans-serif!important;
+  font-family: 'Quicksand', sans-serif !important;
 }
 
 .card-title span {
@@ -536,7 +570,7 @@ h6 {
 .alert-heading {
   font-weight: 500;
   /* font-family: "Poppins", sans-serif; */
-  font-family: 'Quicksand', sans-serif!important;
+  font-family: 'Quicksand', sans-serif !important;
   font-size: 20px;
 }
 

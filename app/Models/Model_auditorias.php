@@ -235,7 +235,7 @@ class Model_auditorias extends Model
         return $auditoria;
     }
 
-    public function getHallazgoAud($id_auditoria)
+    public function getHallazgoAud($id_auditoria, $tipo)
     {
         $builder = $this->db->table('obs_hallazgos h');
         $builder->select('h.id id_hallazgo, h.id_auditoria, h.tipo_auditoria, h.hallazgo, h.plan_accion, h.efecto_impacto, empresas.nombre contratista, CONCAT(responsable.nombre," ", responsable.apellido) responsable, h.responsable id_responsable, h.relevo_responsable id_relevo, CONCAT(relevo.nombre," ", relevo.apellido) relevo, h.significancia, h.fecha_cierre fecha_cierre, DATE_FORMAT(h.fecha_cierre, "%d/%m/%Y") fecha_cierre_format, DATE_FORMAT(h.fecha_hora_carga, "%d/%m/%Y") fecha_hora_carga, h.usuario_carga id_usuario_carga, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
@@ -243,35 +243,39 @@ class Model_auditorias extends Model
             ->join('usuario responsable', 'responsable.id=h.responsable', 'inner')
             ->join('usuario relevo', 'relevo.id=h.relevo_responsable', 'left')
             ->join('usuario u_carga', 'u_carga.id=h.usuario_carga', 'inner')
-            ->where('h.id_auditoria', $id_auditoria);
+            ->where('h.id_auditoria', $id_auditoria)
+            ->where('h.tipo_auditoria', $tipo);
         $hallazgo = $builder->get()->getRowArray();
-        $id_hallazgo = $hallazgo['id_hallazgo'];
+        if (!empty($hallazgo)) {
+            $id_hallazgo = $hallazgo['id_hallazgo'];
+            /* == Efectos relacionados al hallazgo == */
+            $hallazgo['efectos'] = $this->getEfectosRelHallazgo($id_hallazgo);
+            /* == Significancia relacionadas al hallazgo == */
+            $hallazgo['significancia'] = $this->getSignificanciaRelHallazgo($id_hallazgo);
 
-        /* == Efectos relacionados al hallazgo == */
-        $hallazgo['efectos'] = $this->getEfectosRelHallazgo($id_hallazgo);
-        /* == Significancia relacionadas al hallazgo == */
-        $hallazgo['significancia'] = $this->getSignificanciaRelHallazgo($id_hallazgo);
-        
-        /* == Cargo los descargos pertenecientes al Hallazgo == */
-        $descargos = $this->getDescargosHallazgo($hallazgo['id_hallazgo']);
+            /* == Cargo los descargos pertenecientes al Hallazgo == */
+            $descargos = $this->getDescargosHallazgo($hallazgo['id_hallazgo']);
 
-        if (!is_null($descargos)) {
-            /* == Cargo los Adjuntos del Hallazgo == */
-            $adj_hallazgo = $this->getAdjHallazgo($id_hallazgo);
-            $hallazgo['adjuntos'] = $adj_hallazgo;
+            if (!is_null($descargos)) {
+                /* == Cargo los Adjuntos del Hallazgo == */
+                $adj_hallazgo = $this->getAdjHallazgo($id_hallazgo);
+                $hallazgo['adjuntos'] = $adj_hallazgo;
 
-            foreach ($descargos as $key => $d) {
-                /* == Cargo los adjuntos de todos los hallazgos == */
-                $adj_descargos = $this->getAdjDescargosHallazgo($d['id_descargo']);
-                $descargos[$key]['descargos_adj'] = $adj_descargos;
+                foreach ($descargos as $key => $d) {
+                    /* == Cargo los adjuntos de todos los hallazgos == */
+                    $adj_descargos = $this->getAdjDescargosHallazgo($d['id_descargo']);
+                    $descargos[$key]['descargos_adj'] = $adj_descargos;
+                }
+
+                $hallazgo['descargos'] = $descargos;
             }
 
-            $hallazgo['descargos'] = $descargos;
+            /* == Cierre de la tarjeta (Si es que está cerrada) == */
+            $cierre = $this->getCierreMotivoHallazgo($id_hallazgo);
+            $hallazgo['cierre'] = $cierre;
         }
 
-        /* == Cierre de la tarjeta (Si es que está cerrada) == */
-        $cierre = $this->getCierreMotivoHallazgo($id_hallazgo);
-        $hallazgo['cierre'] = $cierre;
+
 
         return $hallazgo;
     }
@@ -335,7 +339,8 @@ class Model_auditorias extends Model
             ->join('usuario conductor', 'conductor.id=aud_vehicular.conductor', 'inner')
             ->join('usuario titular', 'titular.id=aud_vehicular.titular', 'inner')
             ->join('proyectos', 'proyectos.id=aud_vehicular.proyecto', 'inner')
-            ->join('usuario u_carga', 'u_carga.id=aud_vehicular.usuario_carga', 'left');
+            ->join('usuario u_carga', 'u_carga.id=aud_vehicular.usuario_carga', 'left')
+            ->where('aud_vehicular.id', $id_auditoria);
         $auditoria = $builder->get()->getRowArray();
         return $auditoria;
     }

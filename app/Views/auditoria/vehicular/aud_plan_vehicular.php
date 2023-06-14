@@ -10,11 +10,11 @@
 
     <div class="card" style="padding: 10px 35px 35px 35px;">
         <div class="card-body" style="margin: 0px 20px 20px 20px;">
-            <?php if ($h['id_responsable'] == session()->get('id_usuario') && is_null($h['cierre'])) { ?>
+            <?php if ($h['id_responsable'] == session()->get('id_usuario')) { ?>
                 <div class="row">
                     <h5 class="text-center" style="color: #645b4a;"><i style="color: #e5af78;" class="fas fa-exclamation-circle icono_alerta"></i> Estimado/da <?= $h['responsable'] ?>, usted tiene una tarea pendiente a resolver</h5>
                 </div>
-            <?php } else if ($h['id_relevo'] == session()->get('id_usuario') && is_null($h['cierre'])) { ?>
+            <?php } else if ($h['id_relevo'] == session()->get('id_usuario')) { ?>
                 <div class="row">
                     <h5 class="text-center" style="color: #645b4a;"><i style="color: #e5af78;" class="fas fa-exclamation-circle icono_alerta"></i> Estimado/da <?= $h['relevo'] ?>, usted es relevo de <?= $h['responsable'] ?> en caso de ser necesario</h5>
                 </div>
@@ -153,15 +153,13 @@
                 <?php 
                 $descargos['descargos'] = $h['descargos']; 
                 ?>
-                <?= view('auditoria/control/aud_descargos', $descargos) ?>
-                <?php if (is_null($h['cierre'])) : ?>
-                    <?php if ($h['id_usuario_carga'] != session()->get('id_usuario') && $h['id_responsable'] == session()->get('id_usuario') || $h['id_relevo'] == session()->get('id_usuario')) : ?>
-                        <div class="row" id="btns_descargos">
-                            <div style="margin: 15px 0 0 71px;">
-                                <button class="btn_modify" id="add_descargo" data-bs-toggle="modal" data-bs-target="#modal_add_descargo">Agregar Descargo</button>
-                            </div>
+                <?= view('auditoria/vehicular/aud_descargos', $descargos) ?>
+                <?php if ($h['id_usuario_carga'] != session()->get('id_usuario') && is_null($h['cierre']) && $h['id_responsable'] == session()->get('id_usuario') || $h['id_relevo'] == session()->get('id_usuario')) : ?>
+                    <div class="row" id="btns_descargos">
+                        <div style="margin: 15px 0 0 71px;">
+                            <button class="btn_modify" id="add_descargo" data-bs-toggle="modal" data-bs-target="#modal_add_descargo">Agregar Descargo</button>
                         </div>
-                    <?php endif; ?>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -228,7 +226,7 @@
                             <label for="new_descargo" class="mb-1 fw-semibold sz_inp">Respuesta / Descargo</label>
                             <textarea name="new_descargo" id="new_descargo" cols="30" rows="4" class="form-control sz_inp" placeholder="Ingrese la respuesta deseada"></textarea>
                             <input type="hidden" name="id_hallazgo" id="id_hallazgo_descargo" value="<?= isset($h['id_hallazgo']) ? $h['id_hallazgo'] : '' ?>">
-                            <input type="hidden" name="tipo_obs" value="1">
+                            <input type="hidden" name="tipo_obs" value="0">
                         </div>
                         <div class="col-xs-12 col-md-12 mt-3">
                             <div id="gallery" class="adj_gallery"></div>
@@ -276,7 +274,6 @@
                     <!-- <button type="submit" class="btn_modify" id="btn_add_descargo">Enviar Respuesta</button> -->
                     <input type="button" id="btn_cerrar_obs" class="btn_modify" value="Cerrar Observación">
                     <input type="button" id="abrir_modal_cierre" data-bs-toggle="modal" data-bs-target="#modal_cierre_obs" hidden>
-
                 </div>
             </form>
         </div>
@@ -309,34 +306,38 @@
 
     const btn_cerrar_obs_completo = document.getElementById('btn_cerrar_obs_completo');
 
-    btn_cerrar_obs_completo.addEventListener('click', () => {
-        descargos.forEach(d => {
-            if (d.respuesta == null) {
-                rta_descargo = false;
-            }
-        });
-
-        if (rta_descargo) {
-            document.getElementById('cierre_forzado').value = 0;
-            abrir_modal_cierre.click();
-        } else {
-            customConfirmationButton(
-                "Descargos sin Respuestas",
-                "Aún hay descargos sin responder. ¿Está seguro de cerrar ésta observación?",
-                "Estoy seguro",
-                "Cancelar",
-                "swal_edicion"
-            ).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('cierre_forzado').value = 1;
-                    abrir_modal_cierre.click();
-                } else {
-                    document.getElementById('cierre_forzado').value = 0;
+    if (btn_cerrar_obs_completo != null) {
+        btn_cerrar_obs_completo.addEventListener('click', () => {
+            descargos.forEach(d => {
+                if (d.respuesta == null) {
+                    rta_descargo = false;
                 }
-            })
-        }
+            });
 
-    });
+            if (rta_descargo) {
+                document.getElementById('cierre_forzado').value = 0;
+                abrir_modal_cierre.click();
+
+            } else {
+                customConfirmationButton(
+                    "Descargos sin Respuestas",
+                    "Aún hay descargos sin responder. ¿Está seguro de cerrar ésta observación?",
+                    "Estoy seguro",
+                    "Cancelar",
+                    "swal_edicion"
+                ).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('cierre_forzado').value = 1;
+                        abrir_modal_cierre.click();
+
+                    } else {
+                        document.getElementById('cierre_forzado').value = 0;
+                    }
+                })
+            }
+
+        });
+    }
 </script>
 
 <script>

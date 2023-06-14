@@ -39,15 +39,33 @@ const tableOptionsAudControl = {
     tableHeader: ['ID', 'Modelo', 'Contratista', 'Supervisor Responsable', 'Proyecto', 'Usuario Carga', 'Fecha Carga', 'Acciones'],
     tableCells: ["id_auditoria", 'modelo_tipo', 'contratista', 'supervisor', 'proyecto', 'usuario_carga', 'fecha_carga_format', {
         key: (row) => {
-            let btn;
+            let btn, div, btnPdf;
+            div = el('div.d-flex justify-content-around');
+            // BTN para desactivar
             if (row["estado"] == 1) {
-                btn = el("button.btn_desactivar", el("i.fas fa-ban"));
+                btn = el("button.btn-desactivar", el("i.fas fa-ban"));
             } else {
-                btn = el("button.btn_activar", el("i.fas fa-check"));
+                btn = el("button.btn-activar", el("i.fas fa-check"));
             }
             btn.setAttribute("data-id", row["id_auditoria"]);
             btn.setAttribute("onclick", "changeStateAuditoria(this, 1)");
-            return btn;
+
+            // BTN pdf 
+            btnPdf = el('a.btn_pdf', {
+                style: 'width: 35px; height: 35px;',
+                target: '_blank',
+            });
+            btnPdf.href = `${GET_BASE_URL()}/pdf/auditoria_control/` + row["id_auditoria"] 
+            let img = el('img', {
+                alt: 'Icono PDF',
+                style: 'width: 20px;'
+            });
+            img.src = `${GET_BASE_URL()}/assets/img/PDF.png`;
+            mount(btnPdf, img)
+            mount(div, btnPdf);
+
+            mount(div, btn);
+            return div;
         },
         noClickableRow: true,
     }, ],
@@ -118,15 +136,33 @@ const tableOptionsAudVehicular = {
     tableHeader: ['ID', 'Modelo', 'Equipo', 'Conductor', 'N° Interno', 'Titular', 'Proyecto', 'Resultado', 'Usuario Carga', 'Fecha Carga', 'Acciones'],
     tableCells: ['id_auditoria', 'modelo_tipo', 'equipo', 'conductor', 'num_interno', 'titular', 'proyecto', 'resultado_inspeccion', 'usuario_carga', 'fecha_carga_format', {
         key: (row) => {
-            let btn;
+            let btn, div, btnPdf;
+            div = el('div.d-flex justify-content-around');
             if (row["estado"] == 1) {
-                btn = el("button.btn_desactivar", el("i.fas fa-ban"));
+                btn = el("button.btn-desactivar", el("i.fas fa-ban"));
             } else {
-                btn = el("button.btn_activar", el("i.fas fa-check"));
+                btn = el("button.btn-activar", el("i.fas fa-check"));
             }
             btn.setAttribute("data-id", row["id_auditoria"]);
             btn.setAttribute("onclick", "changeStateAuditoria(this, 0)");
-            return btn;
+
+            // BTN pdf 
+            btnPdf = el('a.btn_pdf', {
+                style: 'width: 35px; height: 35px;',
+                target: '_blank',
+            });
+            btnPdf.href = `${GET_BASE_URL()}/pdf/auditoria_vehicular/` + row["id_auditoria"] 
+            let img = el('img', {
+                alt: 'Icono PDF',
+                style: 'width: 20px;'
+            });
+            img.src = `${GET_BASE_URL()}/assets/img/PDF.png`;
+            mount(btnPdf, img)
+            mount(div, btnPdf);
+
+            mount(div, btn);
+
+            return div;
         },
         noClickableRow: true,
     }, ],

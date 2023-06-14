@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class Model_aud_control extends Model_auditorias
+class Model_aud_vehicular extends Model_auditorias
 {
 
 	public function getDescargosHallazgo($id_hallazgo)
@@ -48,22 +48,24 @@ class Model_aud_control extends Model_auditorias
 		return $results;
 	}
 
+
 	/* == Envío de E-Mails == */
 
 	/**
-	 * Trae los datos de una Auditoría de Control (Cuando se genera un plan de acción)
+	 * Trae los datos de una Auditoría de CheckList Vehicular (Cuando se genera un plan de acción)
 	 */
 	public function getDataHallazgoEmail($id_aud, $id_hallazgo, $tipo)
 	{
 		$builder = $this->db->table('obs_hallazgos oh');
-		$builder->select('oh.id id_hallazgo, oh.id_auditoria id, oh.tipo_auditoria, at.nombre titulo_auditoria, CONCAT(u_carga.nombre, " ", u_carga.apellido) usuario_carga, u_carga.correo correo_usuario_carga, CONCAT(u_responsable.nombre, " ", u_responsable.apellido) responsable, u_responsable.correo correo_responsable, CONCAT(relevo.nombre, " ", relevo.apellido) relevo, relevo.correo correo_relevo, DATE_FORMAT(oh.fecha_hora_carga, "%d/%m/%Y") fecha_deteccion, p.nombre proyecto')
-			->join('auditoria_control ac', 'ac.id=oh.id_auditoria', 'inner')
-			->join('auditorias_titulos at', 'at.id=ac.modelo_tipo', 'inner')
+		$builder->select('oh.id id_hallazgo, oh.id_auditoria id, oh.tipo_auditoria, at.nombre titulo_auditoria, CONCAT(u_carga.nombre, " ", u_carga.apellido) usuario_carga, u_carga.correo correo_usuario_carga, CONCAT(u_responsable.nombre, " ", u_responsable.apellido) responsable, u_responsable.correo correo_responsable, CONCAT(relevo.nombre, " ", relevo.apellido) relevo, relevo.correo correo_relevo, CONCAT(conductor.nombre, " ", conductor.apellido) conductor, CONCAT(titular.nombre, " ", titular.apellido) titular, DATE_FORMAT(oh.fecha_hora_carga, "%d/%m/%Y") fecha_deteccion')
+			->join('auditoria_vehicular av', 'av.id=oh.id_auditoria', 'inner')
+			->join('auditorias_titulos at', 'at.id=av.modelo_tipo', 'inner')
 			->join('usuario u_carga', 'u_carga.id=oh.usuario_carga', 'inner')
 			->join('usuario u_responsable', 'u_responsable.id=oh.responsable', 'inner')
 			->join('usuario relevo', 'relevo.id=oh.relevo_responsable', 'left')
-			->join('proyectos p', 'p.id=ac.proyecto', 'inner')
-			->where('ac.id', $id_aud)
+			->join('usuario conductor', 'conductor.id=av.conductor', 'left')
+			->join('usuario titular', 'titular.id=av.titular', 'left')
+			->where('av.id', $id_aud)
 			->where('oh.id', $id_hallazgo)
 			->where('oh.tipo_auditoria', $tipo);
 		return $builder->get()->getRowArray();
