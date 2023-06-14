@@ -128,11 +128,13 @@
     color: white;
 }
 
-#toggle_plan {
+#toggle_plan,
+#toggle_plan_v {
     display: none;
 }
 
-.container_plan {
+.container_plan,
+.container_plan_v {
     max-height: 0;
     overflow: hidden;
     transition: all 0.4s ease-in-out;
@@ -141,11 +143,19 @@
 #toggle_plan:checked~.container_plan {
     max-height: 100% !important;
 }
+#toggle_plan_v:checked~.container_plan_v {
+    max-height: 100% !important;
+}
 
 #efecto_impacto,
 #contratista_plan,
 #responsable_plan,
-#relevo_responsable_plan {
+#relevo_responsable_plan,
+#efecto_impacto_v,
+#contratista_plan_v,
+#responsable_plan_v,
+#relevo_responsable_plan_v 
+{
     max-width: 100%;
     padding: 3px;
     border-radius: 15px !important;

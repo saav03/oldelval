@@ -48,6 +48,9 @@
                                 max-height: 500px !important;
                                 transition: all 0.4s ease-in-out;
                             }
+
+                            
+                        </style>
                         </style>
                         <div class="tab-content">
                             <div id="tabButtons-pane-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabButtons-1">

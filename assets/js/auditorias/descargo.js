@@ -7,7 +7,7 @@ Agregar descargo
 function addDescargoAjax(form) {
   return $.ajax({
     type: "POST",
-    url: GET_BASE_URL() + "/audcontrol/submitDescargo",
+    url: GET_BASE_URL() + "/auditorias/submitDescargo",
     data: form,
     processData: false,
     contentType: false,
@@ -65,7 +65,7 @@ Cerrar Observación
 function cerrarObservacion(form) {
   return $.ajax({
     type: "POST",
-    url: GET_BASE_URL() + "/audcontrol/submitCloseObs",
+    url: GET_BASE_URL() + "/auditorias/submitCloseObs",
     data: form,
     processData: false,
     contentType: false,
@@ -98,7 +98,7 @@ btn_cerrar_obs.addEventListener("click", e => {
             "swal_edicion"
           ).then((result) => {
             if (result.isConfirmed) {
-              // window.location.reload();
+              window.location.reload();
             }
           });
         })
@@ -167,7 +167,7 @@ Agregar respuesta al descargo
 function addRtaDescargo(form) {
   return $.ajax({
     type: "POST",
-    url: GET_BASE_URL() + "/audcontrol/submitRtaDescargo",
+    url: GET_BASE_URL() + "/auditorias/submitRtaDescargo",
     data: form,
     processData: false,
     contentType: false,

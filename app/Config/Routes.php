@@ -53,16 +53,13 @@ $routes->match(['get', 'post'],'/api/auditorias/getBloqueAud/(:num)','Auditorias
 
 /* == Auditorías == */
 $routes->get('/auditorias','Auditorias::index');
-$routes->get('/auditorias/view_aud_control/(:num)','Auditorias::view_aud_control/$1');
-$routes->get('/auditorias/view_aud_vehicular/(:num)','Auditorias::view_aud_vehicular/$1');
-// Tablas historicos -> | Auditorías Control | Auditorías Checklist Vehicular
-$routes->match(['get', 'post'],'/api/auditorias/getControl/(:num)/(:num)','Auditorias::getPagedControl/$1/$2');
-$routes->match(['get', 'post'],'/api/auditorias/getTotalControl/','Auditorias::getPagedControl');
+$routes->post('/auditorias/submitDescargo','Auditorias::submitDescargo');
+$routes->post('/auditorias/submitRtaDescargo','Auditorias::submitRtaDescargo');
+$routes->post('/auditorias/submitCloseObs','Aud_Control::submitCerrarHallazgo');
 
-$routes->match(['get', 'post'],'/api/auditorias/getVehicular/(:num)/(:num)','Auditorias::getPagedVehicular/$1/$2');
-$routes->match(['get', 'post'],'/api/auditorias/getTotalVehicular/','Auditorias::getPagedVehicular');
 $routes->post('/auditorias/changeState/(:num)/(:num)','Auditorias::changeState/$1/$2');
 
+$routes->get('/auditorias/testing','Auditorias::testing');
 
 $routes->match(['get', 'post'],'/auditoria/add','Auditorias::add');
 $routes->match(['get', 'post'],'/auditoria/addPlanilla','Auditorias::addPlanilla');
@@ -71,9 +68,18 @@ $routes->match(['get', 'post'],'/Auditorias/autocomplete','Auditorias::autocompl
 $routes->post('/Auditorias/submitUpload/','Auditorias::submitUpload');
 
 /* == Auditorías Control == */
-$routes->post('/audcontrol/submitCloseObs','Aud_Control::submitCerrarHallazgo');
-$routes->post('/audcontrol/submitDescargo','Aud_Control::submitDescargo');
-$routes->post('/audcontrol/submitRtaDescargo','Aud_Control::submitRtaDescargo');
+$routes->post('/audcontrol/submitPlanilla','Aud_Control::submitPlanilla');
+$routes->match(['get', 'post'],'/api/auditorias/getControl/(:num)/(:num)','Aud_Control::getPagedControl/$1/$2');
+$routes->match(['get', 'post'],'/api/auditorias/getTotalControl/','Aud_Control::getPagedControl');
+$routes->get('/auditorias/view_aud_control/(:num)','Aud_Control::view_aud_control/$1');
+$routes->get('/pdf/auditoria_control/(:num)','Aud_Control::view_aud_control_pdf/$1');
+/* == Auditorías Vehicular == */
+$routes->post('/audvehicular/submitPlanilla','Aud_Vehicular::submitPlanilla');
+$routes->match(['get', 'post'],'/api/auditorias/getVehicular/(:num)/(:num)','Aud_Vehicular::getPagedVehicular/$1/$2');
+$routes->match(['get', 'post'],'/api/auditorias/getTotalVehicular/','Aud_Vehicular::getPagedVehicular');
+$routes->get('/auditorias/view_aud_vehicular/(:num)','Aud_Vehicular::view_aud_vehicular/$1');
+$routes->get('/pdf/auditoria_vehicular/(:num)','Aud_Vehicular::view_aud_vehicular_pdf/$1');
+
 
 #B
 #C

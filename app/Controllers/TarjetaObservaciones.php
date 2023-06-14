@@ -199,7 +199,6 @@ class TarjetaObservaciones extends BaseController
                                         $helper->sendMailTarjeta($datos_hallazgo, 5);
                                     }
                                 }
-
                             } else {
                                 echo json_encode($datos_significancia['errores']);
                             }
@@ -283,6 +282,10 @@ class TarjetaObservaciones extends BaseController
                     $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
                     $helper->sendMailTarjeta($datos_hallazgo, 1);
                 }
+            }
+            
+            if (isset($id_tarjeta)) {
+                newMov(6, 1, $id_tarjeta); //Movimiento
             }
         } else {
             echo json_encode($verificacion_tarjeta['errores']);
@@ -582,8 +585,6 @@ class TarjetaObservaciones extends BaseController
         }
         echo json_encode($response);
     }
-
-
 
     public function testing()
     {

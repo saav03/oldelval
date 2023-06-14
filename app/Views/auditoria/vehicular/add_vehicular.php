@@ -137,16 +137,78 @@
                 </div>
             </div>
 
+
+
         </div>
 
         <br>
-
-
+    </div>
+    <div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 53%);">
+        <div class="card-header subtitle" style="font-weight: 600; letter-spacing: 1.5px; text-align: center; background-color: #CCFFCC!important;">
+            Observación
+        </div>
+        <div class="card-body">
+            <?= view('auditoria/vehicular/plan_accion_vehicular'); ?>
+        </div>
     </div>
     <div class="d-inline-block float-end mt-3 mb-3">
         <button class="btn_modify btnUploadAud" data-id="form_aud_checklist">Cargar Auditoría</button>
     </div>
 </form>
 
+<script>
+    new addFiles(document.getElementById("gallery_v"), 'adj_observacion').init();
+</script>
+
+<!-- Los selectores que vienen del plugin Virtual Select de JS -->
+<script>
+    VirtualSelect.init({
+        ele: '#efecto_impacto_v',
+        placeholder: 'Seleccione uno o mas efectos',
+    });
+
+    VirtualSelect.init({
+        ele: '#contratista_plan_v',
+        placeholder: 'Seleccione la contratista',
+    });
+
+    VirtualSelect.init({
+        ele: '#responsable_plan_v',
+        placeholder: 'Seleccione el responsable',
+    });
+
+    VirtualSelect.init({
+        ele: '#relevo_responsable_plan_v',
+        placeholder: 'Seleccione el relevo',
+    });
+
+    document.getElementById('contratista_plan_v').setValue(0);
+    document.getElementById('responsable_plan_v').setValue(0);
+    document.getElementById('relevo_responsable_plan_v').setValue(0);
+</script>
+
+<!-- Los botones 'Si'/'No' del plan de acción (Si Corresponde) -->
+<script>
+    const btn_yes_v = document.getElementById("btn_yes_v");
+    const btn_no_v = document.getElementById("btn_no_v");
+
+    const toggle_plan_v = document.getElementById("toggle_plan_v");
+    const oportunidad_mejora_v = document.getElementById("oportunidad_mejora_v");
+
+    btn_yes_v.addEventListener("click", (e) => {
+        e.preventDefault();
+        btn_yes_v.classList.add("btn_checked");
+        btn_no_v.classList.remove("btn_checked");
+        oportunidad_mejora_v.value = 1;
+        toggle_plan_v.checked = true;
+    });
+    btn_no_v.addEventListener("click", (e) => {
+        e.preventDefault();
+        btn_no_v.classList.add("btn_checked");
+        btn_yes_v.classList.remove("btn_checked");
+        oportunidad_mejora_v.value = 0;
+        toggle_plan_v.checked = false;
+    });
+</script>
 
 <script src="<?= base_url("assets/js/auditorias/add_vehicular.js") ?>"></script>

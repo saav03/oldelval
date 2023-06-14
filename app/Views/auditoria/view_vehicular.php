@@ -1,17 +1,10 @@
 <link rel="stylesheet" href="<?= base_url('assets/css/auditorias/add.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/auditorias/aud_gral.css') ?>">
 
-<?php
-/* echo '<pre>';
-var_dump($auditoria);
-echo '</pre>';
-exit; */
-?>
-
 <div class="container">
     <div class="row" style="box-shadow: 0px 0px 10px 10px rgba(250,250,250,1);">
         <div class="col-md-12" style="border-radius: 10px;background: #fcfdff;border-bottom: 2px solid #f1f1f1;border-top: 2px solid #f1f1f1;">
-            <h5 class="text-center" style="padding: 10px;color: #84baeb;font-size: 24px;letter-spacing: 1px;">Auditoría CheckList Vehicular - N°1</h5>
+            <h5 class="text-center" style="padding: 10px;color: #84baeb;font-size: 24px;letter-spacing: 1px;">Auditoría CheckList Vehicular - N° <?= $auditoria['id_auditoria']; ?> </h5>
 
             <div class="row">
                 <div class="col-xs-12 col-md-3"></div>
@@ -86,13 +79,21 @@ exit; */
 
 <div class="container">
     <div class="card mt-4 mb-0 card_title_initial">
-        <div class="card-header card_modif_aud">
-            Respuestas | Comentarios
+        <div class="card-header card_modif_aud d-flex align-items-center justify-content-between">
+            <div>
+                Respuestas | Comentarios
+            </div>
+            <label for="drop_down_1">
+                <div class="drop_down">
+                    <div id="arrow" class="arrow up"></div>
+                </div>
+            </label>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-body" style="margin: 20px;">
+    <input type="checkbox" id="drop_down_1" checked>
+    <div class="card card_bloque">
+        <div class="card-body card_bloque_body" style="margin: 20px; padding-bottom: 30px;">
             <?php $aux = 1;
             foreach ($auditoria['bloque'] as $bloque) : ?>
                 <div class="row" id="bloque_x_pregunta">
@@ -163,7 +164,7 @@ exit; */
                                             Satisfactoria
                                         </label>
                                         <label class="label_satisfactoria">
-                                            <input type="radio" class="option-input radio" name="resultado_inspeccion" value="0" disabled <?= $auditoria['resultado_inspeccion'] == 0 ? 'checked' : '' ?>/>
+                                            <input type="radio" class="option-input radio" name="resultado_inspeccion" value="0" disabled <?= $auditoria['resultado_inspeccion'] == 0 ? 'checked' : '' ?> />
                                             No Satisfactoria
                                         </label>
                                     </div>
@@ -185,9 +186,15 @@ exit; */
                 </div>
             </div>
         </div>
-
-
     </div>
+    <section>
+        <?php
+        if ($hallazgo != null) :
+
+            $data['h'] = $hallazgo; ?>
+            <?= view('auditoria/vehicular/aud_plan_vehicular', $data); ?>
+        <?php endif; ?>
+    </section>
 
 
     <div class="mt-3 mb-3">
@@ -195,3 +202,24 @@ exit; */
     </div>
     <br>
 </div>
+
+<script>
+    const drop_down = document.getElementById('drop_down_1');
+    const icon_arrow = document.getElementById('arrow');
+    const card_bloque = document.querySelector('.card_bloque');
+    const card_bloque_body = document.querySelector('.card_bloque_body');
+
+    if (drop_down.checked) {
+        card_bloque.style.maxHeight = card_bloque_body.offsetHeight + 'px';
+    }
+
+    drop_down.addEventListener('change', function() {
+        if (drop_down.checked) {
+            card_bloque.style.maxHeight = card_bloque_body.offsetHeight + 'px';
+            icon_arrow.classList.remove('down');
+        } else {
+            card_bloque.style.maxHeight = '10px';
+            icon_arrow.classList.add('down');
+        }
+    });
+</script>

@@ -167,7 +167,7 @@ class Helper extends Controller
         }
 
         $message = $vista;
-        // $correos[] = 'mdinamarca@blister.com.ar';
+        $correos[] = 'mdinamarca@blister.com.ar';
         $config['protocol'] = 'smtp';
         $config["SMTPHost"] = 'oldelval-cass.com';
         $config['mailType'] = 'html';
@@ -181,6 +181,47 @@ class Helper extends Controller
 
         // $correos[] = 'mdinamarca@blister.com.ar';
         // $correos[] = 'blistersoftware@gmail.com';
+
+        $email->initialize($config);
+        $email->setFrom('_mainaccount@oldelval-cass.com', 'OLDELVAL');
+        $email->setBCC($correos);
+        $email->setSubject($subject);
+        $email->setMessage($message);
+        $email->send();
+    }
+
+    /**
+     * Envía un correo
+     */
+    public function sendMail($datos, $subject_param, $url, $view, $emails)
+    {
+        $correos = [];
+        $email = \Config\Services::email();
+
+        # Datos que son necesarios para un correcto envío de e-mail
+        $id = $datos['id'];
+        $subject = $subject_param . $id;
+        $datos['url'] = $url;
+        $vista = view($view, $datos);
+
+        # Cargo los correos enviados por parámetros
+        foreach ($emails as $e) {
+            $correos[] = $e;
+        }
+        
+        $correos[] = 'mdinamarca@blister.com.ar';
+        $message = $vista;
+        $config = [];
+        $config['protocol'] = 'smtp';
+        $config["SMTPHost"] = 'oldelval-cass.com';
+        $config['mailType'] = 'html';
+        $config["SMTPUser"] = '_mainaccount@oldelval-cass.com';
+        $config["SMTPPass"] = 'OoBlister2@2@';
+        $config["SMTPPort"] = '465'; //'587';
+        $config['charset'] = 'utf-8';
+        $config['wordwrap'] = TRUE;
+        $config['validate'] = true;
+        $config['SMTPCrypto'] = 'ssl';
 
         $email->initialize($config);
         $email->setFrom('_mainaccount@oldelval-cass.com', 'OLDELVAL');

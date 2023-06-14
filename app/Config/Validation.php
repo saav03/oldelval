@@ -478,6 +478,14 @@ class Validation extends BaseConfig
                 'required' => 'El proyecto es requerido',
             ]
         ],
+        'tipo_auditoria' => [
+            'label' => 'Tipo de Auditoría',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'Ingrese el Tipo de Auditoria',
+            ]
+        ],
+
     ];
     public $validation_aud_vehicular = [
         'equipo' => [
@@ -550,13 +558,20 @@ class Validation extends BaseConfig
                 'required' => 'El proyecto es requerido',
             ]
         ],
+        'tipo_auditoria' => [
+            'label' => 'Tipo de Auditoría',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'Ingrese el Tipo de Auditoria',
+            ]
+        ],
         'resultado_inspeccion' => [
             'label' => 'resultado_inspeccion',
             'rules' => ['required'],
             'errors' => [
                 'required' => 'El Resultado de la Inspección es requerido',
             ]
-        ]
+        ],
     ];
     public $validation_aud_plan = [
         'hallazgo' => [
@@ -573,13 +588,13 @@ class Validation extends BaseConfig
                 'required' => 'El Plan de Acción es requerido',
             ]
         ],
-        'efecto_impacto' => [
+        /* 'efecto_impacto' => [
             'label' => 'efecto_impacto',
             'rules' => ['required'],
             'errors' => [
                 'required' => 'El Efecto / Impacto es requerido',
             ]
-        ],
+        ], */
         'contratista' => [
             'label' => 'contratista',
             'rules' => ['required'],
@@ -608,5 +623,14 @@ class Validation extends BaseConfig
                 'required' => 'La Fecha de Cierre es requerida',
             ]
         ],
+    ];
+    public $validation_requiere_plan = [
+        'oportunidad_mejora' => [
+            'label' => 'Oportunidad de Mejora',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'Seleccione si desea realizar una observación',
+            ]
+        ]
     ];
 }

@@ -1,7 +1,7 @@
-function submitUpload(form) {
+function submitUpload(form, url) {
     return $.ajax({
         type: "POST",
-        url: GET_BASE_URL() + "/Auditorias/submitUpload",
+        url: GET_BASE_URL() + url,
         data: form,
         processData: false,
         contentType: false,
@@ -16,7 +16,13 @@ const btnUploadAud = document.querySelectorAll('.btnUploadAud');
 for (let i = 0; i < btnUploadAud.length; i++) {
     btnUploadAud[i].addEventListener("click", function (event) {
         event.preventDefault();
+        let url;
         let id_form = btnUploadAud[i].getAttribute('data-id')
+        if (id_form == 'form_aud_control') {
+            url = '/audcontrol/submitPlanilla';
+        } else {
+            url = '/audvehicular/submitPlanilla';
+        }
         let form = new FormData(document.getElementById(`${id_form}`));
         customConfirmationButton(
             "Crear Auditoría",
@@ -26,7 +32,7 @@ for (let i = 0; i < btnUploadAud.length; i++) {
             "swal_edicion"
         ).then((result) => {
             if (result.isConfirmed) {
-                submitUpload(form)
+                submitUpload(form, url)
                     .done(function (data) {
                         customSuccessAlert(
                             "Carga Exitosa",
@@ -34,7 +40,7 @@ for (let i = 0; i < btnUploadAud.length; i++) {
                             "swal_edicion"
                         ).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.reload();
+                                window.location.replace(GET_BASE_URL() + "/auditorias");
                             }
                         });
                     })
