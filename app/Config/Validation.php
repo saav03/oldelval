@@ -488,6 +488,13 @@ class Validation extends BaseConfig
 
     ];
     public $validation_aud_vehicular = [
+        'contratista' => [
+            'label' => 'contratista',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La Contratista es requerida',
+            ]
+        ],
         'equipo' => [
             'label' => 'equipo',
             'rules' => ['required'],
@@ -588,20 +595,6 @@ class Validation extends BaseConfig
                 'required' => 'El Plan de Acción es requerido',
             ]
         ],
-        /* 'efecto_impacto' => [
-            'label' => 'efecto_impacto',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'El Efecto / Impacto es requerido',
-            ]
-        ], */
-        'contratista' => [
-            'label' => 'contratista',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'La Contratista es requerida',
-            ]
-        ],
         'responsable' => [
             'label' => 'responsable',
             'rules' => ['required'],
@@ -609,13 +602,6 @@ class Validation extends BaseConfig
                 'required' => 'El Responsable es requerido',
             ]
         ],
-        /* 'significancia' => [
-            'label' => 'significancia',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'El Riesgo es requerido',
-            ]
-        ], */
         'fecha_cierre' => [
             'label' => 'fecha_cierre',
             'rules' => ['required'],

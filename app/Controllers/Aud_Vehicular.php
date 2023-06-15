@@ -26,6 +26,7 @@ class Aud_Vehicular extends Auditorias
         $modelo_tipo = $this->request->getPost('tipo_auditoria');
 
         $datos = [
+            'contratista' => $this->request->getPost('contratista_v'),
             'modelo_tipo' => $modelo_tipo,
             'equipo' => $this->request->getPost('equipo'),
             'conductor' => $this->request->getPost('conductor'),
@@ -67,7 +68,7 @@ class Aud_Vehicular extends Auditorias
                         'tipo_auditoria' => 0,
                         'hallazgo' => $this->request->getPost('hallazgo_v'),
                         'plan_accion' => $this->request->getPost('plan_accion_v'),
-                        'contratista' => $this->request->getPost('contratista_plan_v'),
+                        'contratista' => $this->request->getPost('contratista_v'),
                         'responsable' => $this->request->getPost('responsable_plan_v'),
                         'relevo_responsable' => $this->request->getPost('relevo_responsable_plan_v'),
                         'fecha_cierre' => $this->request->getPost('fecha_cierre_v'),

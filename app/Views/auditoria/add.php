@@ -41,6 +41,8 @@
         <?= view('auditoria/vehicular/add_vehicular'); ?>
     </section>
 
+    <!-- Modal Significancia -->
+    <?php generarModalSignificancia(); ?>
 </div>
 
 <script src="<?= base_url("assets/js/auditorias/submit_add_planilla.js") ?>"></script>

@@ -233,6 +233,34 @@
     99px 72px 143px rgba(0, 0, 0, 0.08);
 }
 
+.contain-question_icon {
+  margin-left: 5px;
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+.contain-question_icon:hover {
+  background-color: #c7e1ef;
+}
+
+.question-icon {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4b7f9c;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.question-icon span {
+  font-size: 15px;
+  font-weight: bold;
+  color: #4b7f9c;
+}
+
 .edit_select {
   max-width: initial;
 }

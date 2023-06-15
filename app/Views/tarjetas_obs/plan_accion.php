@@ -20,24 +20,7 @@
             </div>
         </fieldset>
     </div>
-    <div class="col-xs-12 col-md-3">
-        <fieldset style="border-right: none;">
-            <legend class="w-100">
-                Contratista
-            </legend>
-            <div class="p-3 pt-1">
-                <label for="contratista_plan" class="mb-2 sz_inp fw-semibold">Seleccione la Contratista</label>
-                <select class="sz_inp" name="contratista_plan" id="contratista_plan" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
-                    <?php
-                    foreach ($contratistas as $e) {
-                        echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . "</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-        </fieldset>
-    </div>
-    <div class="col-xs-12 col-md-3">
+    <div class="col-xs-12 col-md-4">
         <fieldset style="border-right: none;">
             <legend class="w-100">
                 Responsable
@@ -54,7 +37,7 @@
             </div>
         </fieldset>
     </div>
-    <div class="col-xs-12 col-md-3">
+    <div class="col-xs-12 col-md-4">
         <fieldset style="border-right: none;">
             <legend class="w-100">
                 Relevo Responsable
@@ -71,7 +54,7 @@
             </div>
         </fieldset>
     </div>
-    <div class="col-xs-12 col-md-3">
+    <div class="col-xs-12 col-md-4">
         <fieldset style="border-right: none;">
             <legend class="w-100">
                 Fecha de Cierre

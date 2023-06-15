@@ -103,10 +103,10 @@ class TarjetaObservaciones extends BaseController
 
     public function submitTarjeta()
     {
+
         $helper = new Helper();
         $situacion = $this->request->getPost('situacion');
         $tipo_observacion = $this->request->getPost('tipo_observacion');
-
         $datos_tarjeta  = [
             'contratista'    => $this->request->getPost('contratista'),
             'fecha_deteccion'    => $this->request->getPost('fecha_deteccion'),
@@ -301,7 +301,7 @@ class TarjetaObservaciones extends BaseController
         $datos_hallazgo = [
             'hallazgo'    => $this->request->getPost('hallazgo'),
             'plan_accion'    => $this->request->getPost('plan_accion'),
-            'contratista'    => $this->request->getPost('contratista_plan'),
+            'contratista'    => $this->request->getPost('contratista'),
             'responsable'    => $this->request->getPost('responsable'),
             'relevo_responsable'    => $this->request->getPost('relevo_responsable'),
             'fecha_cierre'    => $this->request->getPost('fecha_cierre'),
@@ -362,7 +362,7 @@ class TarjetaObservaciones extends BaseController
 
                 $datos_reconocimiento = [
                     'hallazgo'    => $this->request->getPost('observado'),
-                    'contratista'    => $this->request->getPost('contratista_reconocimiento'),
+                    'contratista'    => $this->request->getPost('contratista'),
                     'usuario_carga' => session()->get('id_usuario')
                 ];
 
