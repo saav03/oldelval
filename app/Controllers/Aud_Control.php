@@ -60,7 +60,7 @@ class Aud_Control extends Auditorias
                         'tipo_auditoria' => 1,
                         'hallazgo' => $this->request->getPost('hallazgo'),
                         'plan_accion' => $this->request->getPost('plan_accion'),
-                        'contratista' => $this->request->getPost('contratista_plan'),
+                        'contratista' => $this->request->getPost('contratista'),
                         'responsable' => $this->request->getPost('responsable_plan'),
                         'relevo_responsable' => $this->request->getPost('relevo_responsable_plan'),
                         'fecha_cierre' => $this->request->getPost('fecha_cierre'),

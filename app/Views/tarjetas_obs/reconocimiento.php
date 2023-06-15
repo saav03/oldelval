@@ -9,23 +9,6 @@
             </div>
         </fieldset>
     </div>
-    <div class="col-xs-12 col-md-12">
-        <fieldset style="border-right: none;">
-            <legend class="w-100">
-                Contratista
-            </legend>
-            <div class="p-3 pt-1">
-                <label for="contratista_reconocimiento" class="label_select mb-2 sz_inp fw-semibold">Seleccione la Contratista</label>
-                <select class="sz_inp" name="contratista_reconocimiento" id="contratista_reconocimiento" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
-                    <?php
-                    foreach ($contratistas as $e) {
-                        echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . "</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-        </fieldset>
-    </div>
     <div class="col-xs-12 mt-2">
         <fieldset style="border-right: none;">
             <legend class="w-100">

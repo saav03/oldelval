@@ -485,7 +485,5 @@ VirtualSelect.init({
 });
 
 document.getElementById('contratista').setValue(0);
-document.getElementById('contratista_plan').setValue(0);
-document.getElementById('contratista_reconocimiento').setValue(0);
 document.getElementById('responsable').setValue(0);
 document.getElementById('relevo_responsable').setValue(0);

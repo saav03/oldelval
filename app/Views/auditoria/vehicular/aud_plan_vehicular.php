@@ -40,10 +40,28 @@
                         </div>
                     </fieldset>
                 </div>
+
                 <div class="col-xs-12 col-md-12">
                     <fieldset style="border-right: none;">
                         <legend class="w-100">
-                            Significancia
+                            Efecto / Impacto
+                        </legend>
+                        <div class="p-3 pt-1">
+                            <div class="row mt-3 justify-content-between" style="flex-wrap: wrap;">
+                                <?php foreach ($h['efectos'] as $efecto) : ?>
+                                    <div class="col-xs-12 col-md-4 text-center">
+                                        <p class="p-0"><i class="fa-solid fa-circle-check"></i> <?= $efecto['nombre_efecto']; ?></p>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="col-xs-12 col-md-6">
+                    <fieldset style="border-right: none;">
+                        <legend class="w-100">
+                            Riesgos Observados
                         </legend>
 
                         <div class="p-3 pt-1 text-center">
@@ -63,34 +81,8 @@
                         </div>
                     </fieldset>
                 </div>
-
-                <div class="col-xs-12 col-md-12">
-                    <fieldset style="border-right: none;">
-                        <legend class="w-100">
-                            Efecto / Impacto
-                        </legend>
-                        <div class="p-3 pt-1">
-                            <div class="row mt-3 justify-content-between" style="flex-wrap: wrap;">
-                                <?php foreach ($h['efectos'] as $efecto) : ?>
-                                    <div class="col-xs-12 col-md-4 text-center">
-                                        <p class="p-0"><i class="fa-solid fa-circle-check"></i> <?= $efecto['nombre_efecto']; ?></p>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="col-xs-12 col-md-12">
-                    <fieldset style="border-right: none;">
-                        <legend class="w-100">
-                            Contratista
-                        </legend>
-                        <div class="p-3 pt-1">
-                            <input type="text" class="form-control sz_inp" value="<?= $h['contratista'] ? $h['contratista'] : ''; ?>" readonly>
-                        </div>
-                    </fieldset>
-                </div>
-                <div class="col-xs-12 col-md-4">
+                
+                <div class="col-xs-12 col-md-6">
                     <fieldset style="border-right: none;">
                         <legend class="w-100">
                             Responsable de dar tratamiento
@@ -100,7 +92,7 @@
                         </div>
                     </fieldset>
                 </div>
-                <div class="col-xs-12 col-md-4">
+                <div class="col-xs-12 col-md-6">
                     <fieldset style="border-right: none;">
                         <legend class="w-100">
                             Relevo Responsable <em><small>(Si Corresponde)</small></em>
@@ -110,7 +102,7 @@
                         </div>
                     </fieldset>
                 </div>
-                <div class="col-xs-12 col-md-4">
+                <div class="col-xs-12 col-md-6">
                     <fieldset style="border-right: none;">
                         <legend class="w-100">
                             Fecha de Cierre

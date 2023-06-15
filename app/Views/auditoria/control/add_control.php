@@ -3,6 +3,16 @@
 <link href="<?= base_url() ?>/assets/css/fileAdder.css" rel="stylesheet">
 <link href="<?= base_url() ?>/assets/css/virtual-select.min.css" rel="stylesheet">
 
+<style>
+    #contratista,
+    #supervisor_responsable {
+        max-width: 100%;
+        padding: 3px;
+        border-radius: 15px !important;
+        margin-top: -5px;
+    }
+</style>
+
 <form id="form_aud_control">
 
     <input type="hidden" value="1" name="aud_tipo">
@@ -15,21 +25,26 @@
 
             <div class="row">
                 <div class="col-md-3 col-xs-12 mt-2">
-                    <label class="mb-1 fw-semibold" for="area">Contratista <small>(*)</small></label>
-                    <select name="contratista" id="contratista" class="form-select sz_inp">
-                        <option value="">-- Seleccione --</option>
-                        <?php foreach ($contratistas as $gral) : ?>
-                            <option value="<?= $gral['id']; ?>"><?= $gral['nombre']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <div>
+                        <label class="mb-1 fw-semibold" for="area">Contratista <small>(*)</small></label>
+                        <select class="sz_inp" name="contratista" id="contratista" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
+                            <?php
+                            foreach ($contratistas as $e) {
+                                echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
                 </div>
                 <div class="col-md-3 col-xs-12 mt-2">
                     <label class="mb-1 fw-semibold">Supervisor Responsable <small>(*)</small></label>
-                    <select name="supervisor_responsable" id="supervisor_responsable" class="form-select sz_inp">
-                        <option value="">-- Seleccione --</option>
-                        <?php foreach ($usuarios as $gral) : ?>
-                            <option value="<?= $gral['id']; ?>"><?= $gral['nombre'] . ' ' . $gral['apellido'] ?></option>
-                        <?php endforeach; ?>
+                    <select class="sz_inp" name="supervisor_responsable" id="supervisor_responsable" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
+                        <?php
+                        foreach ($usuarios as $e) {
+                            echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . ' ' . $e['apellido'] . "</option>";
+                        }
+                        ?>
                     </select>
                 </div>
                 <div class="col-md-2 col-xs-12">
@@ -150,13 +165,18 @@
 <!-- Los selectores que vienen del plugin Virtual Select de JS -->
 <script>
     VirtualSelect.init({
+        ele: '#contratista',
+        placeholder: 'Seleccione la contratista',
+    });
+
+    VirtualSelect.init({
         ele: '#efecto_impacto',
         placeholder: 'Seleccione uno o mas efectos',
     });
 
     VirtualSelect.init({
-        ele: '#contratista_plan',
-        placeholder: 'Seleccione la contratista',
+        ele: '#supervisor_responsable',
+        placeholder: 'Seleccione el supervisor',
     });
 
     VirtualSelect.init({
@@ -169,7 +189,8 @@
         placeholder: 'Seleccione el relevo',
     });
 
-    document.getElementById('contratista_plan').setValue(0);
+    document.getElementById('contratista').setValue(0);
+    document.getElementById('supervisor_responsable').setValue(0);
     document.getElementById('responsable_plan').setValue(0);
     document.getElementById('relevo_responsable_plan').setValue(0);
 </script>

@@ -1,4 +1,16 @@
 <!-- Encabezado -->
+
+<style>
+    #contratista_v,
+    #conductor,
+    #titular {
+        max-width: 100%;
+        padding: 3px;
+        border-radius: 15px !important;
+        margin-top: -5px;
+    }
+</style>
+
 <form id="form_aud_checklist">
     <input type="hidden" value="0" name="aud_tipo">
     <div class="card" style="border: 1px solid #f6f6f6;box-shadow: 0px 0 30px rgb(179 179 179 / 53%);">
@@ -7,24 +19,54 @@
         </div>
         <div class="card-body">
             <div class="row">
+                <div class="col-md-3 col-xs-12 mt-2">
+                    <label class="fw-semibold" style="margin-bottom: 6px;" for="area">Contratista <small>(*)</small></label>
+                    <select class="sz_inp" name="contratista_v" id="contratista_v" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
+                        <?php
+                        foreach ($contratistas as $e) {
+                            echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
                 <div class="col-xs-12 col-md-3 mt-2">
-                    <label class="mb-1 fw-semibold" for="equipo">Equipo</label>
+                    <label class="mb-1 fw-semibold" style="margin-bottom: 6px;" for="equipo">Equipo</label>
                     <input type="text" name="equipo" id="equipo" class="form-control sz_inp" placeholder="Ingrese el equipo">
                 </div>
                 <div class="col-md-3 col-xs-12 mt-2">
-                    <label class="mb-1 fw-semibold">Conductor <small>(*)</small></label>
-                    <select name="conductor" class="form-select sz_inp">
-                        <option value="">-- Seleccione --</option>
-                        <?php foreach ($usuarios as $gral) : ?>
-                            <option value="<?= $gral['id']; ?>"><?= $gral['nombre'] . ' ' . $gral['apellido'] ?></option>
-                        <?php endforeach; ?>
+                    <label class="fw-semibold" style="margin-bottom: 6px;">Conductor <small>(*)</small></label>
+                    <select class="sz_inp" name="conductor" id="conductor" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
+                        <?php
+                        foreach ($usuarios as $e) {
+                            echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . ' ' . $e['apellido'] . "</option>";
+                        }
+                        ?>
                     </select>
                     <!-- <input type="text" name="conductor" class="form-control sz_inp" placeholder="Ingrese el conductor"> -->
                 </div>
+                <div class="col-xs-12 col-md-3 mt-2">
+                    <label class="fw-semibold" style="margin-bottom: 6px;">Titular</label>
+                    <select class="sz_inp" name="titular" id="titular" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
+                        <?php
+                        foreach ($usuarios as $e) {
+                            echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . ' ' . $e['apellido'] . "</option>";
+                        }
+                        ?>
+                    </select>
 
-                <div class="col-xs-12 col-md-2 mt-2">
+                </div>
+                <div class="col-xs-12 col-md-3 mt-2">
                     <label class="mb-1 fw-semibold">N°Interno</label>
                     <input type="text" name="num_interno" class="form-control sz_inp" placeholder="#">
+                </div>
+                <div class="col-md-3 col-xs-12 mt-2">
+                    <label class="mb-1 fw-semibold" for="area">Proyectos <small>(*)</small></label>
+                    <select name="proyecto" id="proyecto" class="form-select sz_inp">
+                        <option value="">-- Seleccione --</option>
+                        <?php foreach ($proyectos as $gral) : ?>
+                            <option value="<?= $gral['id']; ?>"><?= $gral['nombre']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="col-xs-12 col-md-2 mt-2">
                     <label class="mb-1 fw-semibold">Marca</label>
@@ -38,33 +80,16 @@
                     <label class="mb-1 fw-semibold">Patente</label>
                     <input type="text" name="patente" class="form-control sz_inp" placeholder="Ingrese la patente">
                 </div>
-                <div class="col-xs-12 col-md-3 mt-2">
-                    <label class="mb-1 fw-semibold">Titular</label>
-                    <select name="titular" class="form-select sz_inp">
-                        <option value="">-- Seleccione --</option>
-                        <?php foreach ($usuarios as $gral) : ?>
-                            <option value="<?= $gral['id']; ?>"><?= $gral['nombre'] . ' ' . $gral['apellido'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <!-- <input type="text" name="titular" class="form-control sz_inp" placeholder="Ingrese el titular"> -->
-                </div>
-                <div class="col-md-2 col-xs-12">
+                <div class="col-xs-12 col-md-3 mt-2"></div>
+                <div class="col-md-3 col-xs-12">
                     <label class="mb-1 fw-semibold mt-2" for="fecha_hoy">Fecha</label>
                     <input type="date" class="form-control text-center sz_inp simulate_dis" name="fecha_hoy" id="fecha_hoy" value="<?= date('Y-m-d') ?>" readonly>
                 </div>
-                <div class="col-md-2 col-xs-12">
+                <div class="col-md-3 col-xs-12">
                     <label class="mb-1 fw-semibold mt-2" for="fecha_hoy">Hora</label>
                     <input type="time" class="form-control text-center sz_inp" name="hora">
                 </div>
-                <div class="col-md-3 col-xs-12 mt-2">
-                    <label class="mb-1 fw-semibold" for="area">Proyectos <small>(*)</small></label>
-                    <select name="proyecto" id="proyecto" class="form-select sz_inp">
-                        <option value="">-- Seleccione --</option>
-                        <?php foreach ($proyectos as $gral) : ?>
-                            <option value="<?= $gral['id']; ?>"><?= $gral['nombre']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
+
                 <div class="col-xs-12 mt-3 text-center">
                     <label class="mb-1 fw-semibold sz_inp">Tarea que realiza</label>
                     <textarea name="tarea_realiza" cols="10" rows="2" class="form-control sz_inp" placeholder="Ingrese la tarea que realiza"></textarea>
@@ -163,13 +188,23 @@
 <!-- Los selectores que vienen del plugin Virtual Select de JS -->
 <script>
     VirtualSelect.init({
-        ele: '#efecto_impacto_v',
-        placeholder: 'Seleccione uno o mas efectos',
+        ele: '#contratista_v',
+        placeholder: 'Seleccione la contratista',
     });
 
     VirtualSelect.init({
-        ele: '#contratista_plan_v',
-        placeholder: 'Seleccione la contratista',
+        ele: '#conductor',
+        placeholder: 'Seleccione el conductor',
+    });
+
+    VirtualSelect.init({
+        ele: '#titular',
+        placeholder: 'Seleccione el titular',
+    });
+
+    VirtualSelect.init({
+        ele: '#efecto_impacto_v',
+        placeholder: 'Seleccione uno o mas efectos',
     });
 
     VirtualSelect.init({
@@ -182,7 +217,9 @@
         placeholder: 'Seleccione el relevo',
     });
 
-    document.getElementById('contratista_plan_v').setValue(0);
+    document.getElementById('contratista_v').setValue(0);
+    document.getElementById('conductor').setValue(0);
+    document.getElementById('titular').setValue(0);
     document.getElementById('responsable_plan_v').setValue(0);
     document.getElementById('relevo_responsable_plan_v').setValue(0);
 </script>
