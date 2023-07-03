@@ -2,7 +2,7 @@ function submitCredenciales() {
     let form = new FormData(document.getElementById('form_credenciales'));
     return $.ajax({
         type: "POST",
-        url: GET_BASE_URL() + "/addNewUser",
+        url: GET_BASE_URL() + "/sendCredentials",
         data: form,
         processData: false,
         contentType: false,

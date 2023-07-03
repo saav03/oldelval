@@ -66,7 +66,7 @@
     }
 </style>
 
-<script src="<?= base_url('assets/js/dynamic-table-cells-editable.js') ?>"></script>
+<!-- <script src="<!?= base_url('assets/js/dynamic-table-cells-editable.js') ?>"></script> -->
 
 <div class="container" style="height: 100vh;">
     <div class="row">
