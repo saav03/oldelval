@@ -11,8 +11,8 @@
         </div>
 
         <div>
-            <div class="card text-center">
-                <div class="card-header text-center header-perfil" style="background-color: #00b8e645 !important;">
+            <div class="card card_custom text-center">
+                <div class="card-header card_header_custom text-center header-perfil">
                     <h6 style="margin: 0px;" id="titulo"><b>Formulario</b></h6>
                 </div>
                 <div class="card-body">
@@ -22,12 +22,12 @@
 
             <!-- === Acá Inicia la parte de los Indicadores === -->
             <!-- <div class="card">
-                <div class="card-header text-center header-perfil" style="background-color: #00b8e645 !important;">
+                <div class="card-header text-center header-perfil">
                     <h6 style="margin: 0px;"><b>Carga de Datos</b></h6>
                 </div>
             </div> -->
-            <div class="card">
-                <div class="card-header text-center header-perfil" style="background-color: #00b8e645 !important;">
+            <div class="card card_custom">
+                <div class="card-header card_header_custom text-center header-perfil">
                     <h6 style="margin: 0px;"><b>Carga de Datos</b></h6>
                 </div>
                 <div class="card-body">
@@ -43,7 +43,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="dot"></div>
                                         <div class="text-start">
-                                            <p class="name_indicador"><?= $ind['nombre'] ?></p>
+                                            <p class="name_indicador inp_custom"><?= $ind['nombre'] ?></p>
                                         </div>
                                     </div>
                                     <div class="div-ind_icono">
@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="collapse" id="collapse_ind_gral_<?= $ind['id'] ?>">
                                     <div class="form-floating">
-                                        <textarea class="form-control" id="textarea" name="indicador_gral[<?= $ind['id'] ?>][nota]" rows="2"></textarea>
+                                        <textarea class="form-control inp_custom" id="textarea" name="indicador_gral[<?= $ind['id'] ?>][nota]" rows="2"></textarea>
                                         <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                     </div>
                                 </div>
@@ -89,7 +89,7 @@
 
                                                                 <div class="dot"></div>
                                                                 <div class="text-start">
-                                                                    <p class="name_indicador"><?= $ind_subt['nombre'] ?></p>
+                                                                    <p class="name_indicador inp_custom"><?= $ind_subt['nombre'] ?></p>
                                                                 </div>
                                                             </div>
                                                             <div class="div-ind_icono">
@@ -107,7 +107,7 @@
                                                         </div>
                                                         <div class="collapse" id="collapse_indSubt<?= $ind_subt['id'] ?>">
                                                             <div class="form-floating">
-                                                                <textarea class="form-control" name="indicador_subt[<?= $ind_subt['id'] ?>][nota]" id="textarea" rows="2"></textarea>
+                                                                <textarea class="form-control inp_custom" name="indicador_subt[<?= $ind_subt['id'] ?>][nota]" id="textarea" rows="2"></textarea>
                                                                 <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                                             </div>
                                                         </div>
@@ -146,7 +146,7 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="dot"></div>
                                                 <div class="text-start">
-                                                    <p class="name_indicador"><?= $ind_title['nombre'] . $txt ?> </p>
+                                                    <p class="name_indicador inp_custom"><?= $ind_title['nombre'] . $txt ?> </p>
                                                 </div>
                                             </div>
                                             <div class="div-ind_icono">
@@ -163,7 +163,7 @@
                                         </div>
                                         <div class="collapse" id="collapseIndTitle_<?= $ind_title['id'] ?>">
                                             <div class="form-floating">
-                                                <textarea class="form-control" id="textarea" name="indicador_title[<?= $ind_title['id'] ?>][nota]" rows="2"></textarea>
+                                                <textarea class="form-control inp_custom" id="textarea" name="indicador_title[<?= $ind_title['id'] ?>][nota]" rows="2"></textarea>
                                                 <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                             </div>
                                         </div>
@@ -193,7 +193,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="dot"></div>
                                             <div class="text-start">
-                                                <p class="name_indicador"><?= $indice['nombre'] ?> <i class="fa-regular fa-circle-question fa-lg i-question_modal" data-id='<?= $indice['id'] ?>' data-bs-toggle="modal" data-bs-target="#modal_indices"></i></p>
+                                                <p class="name_indicador inp_custom"><?= $indice['nombre'] ?> <i class="fa-regular fa-circle-question fa-lg i-question_modal" data-id='<?= $indice['id'] ?>' data-bs-toggle="modal" data-bs-target="#modal_indices"></i></p>
                                             </div>
                                         </div>
                                         <?php if ($indice['class_indices'] == 'ind_con_regular') { ?>
@@ -215,7 +215,7 @@
                                     </div>
                                     <div class="collapse" id="collapse_indSubt<?= $indice['id'] ?>">
                                         <div class="form-floating">
-                                            <textarea class="form-control" name="indice[<?= $indice['id'] ?>][nota]" id="textarea" rows="2"></textarea>
+                                            <textarea class="form-control inp_custom" name="indice[<?= $indice['id'] ?>][nota]" id="textarea" rows="2"></textarea>
                                             <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                         </div>
                                     </div>
@@ -238,7 +238,7 @@
 
 
                     <div class="d-flex justify-content-center mt-3 mb-3">
-                        <input type="submit" class="btn btn_modify" id="btnSubmitEstadistica" value="Cargar Estadística">
+                        <input type="submit" class="btn_modify" id="btnSubmitEstadistica" value="Cargar Estadística">
                     </div>
                     <br>
                 </div>

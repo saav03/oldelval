@@ -6,7 +6,7 @@
         <div class="card-body">
             <div class="row border-perfil-top">
                 <div class="col-4">
-                    <p class="text-muted p-perfil">Primer ingreso</p>
+                    <p class="text-muted p-perfil fw-semibold">Primer ingreso</p>
                 </div>
                 <div class="col-8"><input type="input" class="form-control input-perfil" value="<?= $first_login ?>" readonly></div>
             </div>

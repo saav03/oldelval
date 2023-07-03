@@ -16,8 +16,10 @@
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Ubuntu&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
+
   <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"> -->
 
   <!-- Vendor CSS Files -->
@@ -32,8 +34,8 @@
   <!-- Template Main CSS File -->
   <link href="<?= base_url() ?>/assets/css/style.css" rel="stylesheet">
 
-    <!-- blister_table.css -->
-    <link href="<?= base_url() ?>/assets/css/blister_table.css" rel="stylesheet">
+  <!-- blister_table.css -->
+  <link href="<?= base_url() ?>/assets/css/blister_table.css" rel="stylesheet">
 
   <!-- Bootstrap 5 -->
   <link rel="stylesheet" href="<?= base_url('assets/bootstrap-5.2.3/css/bootstrap.min.css') ?>">
@@ -43,7 +45,7 @@
   <link href="<?= base_url() ?>/assets/fontawesome/css/fontawesome.css" rel="stylesheet">
   <link href="<?= base_url() ?>/assets/fontawesome/css/brands.css" rel="stylesheet">
   <link href="<?= base_url() ?>/assets/fontawesome/css/solid.css" rel="stylesheet">
-  
+
   <!-- Tree -->
   <link href="<?= base_url() ?>/assets/css/gijgo.min.css" rel="stylesheet">
 
@@ -109,7 +111,7 @@
   <!-- ======= Main div ======= -->
   <style>
     .main_background {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23000000' fill-opacity='0.075' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E")!important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23000000' fill-opacity='0.075' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E") !important;
       height: 100%!important;
     }
   </style>

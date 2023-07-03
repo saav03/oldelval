@@ -15,11 +15,11 @@
             <div class="card-body">
                 <form id="formPermiso" method="POST">
                     <div class="row">
-                        <div class="col-xs-12 col-md-6 mb-2">
+                        <div class="col-xs-12 col-md-4 mb-2">
                             <label class="mb-1 fw-semibold">Nombre <small>(*)</small></label>
                             <input type="text" class="form-control sz_inp" placeholder="Ingrese el nombre del permiso" name="nombre" id="nombre">
                         </div>
-                        <div class="col-xs-12 col-md-6 mb-2">
+                        <div class="col-xs-12 col-md-4 mb-2">
                             <label class="mb-1 fw-semibold">¿Es subpermiso? <small>(*)</small></label>
                             <select name="subpermiso" id="subpermiso" class="form-control sz_inp">
                                 <option value="0">-- No es subpermiso --</option>
@@ -27,6 +27,10 @@
                                     <option value="<?= $permiso_item['id'] ?>"><?= $permiso_item['nombre'] ?></option>
                                 <?php } ?>
                             </select>
+                        </div>
+                        <div class="col-xs-12 col-md-4 mb-2">
+                            <label class="mb-1 fw-semibold">Módulo <small>(*)</small></label>
+                            <input type="text" class="form-control sz_inp" placeholder="Ingrese el nombre del módulo" name="modulo" id="modulo">
                         </div>
                         <div class="col-xs-12 col-md-6 mb-2">
                             <label class="mb-1 fw-semibold" for="nombre">Colocar debajo de <small>(*)</small></label>

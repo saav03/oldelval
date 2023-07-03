@@ -50,7 +50,7 @@
         </div>
         <div class="col-xs-12 col-md-3">
             <label for="dni" class="mb-1 fw-semibold">DNI</label>
-            <input type="text" class="form-control sz_inp" value="<?= $dni ?>" name="dni" id="dni" placeholder="Ingrese N°DNI...">
+            <input type="text" class="form-control sz_inp" value="<?= $dni != 0 ? $dni : '' ?>" name="dni" id="dni" placeholder="Ingrese N°DNI...">
         </div>
         <div class="col-xs-12 col-md-3">
             <label for="dni" class="mb-1 fw-semibold">Fecha de Nacimiento</label>
@@ -79,7 +79,7 @@
         <br>
         <div class="col-xs-12 col-md-4">
             <label for="grupos" class="mb-1 fw-semibold">Número de Teléfono</label>
-            <input type="text" class="form-control sz_inp" value="<?= $telefono ?>" name="telefono" id="telefono" placeholder="Ingrese su teléfono">
+            <input type="text" class="form-control sz_inp" value="<?= $telefono != 0 ? $telefono : ''  ?>" name="telefono" id="telefono" placeholder="Ingrese su teléfono">
         </div>
     </div>
 
@@ -89,17 +89,22 @@
     <div class="row">
         <h5 style="text-align: center; font-weight: bold; color: #798eb3;">Acceso</h5>
         <br>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-3">
             <label for="nombre" class="mb-1 fw-semibold">Nickname</label>
             <input type="text" class="form-control sz_inp" value="<?= $usuario ?>" name="usuario" id="usuario" placeholder="Ingrese su nickname">
         </div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-3">
             <label for="nombre" class="mb-1 fw-semibold">Datos del Correo</label>
             <input type="text" class="form-control sz_inp" value="<?= $correo ?>" name="correo" id="correo" placeholder="Ingrese su correo">
         </div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-3">
             <label for="nombre" class="mb-1 fw-semibold">Clave de Acceso</label>
-            <input type="text" class="form-control sz_inp" name="password" id="password" placeholder="Ingrese su nueva clave">
+            <input type="password" class="form-control sz_inp" name="password" id="password" placeholder="Ingrese su nueva clave">
+        </div>
+        <div class="col-xs-12 col-md-3 text-center">
+            <label class="mb-1 fw-semibold">¿Puede ser SuperAdmin?</label>
+            <br>
+            <input type="checkbox" name="superadmin" value="1" <?= $superadmin == 1 ? 'checked' : ''; ?> style="transform: scale(1.3);">
         </div>
     </div>
 </div>

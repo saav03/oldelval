@@ -10,7 +10,13 @@
 --------------------------------------------------------------*/
 
 .sz_inp {
-  font-size: 14px !important;
+  font-size: 13px !important;
+  color: #64748B !important;
+}
+
+.inp_custom {
+  font-weight: 500 !important;
+  color: #64748B !important;
 }
 
 /* Este es para los campos flotantes de las estadisticas, capaz sea mejor sacarlo de aca */
@@ -32,6 +38,54 @@
   margin: 0;
 }
 
+.lt-1 { /* Letter Spacing .5px */
+  letter-spacing: .5px;
+}
+.lt-2 { /* Letter Spacing .8px */
+  letter-spacing: .8px;
+}
+
+.vscomp-toggle-button {
+  border-radius: 6px;
+  border: 1px solid lightgray;
+}
+
+.card_custom {
+  color: #64748B;
+  border: none !important;
+  box-shadow: 0px 0px 5px 0px rgba(191, 191, 191, 1) !important;
+  background-color: white!important;
+  padding: 0 !important;
+}
+
+.card_header_custom {
+  margin: 0;
+  color: #475569;
+  padding: 15px;
+  padding-bottom: 0;
+  border: none;
+  padding: 16px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  background-color: transparent;
+}
+
+.subtitle_test {
+  text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.subtitle_test::after {
+  content: '';
+  display: block;
+  padding-top: 5px;
+  border-bottom: 2px solid gray;
+  width: 30%;
+  margin: 0 auto;
+}
+
 .btn_modify,
 .btn_mod_danger,
 .btn_mod_warning,
@@ -46,16 +100,22 @@
 }
 
 .btn_modify {
-  background-color: #225ca7;
+  background-color: #2c63aa;
+  font-weight: 500;
+  letter-spacing: .5px;
+  color: rgb(230, 230, 230);
 }
 
 .btn_modify[disabled] {
   background-color: #7993ab !important;
   cursor: not-allowed;
+  transition: all .3s ease-in-out;
 }
 
 .btn_modify:hover {
-  background-color: #2e65ad;
+  box-shadow: 0px 10px 16px 0px rgba(232, 232, 232, 1);
+  color: white;
+  /* background-color: #2e65ad; */
 }
 
 .btn_mod_danger {
@@ -64,11 +124,9 @@
   background-color: rgb(146, 146, 146);
 
   transition: all .2s ease-in;
-  /* background-color: #cf3d36; */
 }
 
 .btn_mod_danger:hover {
-  /* background-color: #f9f9f9; */
   background-color: #e2817c;
 }
 
@@ -93,12 +151,10 @@
   padding: 10px;
   background-color: rgb(146, 146, 146);
   transition: all .2s ease-in;
-  /* background-color: #5ac35b; */
 }
 
 .btn_mod_success:hover {
   background-color: #abdfad;
-  /* background-color: #51b352; */
 }
 
 .btn_volver {
@@ -340,7 +396,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Nunito", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 /*--------------------------------------------------------------
@@ -956,6 +1012,15 @@ h6 {
   scrollbar-color: #aab7cf transparent;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
+}
+
+.sidebar span {
+  font-weight: 500;
+  letter-spacing: .5px;
+}
+
+.catchable-menu {
+  font-weight: 500 !important;
 }
 
 @media (max-width: 1199px) {

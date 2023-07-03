@@ -50,7 +50,27 @@
             getDataCallback: getUsuario,
             totalDataCallback: getUsuariosTotales,
             tableHeader: ["ID", "Usuario", "Nombre", "Apellido", "Correo", "Grupos", "Creador", "Fecha Creacion", 'Acciones'],
-            tableCells: ["id", "usuario", "nombre", "apellido", "correo", "grupo", "creador", "fecha_creacion", {
+            tableCells: ["id", {
+                key: (row) => {
+                    let usuario;
+                    if (row['usuario']) {
+                        usuario = row['usuario'];
+                    } else {
+                        usuario = el('p.p-0 m-0', {style: 'color: lightgray; font-style: italic;'}, 'Sin Usuario');
+                    }
+                    return usuario;
+                }
+            }, "nombre", "apellido", {
+                key: (row) => {
+                    let correo;
+                    if (row['correo']) {
+                        correo = row['correo'];
+                    } else {
+                        correo = el('p.p-0 m-0', {style: 'color: lightgray; font-style: italic;'}, 'No se ha ingresado un correo');
+                    }
+                    return correo;
+                }
+            }, "grupo", "creador", "fecha_creacion", {
                 key: (row) => {
                     let btn;
 

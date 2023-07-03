@@ -13,6 +13,7 @@ class Perfil extends BaseController
     public function __construct()
     {
         $this->session = \Config\Services::session();
+        $this->validation = \Config\Services::validation();
         $this->model_logs = model('Model_logs');
         $this->model_usuario = model('Model_usuario');
         $this->model_grupo = model('Model_grupo');
@@ -66,11 +67,6 @@ class Perfil extends BaseController
 
     public function editarPermisosUsuario()
     {
-
-        echo '<pre>';
-        var_dump($_POST);
-        echo '</pre>';
-        exit;
 
         $id_usuario = $this->request->getPost('id_usuario');
 
@@ -133,6 +129,60 @@ class Perfil extends BaseController
                 ];
                 $this->model_general->insertG('gg_rel_usuario_permiso', $datos);
             }
+        }
+    }
+
+    /**
+     * Este método se aplica cuando el usuario está editando sus propios datos
+     * (Es más limitado que el edit en el controlador de Usuario porque hay datos que el usuario mismo no puede cambiar)
+     */
+    public function edit()
+    {
+        $id_usuario = $this->request->getPost('id_usuario');
+
+        // == Foto Perfil ==
+        if (empty($_FILES["profileImage"]["name"])) {
+        }
+        $nombreFoto = time() . '-' . $_FILES["profileImage"]["name"];
+        $target_dir = "uploads/fotosPerfil/";
+        $target_file = $target_dir . basename($nombreFoto);
+        $foto = "";
+        if (move_uploaded_file($_FILES["profileImage"]["tmp_name"], $target_file)) {
+            $foto = $nombreFoto;
+        }
+
+        /* Datos del Usuario */
+        $datos = [
+            'correo' => $this->request->getPost('correo'),
+            'nombre' => $this->request->getPost('nombre'),
+            'apellido' => $this->request->getPost('apellido'),
+            'telefono' => $this->request->getPost('telefono'),
+            'dni' => $this->request->getPost('dni'),
+            'fecha_nacimiento' => $this->request->getPost('fecha_nacimiento'),
+            'competencia' => $this->request->getPost('competencia'),
+            'usuario' => $this->request->getPost('usuario'),
+            'localidad' => $this->request->getPost('localidad'),
+        ];
+
+        if ($foto != '') {
+            $datos['imagen_perfil'] = $foto;
+        }
+
+        if ($this->validation->run($datos, 'validation_edit_user') === FALSE) {
+            $this->response->setStatusCode(400);
+            $results = $this->validation->getErrors();
+        } else {
+            $results = $this->model_usuario->edit($datos, $id_usuario);
+            if ($results['status']) {
+                $last_id = $results['last_id'];
+                newMov(1, 3, $id_usuario, 'Editó su perfil'); //Movimiento
+            }
+        }
+
+        if ($this->request->getPost('password') != '') {
+            $clave = $this->request->getPost('password');
+            $datos['clave'] = password_hash($clave, PASSWORD_DEFAULT);
+            $this->model_usuario->changePassword($datos['clave'], $id_usuario);
         }
     }
 }

@@ -162,6 +162,7 @@ $routes->match(['get', 'post'],'/api/ingresos/get/(:num)/(:num)','Perfil::getPag
 $routes->match(['get', 'post'],'/api/ingresos/getTotal/','Perfil::getPagedPerfil');
 $routes->get('/perfil/view/(:num)','Perfil::view/$1');
 $routes->post('/perfil/editarPermisosUsuario','Perfil::editarPermisosUsuario');
+$routes->post('/perfil/editUser','Perfil::edit');
 
 //PERMISOS
 $routes->get('/permisos','Permisos::index');

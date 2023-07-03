@@ -34,53 +34,6 @@ const label_tipo_positivo = document.getElementById("label_tipo_positivo");
 const input_oportunidad_mejora = document.getElementById("oportunidad_mejora");
 const label_oportunidad_mejora = document.getElementById("label_oportunidad_mejora");
 
-
-// Esto hace de que se habilite o no para agregar un reconocimiento positivo o una oportunidad de mejora
-for (let i = 0; i < situacion.length; i++) {
-  situacion[i].addEventListener('change', e => {
-    alerta_obs_estado.style.display = 'none';
-    for (let j = 0; j < btn_tipo_obs.length; j++) {
-      btn_tipo_obs[j].removeAttribute('disabled');
-      tipo_observacion[j].removeAttribute('disabled');
-    }
-
-    // # Si es de estado cerrada, entonces no hay plan de acción, pero si puede generar un reconocimiento positivo
-    if (situacion[i].value == 0) {
-      label_tipo_positivo.removeAttribute('disabled');
-      input_tipo_positivo.removeAttribute('disabled');
-      section_plan_accion.style.display = 'none';
-
-      if (input_oportunidad_mejora.checked) {
-        section_plan_accion.style.display = "none";
-
-        container_obs_cerrada.style.display = 'block';
-
-      } else if (input_tipo_positivo.checked) {
-        container_obs_cerrada.style.display = 'none';
-        container_generar_reconocimiento.style.display = 'block';
-      }
-
-    } else { // # Si está abierta, entonces..
-      // # Si es una observación abierta, entonces no van haber hallazgos positivos, tiene que estar cerrada para eso
-      label_tipo_positivo.setAttribute('disabled', '');
-      input_tipo_positivo.setAttribute('disabled', '');
-      section_obs_positiva.style.display = 'none';
-
-      if (input_oportunidad_mejora.checked) {
-        section_plan_accion.style.display = "block";
-        container_obs_cerrada.style.display = 'none';
-
-      } else if (input_tipo_positivo.checked) {
-
-        container_obs_cerrada.style.display = 'none';
-        container_generar_reconocimiento.style.display = 'none';
-      }
-
-    }
-
-  });
-}
-
 for (let i = 0; i < tipo_observacion.length; i++) {
   tipo_observacion[i].addEventListener('change', e => {
     if (tipo_observacion[i].value == 1) { // Reconocimiento Positivo
@@ -93,27 +46,19 @@ for (let i = 0; i < tipo_observacion.length; i++) {
 
       // # Desactivamos los efectos / impactos en caso de ser un reconocimiento positivo
       document.querySelector('#efecto_impacto').setValue(0);
-      document.getElementById('efecto_impacto').setAttribute('disabled', '');
+      // document.getElementById('efecto_impacto').setAttribute('disabled', '');
+      document.getElementById('efecto_impacto').removeAttribute('disabled');
 
       // # También habilitamos solamente la significancia 'Aceptable'.
       for (let j = 0; j < all_btn_significancia.length; j++) {
-        if (all_btn_significancia[j].classList.contains('blanco_check')) {
-          all_btn_significancia[j].removeAttribute('disabled');
-          all_btn_significancia[j].setAttribute('checked', '');
-        } else {
-          all_btn_significancia[j].checked = false;
-          all_btn_significancia[j].setAttribute('disabled', '');
-        }
+        all_btn_significancia[j].checked = false;
+        all_btn_significancia[j].removeAttribute('disabled');
       }
 
-      container_generar_reconocimiento.style.display = 'none';
+      container_generar_reconocimiento.style.display = 'block';
       container_obs_cerrada.style.display = 'none';
-
-      // # Si la tarjeta está cerrada, entonces puede tener un reconocimiento positivo
-      if (document.getElementById('cerrada').checked) {
-        container_generar_reconocimiento.style.display = 'block';
-        container_obs_cerrada.style.display = 'none';
-      }
+      section_obs_positiva.style.display = 'block';
+      section_plan_accion.style.display = 'none';
 
     } else if (tipo_observacion[i].value == 2) { // Oportunidad de Mejora
 
@@ -122,6 +67,7 @@ for (let i = 0; i < tipo_observacion.length; i++) {
         btn_tipo_obs[j].classList.remove('btn_checked');
       }
       btn_tipo_obs[i].classList.add('btn_checked');
+      document.querySelector('#efecto_impacto').setValue(0);
 
       // # Activamos los efectos / impactos en caso de ser una oportunidad de mejora
       document.getElementById('efecto_impacto').removeAttribute('disabled');
@@ -133,23 +79,15 @@ for (let i = 0; i < tipo_observacion.length; i++) {
       }
 
       // # Si la tarjeta no está cerrada, entonces..
-      if (!document.getElementById('cerrada').checked) {
         section_plan_accion.style.display = 'block';
         section_obs_positiva.style.display = 'none';
         container_generar_reconocimiento.style.display = 'none';
         container_obs_cerrada.style.display = 'none';
-      } else { // # Si la tarjeta está abierta, entonces hay plan de acción
-        section_plan_accion.style.display = 'none';
-        section_obs_positiva.style.display = 'none';
-        container_obs_cerrada.style.display = 'block';
-        container_generar_reconocimiento.style.display = 'none';
-      }
-
     }
   });
 }
 
-si_ejecutar_reconocimiento.addEventListener("click", (e) => {
+/* si_ejecutar_reconocimiento.addEventListener("click", (e) => {
   e.preventDefault();
   section_obs_positiva.style.display = "block";
   si_ejecutar_reconocimiento.classList.add("btn_checked");
@@ -162,7 +100,7 @@ no_ejecutar_reconocimiento.addEventListener("click", (e) => {
   no_ejecutar_reconocimiento.classList.add("btn_checked");
   si_ejecutar_reconocimiento.classList.remove("btn_checked");
   destacar_reconocimiento.value = 0;
-});
+}); */
 
 
 /**************************************************************************************************/
@@ -483,7 +421,12 @@ VirtualSelect.init({
   ele: '#relevo_responsable',
   placeholder: 'Seleccione un relevo de responsable',
 });
+VirtualSelect.init({
+  ele: '#responsable_reconocimiento',
+  placeholder: 'Seleccione un relevo de responsable',
+});
 
 document.getElementById('contratista').setValue(0);
 document.getElementById('responsable').setValue(0);
 document.getElementById('relevo_responsable').setValue(0);
+document.getElementById('responsable_reconocimiento').setValue(0);

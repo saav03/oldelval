@@ -117,7 +117,6 @@ class TarjetaObservaciones extends BaseController
             'modulo'    => $this->request->getPost('modulo'),
             'estacion_bombeo'    => empty($this->request->getPost('estacion_bombeo')) ? null : $this->request->getPost('estacion_bombeo'),
             'sistema_oleoducto'    => empty($this->request->getPost('sistema_oleoducto')) ? null : $this->request->getPost('sistema_oleoducto'),
-            'situacion'    => $situacion,
             'usuario_carga' => session()->get('id_usuario')
         ];
 
@@ -127,24 +126,36 @@ class TarjetaObservaciones extends BaseController
 
             switch ($tipo_observacion) {
                 case '1': // Reconocimiento Positivo
-                    if ($situacion != 1) { // Tarjeta de Observaciones Cerrada
-                        # Tarjeta de Observación Cerrada y con Reconocimiento
-                        $datos_reconocimiento = $this->verify_reconocimiento_positivo();
 
-                        if ($datos_reconocimiento['exito']) {
+                    # Tarjeta de Observación Cerrada y con Reconocimiento
+                    $datos_reconocimiento = $this->verify_reconocimiento_positivo();
+
+                    if ($datos_reconocimiento['exito']) {
+
+                        # Se cargan los Riesgos Observados
+                        $significancia = $this->request->getPost('significancia');
+
+                        $datos_significancia = $this->verify_significancia($significancia);
+                        if (!empty($datos_significancia) && !isset($datos_significancia['errores'])) {
+
+                            $datos_tarjeta['situacion'] = 0;
                             $results = $this->model_tarjeta->addSubmit($datos_tarjeta);
                             $id_tarjeta = $results['last_id'];
+
                             if (isset($datos_reconocimiento['reconocimiento'])) // # Significa que seleccionó que desea destacar un reconocimiento positivo
                                 $this->submitReconocimientoPositivo($datos_reconocimiento['reconocimiento'], $id_tarjeta);
 
                             $id_hallazgo = '';
 
-                            # Se carga el riesgo 'Aceptable' como por defecto
-                            $riesgos = [
-                                'id_tarjeta' => $id_tarjeta,
-                                'id_significancia' => 1,
-                            ];
-                            $this->model_general->insertG('tarjeta_rel_significancia', $riesgos);
+                            foreach ($datos_significancia as $r) {
+                                $riesgos = [
+                                    'id_tarjeta' => $id_tarjeta,
+                                    'id_significancia' => $r,
+                                ];
+                                $this->model_general->insertG('tarjeta_rel_significancia', $riesgos);
+                            }
+
+                            $id_responsable = $datos_reconocimiento['reconocimiento']['responsable'];
 
                             # Insertar datos de la tarjeta cerrada
                             $datos_motivo_cierre  = [
@@ -154,67 +165,33 @@ class TarjetaObservaciones extends BaseController
                             ];
 
                             $this->model_tarjeta->addMotivoCierre($datos_motivo_cierre);
+
+                            # Envío de correo
+                            if (isset($id_tarjeta)) {
+                                // $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
+                                $data_reconocimiento['datos'] = $this->model_mail_tarjeta->getDataTarjetaReconocimiento($id_tarjeta);
+                                # Envío de correo para el responsable
+                                if ($id_responsable != '')
+                                    $helper->sendMailTarjeta($data_reconocimiento, 6);
+                            }
+                        } else {
+                            echo json_encode($datos_significancia['errores']);
                         }
                     }
                     break;
                 case '2': // Oportunidad de Mejora
-                    if ($situacion == 1) { // Tarjeta de Observaciones Abierta
-                        # Tarjeta de Observación Abierta y con Oportunidad de Mejora
-                        $datos_hallazgos = $this->verify_plan_accion();
+                    # Tarjeta de Observación Abierta y con Oportunidad de Mejora
+                    $datos_hallazgos = $this->verify_plan_accion();
 
-                        if ($datos_hallazgos['exito']) {
-
-                            # Se cargan los Riesgos Observados
-                            $significancia = $this->request->getPost('significancia');
-
-                            $datos_significancia = $this->verify_significancia($significancia);
-
-                            if (!empty($datos_significancia) && !isset($datos_significancia['errores'])) {
-                                $results = $this->model_tarjeta->addSubmit($datos_tarjeta);
-                                $id_tarjeta = $results['last_id'];
-
-                                foreach ($datos_significancia as $r) {
-                                    $riesgos = [
-                                        'id_tarjeta' => $id_tarjeta,
-                                        'id_significancia' => $r,
-                                    ];
-                                    $this->model_general->insertG('tarjeta_rel_significancia', $riesgos);
-                                }
-
-                                $id_hallazgo = $this->submitPlanAccion($datos_hallazgos['plan'], $id_tarjeta);
-                                $id_responsable = $datos_hallazgos['plan']['responsable'];
-                                $id_relevo_responsable = $datos_hallazgos['plan']['relevo_responsable'];
-
-                                # Envío de correo para el que carga la tarjeta
-                                if (isset($id_tarjeta)) {
-                                    $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
-
-                                    # Envío de correo para el responsable
-                                    if ($id_responsable != '')
-                                        $helper->sendMailTarjeta($datos_hallazgo, 2);
-
-                                    # Envío correo para el relevo de responsable (Si es que existe)
-                                    if ($id_relevo_responsable != '') {
-                                        $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo, true);
-                                        $helper->sendMailTarjeta($datos_hallazgo, 5);
-                                    }
-                                }
-                            } else {
-                                echo json_encode($datos_significancia['errores']);
-                            }
-                        } else {
-                            echo json_encode($datos_hallazgos['errores']);
-                        }
-                    } else { // Tarjeta de Observaciones Cerrada
-                        # Se carga la tarjeta cerrada, sin oportunidad de mejora y se insertan los datos del cierre de la tarjeta
+                    if ($datos_hallazgos['exito']) {
 
                         # Se cargan los Riesgos Observados
                         $significancia = $this->request->getPost('significancia');
-                        $datos_significancia = $this->verify_significancia($significancia);
-                        $id_responsable = '';
-                        $id_hallazgo = '';
-                        if (!empty($datos_significancia) && !isset($datos_significancia['errores'])) {
 
+                        $datos_significancia = $this->verify_significancia($significancia);
+
+                        if (!empty($datos_significancia) && !isset($datos_significancia['errores'])) {
+                            $datos_tarjeta['situacion'] = 1;
                             $results = $this->model_tarjeta->addSubmit($datos_tarjeta);
                             $id_tarjeta = $results['last_id'];
 
@@ -226,28 +203,42 @@ class TarjetaObservaciones extends BaseController
                                 $this->model_general->insertG('tarjeta_rel_significancia', $riesgos);
                             }
 
-                            # Insertar datos de la tarjeta cerrada
-                            $datos_motivo_cierre  = [
-                                'motivo'    => 'Tarjeta Cerrada',
-                                'id_tarjeta_obs' => $id_tarjeta,
-                                'id_usuario_cierre' => session()->get('id_usuario'),
-                            ];
+                            $id_hallazgo = $this->submitPlanAccion($datos_hallazgos['plan'], $id_tarjeta);
+                            $id_responsable = $datos_hallazgos['plan']['responsable'];
+                            $id_relevo_responsable = $datos_hallazgos['plan']['relevo_responsable'];
 
-                            $this->model_tarjeta->addMotivoCierre($datos_motivo_cierre);
+                            # Envío de correo para el que carga la tarjeta
+                            if (isset($id_tarjeta)) {
+                                $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
+
+                                # Envío de correo para el responsable
+                                if ($id_responsable != '')
+                                    $helper->sendMailTarjeta($datos_hallazgo, 2);
+
+                                # Envío correo para el relevo de responsable (Si es que existe)
+                                if ($id_relevo_responsable != '') {
+                                    $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo, true);
+                                    $helper->sendMailTarjeta($datos_hallazgo, 5);
+                                }
+                            }
                         } else {
                             echo json_encode($datos_significancia['errores']);
                         }
-                    }
-
-                    # Se cargan los Efectos/Impactos (Si es que hay)
-                    if (isset($id_tarjeta)) {
-                        $efectos_impactos = $this->request->getPost('efecto_impacto');
-
-                        if ($efectos_impactos)
-                            $this->submitEfectoRelTarjeta($efectos_impactos, $id_tarjeta);
+                    } else {
+                        echo json_encode($datos_hallazgos['errores']);
                     }
                     break;
             }
+
+
+            # Se cargan los Efectos/Impactos (Si es que hay)
+            if (isset($id_tarjeta)) {
+                $efectos_impactos = $this->request->getPost('efecto_impacto');
+
+                if ($efectos_impactos)
+                    $this->submitEfectoRelTarjeta($efectos_impactos, $id_tarjeta);
+            }
+
             # Inserto los Indicadores (Si es que existen)
             if (isset($id_tarjeta)) {
                 $guia_deteccion = $this->request->getPost('guia_deteccion');
@@ -278,12 +269,12 @@ class TarjetaObservaciones extends BaseController
 
             # Envío de correo para el que carga la tarjeta
             if (isset($id_tarjeta)) {
-                if ($id_hallazgo == '') {
-                    $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
-                    $helper->sendMailTarjeta($datos_hallazgo, 1);
-                }
+                // if ($id_hallazgo == '') {
+                $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
+                $helper->sendMailTarjeta($datos_hallazgo, 1);
+                // }
             }
-            
+
             if (isset($id_tarjeta)) {
                 newMov(6, 1, $id_tarjeta); //Movimiento
             }
@@ -350,34 +341,24 @@ class TarjetaObservaciones extends BaseController
      */
     protected function verify_reconocimiento_positivo()
     {
-        $destacar_reconocimiento = $this->request->getPost('destacar_reconocimiento');
-        $reconocimiento = [
-            'destacar_reconocimiento' => $destacar_reconocimiento
+        $result = [];
+
+        $datos_reconocimiento = [
+            'hallazgo'    => $this->request->getPost('observado'),
+            'responsable'    => $this->request->getPost('responsable_reconocimiento'),
+            'contratista'    => $this->request->getPost('contratista'),
+            'usuario_carga' => session()->get('id_usuario')
         ];
 
-        $result_destacar_reconocimiento = $this->verificacion($reconocimiento, 'validation_destacar_reconocimiento');
+        $result = $this->verificacion($datos_reconocimiento, 'validation_obs_positiva');
 
-        if ($result_destacar_reconocimiento['exito']) {
-            if ($destacar_reconocimiento == 1) {
-
-                $datos_reconocimiento = [
-                    'hallazgo'    => $this->request->getPost('observado'),
-                    'contratista'    => $this->request->getPost('contratista'),
-                    'usuario_carga' => session()->get('id_usuario')
-                ];
-
-                $result_destacar_reconocimiento = $this->verificacion($datos_reconocimiento, 'validation_obs_positiva');
-
-                if ($result_destacar_reconocimiento['exito']) {
-                    $result_destacar_reconocimiento['reconocimiento'] = $datos_reconocimiento;
-                } else {
-                    echo json_encode($result_destacar_reconocimiento['errores']);
-                }
-            }
+        if ($result['exito']) {
+            $result['reconocimiento'] = $datos_reconocimiento;
         } else {
-            echo json_encode($result_destacar_reconocimiento['errores']);
+            echo json_encode($result['errores']);
         }
-        return $result_destacar_reconocimiento;
+
+        return $result;
     }
     /**
      * Genera el submit del reconocimiento con sus adjuntos correspondientes
@@ -591,16 +572,16 @@ class TarjetaObservaciones extends BaseController
         $helper = new Helper();
         // $this->sendMail();
         // echo 'Se envió todo correcto';
-        $datos['datos'] = $this->model_mail_tarjeta->getInfoNewDescargo(7, 4);
-        echo '<pre>';
-        var_dump($datos);
+        $data_reconocimiento['datos'] = $this->model_mail_tarjeta->getDataTarjetaReconocimiento(1);
+        echo view('emails/tarjetaObs/reconocimiento', $data_reconocimiento);
+        /* echo '<pre>';
+        var_dump($data_reconocimiento);
         echo '</pre>';
-        exit;
+        exit; */
         // $datos['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada(1, 1, true);
 
-        $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . 1;
+        // $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . 1;
 
-        echo view('emails/tarjetaObs/descargo', $datos);
         // $id = $datos['datos'][0]['id_obs'];
         // $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . 2;
         // $correos[] = $datos['datos'][0]['correo_carga'];

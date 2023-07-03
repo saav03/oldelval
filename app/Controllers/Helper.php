@@ -164,6 +164,13 @@ class Helper extends Controller
                 $vista = view('emails/tarjetaObs/otroResponsable', $datos);
                 $correos[] = $datos['datos']['relevo_responsable']['correo_responsable'];
                 break;
+            case '6':
+                $id = $datos['datos']['id_obs'];
+                $subject = 'Nueva Tarjeta de Observación #' . $id;
+                $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . $id;
+                $vista = view('emails/tarjetaObs/reconocimiento', $datos);
+                $correos[] = $datos['datos']['responsable_correo'];
+                break;
         }
 
         $message = $vista;
@@ -208,7 +215,7 @@ class Helper extends Controller
         foreach ($emails as $e) {
             $correos[] = $e;
         }
-        
+
         $correos[] = 'mdinamarca@blister.com.ar';
         $message = $vista;
         $config = [];

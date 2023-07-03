@@ -1,12 +1,17 @@
 <style>
     .foto-perfil {
-        width: 120px;
+        /* width: 120px; */
         height: 120px;
         border-radius: 50px;
     }
 
     .nombre-perfil {
         padding: 15px;
+        color: #64748B;
+    }
+
+    .nombre-perfil h6 {
+        font-weight: 500 !important;
     }
 
     .input-perfil {
@@ -55,18 +60,15 @@
         display: flex;
         text-align: end;
     }
+
+    input[readonly] {
+        pointer-events: none;
+    }
 </style>
 
 <script src="<?= base_url('assets/js/dynamic-table-cells-editable.js') ?>"></script>
 
-<?php 
-// echo '<pre>';
-// var_dump($datos_basicos[0]);
-// echo '</pre>';
-// exit;
-?>
-
-<div class="container">
+<div class="container" style="height: 100vh;">
     <div class="row">
         <div class="col-md-4 col-xs-12">
             <div class="container_secondary">

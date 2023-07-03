@@ -6,7 +6,7 @@
         <div class="card-body">
             <div class="row border-perfil-top">
                 <div class="col-md-4 col-xs-12">
-                    <p class="text-muted p-perfil">Panel emergente de inicio</p>
+                    <p class="text-muted p-perfil fw-semibold">Panel emergente de inicio</p>
                 </div>
                 <div class="col-md-8 col-xs-12" style="display: flex;">
                     <div class="form-check form-switch check-row justify-content-end">
@@ -21,7 +21,7 @@
         <div class="card-body">
             <div class="row border-perfil-top">
                 <div class="col-md-4 col-xs-12">
-                    <p class="text-muted p-perfil">Modo Oscuro (experimental)</p>
+                    <p class="text-muted p-perfil fw-semibold">Modo Oscuro (experimental)</p>
                 </div>
                 <div class="col-md-8 col-xs-12" style="display: flex;">
                     <div class="form-check form-switch check-row justify-content-end">

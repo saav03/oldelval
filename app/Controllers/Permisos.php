@@ -15,6 +15,7 @@ class Permisos extends BaseController
         $this->model_general = model('Model_general');
         $this->model_permisos = model('Model_permisos');
         $this->model_menu = model('Model_menu');
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
     }
 
     public function index()
@@ -106,6 +107,7 @@ class Permisos extends BaseController
         $resultado = "";
         $data_to_submit = array(
             'nombre' => $this->request->getPost("nombre"),
+            'modulo' => $this->request->getPost("modulo"),
             'id_permiso_padre' => $this->request->getPost("subpermiso"),
             'orden' => $this->request->getPost("orden_permiso"),
             'tipo_modulo' => $this->request->getPost("tipo_modulo"),

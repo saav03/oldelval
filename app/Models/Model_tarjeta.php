@@ -182,7 +182,7 @@ class Model_tarjeta extends Model
 			$builder->select("COUNT(*) cantidad");
 			$builder->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
 				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left');
-			if (!vista_access('add_obs')) {
+			if (!vista_access('nueva_observacion')) {
 				$builder->where("user_responsable.id", session()->get('id_usuario'));
 			}
 		} else {
@@ -198,7 +198,7 @@ class Model_tarjeta extends Model
 				->limit($tamanioPagina, $offset);
 
 			/* == Si no tiene el permiso para agregar una observación entonces para el histórico filtra por el responsable == */
-			if (!vista_access('add_obs')) {
+			if (!vista_access('nueva_observacion')) {
 				$builder->where("user_responsable.id", session()->get('id_usuario'));
 			}
 		}

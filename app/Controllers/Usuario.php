@@ -22,6 +22,7 @@ class Usuario extends BaseController
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
         }
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
     }
 
     public function index()
@@ -139,7 +140,6 @@ class Usuario extends BaseController
 
     public function add()
     {
-
         // == Foto Perfil ==
         if (empty($_FILES["profileImage"]["name"])) {
         }
@@ -154,11 +154,6 @@ class Usuario extends BaseController
         $permisos = $this->request->getPost('permisos');
         $grupos = $this->request->getPost('grupos');
 
-        // $permisos_grupo = $this->model_permisos->getAllPermisosUser($grupos, 'INNER', true);
-        // $permisos_grupo = array_column($permisos_grupo, 'id');
-
-        // $new_permisos = array_diff($permisos, $permisos_grupo);
-
         $datos  = [
             'correo'    => $this->request->getPost('correo'),
             'clave'     => $this->request->getPost('clave'),
@@ -170,6 +165,7 @@ class Usuario extends BaseController
             'localidad'    => $this->request->getPost('localidad'),
             'imagen_perfil'    => $foto,
             'telefono'    => $this->request->getPost('telefono') ? $this->request->getPost('telefono') : 0,
+            'id_usuario_creador' => session()->get('id_usuario')
         ];
         $datos_perfil = [
             'fecha_creacion' => date('Y-m-d H:i:s'),
@@ -313,6 +309,7 @@ class Usuario extends BaseController
             'competencia' => $this->request->getPost('competencia'),
             'usuario' => $this->request->getPost('usuario'),
             'localidad' => $this->request->getPost('localidad'),
+            'superadmin' => $this->request->getPost('superadmin') ? 1 : 0,
         ];
 
         if ($foto != '') {

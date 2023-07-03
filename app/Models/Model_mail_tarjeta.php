@@ -19,8 +19,8 @@ class Model_mail_tarjeta extends Model
 
         if (!empty($id_obs_accion)) {
             $query['responsable'] = $this->getPlanAccionTarjeta($id_obs_accion);
-            if($otro_responsable)
-            $query['relevo_responsable'] = $this->getPlanAccionTarjeta($id_obs_accion, true);
+            if ($otro_responsable)
+                $query['relevo_responsable'] = $this->getPlanAccionTarjeta($id_obs_accion, true);
         }
 
         return $query;
@@ -64,6 +64,18 @@ class Model_mail_tarjeta extends Model
             ->join('usuario u', 'u.id=obs.usuario_carga', 'inner')
             ->join('usuario u_responde', 'u_responde.id=descargo.id_usuario', 'inner')
             ->where('descargo.id', $id_descargo);
+        return $builder->get()->getRowArray();
+    }
+
+    public function getDataTarjetaReconocimiento($id_obs)
+    {
+        $builder = $this->db->table('tarjeta_observaciones tar_obs');
+        $builder->select('tar_obs.id id_obs, tar_obs.fecha_deteccion, tar_obs.tipo_observacion, tar_obs.observador, p.nombre proyecto, th.hallazgo observacion, CONCAT(u.nombre, " ", u.apellido) usuario_carga, u.correo correo_carga, CONCAT(responsable.nombre, " ", responsable.apellido) responsable, responsable.correo responsable_correo')
+            ->join('tarjeta_hallazgos th', 'th.id_tarjeta=tar_obs.id', 'inner')
+            ->join('proyectos p', 'p.id=tar_obs.proyecto', 'inner')
+            ->join('usuario u', 'u.id=tar_obs.usuario_carga', 'inner')
+            ->join('usuario responsable', 'responsable.id=th.responsable', 'inner')
+            ->where('tar_obs.id', $id_obs);
         return $builder->get()->getRowArray();
     }
 }
