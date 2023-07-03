@@ -17,6 +17,7 @@ class Menu extends BaseController
         $this->model_menu = model('Model_menu');
         $this->model_permisos = model('Model_permisos');
         $this->model_general = model('Model_general');
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
     }
     public function index()
     {

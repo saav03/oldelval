@@ -18,8 +18,8 @@ exit; */
         </div>
 
         <div>
-            <div class="card text-center">
-                <div class="card-header text-center header-perfil" style="background-color: #00b8e645 !important;">
+            <div class="card card_custom text-center">
+                <div class="card-header card_header_custom text-center header-perfil">
                     <h6 style="margin: 0px;" id="titulo"><b>Formulario</b></h6>
                 </div>
                 <div class="card-body">
@@ -29,8 +29,8 @@ exit; */
 
             <!-- === Acá Inicia la parte de los Indicadores === -->
 
-            <div class="card">
-                <div class="card-header text-center header-perfil" style="background-color: #00b8e645 !important;">
+            <div class="card card_custom">
+                <div class="card-header card_header_custom text-center header-perfil">
                     <h6 style="margin: 0px;"><b>Carga de Datos</b></h6>
                 </div>
                 <div class="card-body">
@@ -46,7 +46,7 @@ exit; */
                                     <div class="d-flex align-items-center">
                                         <div class="dot"></div>
                                         <div class="text-start">
-                                            <p class="name_indicador"><?= $ind['nombre'] ?></p>
+                                            <p class="name_indicador inp_custom"><?= $ind['nombre'] ?></p>
                                         </div>
                                     </div>
                                     <div class="div-ind_icono">
@@ -60,7 +60,7 @@ exit; */
                                 </div>
                                 <div class="collapse" id="collapse_ind_gral_<?= $ind['id'] ?>">
                                     <div class="form-floating">
-                                        <textarea class="form-control" id="textarea" name="indicador_gral[<?= $ind['id'] ?>][nota]" rows="2"></textarea>
+                                        <textarea class="form-control inp_custom" id="textarea" name="indicador_gral[<?= $ind['id'] ?>][nota]" rows="2"></textarea>
                                         <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@ exit; */
 
                                                                 <div class="dot"></div>
                                                                 <div class="text-start">
-                                                                    <p class="name_indicador"><?= $ind_subt['nombre'] ?></p>
+                                                                    <p class="name_indicador inp_custom"><?= $ind_subt['nombre'] ?></p>
                                                                 </div>
                                                             </div>
                                                             <div class="div-ind_icono">
@@ -108,7 +108,7 @@ exit; */
                                                         </div>
                                                         <div class="collapse" id="collapse_indSubt<?= $ind_subt['id'] ?>">
                                                             <div class="form-floating">
-                                                                <textarea class="form-control" name="indicador_subt[<?= $ind_subt['id'] ?>][nota]" id="textarea" rows="2"></textarea>
+                                                                <textarea class="form-control inp_custom" name="indicador_subt[<?= $ind_subt['id'] ?>][nota]" id="textarea" rows="2"></textarea>
                                                                 <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                                             </div>
                                                         </div>
@@ -132,7 +132,7 @@ exit; */
                                             <div class="d-flex align-items-center">
                                                 <div class="dot"></div>
                                                 <div class="text-start">
-                                                    <p class="name_indicador"><?= $ind_title['nombre'] ?> </p>
+                                                    <p class="name_indicador inp_custom"><?= $ind_title['nombre'] ?> </p>
                                                 </div>
                                             </div>
                                             <div class="div-ind_icono">
@@ -147,7 +147,7 @@ exit; */
                                         </div>
                                         <div class="collapse" id="collapseIndTitle_<?= $ind_title['id'] ?>">
                                             <div class="form-floating">
-                                                <textarea class="form-control" id="textarea" name="indicador_title[<?= $ind_title['id'] ?>][nota]" rows="2"></textarea>
+                                                <textarea class="form-control inp_custom" id="textarea" name="indicador_title[<?= $ind_title['id'] ?>][nota]" rows="2"></textarea>
                                                 <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                             </div>
                                         </div>
@@ -169,7 +169,7 @@ exit; */
                                             <div class="d-flex align-items-center">
                                                 <div class="dot"></div>
                                                 <div class="text-start">
-                                                    <p class="name_indicador"><?= $indice['nombre'] ?> <i class="fa-regular fa-circle-question fa-lg i-question_modal" data-id='<?= $indice['id'] ?>' data-bs-toggle="modal" data-bs-target="#modal_indices"></i></p>
+                                                    <p class="name_indicador inp_custom"><?= $indice['nombre'] ?> <i class="fa-regular fa-circle-question fa-lg i-question_modal" data-id='<?= $indice['id'] ?>' data-bs-toggle="modal" data-bs-target="#modal_indices"></i></p>
                                                 </div>
                                             </div>
                                             <div class="div-ind_icono">
@@ -182,7 +182,7 @@ exit; */
                                         </div>
                                         <div class="collapse" id="collapse_indSubt<?= $indice['id'] ?>">
                                             <div class="form-floating">
-                                                <textarea class="form-control" name="indice[<?= $indice['id'] ?>][nota]" id="textarea" rows="2"></textarea>
+                                                <textarea class="form-control inp_custom" name="indice[<?= $indice['id'] ?>][nota]" id="textarea" rows="2"></textarea>
                                                 <label class="mb-1 fw-semibold" for="textarea">Nota:</label>
                                             </div>
                                         </div>
@@ -205,59 +205,11 @@ exit; */
 
                         <!-- Adjuntar archivo -->
                         <section style="width: 90%; margin: 0 auto;">
-                            <div class="row justify-content-center" id="container_uploads">
-                                <!-- <div class="row align-items-center mb-3" style="box-shadow: 0px 0px 6px 0px rgb(239 236 236); border-radius: 10px;">
-                                    <div class="d-flex col-xs-12 col-md-10 justify-content-between">
-                                        <div class="d-flex justify-content-evenly align-items-center">
-                                            <img class="img_clip" src="<!?= base_url('assets/img/Word.svg') ?>" style="margin-right: 20px;" alt="Clip cargar archivo">
-                                            <p class="m-0">Nombre archivo.doc</p>
-                                        </div>
-                                        <textarea cols="30" rows="2" class="form-control sz_inp" placeholder="Ingrese una breve descripción (Opcional)" style="width: 70%;border: 1px solid #f3f3f3;"></textarea>
-                                    </div>
-                                    <div class="col-xs-12 col-md-2 text-center" title="Eliminar adjunto">
-                                        <button class="btn-del_inc"><i class="fa-solid fa-trash-can"></i></button>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="row align-items-center mb-3" style="box-shadow: 0px 0px 6px 0px rgb(239 236 236); border-radius: 10px;">
-                                    <div class="d-flex col-xs-12 col-md-10 justify-content-between">
-                                        <div class="d-flex justify-content-evenly align-items-center">
-                                            <img class="img_clip" src="<!?= base_url('assets/img/Excel.svg') ?>" style="margin-right: 20px;" alt="Clip cargar archivo">
-                                            <p class="m-0">Nombre archivo.xls</p>
-                                        </div>
-                                        <textarea cols="30" rows="2" class="form-control sz_inp" placeholder="Ingrese una breve descripción (Opcional)" style="width: 70%;border: 1px solid #f3f3f3;"></textarea>
-                                    </div>
-                                    <div class="col-xs-12 col-md-2 text-center" title="Eliminar adjunto">
-                                        <button class="btn-del_inc"><i class="fa-solid fa-trash-can"></i></button>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="row align-items-center mb-3" style="box-shadow: 0px 0px 6px 0px rgb(239 236 236); border-radius: 10px;">
-                                    <div class="d-flex col-xs-12 col-md-10 justify-content-between">
-                                        <div class="d-flex justify-content-evenly align-items-center">
-                                            <img class="img_clip" src="<!?= base_url('assets/img/PDF.svg') ?>" style="margin-right: 20px;" alt="Clip cargar archivo">
-                                            <p class="m-0">Nombre archivo.pdf</p>
-                                        </div>
-                                        <textarea cols="30" rows="2" class="form-control sz_inp" placeholder="Ingrese una breve descripción (Opcional)" style="width: 70%;border: 1px solid #f3f3f3;"></textarea>
-                                    </div>
-                                    <div class="col-xs-12 col-md-2 text-center" title="Eliminar adjunto">
-                                        <button class="btn-del_inc"><i class="fa-solid fa-trash-can"></i></button>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="row">
-                                    <div class="d-flex adj_file">
-                                        <div class="div_img_clip">
-                                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                                        </div>
-                                        <div class="adjuntar_archivo">
-                                            <p>Adjuntar Archivo</p>
-                                        </div>
-                                    </div>
-                                    <p class="mt-2">Máximo 3 archivos por carga - Formato permitido: .pdf o .doc | .docx</p>
-                                </div> -->
-                            </div>
+                            <div class="row justify-content-center" id="container_uploads"></div>
                         </section>
 
                         <div class="d-flex justify-content-center mt-3 mb-3">
-                            <input type="submit" class="btn btn_modify" id="btnSubmitEstadistica" value="Cargar Estadística">
+                            <input type="submit" class="btn_modify" id="btnSubmitEstadistica" value="Cargar Estadística">
                         </div>
                     <?php endforeach; ?>
                     <br>
@@ -272,21 +224,6 @@ exit; */
     new uploadFile(document.getElementById('container_uploads'), 'adj_capacitaciones', {
         maxFileNumber: 3
     }).init();
-</script>
-
-<script>
-    /* const inp_mul_hs = document.querySelectorAll('.inp_mul_hs');
-    let ind_total_hs_capacitaciones = document.querySelector('.ind_total_hs_capacitaciones');
-
-    for (let i = 0; i < inp_mul_hs.length; i++) {
-        inp_mul_hs[i].addEventListener('change', () => {
-            let total = 0;
-            let cant_participantes = inp_mul_hs[0];
-            let hs_capacitaciones = inp_mul_hs[1];
-            total = parseInt(cant_participantes.value) * parseInt(hs_capacitaciones.value);
-            ind_total_hs_capacitaciones.value = total;
-        });
-    } */
 </script>
 
 <script>

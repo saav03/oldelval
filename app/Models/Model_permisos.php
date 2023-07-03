@@ -158,6 +158,21 @@ class Model_permisos extends Model
     }
 
     /**
+     * Trae los permisos para agregarlos a la super variable global $_SESSION
+     * (Los permisos son individuales por usuario cuando inicia sesión)
+     * (Se realiza más que nada para saber que puede o no ver ese usuario)
+     */
+    public function getPermisosForSession($id_usuario)
+    {
+        $builder = $this->db->table('gg_permisos ggp');
+        $builder->select('ggp.modulo')
+            ->join('gg_rel_usuario_permiso ggrup', 'ggrup.id_permiso=ggp.id', 'inner')
+            ->join('usuario u', 'u.id=ggrup.id_usuario', 'inner')
+            ->where('u.id', $id_usuario);
+        return $builder->get()->getResultArray();
+    }
+
+    /**
      * Vincula cada permiso con el usuario
      */
     public function vincularPermisoUsuario($permisos, $id_usuario)
@@ -223,7 +238,7 @@ class Model_permisos extends Model
 
     public function updateMethod($data, $recordId)
     { //Se llamaba update pero coincide con un metodo de codeigniter, ahora se llama updateMethod
-        
+
         $builder = $this->db->table('gg_permisos');
         $builder->where('id', $recordId);
         $builder->update($data);
@@ -239,7 +254,7 @@ class Model_permisos extends Model
         FROM gg_permisos
         
         LEFT JOIN (SELECT IF(ISNULL(gg_rel_usuario_permiso.id_permiso), 0, 1) pertenece_usuario, gg_permisos.id as id_permiso FROM gg_rel_usuario_permiso 
-    	   LEFT JOIN gg_permisos ON gg_permisos.id = gg_rel_usuario_permiso.id_permiso WHERE gg_rel_usuario_permiso.id_usuario = '. $id_usuario . ' AND gg_rel_usuario_permiso.estado = 1) as permisos_usuario ON gg_permisos.id = permisos_usuario.id_permiso 
+    	   LEFT JOIN gg_permisos ON gg_permisos.id = gg_rel_usuario_permiso.id_permiso WHERE gg_rel_usuario_permiso.id_usuario = ' . $id_usuario . ' AND gg_rel_usuario_permiso.estado = 1) as permisos_usuario ON gg_permisos.id = permisos_usuario.id_permiso 
            
            LEFT JOIN (SELECT IF(ISNULL(gg_rel_permiso_grupo.id_permiso), 0, 1) pertenece_grupo, gg_permisos.id as id_permiso FROM gg_rel_permiso_grupo 
            LEFT JOIN gg_permisos ON gg_permisos.id = gg_rel_permiso_grupo.id_permiso WHERE gg_rel_permiso_grupo.id_grupo IN (' . $id_grupos . ') AND gg_rel_permiso_grupo.estado = 1) as permisos_grupo ON gg_permisos.id = permisos_grupo.id_permiso 

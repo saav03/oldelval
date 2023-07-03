@@ -43,6 +43,7 @@ legend {
 #contratista,
 #responsable,
 #relevo_responsable,
+#responsable_reconocimiento,
 #contratista_reconocimiento {
   max-width: 100%;
   padding: 3px;
@@ -300,7 +301,7 @@ legend {
 }
 
 .rojo_check:checked+.rojo {
-  box-shadow: inset 0px 0px 17px 0px rgba(189, 53, 53, 1);
+  box-shadow: inset 0px 0px 17px 0px rgb(194, 84, 84);
   background-color: #F1B7B3;
   border: none;
   border-bottom: 3px solid rgb(159 59 59);

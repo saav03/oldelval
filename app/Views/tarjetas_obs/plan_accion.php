@@ -5,7 +5,7 @@
                 Hallazgo
             </legend>
             <div class="p-3 pt-1">
-                <textarea style="border: 1px solid #f1f1f1;" name="hallazgo" cols="30" rows="5" class="form-control sz_inp" placeholder="Ingrese el hallazgo observado"></textarea>
+                <textarea style="border: 1px solid #f1f1f1;" name="hallazgo" cols="30" rows="5" class="form-control sz_inp inp_custom" placeholder="Ingrese el hallazgo observado"></textarea>
             </div>
         </fieldset>
     </div>
@@ -16,7 +16,7 @@
             </legend>
             <div class="p-3 pt-1">
 
-                <textarea style="border: 1px solid #f1f1f1;" name="plan_accion" cols="30" rows="5" class="form-control sz_inp" placeholder="Ingrese el plan de acción "></textarea>
+                <textarea style="border: 1px solid #f1f1f1;" name="plan_accion" cols="30" rows="5" class="form-control sz_inp inp_custom" placeholder="Ingrese el plan de acción "></textarea>
             </div>
         </fieldset>
     </div>
@@ -61,7 +61,7 @@
             </legend>
             <div class="p-3 pt-1">
                 <label for="fecha_cierre" class="mb-2 sz_inp fw-semibold">Fecha Cierre</label>
-                <input type="date" class="form-control sz_inp" name="fecha_cierre" id="fecha_cierre" min="<?= date('Y-m-d') ?>">
+                <input type="date" class="form-control sz_inp inp_custom" name="fecha_cierre" id="fecha_cierre" min="<?= date('Y-m-d') ?>">
             </div>
         </fieldset>
     </div>

@@ -73,7 +73,7 @@ class Model_usuario extends Model
     public function getDatos($id)
     {
         $builder = $this->db->table('usuario u');
-        $builder->select('u.id id_usuario,u.dni, u.competencia,u.usuario,u.nombre nombre_usuario ,u.telefono,u.localidad,u.apellido,u.correo,u.imagen_perfil,u.fecha_nacimiento,DATE_FORMAT(up.fecha_modificacion_perfil, "%d/%m/%Y %H:%i") fecha_modificacion, empresas.nombre as nombre_empresa, DATE_FORMAT(up.fecha_first_login, "%d/%m/%Y %H:%i:%s") first_login,up.panel_emergente,up.estilo')
+        $builder->select('u.id id_usuario,u.dni, u.competencia,u.usuario,u.nombre nombre_usuario ,u.telefono,u.localidad,u.apellido,u.correo,u.imagen_perfil,u.fecha_nacimiento,DATE_FORMAT(up.fecha_modificacion_perfil, "%d/%m/%Y %H:%i") fecha_modificacion, empresas.nombre as nombre_empresa, u.superadmin, DATE_FORMAT(up.fecha_first_login, "%d/%m/%Y %H:%i:%s") first_login,up.panel_emergente,up.estilo')
             ->join('usuario_perfil up', 'up.id_usuario = u.id', 'inner')
             ->join('empresas', 'empresas.id = u.empresa', 'left')
             ->where('u.id', $id);

@@ -1,3 +1,9 @@
+<?php 
+/* echo '<pre>';
+var_dump($_SESSION); // SE PUEDE MEJORAR ESTOOOOOO
+echo '</pre>';
+exit; */
+?>
 <div class="row row-dashboard"></div>
 <div class="container-fluid">
   <?php if (session()->getFlashdata('no_access')) { ?>

@@ -7,34 +7,55 @@
         padding-left: 10px;
         margin-bottom: 15px;
     }
+
+    .perfil {
+        box-shadow: 0px 0px 11px 0px rgb(237 232 232);
+        background-color: white;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .nav-perfil {
+        color: #608ad0;
+        background: white;
+        margin: 5px 0;
+        border-radius: 10px;
+        transition: all .3s ease-in-out;
+    }
+    .nav-perfil:hover {
+        background-color: #f5f5f5;
+        color: #608ad0;
+    }
 </style>
 
 <aside>
-    <div class="perfil ">
+    <div class="perfil">
         <div class="foto-perfil">
             <img src="<?= session()->get('img_perfil') != "" ? base_url('uploads/fotosperfil/' . session()->get('img_perfil')) : base_url('assets/images/perfil/no-pic.png'); ?>" alt="" class="foto-perfil rounded-circle">
         </div>
         <div class="nombre-perfil">
-            <h3><?= session()->get('nombre') ?></h3>
+            <h6>Bienvenido a tu perfil <?= session()->get('nombre') ?></h6>
         </div>
     </div>
     <ul class="nav flex-column side-style">
         <li class="nav-item profile-item">
-            <a class="nav-link active nav-perfil" aria-current="page" name="p-d" href="#p-d">Información de usuario</a>
+            <a class="nav-link active nav-perfil fw-semibold" aria-current="page" name="p-d" href="#p-d">Información de usuario</a>
         </li>
         <li class="nav-item profile-item">
-            <a class="nav-link nav-perfil" href="#p-s" name="p-s">Ajustes de acceso y seguridad</a>
+            <a class="nav-link nav-perfil fw-semibold" href="#p-s" name="p-s">Ajustes de acceso y seguridad</a>
         </li>
         <li class="nav-item profile-item">
-            <a class="nav-link nav-perfil" href="#p-a" name="p-a">Otros Ajustes</a>
+            <a class="nav-link nav-perfil fw-semibold" href="#p-a" name="p-a">Otros Ajustes</a>
         </li>
         <li class="nav-item profile-item">
-            <a class="nav-link nav-perfil" href="#p-h" name="p-h">Historial de ingresos</a>
+            <a class="nav-link nav-perfil fw-semibold" href="#p-h" name="p-h">Historial de ingresos</a>
         </li>
     </ul>
-    <!-- <div style="margin-left: 15px;">
-        <button data-bs-toggle="modal" data-bs-target="#exampleModal" id="btnModalUsuario" class="btn_modify" data-id="<!?= $datos_basicos[0]['id_usuario'] ?>">Editar mis datos</button>
-    </div> -->
+    <?php if (acceso('edicion_perfil')) : ?>
+        <div class="mt-2 mb-2" style="margin-left: 15px;">
+            <button data-bs-toggle="modal" data-bs-target="#exampleModal" id="btnModalUsuario" class="btn_modify" data-id="<!?= $datos_basicos[0]['id_usuario'] ?>">Editar mis datos</button>
+        </div>
+    <?php endif; ?>
 </aside>
 
 <!-- Modal -->
@@ -61,7 +82,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn_mod_close" style="font-size: 14px;" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn_modify" id="btnEditUsuario">Editar Usuario</button>
+                    <button type="button" class="btn_modify" id="btnEditUsuario">Editar Mis Datos</button>
                 </div>
             </form>
         </div>
@@ -72,9 +93,7 @@
     @media (max-width: 768px) {
         .side-style {
             margin-bottom: 10px;
-            background-color: #f3f3f3;
             border-radius: 10px;
-            border: 1px solid lightgray;
         }
     }
 </style>
@@ -87,7 +106,7 @@
 
         return $.ajax({
             type: "POST",
-            url: "<?= base_url('Usuario/editUser') ?>",
+            url: "<?= base_url('perfil/editUser') ?>",
             data: form,
             processData: false,
             contentType: false,
@@ -105,10 +124,10 @@
                 if (result.isConfirmed) {
                     editarUsuario(checkedIds, unCheckedIds)
                         .done(function(data) {
-                            window.location.reload();
+                            // window.location.reload();
                         })
                     customSuccessAlert('Edición Exitosa', 'El usuario se modificó con éxito', 'swal_edicion');
-                } 
+                }
             })
     });
 </script>

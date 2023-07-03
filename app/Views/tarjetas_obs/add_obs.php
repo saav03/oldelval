@@ -6,6 +6,10 @@
 <link href="<?= base_url() ?>/assets/css/addFiles.css" rel="stylesheet">
 <link href="<?= base_url() ?>/assets/css/fileAdder.css" rel="stylesheet">
 
+<style>
+
+</style>
+
 <div class="container">
     <div class="row">
         <div class="blister-title-container">
@@ -15,20 +19,20 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="card">
-            <div class="card-header" style="background: white; padding: 16px; font-weight: 600; letter-spacing: 1.5px;">
+        <div class="card card_custom">
+            <div class="card-header card_header_custom" >
                 Carga de Observación
             </div>
 
-            <div class="row mt-2">
+            <div class="row mt-2 p-2">
                 <form id="form_submit" class="needs-validation" enctype="multipart/form-data" novalidate>
                     <div class="col-xs-12">
-                        <p class="subtitle">Datos Generales</p>
+                        <p class="subtitle_test">Datos Generales</p>
 
                         <div class="row mt-2">
                             <div class="col-xs-12 col-md-4">
                                 <div>
-                                    <label for="contratista" class="sz_inp fw-semibold" style="margin-bottom: 5.1px;">Seleccione la Contratista</label>
+                                    <label for="contratista" class="sz_inp fw-semibold" style="margin-bottom: 5.1px;">Seleccione la Empresa Observada</label>
                                     <select class="sz_inp" name="contratista" id="contratista" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
                                         <?php
                                         foreach ($contratistas as $e) {
@@ -38,16 +42,16 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-md-2">
+                            <div class="col-xs-12 col-md-4">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Fecha de Detección <small>(*)</small></label>
-                                <input type="date" name="fecha_deteccion" id="fecha_deteccion" class="form-control sz_inp" max="<?= date('Y-m-d') ?>" required>
+                                <input type="date" name="fecha_deteccion" id="fecha_deteccion" class="form-control sz_inp inp_custom" max="<?= date('Y-m-d') ?>" required>
                                 <div class="valid-feedback"></div>
                                 <div class="invalid-feedback">
                                     La fecha de detección es requerida
                                 </div>
                             </div>
 
-                            <div class="col-xs-12 col-md-3 text-center">
+                            <!-- <div class="col-xs-12 col-md-3 text-center">
                                 <label for="" class="mb-1 fw-semibold sz_inp text-center">Situación de la Observación <small>(*)</small></label>
                                 <div class="btn-group btn-group-toggle" style="width: 80%;" role="group" aria-label="">
                                     <input id="abierta" type="radio" name="situacion" class="btn-check blanco_check" value="1" autocomplete="off">
@@ -56,11 +60,10 @@
                                     <input id="cerrada" type="radio" name="situacion" class="btn-check blanco_check" value="0" autocomplete="off">
                                     <label class="btn blanco btnsToggle" for="cerrada">Cerrada</label>
                                 </div>
-                            </div>
-                            <div class="col-xs-12 col-md-3">
+                            </div> -->
+                            <div class="col-xs-12 col-md-4">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Observador</label>
-
-                                <input type="text" name="observador" id="observador" class="form-control sz_inp simulate_dis" placeholder="Observador (Opcional)" value="<?= $this->session->get('nombrecompleto'); ?>" readonly>
+                                <input type="text" name="observador" id="observador" class="form-control sz_inp simulate_dis inp_custom" placeholder="Observador (Opcional)" value="<?= $this->session->get('nombrecompleto'); ?>" readonly>
                             </div>
                         </div>
 
@@ -85,7 +88,7 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Tarea Observada <span><small>(Texto Libre)</small></span></label>
-                                <textarea class="form-control sz_inp" name="descripcion" id="descripcion" cols="10" rows="3" placeholder="Breve descripción del acontecimiento (opcional)"></textarea>
+                                <textarea class="form-control sz_inp inp_custom" name="descripcion" id="descripcion" cols="10" rows="3" placeholder="Breve descripción del acontecimiento (opcional)"></textarea>
                             </div>
                         </div>
 
@@ -94,7 +97,7 @@
                         <div class="row">
                             <div class="col-xs-12 col-md-6">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Proyectos <small>(*)</small></label>
-                                <select name="proyecto" id="proyecto" class="form-select sz_inp" onchange="filtrarModulos(this)" required>
+                                <select name="proyecto" id="proyecto" class="form-select sz_inp inp_custom" onchange="filtrarModulos(this)" required>
                                     <option value="">-- Seleccione --</option>
                                     <?php foreach ($proyectos as $p) : ?>
                                         <option value="<?= $p['id'] ?>"><?= $p['nombre'] ?></option>
@@ -109,7 +112,7 @@
                             <div class="col-xs-12 col-md-6">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Modulos</label>
                                 <div id="selector_modulos_div">
-                                    <select name="modulo" id="modulo" class="form-select sz_inp" disabled required>
+                                    <select name="modulo" id="modulo" class="form-select sz_inp inp_custom" disabled required>
                                         <option value="">-- Seleccione --</option>
                                     </select>
                                     <div class="valid-feedback"></div>
@@ -122,7 +125,7 @@
                             <div class="col-xs-12 col-md-6">
                                 <label for="" class="mb-1 mt-3 fw-semibold sz_inp">Estaciones de Bombeo</label>
                                 <div id="selector_estaciones_div">
-                                    <select name="estacion_bombeo" id="estacion_bombeo" class="form-select sz_inp">
+                                    <select name="estacion_bombeo" id="estacion_bombeo" class="form-select sz_inp inp_custom">
                                         <option value="">-- Seleccione --</option>
                                         <?php foreach ($estaciones as $e) : ?>
                                             <option value="<?= $e['id'] ?>"><?= $e['nombre'] ?></option>
@@ -139,7 +142,7 @@
                             <div class="col-xs-12 col-md-6">
                                 <label for="" class="mb-1 mt-3 fw-semibold sz_inp">Sistema de Oleoductos</label>
                                 <div id="selector_sistemas_div">
-                                    <select name="sistema_oleoducto" id="sistema_oleoducto" class="form-select sz_inp">
+                                    <select name="sistema_oleoducto" id="sistema_oleoducto" class="form-select sz_inp inp_custom">
                                         <option value="">-- Seleccione --</option>
                                         <?php foreach ($sistemas as $s) : ?>
                                             <option value="<?= $s['id'] ?>"><?= $s['nombre'] ?></option>
@@ -156,7 +159,7 @@
 
                         <br>
 
-                        <p class="subtitle">Guía de Detección</p>
+                        <p class="subtitle_test">Guía de Detección</p>
                         <div style="width: 90%; margin: 0 auto;">
                             <?php $i = 1;
                             foreach ($indicadores as $ind) : ?>
@@ -164,7 +167,7 @@
                                     <div class="row text-center p-2 mt-2 align-items-center">
                                         <div class="col-xs-12 col-md-7" style="text-align: start;">
                                             <div>
-                                                <p class="m-0"><small><em><b>(<?= $i; ?>)</b></em></small> <b><?= $ind['nombre']; ?></b>  <?= $ind['descripcion']; ?></p>
+                                                <p class="m-0"><small><em><b>(<?= $i; ?>)</b></em></small> <b><?= $ind['nombre']; ?></b> <?= $ind['descripcion']; ?></p>
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-md-3 text-center">
@@ -208,13 +211,13 @@
                             <div class="col-xs-12 col-md-12 text-center">
                                 <p class="border_obs fw-semibold">¿Cómo evaluaría la observación actual en términos positivos / oportunidades de mejora?</p>
                                 <div id="alerta_obs_estado" class="mb-2 fw-semibold" style="letter-spacing: .4px; color: #9A4D4D;">
-                                    <span><small>Primero debe seleccionar si el estado de la observación es abierta o cerrada</small></span>
+                                    <span><small>Al seleccionar una Observación Positiva se da automáticamente como cerrada una vez finalizada la carga de la misma</small></span>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <label class="btn_modify btn_tipo_obs" id="label_tipo_positivo" disabled for="tipo_positivo" style="margin-right: 2px; width: 100%; max-width: 200px;">Positivo</label>
-                                    <input type="radio" name="tipo_observacion" disabled id="tipo_positivo" value="1" hidden>
-                                    <label class="btn_modify btn_tipo_obs" id="label_oportunidad_mejora" disabled for="oportunidad_mejora" style="margin-left: 2px; width: 100%;  max-width: 200px;">Oportunidad de Mejora</label>
-                                    <input type="radio" name="tipo_observacion" disabled id="oportunidad_mejora" value="2" hidden>
+                                    <label class="btn_modify btn_tipo_obs" id="label_tipo_positivo" for="tipo_positivo" style="margin-right: 2px; width: 100%; max-width: 200px;">Positivo</label>
+                                    <input type="radio" name="tipo_observacion" id="tipo_positivo" value="1" hidden>
+                                    <label class="btn_modify btn_tipo_obs" id="label_oportunidad_mejora" for="oportunidad_mejora" style="margin-left: 2px; width: 100%;  max-width: 200px;">Oportunidad de Mejora</label>
+                                    <input type="radio" name="tipo_observacion" id="oportunidad_mejora" value="2" hidden>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +229,7 @@
                                         Efecto / Impacto
                                     </legend>
                                     <div class="p-3 pt-1">
-                                        <label for="efecto_impacto" class="mb-2 sz_inp fw-semibold">Seleccione el efecto o impacto</label>
+                                        <label for="efecto_impacto" class="mb-2 sz_inp fw-semibold">Seleccione los efectos o impactos observados</label>
                                         <select class="sz_inp rounded-select" name="efecto_impacto[]" id="efecto_impacto" style="width: 100%" multiple name="native-select" data-search="true" data-silent-initial-value-set="true">
                                             <?php
                                             foreach ($efectos as $e) {
@@ -249,16 +252,16 @@
                                     </legend>
                                     <div class="text-center" style="padding: 19px 0!important;">
                                         <div class="btn-group btn-group-toggle" style="width: 80%; margin-top: 3px;" role="group" aria-label="">
-                                            <input id="aceptable" disabled type="checkbox" name="significancia[]" class="btn-check btn_check_significancia blanco_check" value="1" autocomplete="off">
+                                            <input id="aceptable" type="checkbox" disabled name="significancia[]" class="btn-check btn_check_significancia blanco_check" value="1" autocomplete="off">
                                             <label class="btn blanco btnsToggle riesgos" for="aceptable">Aceptable</label>
 
-                                            <input id="moderado" disabled type="checkbox" name="significancia[]" class="btn-check btn_check_significancia verde_check" value="2" autocomplete="off">
+                                            <input id="moderado" type="checkbox" disabled name="significancia[]" class="btn-check btn_check_significancia verde_check" value="2" autocomplete="off">
                                             <label class="btn verde btnsToggle riesgos" for="moderado">Moderado</label>
 
-                                            <input id="significativo" disabled type="checkbox" name="significancia[]" class="btn-check btn_check_significancia amarillo_checked" value="3" autocomplete="off">
+                                            <input id="significativo" type="checkbox" disabled name="significancia[]" class="btn-check btn_check_significancia amarillo_checked" value="3" autocomplete="off">
                                             <label class="btn amarillo btnsToggle riesgos" for="significativo">Significativo</label>
 
-                                            <input id="intolerable" disabled type="checkbox" name="significancia[]" class="btn-check btn_check_significancia rojo_check" value="4" autocomplete="off">
+                                            <input id="intolerable" type="checkbox" disabled name="significancia[]" class="btn-check btn_check_significancia rojo_check" value="4" autocomplete="off">
                                             <label class="btn rojo btnsToggle riesgos" for="intolerable">Intolerable</label>
                                         </div>
                                     </div>
@@ -270,14 +273,14 @@
                         <?php generarModalSignificancia(); ?>
 
                         <div class="row mt-3" id="generar_reconocimiento" style="display: none;">
-                            <div class="col-xs-12 col-md-12 text-center">
+                            <!-- <div class="col-xs-12 col-md-12 text-center">
                                 <p class="border_obs fw-semibold">¿Desea destacar un reconocimiento positivo?</p>
                                 <div class="d-flex justify-content-center">
                                     <label class="btn_modify" id="si_ejecutar_reconocimiento" style="margin-right: 2px; width: 100%; max-width: 70px;">Si</label>
                                     <label class="btn_modify" id="no_ejecutar_reconocimiento" style="margin-left: 2px; width: 100%;  max-width: 70px;">No</label>
                                     <input type="hidden" name="destacar_reconocimiento" id="destacar_reconocimiento" value="">
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="row mt-3" id="obs_cerrada_sin_plan" style="display: none;">

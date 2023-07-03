@@ -34,20 +34,17 @@ class Login extends BaseController
             $grupos = $model_grupos->getAllUsuario($exito['id']);
 
             /* == Trae todos los permisos perteneciente al usuario == */
-            $permisos_usuario = $model_permisos->getAllPermisosUser($exito['id'], 'INNER', true);
+            $permisos_usuario = $model_permisos->getPermisosForSession($exito['id']);
+            $permisos_values = [];
 
-            // $permisos = $model_permisos->getAll();
-            // $all_permisos = array_column($permisos, 'modulo', 'id');
-            $permisos_ids = [];
             if (is_array($permisos_usuario)) {
-                $permisos_ids = array_column($permisos_usuario, 'modulo', 'id');
+                $permisos_values = array_column($permisos_usuario, 'modulo', 'id');
                 $permisos_childrens = array_column($permisos_usuario, 'children');
     
                 for ($i = 0; $i < count($permisos_childrens); $i++) {
-    
                     if (count($permisos_childrens[$i]) > 0) {
                         foreach ($permisos_childrens[$i] as $value) {
-                            $permisos_ids[] = $value['modulo'];
+                            $permisos_values[] = $value['modulo'];
                         }
                     }
                 }
@@ -62,7 +59,7 @@ class Login extends BaseController
                 'competencia' => $exito['competencia'],
                 'empresa' => $exito['empresa'],
                 'grupos' => $grupos,
-                'permisos_usuario' => $permisos_ids,
+                'permisos_usuario' => $permisos_values,
                 'img_perfil' => $exito['img_perfil'],
                 'superadmin' => $exito['superadmin']
             ]);

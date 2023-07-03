@@ -73,7 +73,7 @@
 
                     <div id="container_permisos" class="row border-perfil-top" style="pointer-events: none;">
                         <div class="col-4">
-                            <p class="text-muted p-perfil">Grupos del Usuario</p>
+                            <p class="text-muted p-perfil fw-semibold">Grupos del Usuario</p>
                         </div>
                         <div class="row" style="width: 100%;">
 
@@ -92,7 +92,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="row">
-                                    <div id="tree"></div>
+                                    <div id="tree" class="fw-semibold" style="color: #64748B;"></div>
                                 </div>
                             </div>
                         </div>

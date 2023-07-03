@@ -111,13 +111,6 @@ class Validation extends BaseConfig
                 'required' => "El Apellido es un campo obligatorio"
             ]
         ],
-        'telefono' =>  [
-            'label' => "Telefono",
-            'rules' => 'integer',
-            'errors' => [
-                'integer' => "El número de telefono debe contener sólo caracteres numericos"
-            ]
-        ]
     ];
     public $validation_menu = [
 
@@ -243,22 +236,6 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó el proyecto',
             ]
         ],
-        // El módulo no es requerido
-        /* La estación de bombeo tanto como el sistema de oleoducto puede ser requerido o no */
-        /* 'estacion_bombeo' => [
-            'label' => 'Estación de Bombeo',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'No se especificó la estación de bombeo',
-            ]
-        ],
-        'sistema_oleoducto' => [
-            'label' => 'Sistema de Oleoducto',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'No se especificó el sistema de oleoducto',
-            ]
-        ], */
     ];
 
     public $validation_ejecutar_plan = [
@@ -315,6 +292,13 @@ class Validation extends BaseConfig
             'rules' => ['required'],
             'errors' => [
                 'required' => 'No se especificó lo observado',
+            ]
+        ],
+        'responsable' => [
+            'label' => 'responsable',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'No se especificó el responsable a notificar',
             ]
         ],
         'contratista' => [

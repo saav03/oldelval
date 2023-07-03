@@ -41,20 +41,20 @@
         </div>
         <h5 style="text-align: center; font-weight: bold; color: #798eb3;">Información del Usuario</h5>
         <div class="col-xs-12 col-md-3">
-            <label for="nombre" class="mb-1 fw-semibold">Nombre <small>(*)</small></label>
-            <input type="text" class="form-control sz_inp" value="<?= $nombre_usuario ?>" name="nombre" id="nombre" placeholder="Ingrese nombre...">
+            <label for="apellido" class="mb-1 fw-semibold sz_inp">Apellido/s <small>(*)</small></label>
+            <input type="text" class="form-control sz_inp inp_custom" value="<?= $apellido ?>" name="apellido" id="apellido" placeholder="Ingrese apellido...">
         </div>
         <div class="col-xs-12 col-md-3">
-            <label for="apellido" class="mb-1 fw-semibold">Apellido <small>(*)</small></label>
-            <input type="text" class="form-control sz_inp" value="<?= $apellido ?>" name="apellido" id="apellido" placeholder="Ingrese apellido...">
+            <label for="nombre" class="mb-1 fw-semibold sz_inp">Nombre/s <small>(*)</small></label>
+            <input type="text" class="form-control sz_inp inp_custom" value="<?= $nombre_usuario ?>" name="nombre" id="nombre" placeholder="Ingrese nombre...">
         </div>
         <div class="col-xs-12 col-md-3">
-            <label for="dni" class="mb-1 fw-semibold">DNI <small>(*)</small></label>
-            <input type="text" class="form-control sz_inp" value="<?= $dni ?>" name="dni" id="dni" placeholder="Ingrese N°DNI...">
+            <label for="dni" class="mb-1 fw-semibold sz_inp">DNI <small><em class="lt-2">(Opcional)</em></small></label>
+            <input type="text" class="form-control sz_inp inp_custom" value="<?= $dni != 0 ? $dni : '' ?>" name="dni" id="dni" placeholder="Ingrese N°DNI...">
         </div>
         <div class="col-xs-12 col-md-3">
-            <label for="dni" class="mb-1 fw-semibold">Fecha de Nacimiento <small><em>(Opcional)</em></small></label>
-            <input type="date" class="form-control sz_inp" value="<?= $fecha_nacimiento ?>" name="fecha_nacimiento" id="fecha_nacimiento">
+            <label for="dni" class="mb-1 fw-semibold sz_inp">Fecha de Nacimiento <small><em class="lt-2">(Opcional)</em></small></label>
+            <input type="date" class="form-control sz_inp inp_custom" value="<?= $fecha_nacimiento ?>" name="fecha_nacimiento" id="fecha_nacimiento">
         </div>
 
         <input type="hidden" name="id_usuario" value="<?= $id_usuario ?>">
@@ -68,18 +68,18 @@
         <h5 style="text-align: center; font-weight: bold; color: #798eb3;">Datos Extras</h5>
 
         <div class="col-xs-12 col-md-4">
-            <label for="grupos" class="mb-1 fw-semibold">Competencia <small><em>(Opcional)</em></small></label>
-            <input type="text" class="form-control sz_inp" value="<?= $competencia ?>" name="competencia" id="competencia" placeholder="Ingrese su competencia">
+            <label for="grupos" class="mb-1 fw-semibold sz_inp">Competencia <small><em class="lt-2">(Opcional)</em></small></label>
+            <input type="text" class="form-control sz_inp inp_custom" value="<?= $competencia ?>" name="competencia" id="competencia" placeholder="Ingrese su competencia">
         </div>
         <br>
         <div class="col-xs-12 col-md-4">
-            <label for="grupos" class="mb-1 fw-semibold">Localidad <small><em>(Opcional)</em></small></label>
-            <input type="text" class="form-control sz_inp" value="<?= $localidad ?>" name="localidad" id="localidad" placeholder="Ingrese su localidad">
+            <label for="grupos" class="mb-1 fw-semibold sz_inp">Localidad <small><em class="lt-2">(Opcional)</em></small></label>
+            <input type="text" class="form-control sz_inp inp_custom" value="<?= $localidad ?>" name="localidad" id="localidad" placeholder="Ingrese su localidad">
         </div>
         <br>
         <div class="col-xs-12 col-md-4">
-            <label for="grupos" class="mb-1 fw-semibold">Número de Teléfono <small>(*)</small></label>
-            <input type="number" class="form-control sz_inp" value="<?= $telefono ?>" name="telefono" id="telefono" placeholder="Ingrese su teléfono">
+            <label for="grupos" class="mb-1 fw-semibold sz_inp">Número de Teléfono <small><em class="lt-2">(Opcional)</em></small></label>
+            <input type="number" class="form-control sz_inp inp_custom" value="<?= $telefono != 0 ? $telefono : '' ?>" name="telefono" id="telefono" placeholder="Ingrese su teléfono">
         </div>
     </div>
 
@@ -90,16 +90,16 @@
         <h5 style="text-align: center; font-weight: bold; color: #798eb3;">Acceso</h5>
         <br>
         <div class="col-xs-12 col-md-4">
-            <label for="nombre" class="mb-1 fw-semibold">Nickname <small><em>(Opcional)</em></small></label>
-            <input type="text" class="form-control sz_inp" value="<?= $usuario ?>" name="usuario" id="usuario" placeholder="Ingrese su nickname">
+            <label for="nombre" class="mb-1 fw-semibold sz_inp">Nickname <small><em>(Opcional)</em></small></label>
+            <input type="text" class="form-control sz_inp inp_custom" value="<?= $usuario ?>" name="usuario" id="usuario" placeholder="Ingrese su nickname">
         </div>
         <div class="col-xs-12 col-md-4">
-            <label for="nombre" class="mb-1 fw-semibold">Datos del Correo <small>(*)</small></label>
-            <input type="text" class="form-control sz_inp" value="<?= $correo ?>" name="correo" id="correo" placeholder="Ingrese su correo">
+            <label for="nombre" class="mb-1 fw-semibold sz_inp">Datos del Correo <small>(*)</small></label>
+            <input type="text" class="form-control sz_inp inp_custom" value="<?= $correo ?>" name="correo" id="correo" placeholder="Ingrese su correo">
         </div>
         <div class="col-xs-12 col-md-4">
-            <label for="nombre" class="mb-1 fw-semibold">Clave de Acceso</label>
-            <input type="password" class="form-control sz_inp" name="password" id="password" placeholder="Ingrese su nueva clave">
+            <label for="nombre" class="mb-1 fw-semibold sz_inp">Clave de Acceso</label>
+            <input type="password" class="form-control sz_inp inp_custom" name="password" id="password" placeholder="Ingrese su nueva clave">
         </div>
     </div>
 </div>

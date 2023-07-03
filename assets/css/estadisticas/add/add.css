@@ -160,7 +160,7 @@ legend {
   letter-spacing: 1px;
 }
 
-#btnSubmitEstadistica {
+/* #btnSubmitEstadistica {
   border: 2px solid gray;
   color: gray;
   font-weight: 500;
@@ -170,7 +170,7 @@ legend {
 #btnSubmitEstadistica:hover {
   border: 2px solid lightblue;
   background: #f2fcff;
-}
+} */
 
 /* == Adjuntos Estadísticas Capacitaciones == */
 
