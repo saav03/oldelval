@@ -1,4 +1,5 @@
 <?php $permiso_edicion = vista_access('vista_editpermiso'); ?>
+<title>OLDELVAL - Auditorías</title>
 <link rel="stylesheet" href="<?= base_url('assets/css/auditorias/index.css') ?>">
 <div class="container ">
     <div class="row">
@@ -48,8 +49,6 @@
                                 max-height: 500px !important;
                                 transition: all 0.4s ease-in-out;
                             }
-
-                            
                         </style>
                         </style>
                         <div class="tab-content">

@@ -22,7 +22,10 @@ class Dashboard extends BaseController
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
         } else {
-            return view('partials/header') . view('dashboard/view') . view('partials/footer');
+            // $movimiento = new Movimiento();
+            // $data['actividad_reciente'] = $movimiento->recentActivity(); 
+            return template('dashboard/view'/*, $data*/);
+            // return view('partials/header') . view('dashboard/view') . view('partials/footer');
         }
     }
 }

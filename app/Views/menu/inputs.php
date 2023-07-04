@@ -8,20 +8,20 @@
         <div class="row">
             <div class="col-xs-12 p-2">
                 <div class="form-group">
-                    <label for="name" class="mb-1 fw-semibold">Nombre</label>
-                    <input type="text" name="name" id="name" class="form-control sz_inp" placeholder="Nombre" value="<?= setValue('nombre', $entidad_inputs) ?>" required>
+                    <label for="name" class="mb-1 fw-semibold sz_inp">Nombre</label>
+                    <input type="text" name="name" id="name" class="form-control sz_inp inp_custom" placeholder="Ingrese el nombre del menú" value="<?= setValue('nombre', $entidad_inputs) ?>" required>
                 </div>
             </div>
             <div class="col-xs-12 p-2">
                 <div class="form-group">
-                    <label for="separator">Es Separador</label>
+                    <label for="separator" class="fw-semibold sz_inp">Es Separador</label>
                     <input type="checkbox" name="separator" id="separator" value=1 <?= isset($entidad_inputs['is_heading']) && $entidad_inputs['is_heading'] == 1 ? 'checked' : '' ?>>
                 </div>
             </div>
             <div class="col-xs-12 p-2">
                 <div class="form-group">
-                    <label for="submenu" class="mb-1 fw-semibold">Submenu de</label>
-                    <select name="submenu" id="submenu" class="form-control sz_inp" required>
+                    <label for="submenu" class="mb-1 fw-semibold sz_inp">Submenu de</label>
+                    <select name="submenu" id="submenu" class="form-control sz_inp inp_custom" required>
                         <option value="0">--No es submenu--</option>
                         <?php foreach ($possible_menu_parents as $menu_item) { ?>
                             <option <?= isset($entidad_inputs['id_menu_padre']) && $entidad_inputs['id_menu_padre'] == $menu_item['id'] ? 'selected' : '' ?> value="<?= $menu_item['id'] ?>"><?= $menu_item['nombre'] ?></option>
@@ -31,8 +31,8 @@
             </div>
             <div class="col-xs-12 p-2">
                 <div class="form-group">
-                    <label for="order" class="mb-1 fw-semibold">Colocar debajo de</label>
-                    <select name="order" id="order" class="form-control sz_inp" required>
+                    <label for="order" class="mb-1 fw-semibold sz_inp">Colocar debajo de</label>
+                    <select name="order" id="order" class="form-control sz_inp inp_custom" required>
                         <option value="1">* Primera Posici&oacute;n *</option>
                         <?php foreach ($allMenues as $menu_item) {
                             if ($menu_item['id_menu_padre'] == 0) { ?>
@@ -45,12 +45,12 @@
             </div>
             <div class="col-xs-12 p-2">
                 <div class="form-group">
-                    <label for="path" class="mb-1 fw-semibold">URL en el Sistema</label>
+                    <label for="path" class="mb-1 fw-semibold sz_inp">URL en el Sistema</label>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text sz_inp" id="url-addon"><?= base_url() ?></span>
+                            <span class="input-group-text sz_inp inp_custom" id="url-addon"><?= base_url() ?></span>
                         </div>
-                        <input type="text" name="path" id="path" aria-describedby="url-addon" class="form-control sz_inp" placeholder="" value="<?= setValue('ruta', $entidad_inputs) ?>">
+                        <input type="text" name="path" id="path" aria-describedby="url-addon" class="form-control sz_inp inp_custom" placeholder="" value="<?= setValue('ruta', $entidad_inputs) ?>">
                     </div>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text sz_inp" id="icon-prefix">fas fa-fw fa-</span>
                         </div>
-                        <input type="text" name="icon" id="icon" aria-describedby="icon-prefix" class="form-control sz_inp" placeholder="fas fa-fw fa-" value="<?= setValue('icono', $entidad_inputs) ?>">
+                        <input type="text" name="icon" id="icon" aria-describedby="icon-prefix" class="form-control sz_inp inp_custom" placeholder="fas fa-fw fa-" value="<?= setValue('icono', $entidad_inputs) ?>">
                         <div class="input-group-append">
                             <span class="input-group-text sz_inp" id="icon_preview"><i class="fas fa-fw fa-<?= isset($entidad_inputs['icono']) ? $entidad_inputs['icono'] : '' ?>"></i></span>
                         </div>
@@ -69,23 +69,19 @@
                 </div>
             </div>
             <div class="col-xs-12 p-2">
-                <label for="" class="mb-1 fw-semibold">¿A qué permiso pertenece el menú?</label>
+                <label for="" class="mb-1 fw-semibold sz_inp">¿A qué permiso pertenece el menú?</label>
                 <br>
-                <select name="permiso" id="permiso" data-search="true" name="native-select" class="sz_inp edit_select" data-silent-initial-value-set="true" required>
+                <select name="permiso" id="permiso" data-search="true" name="native-select" class="sz_inp edit_select inp_custom" data-silent-initial-value-set="true">
                     <?php foreach ($permisos as $p) : ?>
                         <option value="<?= $p['id'] ?>"><?= $p['nombre'] ?></option>
                     <?php endforeach; ?>
 
-                    <?php if ($permiso_actual == null) : ?>
+                    <!-- <!?php if ($permiso_actual == null) : ?>
                         <option value="-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar nuevo permiso</option>
-                    <?php endif; ?>
+                    <!?php endif; ?> -->
                 </select>
             </div>
         </div>
-    </div>
-    <div class="col-xs-12 p-2 col-md-6">
-        <h4 style="text-align: center">Referencia</h4>
-        <img src="<?= base_url('assets/images/guia-menu.png') ?>" style="width:100%">
     </div>
 </div>
 

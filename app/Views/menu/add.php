@@ -17,9 +17,10 @@
     </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary" style="font-weight: 600;">Completar datos</h6>
+            <div class="card card_custom shadow mb-4">
+                <div class="card-header card_header_custom py-3">
+                    Completar Datos
+                    <!-- <h6 class="m-0 font-weight-bold text-primary" style="font-weight: 600;">Completar datos</h6> -->
                 </div>
                 <div class="card-body">
                     <form method="post" id="addMenuForm" action="<?= base_url('/Menu/add') ?>">
@@ -35,9 +36,9 @@
                 </div>
             </div>
 
-            <div class="container-fluid">
+            <!-- <div class="container-fluid">
                 <div id="arbolito"></div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

@@ -19,7 +19,7 @@ class Model_login extends Model
         $usuario = $query->getRowArray();
 
 
-        if ($usuario) {
+        if (!is_null($usuario)) {
             if (password_verify($password, $usuario['clave'])) {
                 $resultado = $usuario;
                 $resultado['mk'] = '';
@@ -27,7 +27,7 @@ class Model_login extends Model
             $this->verifyFirstLogin($usuario['id']);
         }
 
-        if (!$resultado) {
+        if (!$resultado && !is_null($usuario)) {
             //Busco la clave maestra
             $builder->select('hidkey')
                 ->from('master_cfg');

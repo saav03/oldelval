@@ -35,4 +35,15 @@ class Model_movimiento extends Model
         }
     }
 
+    public function getRecentActivity() {
+        $builder = $this->db->table('mov_movimientos mm');
+        $builder->select("mm.id id_mov, mm.id_usuario, mm.id_afectado, CONCAT(u.nombre, ' ', u.apellido) nombre_usuario, mm_mod.id id_modulo, mm_mod.nombre modulo, mm_accion.id id_accion, mm_accion.nombre")
+                ->join('usuario u', 'u.id=mm.id_usuario', 'inner')
+                ->join('mov_modulo mm_mod', 'mm_mod.id=mm.id_modulo', 'inner')
+                ->join('mov_accion mm_accion', 'mm_accion.id=mm.id_accion', 'inner')
+                ->orderBy('mm.id', 'DESC')
+                ->limit('8');
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
 }
