@@ -83,7 +83,7 @@ const tableOptions = {
           let botonDesactivar;
 
           botonDesactivar = el(
-            "button.btn_desactivar",
+            "button.btn-desactivar",
             {
               type: "button",
               title: "Desactivar",
@@ -132,7 +132,7 @@ const tableOptions = {
           let botonActivar;
 
           botonActivar = el(
-            "button.btn_activar",
+            "button.btn-activar",
             {
               type: "button",
               title: "Activar",

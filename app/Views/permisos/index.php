@@ -106,5 +106,4 @@
     let subPermisosOf = <?= json_encode($permisos_parents) ?>;
 </script>
 
-<script src="<?= base_url() ?>/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="<?= base_url() ?>/assets/js/permisos/index.js"></script>

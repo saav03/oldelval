@@ -81,9 +81,9 @@
                 let btn;
 
                 if (row['activo'] == 1) {
-                    btn = el("button.btn_desactivar", el("i.fas fa-ban"));
+                    btn = el("button.btn-desactivar", el("i.fas fa-ban"));
                 } else {
-                    btn = el("button.btn_activar", el("i.fas fa-check"));
+                    btn = el("button.btn-activar", el("i.fas fa-check"));
                 }
                 btn.setAttribute("data-id", row["id"]);
                 btn.setAttribute("onclick", "changeStateUser(this)");
