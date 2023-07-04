@@ -93,6 +93,11 @@ class Usuario extends BaseController
         echo json_encode($response);
     }
 
+    public function getResponsables($id_empresa) {
+        $datos = $this->model_usuario->getResponsables($id_empresa, $this->session->get('id_usuario'));
+        echo json_encode($datos);
+    }
+
     public function addView()
     {
         if (!$this->session->get('isLogin')) {

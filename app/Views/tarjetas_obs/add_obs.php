@@ -5,11 +5,7 @@
 <link href="<?= base_url() ?>/assets/css/virtual-select.min.css" rel="stylesheet">
 <link href="<?= base_url() ?>/assets/css/addFiles.css" rel="stylesheet">
 <link href="<?= base_url() ?>/assets/css/fileAdder.css" rel="stylesheet">
-
-<style>
-
-</style>
-
+<title>OLDELVAL - Tarjeta M.A.S</title>
 <div class="container">
     <div class="row">
         <div class="blister-title-container">
@@ -20,7 +16,7 @@
 <div class="container">
     <div class="row">
         <div class="card card_custom">
-            <div class="card-header card_header_custom" >
+            <div class="card-header card_header_custom">
                 Carga de Observación
             </div>
 
@@ -349,6 +345,7 @@
     let responsable = <?= json_encode($responsables); ?>;
 </script>
 
+
 <script src="<?= base_url() ?>/assets/js/addFiles.js"></script>
 <script src="<?= base_url() ?>/assets/js/virtual-select.min.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/modal_riesgo.js"></script>
@@ -358,6 +355,29 @@
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/submit.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/add_plan_accion.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/add_obs_positiva.js"></script>
+
+<script>
+    document.querySelector('#contratista').addEventListener('change', function() {
+        fetch(GET_BASE_URL() + "/usuario/getResponsables/" + this.value)
+            .then(response => response.json()) // Parsear la respuesta como JSON
+            .then(data => {
+                let options = [];
+                data.forEach(item => {
+                    let objeto = {
+                        label: item.usuario_nombre,
+                        value: item.id_usuario
+                    }
+                    options.push(objeto);
+                });
+                document.querySelector('#responsable').setOptions(options);
+                document.querySelector('#relevo_responsable').setOptions(options);
+                document.querySelector('#responsable_reconocimiento').setOptions(options);
+            })
+            .catch(error => {
+                // console.error('Error:', error);
+            });
+    });
+</script>
 
 <script>
     new addFiles(document.getElementById("gallery"), 'adj_observacion').init();

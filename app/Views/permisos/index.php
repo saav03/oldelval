@@ -1,5 +1,5 @@
 <link href="<?= base_url() ?>/assets/css/permisos/permisos.css" rel="stylesheet">
-
+<title>OLDELVAL - Permisos</title>
 <div class="container">
     <div class="row">
         <div class="blister-title-container">

@@ -1,5 +1,5 @@
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/index.css" rel="stylesheet">
-
+<title>OLDELVAL - Tarjetas de Observaciones</title>
 <div class="container ">
     <div class="row">
         <div class="col-md-12">

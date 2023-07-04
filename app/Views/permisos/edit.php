@@ -3,8 +3,7 @@
 <?php
 $tipo_modulos = ['heading', 'menu', 'index', 'add'];
 ?>
-
-
+<title>OLDELVAL - Editar Permiso</title>
 <div class="container-fluid">
     <div class="row">
         <div class="blister-title-container">

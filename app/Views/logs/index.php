@@ -1,3 +1,4 @@
+<title>OLDELVAL - Ingresos</title>
 <div class="container">
     <h4>Listado de ingresos</h4>
     <hr>
