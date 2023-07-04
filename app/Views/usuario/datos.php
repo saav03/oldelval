@@ -85,18 +85,19 @@
             </div>
             <div class="modal-body">
                 <form method="POST" id="form_credenciales">
+                    <input type="hidden" name="id_usuario" value="<?= $id_usuario ?>">
                     <div class="row">
                         <div class="col-xs-12">
                             <label class="mb-1 fw-semibold sz_inp">Correo</label>
-                            <input type="mail" class="form-control sz_inp inp_custom" value="<?= $correo; ?>">
+                            <input type="mail" class="form-control sz_inp inp_custom" name="correo" value="<?= $correo; ?>">
                         </div>
                         <div class="col-xs-12">
                             <label class="mb-1 mt-2 fw-semibold sz_inp">Descripción del mensaje a enviar</label>
-                            <textarea class="form-control sz_inp inp_custom" name="" id="" cols="30" rows="5">Estimado, le informamos que se le han otorgado las credenciales de acceso necesarias para iniciar sesión en nuestro sistema. A continuación, encontrará la información de inicio de sesión que le permitirá acceder a todas las funcionalidades y recursos disponibles</textarea>
+                            <textarea class="form-control sz_inp inp_custom" name="mensaje" cols="30" rows="5">Estimado, le informamos que se le han otorgado las credenciales de acceso necesarias para iniciar sesión en nuestro sistema. A continuación, encontrará la información de inicio de sesión que le permitirá acceder a todas las funcionalidades y recursos disponibles</textarea>
                         </div>
                         <div class="col-xs-12">
                             <label class="mb-1 mt-2 fw-semibold sz_inp">Clave de acceso</label>
-                            <input type="text" class="form-control sz_inp inp_custom" placeholder="Ingrese la clave de acceso del usuario">
+                            <input type="text" class="form-control sz_inp inp_custom" name="clave" placeholder="Ingrese la clave de acceso del usuario">
                         </div>
                     </div>
                 </form>
@@ -108,5 +109,4 @@
         </div>
     </div>
 </div>
-
-<script src="<?= base_url('usuario/submit_credenciales.js') ?>"></script>
+<script src="<?= base_url("assets/js/usuario/submit_credenciales.js") ?>"></script>

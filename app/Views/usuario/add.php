@@ -1,4 +1,5 @@
 <link href="<?= base_url() ?>/assets/css/virtual-select.min.css" rel="stylesheet">
+<title>OLDELVAL - Nuevo Usuario</title>
 <style>
     .input-perfil {
         background-color: #fff;

@@ -1,5 +1,5 @@
 <link href="<?= base_url() ?>/assets/css/estadisticas/add/add.css" rel="stylesheet">
-
+<title>OLDELVAL - Estadísticas Gestión Vehicular</title>
 <div class="container">
     <form action="" method="POST" id="form_submit">
         <div class="blister-title-container">

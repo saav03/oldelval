@@ -1,9 +1,4 @@
-<?php 
-/* echo '<pre>';
-var_dump($_SESSION); // SE PUEDE MEJORAR ESTOOOOOO
-echo '</pre>';
-exit; */
-?>
+<title>OLDELVAL - Dashboard</title>
 <div class="row row-dashboard"></div>
 <div class="container-fluid">
   <?php if (session()->getFlashdata('no_access')) { ?>

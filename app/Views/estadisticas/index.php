@@ -1,4 +1,5 @@
 <?php $permiso_edicion = vista_access('vista_editpermiso'); ?>
+<title>OLDELVAL - Estadísticas HSE</title>
 <div class="container ">
   <div class="row">
     <div class="col-md-12">

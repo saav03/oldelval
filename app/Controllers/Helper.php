@@ -200,13 +200,13 @@ class Helper extends Controller
     /**
      * Envía un correo
      */
-    public function sendMail($datos, $subject_param, $url, $view, $emails)
+    public function sendMail($datos, $subject_param, $url = '', $view = '', $emails = [])
     {
         $correos = [];
         $email = \Config\Services::email();
 
         # Datos que son necesarios para un correcto envío de e-mail
-        $id = $datos['id'];
+        $id = isset($datos['id']) ? $datos['id'] : '';
         $subject = $subject_param . $id;
         $datos['url'] = $url;
         $vista = view($view, $datos);

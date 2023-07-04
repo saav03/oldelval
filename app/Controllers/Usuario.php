@@ -93,6 +93,11 @@ class Usuario extends BaseController
         echo json_encode($response);
     }
 
+    public function getResponsables($id_empresa) {
+        $datos = $this->model_usuario->getResponsables($id_empresa, $this->session->get('id_usuario'));
+        echo json_encode($datos);
+    }
+
     public function addView()
     {
         if (!$this->session->get('isLogin')) {
@@ -196,6 +201,26 @@ class Usuario extends BaseController
             }
         }
         echo json_encode($results);
+    }
+
+    /**
+     * Envía las credenciales de usuario una vez que está creado
+     */
+    public function sendCredentials()
+    {
+        $helper = new Helper();
+
+        # Envío de credenciales 
+        $id_usuario = $this->request->getPost('id_usuario'); 
+        $emails[] = $this->request->getPost('correo');
+        $datos = [
+            'correo' => $this->request->getPost('correo'),
+            'mensaje' => $this->request->getPost('mensaje'),
+            'clave' => $this->request->getPost('clave'),
+        ];
+        $helper->sendMail($datos, 'Credenciales de Ingreso', '', 'emails/credentials/credentials', $emails);
+
+        newMov(8, 6, $id_usuario, 'Envío de Credenciales'); //Movimiento
     }
 
     public function editarPermisosUsuario()

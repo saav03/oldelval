@@ -192,6 +192,8 @@ $routes->post('/getPermisos','Usuario::getAllPermisosGroup');
 $routes->post('/getPermissionsGrousUsers','Usuario::getAllPermisosGroupAndUsers');
 $routes->post('/getAllPermisosUser','Usuario::getAllPermisosUser');
 $routes->match(['get', 'post'],"/addNewUser",'Usuario::add');
+$routes->match(['get', 'post'],"/sendCredentials",'Usuario::sendCredentials');
+$routes->match(['get', 'post'],"/usuario/getResponsables/(:num)",'Usuario::getResponsables/$1');
 $routes->match(['get', 'post'],"Usuario/editUser",'Usuario::edit');
 // $routes->match(['get', 'post'],"/getPermisos",'Usuario::getAllPermisosGroup');
 $routes->get('/all_users','Usuario::index');

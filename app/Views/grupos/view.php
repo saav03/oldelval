@@ -1,3 +1,4 @@
+<title>OLDELVAL - Grupo <?= $grupo['nombre'] ?></title>
 <div class="container">
     <div class="row p-1">
         <div class="col-md-4">

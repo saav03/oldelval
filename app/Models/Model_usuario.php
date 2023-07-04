@@ -53,7 +53,8 @@ class Model_usuario extends Model
         $this->db->transComplete();
     }
 
-    public function edit($datos, $id_usuario) {
+    public function edit($datos, $id_usuario)
+    {
         $this->db->transStart();
         $builder = $this->db->table('usuario u');
         $builder->where('u.id', $id_usuario);
@@ -77,17 +78,29 @@ class Model_usuario extends Model
             ->join('usuario_perfil up', 'up.id_usuario = u.id', 'inner')
             ->join('empresas', 'empresas.id = u.empresa', 'left')
             ->where('u.id', $id);
-            
+
         return $builder->get()->getResultArray();
     }
     /**
      * Actualizar la password del usuario en caso de editarse la contraseña
      */
-    public function changePassword($clave, $id_usuario) {
+    public function changePassword($clave, $id_usuario)
+    {
         $builder = $this->db->table('usuario u');
         $builder->set('u.clave', $clave);
         $builder->where('u.id', $id_usuario);
         $builder->update();
+    }
+
+    public function getResponsables($id_empresa, $id_usuario_logueado)
+    {
+        $builder = $this->db->table('usuario u');
+        $builder->select('u.id id_usuario, CONCAT(u.nombre, " ", u.apellido) usuario_nombre')
+            ->join('gg_rel_usuario_permiso ggrup' ,'ggrup.id_usuario=u.id', 'join')
+            ->where('u.empresa', $id_empresa)
+            ->where('u.id !=', $id_usuario_logueado)
+            ->where('ggrup.id_permiso', 46);
+        return $builder->get()->getResultArray();
     }
 
     /**
@@ -109,5 +122,4 @@ class Model_usuario extends Model
         $db = db_connect();
         $db->query("UPDATE usuario SET activo = CASE WHEN activo = 1 THEN 0 ELSE 1 END WHERE id = " . $id);
     }
-
 }

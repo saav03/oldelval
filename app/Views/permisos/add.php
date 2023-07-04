@@ -1,3 +1,4 @@
+<title>OLDELVAL - Nuevo Permiso</title>
 <div class="container-fluid">
     <div class="row">
         <div class="blister-title-container">

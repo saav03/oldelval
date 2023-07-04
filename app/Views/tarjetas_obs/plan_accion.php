@@ -28,11 +28,11 @@
             <div class="p-3 pt-1">
                 <label for="responsable" class="mb-2 sz_inp fw-semibold">Responsable de dar tratamiento</label>
                 <select class="sz_inp" name="responsable" id="responsable" style="width: 100%" name="native-select" data-search="true" data-silent-initial-value-set="true">
-                    <?php
+                    <!-- <!?php
                     foreach ($responsables as $e) {
                         echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] .  " " . $e['apellido'] . "</option>";
                     }
-                    ?>
+                    ?> -->
                 </select>
             </div>
         </fieldset>
