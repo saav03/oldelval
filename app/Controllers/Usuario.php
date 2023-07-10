@@ -174,7 +174,7 @@ class Usuario extends BaseController
         ];
         $datos_perfil = [
             'fecha_creacion' => date('Y-m-d H:i:s'),
-            'fecha_first_login' => '',
+            'fecha_first_login' => '1970-01-01 00:00:00',
             'fecha_modificacion_perfil' => '',
             'panel_emergente' => 1, //1 activo, predeterminado
             'estilo' => 0   //claro-oscuro, 0 claro predeterminado

@@ -43,7 +43,8 @@ class Autoload extends AutoloadConfig
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config'      => APPPATH . 'Config',
-        'Dompdf\\' => APPPATH . 'ThirdParty/dompdf'
+        'Dompdf\\' => APPPATH . 'ThirdParty/dompdf',
+        'PHPExcel' => APPPATH . 'ThirdParty/PHPOffice/PhpSpreadsheet',
     ];
 
     /**

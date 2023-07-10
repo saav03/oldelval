@@ -202,7 +202,7 @@ class Permisos extends BaseController
             // === Desactivar Permisos ===
             if (count($permisos_unchecked) > 0) {
                 foreach ($permisos_unchecked as $p) {
-                    // $this->model_permisos->changeState($id_grupo[0], $p, 0);
+                    $this->model_permisos->changeState($id_grupo[0], $p, 0);
                 }
 
                 // $this->model_permisos->deletePermissionUser($permisos_unchecked, $id_grupo[0]);
@@ -219,19 +219,9 @@ class Permisos extends BaseController
                             'id_permiso' => $p,
                             'estado' => '1',
                         ];
-                        // $this->model_general->insertG('gg_rel_permiso_grupo', $datos);
+                        $this->model_general->insertG('gg_rel_permiso_grupo', $datos);
                     }
                 }
-
-                /*
-                ==
-                NO FUNCIONA ESTO ACA TE QUEDASTE, TENES QUE INSERTAR PERMISOS A CADA
-                USUARIO PERO NO SE TIENEN QUE DUPLICAR LOS MISMOS.
-                LO DEJASTE ACA PORQUE HAY Q SUBIR OLDELVAL
-                ==
-                */
-                $this->addGroupPermissionToUser($id_grupo[0], $permisos_checked);
-                exit;
             }
         } else {
             $permisos_checked = $this->request->getPost('permisos_checked');
