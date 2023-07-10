@@ -220,6 +220,11 @@ $routes->post('/TarjetaObs/submitDescargo/','TarjetaObservaciones::submitDescarg
 $routes->post('/TarjetaObs/submitRtaDescargo/','TarjetaObservaciones::submitRtaDescargo');
 $routes->post('/TarjetaObs/submitCerrarObs/','TarjetaObservaciones::submitCerrarObs');
 
+// HELPER
+$routes->get('/helper/testing','Helper::importDataExcel'); // COMENTADO POR LAS DUDAS DE AGREGARLO POR ERROR
+$routes->get('/helper/relacionPermisosGrupo/(:num)','Helper::relacionPermisosGrupo/$1');
+$routes->get('/helper/relacionPermisosGruposMayores/(:num)','Helper::relacionPermisosGruposMayores/$1');
+
 #V
 #X
 #Y

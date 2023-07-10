@@ -157,7 +157,7 @@
                     .done(function(data) {
                         successAlert("Se ha registrado su solicitud.").then((result) => {
                             if (result.isConfirmed) {
-                                // window.location.replace("<?= base_url('/Grupo/view/' . $grupo['id']) ?>");
+                                window.location.replace("<?= base_url('/Grupo/view/' . $grupo['id']) ?>");
                             }
                         })
                     })

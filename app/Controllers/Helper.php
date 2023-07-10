@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\Controller;
 use App\Libraries\MiClaseCompartida;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Helper extends Controller
 {
@@ -16,6 +17,10 @@ class Helper extends Controller
         helper('adjunto');
         $this->model_logs = model('Model_logs');
         $this->model_general = model('Model_general');
+        $this->model_usuario = model('Model_usuario');
+        $this->model_grupo = model('Model_grupo');
+        $this->model_movimiento = model('Model_movimiento');
+        $this->model_helper = model('Model_helper');
     }
 
     public function cargarArchivos($FILES_name, $path, $name_prefix, $bd_info, $descriptions, $quality = 65, $bd_info_multiple = false)
@@ -236,5 +241,181 @@ class Helper extends Controller
         $email->setSubject($subject);
         $email->setMessage($message);
         $email->send();
+    }
+
+    public function importDataExcel()
+    {
+        // Ruta del archivo Excel
+        $filePath = 'uploads/UsuariosEstadisticas.xlsx';
+
+        // Cargar el archivo Excel
+        $spreadsheet = IOFactory::load($filePath);
+
+        // Obtener la primera hoja del archivo
+        $worksheet = $spreadsheet->getActiveSheet();
+        $data = [];
+
+        // Obtener los datos de la hoja y guardarlos en la base de datos
+        $escaparPrimerFila = true; // Bandera para obvuar la primer fila de los titulos de la tabla excel
+        foreach ($worksheet->getRowIterator() as $row) {
+            $aux = 0;
+            $rowData = [];
+            if ($escaparPrimerFila) {
+                $escaparPrimerFila = false;
+                continue;
+            }
+            foreach ($row->getCellIterator() as $cell) {
+
+                switch ($aux) {
+                    case '4':
+                        if (intval($cell->getValue())) {
+                            $formattedDate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($cell->getValue())->format('Y-m-d');
+                            $rowData[] = $formattedDate;
+                        } else {
+                            $rowData[] = $cell->getValue();
+                        }
+                        break;
+                    case '7':
+                        $telefono = str_replace(" ", "", $cell->getValue());
+                        $rowData[] = $telefono;
+                        break;
+                    default:
+                        $rowData[] = $cell->getValue();
+                        break;
+                }
+                $aux++;
+            }
+            $data[] = $rowData;
+        }
+
+        // Insertar los datos obtenidos en una array bien formateado
+
+        $datos_sql = [];
+        $datos_perfil = [
+            'fecha_creacion' => date('Y-m-d H:i:s'),
+            'fecha_first_login' => '',
+            'fecha_modificacion_perfil' => '',
+            'panel_emergente' => 1, //1 activo, predeterminado
+            'estilo' => 0   //claro-oscuro, 0 claro predeterminado
+        ];
+
+        foreach ($data as $key => $value) {
+
+            $test = [];
+            for ($i = 0; $i < count($value); $i++) {
+
+                switch ($i) {
+                    case '0':
+                        $test['apellido'] = $value[$i];
+                        break;
+                    case '1':
+                        $test['nombre'] = $value[$i];
+                        break;
+                    case '2':
+                        $test['dni'] = $value[$i];
+                        $test['clave'] = password_hash($value[$i], PASSWORD_DEFAULT);
+                        break;
+                    case '3':
+                        $test['competencia'] = $value[$i];
+                        break;
+                    case '4':
+                        $test['fecha_nacimiento'] = $value[$i];
+                        break;
+                    case '5':
+                        $test['empresa'] = $value[$i];
+                        break;
+                    case '6':
+                        $test['correo'] = $value[$i];
+                        break;
+                    case '7':
+                        $test['telefono'] = $value[$i];
+                        break;
+                    case '8':
+                        $test['localidad'] = $value[$i];
+                        break;
+                    case '9':
+                        $test['id_grupo'] = $value[$i];
+                        $test['id_usuario_creador'] = 3;
+                        break;
+                }
+            }
+            $datos_sql[] = $test;
+        }
+
+        // Inserto los usuarios a la BD
+        for ($i = 0; $i < 7; $i++) {
+            $grupos = [];
+            $results = $this->model_usuario->add($datos_sql[$i]);
+            $last_id = $results['last_id'];
+            $datos_perfil['id_usuario'] = $last_id;
+            $this->model_usuario->addDatosPerfil($datos_perfil);
+            $grupos[] = $datos_sql[$i]['id_grupo'];
+            $results = $this->model_grupo->vincularUsuario($grupos, $last_id);
+            $this->newMov(1, 1, $last_id); //Movimiento
+        }
+        echo "Todo joyaa!!";
+    }
+
+    /**
+     * Esto es la relación que va a tener cada usuario la primera vez que se crea
+     * Agarra el ID del grupo, captura los permisos que pertenece a ese grupo
+     * e inserta esos permisos a la tabla gg_rel_usuario_permiso con el id del usuario
+     */
+    public function relacionPermisosGrupo($id_usuario)
+    {
+        $data = $this->model_helper->getGrupoRelUsuario($id_usuario);
+
+        $permisos = $this->model_helper->getPermisosFromGrupo($data['id_grupo']);
+        $id_permisos = [];
+        for ($i = 0; $i < count($permisos); $i++) {
+            $id_permisos[] = $permisos[$i]['id_permiso'];
+        }
+
+        foreach ($id_permisos as $id) {
+            $data = [
+                'id_usuario' => $id_usuario,
+                'id_permiso' => $id,
+            ];
+            $this->model_general->insertG('gg_rel_usuario_permiso', $data);
+        }
+    }
+
+    public function relacionPermisosGruposMayores($usuario_mayor)
+    {
+        $usuarios = $this->model_helper->getGrupoRelUsuarioMayores($usuario_mayor);
+        
+        for ($i = 0; $i < count($usuarios); $i++) {
+            $permisos = $this->model_helper->getPermisosFromGrupo($usuarios[$i]['id_grupo']);
+
+            $id_permisos = [];
+            for ($j = 0; $j < count($permisos); $j++) {
+                $id_permisos[] = $permisos[$j]['id_permiso'];
+            }
+
+            foreach ($id_permisos as $id) {
+                $data = [
+                    'id_usuario' => $usuarios[$i]['id'],
+                    'id_permiso' => $id,
+                ];
+                $this->model_general->insertG('gg_rel_usuario_permiso', $data);
+            }
+        }
+        echo "¡Cargó todos los permisos de diez perruno!";
+
+    }
+
+
+    public function newMov($id_modulo, $accion, $id_afectado = null, $id_input = null) //$id_input es para la edicion, identifica que input fue modificado
+    {
+        $model_movimiento = model('Model_movimiento');
+        $datos = [
+            // 'id_usuario' => session()->get('id_usuario'),
+            'id_usuario' => 3,
+            'id_modulo' => $id_modulo,
+            'id_accion' => $accion,
+            'id_afectado' => $id_afectado,
+            'comentario' => $id_input
+        ];
+        $model_movimiento->add($datos);
     }
 }
