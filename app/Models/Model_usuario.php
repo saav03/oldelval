@@ -99,7 +99,8 @@ class Model_usuario extends Model
             ->join('gg_rel_usuario_permiso ggrup' ,'ggrup.id_usuario=u.id', 'join')
             ->where('u.empresa', $id_empresa)
             ->where('u.id !=', $id_usuario_logueado)
-            ->where('ggrup.id_permiso', 46);
+            ->where('ggrup.id_permiso', 46)
+            ->orderBy('u.id');
         return $builder->get()->getResultArray();
     }
 
