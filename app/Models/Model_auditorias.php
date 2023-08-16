@@ -335,9 +335,10 @@ class Model_auditorias extends Model
     public function getBloqueCompletoAudVehicular($id_auditoria)
     {
         $builder = $this->db->table('auditoria_vehicular aud_vehicular');
-        $builder->select('aud_vehicular.id id_auditoria, aud_vehicular.modelo_tipo, aud_vehicular.equipo, CONCAT(conductor.nombre, " ", conductor.apellido) conductor, aud_vehicular.num_interno, aud_vehicular.marca, aud_vehicular.modelo, aud_vehicular.patente, CONCAT(titular.nombre, " ", titular.apellido) titular, aud_vehicular.fecha, aud_vehicular.hora, proyectos.nombre proyecto, tarea_que_realiza, resultado_inspeccion, medidas_implementar, DATE_FORMAT(aud_vehicular.fecha_hora_carga, "%d/%m/%Y") fecha_carga_format, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
+        $builder->select('aud_vehicular.id id_auditoria, aud_vehicular.modelo_tipo, cont.nombre as contratista, aud_vehicular.equipo, CONCAT(conductor.nombre, " ", conductor.apellido) conductor, aud_vehicular.num_interno, aud_vehicular.marca, aud_vehicular.modelo, aud_vehicular.patente, CONCAT(titular.nombre, " ", titular.apellido) titular, aud_vehicular.fecha, aud_vehicular.hora, proyectos.nombre proyecto, tarea_que_realiza, resultado_inspeccion, medidas_implementar, DATE_FORMAT(aud_vehicular.fecha_hora_carga, "%d/%m/%Y") fecha_carga_format, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
             ->join('usuario conductor', 'conductor.id=aud_vehicular.conductor', 'inner')
             ->join('usuario titular', 'titular.id=aud_vehicular.titular', 'inner')
+            ->join('empresas cont', 'cont.id = aud_vehicular.contratista', 'left')
             ->join('proyectos', 'proyectos.id=aud_vehicular.proyecto', 'inner')
             ->join('usuario u_carga', 'u_carga.id=aud_vehicular.usuario_carga', 'left')
             ->where('aud_vehicular.id', $id_auditoria);

@@ -30,11 +30,15 @@
     <div class="card">
         <div class="card-body" style="margin: 20px;">
             <div class="row">
-                <div class="col-xs-12 col-md-3 text-center">
+            <div class="col-xs-12 col-md-2 text-center">
+                    <label class="sz_inp fw-semibold text-center">Contratista</label>
+                    <input type="text" class="form-control sz_inp" value="<?= isset($auditoria['contratista']) ? $auditoria['contratista'] : 'No Aplica'; ?>" readonly>
+                </div>
+                <div class="col-xs-12 col-md-2 text-center">
                     <label class="sz_inp fw-semibold text-center">Equipo</label>
                     <input type="text" class="form-control sz_inp" value="<?= isset($auditoria['equipo']) ? $auditoria['equipo'] : 'No Aplica'; ?>" readonly>
                 </div>
-                <div class="col-xs-12 col-md-3 text-center">
+                <div class="col-xs-12 col-md-2 text-center">
                     <label class="sz_inp fw-semibold text-center">Conductor</label>
                     <input type="text" class="form-control sz_inp" value="<?= isset($auditoria['conductor']) ? $auditoria['conductor'] : 'No Aplica'; ?>" readonly>
                 </div>
