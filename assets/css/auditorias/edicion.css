@@ -1,0 +1,258 @@
+/*
+INDEX
+views/auditoria_edicion/index.php
+*/
+#toggle_aud_control,
+#toggle_aud_vehicular,
+#toggle_aud_tarea_de_campo,
+#toggle_aud_auditorias {
+    display: none;
+}
+
+.content,
+.content_vehicular,
+.content_tarea_de_campo,
+.content_auditorias {
+    max-height: 0;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    transition: all 0.4s ease-in-out;
+}
+
+#toggle_aud_control:checked~.content {
+    max-height: 500px !important;
+    transition: all 0.4s ease-in-out;
+}
+
+#toggle_aud_vehicular:checked~.content_vehicular {
+    max-height: 500px !important;
+    transition: all 0.4s ease-in-out;
+}
+
+#toggle_aud_tarea_de_campo:checked~.content_tarea_de_campo {
+    max-height: 500px !important;
+    transition: all 0.4s ease-in-out;
+}
+
+#toggle_aud_auditorias:checked~.content_auditorias {
+    max-height: 500px !important;
+    transition: all 0.4s ease-in-out;
+}
+
+.anuncio {
+    background-color: white;
+    margin-bottom: 10px;
+    box-shadow: -1px -1px 10px -7px rgba(173, 173, 173, 0.75);
+    border-radius: 5px;
+    border: 1px solid #f9f9f9;
+    border-left: 1.5px solid lightblue;
+    padding: 10px;
+}
+
+.obsoleto {
+    background: #e1e1e1;
+    border-left: 2px solid gray;
+}
+
+.activo {
+    background: #bef8be;
+    border-left: 2px solid #6bd76b;
+}
+
+.td_acciones {
+    text-decoration: none;
+    background: #a4bfe4;
+    padding: 3px 20px;
+    color: white;
+    border-radius: 5px;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+
+.btn-aud_active {
+    width: 100%;
+}
+@media (min-width: 768px) {
+    /* Estilos para pantallas de hasta 768px de ancho */
+    .btn-aud_active {
+        width: 25%;
+    }
+}
+
+
+
+
+
+
+
+/*
+VIEW
+views/auditoria_edicion/view.php
+*/
+.title_revision div:first-child {
+    flex-direction: column;
+}
+
+.title_revision h5 {
+    font-size: 12px;
+}
+
+.title_revision span {
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+@media (min-width: 768px) { /* Estilos para pantallas de hasta 768px de ancho */
+    .title_revision div:first-child {
+        flex-direction: row;
+    }
+
+    .title_revision h5 {
+        font-size: 20px;
+    }
+
+    .title_revision span {
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+}
+
+.section_subtitle span {
+    background-color: lightgray;
+    border-radius: 5px;
+    padding: 0 5px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-style: italic;
+}
+
+.btn_edition,
+.btn_cancel {
+    padding: 6px 10px;
+    color: white;
+    font-weight: bold;
+    letter-spacing: .5px;
+    border-radius: 5px;
+    transition: all .2s ease-in-out;
+}
+
+.btn_edition {
+    border: 1px solid #9dbdf1;
+    background-color: #a6c2f0;
+}
+
+.btn_edition:hover {
+    background-color: #a6c2f0;
+}
+
+.btn_cancel {
+    border: 1px solid #f59b9b;
+    background-color: #de8787;
+}
+
+.btn_cancel:hover {
+    background-color: #d67474;
+}
+
+.add_question {
+    display: none;
+}
+
+.btn_del_question {
+    background: #f36060;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 0 8px;
+}
+
+.btn_add_question,
+.btn_add_new_question {
+    border: none;
+    border-radius: 100%;
+    background: none;
+    color: #a1a1a1;
+    font-size: 28px;
+}
+
+.alert_important {
+    background: #ffc150;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: .8px;
+    padding: 3px 10px;
+    border-radius: 5px;
+}
+
+.title_auditoria {
+    font-size: 16px;
+    color: #64748B;
+}
+
+.subt_question {
+    border-top: 1px solid #f1f1f1;
+    border-right: 1px solid #f1f1f1;
+    border-left: 1px solid #f1f1f1;
+    font-weight: 500;
+    color: #64748B;
+    font-size: 17px;
+    margin-bottom: 10px;
+    border-radius: 0;
+    border-bottom: 2px solid #e7b150;
+}
+
+.subt_question:disabled {
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    background-color: transparent;
+}
+
+#visible_btn_submit {
+    display: none;
+}
+
+.alert_revision {
+    background: #ffbb5ac7;
+    font-weight: 500;
+    border-radius: 5px;
+    border: 1px solid #e79f39c7;
+}
+
+.point {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: #e7b150;
+    margin-right: 5px;
+}
+
+#text-area_question {
+    width: 100%;
+    resize: vertical;
+    height: 5em;
+}
+
+@media (min-width: 768px) {
+
+    /* Estilos para pantallas de hasta 768px de ancho */
+    #text-area_question {
+        height: 2em;
+    }
+}
+
+#add_new_bloque {
+    border: none;
+    background: #87affd;
+    color: white;
+    font-weight: bold;
+    padding: 6px;
+    border-radius: 5px;
+    letter-spacing: .4px;
+    transition: all .2s ease-in-out;
+}
+
+#add_new_bloque:hover {
+    background: #749ae6;
+}

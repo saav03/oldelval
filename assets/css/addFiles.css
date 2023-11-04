@@ -1,0 +1,57 @@
+.btn_add {
+    background-color: #608ad0;
+    border: 1px solid #608ad0;
+    color: #f2f6fc;
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+.btn_add:hover {
+    background-color: #5384b4;
+    color: white;
+}
+
+.fileAdderDelete{
+    height: 33px;  
+    width: 38px;
+    padding: 2px;
+    background-color: #f76d69;  
+}
+
+.fileAddDescription{
+    margin-right: 15px;
+    max-width: 500px;
+    border-radius: 5px;
+    border: 1px solid #f1f1f1;
+    resize: vertical;
+    padding: 8px;
+    color: black;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.fileAddImage {
+    border-radius: 30px;
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    min-height: 125px;
+    max-height: 150px;
+    object-fit: cover;
+    outline: 1.5px solid silver;
+    -webkit-box-shadow: 0px 0px 12px 0px rgba(166,159,166,1);
+    -moz-box-shadow: 0px 0px 12px 0px rgba(166,159,166,1);
+    box-shadow: 0px 0px 12px 0px rgba(166,159,166,1);
+    margin-right: 30px;
+    margin-bottom: 15px;
+}
+
+.fileAddPDF {
+    font-size: 121px;
+    width: 100%;
+    padding-left: 26px;
+    max-width: 150px;
+    min-height: 125px;
+    margin-bottom: 15px;
+    margin-right: 30px;
+    color: #d9534f;
+}

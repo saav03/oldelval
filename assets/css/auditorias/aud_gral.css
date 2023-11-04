@@ -1,0 +1,272 @@
+/** Auditoría Logistica Check **/
+.btn-group-toggle {
+    border: 1px solid lightgray;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    color: white;
+}
+
+.rojo,
+.verde,
+.amarillo,
+.blanco {
+    font-size: 13px;
+    border: none;
+}
+
+.rojo {
+    border-right: 1px solid lightgray;
+}
+
+.verde {
+    border-right: 1px solid lightgray;
+    border-radius: 4px 0 0 4px;
+}
+
+.blanco {
+    border-right: 1px solid lightgray;
+    border-radius: 4px 0 0 4px;
+}
+
+.amarillo {
+    border-radius: 0 4px 4px 0;
+}
+
+.btnsToggle {
+    border-bottom: 3px solid lightgray;
+}
+
+.btn_gral_check:checked+.blanco {
+    box-shadow: inset 0px 0px 15px -4px rgba(74, 111, 168, 1);
+    background-color: #dbe8ff;
+    border: none;
+    border-bottom: 3px solid #7ea0da;
+    font-weight: 500;
+}
+
+.blanco_check:checked+.blanco {
+    box-shadow: inset 0px 0px 32px 0px rgb(236, 236, 236);
+    background-color: #f9f9f9;
+    border: none;
+    border-bottom: 3px solid #CACACA;
+}
+
+.verde_check:checked+.verde {
+    box-shadow: inset 0px 0px 17px 0px rgba(124, 184, 76, 1);
+    background-color: #E9FFCA;
+    border: none;
+    border-bottom: 3px solid rgb(102 181 114);
+}
+
+.rojo_check:checked+.rojo {
+    box-shadow: inset 0px 0px 17px 0px rgba(189, 53, 53, 1);
+    background-color: #F1B7B3;
+    border: none;
+    border-bottom: 3px solid rgb(159 59 59);
+}
+
+.amarillo_checked:checked+.amarillo {
+    box-shadow: inset 0px 0px 17px 0px rgba(233, 220, 118);
+    background-color: #f9f3d6;
+    border: none;
+    border-bottom: 3px solid rgba(235, 202, 120, 1);
+}
+
+.div-subtitle_aud {
+    margin: 0;
+}
+
+.subtitle_aud,
+.subtitle_aud_check {
+    font-size: 15px;
+    color: black;
+    letter-spacing: .7px;
+    padding: 5px 30px;
+    background-color: #f5e1ce;
+    margin: 0;
+    display: inline-block;
+    border-radius: 0 0 4px 4px;
+}
+
+.subtitle_aud_t,
+.subtitle_aud_check_t {
+    font-size: 15px;
+    color: black;
+    letter-spacing: .7px;
+    padding: 5px 30px;
+    background-color: #f5ceceab;
+    margin: 0;
+    display: inline-block;
+    border-radius: 0 0 4px 4px;
+}
+
+.subtitle_aud {
+    background-color: #f5e1ce;
+}
+
+.subtitle_aud_t {
+    background-color: #f5ceceab;
+}
+
+.subtitle_aud_check {
+    background-color: #CCFFCC;
+
+}
+
+.div-subtitle_aud::before {
+    content: '';
+    display: block;
+    border-top: 4px solid #f5e1ce;
+    margin: 0 0 0 auto;
+}
+.div-subtitle_aud_t::before {
+    content: '';
+    display: block;
+    border-top: 4px solid #f5ceceab;
+    margin: 0 0 0 auto;
+}
+
+
+.div-subtitle_aud_t_check::before {
+    content: '';
+    display: block;
+    border-top: 4px solid #f5ceceab;
+    margin: 0 0 0 auto;
+}
+
+.div-subtitle_aud_t_check::before {
+    content: '';
+    display: block;
+    border-top: 4px solid #f5ceceab;
+    margin: 0 0 0 auto;
+}
+
+.flex-container_questions {
+    width: 98%;
+    margin: 0 auto;
+    border-bottom: 1px solid lightgray;
+    font-size: 13px;
+}
+
+.comment_accion {
+    height: 150px !important;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.btn-comment {
+    background: lightblue;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    letter-spacing: .4px;
+    cursor: pointer;
+}
+
+fieldset {
+    margin: 10px auto;
+    border: 1px solid #e5e5e5;
+}
+
+legend {
+    color: #505050;
+    font-size: 14px;
+    padding: 3px 5px;
+    width: auto;
+    border-radius: 4px;
+    float: inherit;
+    margin: 0 20px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/** view_control.php **/
+.card_modif_aud {
+    background: white;
+    border-left: 3px solid #608ad0;
+    border-bottom: 2px solid #f1f1f1;
+    color: #64748B;
+    padding: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    z-index: 1;
+}
+
+.card_title_initial {
+    box-shadow: 0px 0 30px rgb(179 179 179 / 39%);
+    border-radius: 0;
+    width: 30%;
+    border-radius: 20px;
+}
+
+.disabled_btn {
+    background-color: #f6f6f6;
+    pointer-events: none;
+}
+
+.title_comment::after {
+    content: " ";
+    display: block;
+    border-bottom: 1px solid gray;
+    width: 15%;
+    margin: 0 auto;
+}
+
+.comment-question_rta textarea {
+    width: 80%;
+    margin: 10px auto;
+    color: #64748B;
+}
+
+/** view_control.php | view_vehicular.php **/
+
+.drop_down,
+.drop_up {
+    font-size: 18px;
+    background: #f0f2f3;
+    padding: 5px 20px;
+    border-radius: 13%;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+#drop_down_1 {
+    display: none;
+}
+
+.drop_down:hover {
+    background: #f0f0f0;
+}
+
+.drop_up:hover {
+    background: #f0f0f0;
+}
+
+.arrow {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid lightgray;
+    transition: all .2s ease-in-out;
+    /* Cambia el color del borde según tus necesidades */
+}
+
+/* .arrow.up {
+    transform: rotate(180deg);
+} */
+.arrow.down {
+    transform: rotate(180deg);
+}
+
+.card_bloque {
+    max-height: 10px;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+}

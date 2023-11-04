@@ -1,0 +1,132 @@
+.est_fuera_tiempo {
+  text-align: center;
+  background: #ffd27e47;
+  color: #bb7e0e;
+  border-radius: 5px;
+}
+
+.indicadores_valor {
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.est_fuera_tiempo p {
+  margin: 0;
+  padding: 5px;
+}
+
+.data_est {
+  text-align: center;
+  background: lightblue;
+  border-radius: 5px;
+  padding: 5px 0;
+  color: white;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+}
+
+.data_est p {
+  margin: 0;
+}
+
+.indicador {
+  font-size: 14px;
+  border-bottom: 3px solid #b3e5be;
+  border-radius: 3px;
+}
+
+.div_indicador_view {
+  border-bottom: 2px solid #f5f5f5;
+  padding-bottom: 5px;
+}
+
+.div_indicador_view p {
+  margin: 0;
+}
+
+.ind-just_read {
+  background: #f9f9f970;
+  box-shadow: inset 0px 0px 18px 0px rgb(239 239 239);
+}
+
+.form-control:disabled {
+  background-color: white !important;
+}
+
+.dot {
+  height: 7px;
+  width: 7px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.answer {
+  font-size: 10px;
+  background: #89becf;
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-left: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.answer:hover {
+  background: lightblue;
+  color: white;
+}
+
+.subt_view {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  background: #d8f1f9;
+  width: 100%;
+  margin: 5px auto;
+  border-radius: 50px;
+  padding: 5px 0;
+  text-align: center;
+  color: #5e5e5e;
+}
+
+@media (min-width: 460px) {
+  .subt_view {
+    width: 35%;
+  }
+}
+
+.contenedor-ind_subt {
+  border-left: 4px solid lightblue;
+  border-right: 4px solid lightblue;
+  border-radius: 7px;
+  width: 90%;
+  margin: 0 auto;
+  border-top: 1px solid #d1f4ff;
+  border-bottom: 1px solid #d1f4ff;
+}
+
+.subtitle {
+  background: lightblue;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  margin-top: 10px;
+}
+#btnSubmitIndice {
+  background: #b8caff;
+  border: none;
+  padding: 5px;
+  color: white;
+}
+#btnSubmitIndice:hover {
+  background: #a1b5ee;
+}

@@ -1,0 +1,79 @@
+
+/** aud_plan_control.php **/
+.icono_alerta {
+    animation-name: parpadeo;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    -webkit-animation-name: parpadeo;
+    -webkit-animation-duration: 1.5s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+}
+
+@-moz-keyframes parpadeo {
+    0% {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.0;
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@-webkit-keyframes parpadeo {
+    0% {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.0;
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@keyframes parpadeo {
+    0% {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.0;
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+.txt_adjunto {
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+}
+
+.txt_adjunto::after {
+    content: "";
+    display: block;
+    border-bottom: 2px solid #abc3c3;
+    width: 40%;
+    margin: 5px auto;
+}
+
+#img_descargo {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 60%;
+    height: auto;
+    max-height: 150px;
+    object-fit: cover;
+}

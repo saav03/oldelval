@@ -1,0 +1,247 @@
+.input-perfil {
+  background-color: #fff;
+  margin-top: -5px;
+}
+
+.ind_subt_total {
+  background: #f9f9f9;
+  box-shadow: inset 0px 0px 18px 0px rgb(239 239 239);
+}
+
+.ind-just_read {
+  background: #f9f9f970;
+  box-shadow: inset 0px 0px 18px 0px rgb(239 239 239);
+}
+
+.border-perfil {
+  position: relative;
+  margin: 0 40px;
+  padding: 13px 0;
+  overflow: hidden;
+  border-top: 1px solid #f2f2f2;
+}
+
+.border-perfil-top {
+  position: relative;
+  margin: 0 40px;
+  padding: 13px 0;
+  overflow: hidden;
+}
+
+.header-perfil {
+  border: none;
+  padding: 8px 0px;
+}
+
+.check-perfil {
+  width: 3rem !important;
+  height: 1.5rem;
+}
+
+.check-row {
+  width: 100%;
+  display: flex;
+  text-align: end;
+}
+
+.row {
+  padding: 5px 0px;
+}
+
+.div_indicador {
+  border-bottom: 1px solid #e9e9e9;
+  padding-bottom: 5px;
+}
+
+.div-personal_ind {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.div_indicador p {
+  margin: 0;
+}
+
+.name_indicador {
+  font-size: 13px;
+  margin: 0;
+}
+
+.div-ind_icono {
+  display: flex;
+  align-items: center;
+}
+
+.div-ind_icono small {
+  display: flex;
+  align-items: center;
+  background: #b7ceef;
+  font-weight: bold;
+  color: white;
+  margin-right: 10px;
+  letter-spacing: 0.5px;
+  border-radius: 3px;
+  padding: 2px 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.div-ind_icono small:hover {
+  background-color: #9dbdeb;
+}
+
+.div-ind_icono svg {
+  margin-left: 3px;
+}
+
+.collapse textarea,
+label {
+  font-size: 13px;
+}
+
+.title_indicador {
+  margin: 10px auto;
+  padding: 0 0 7px 0;
+  border-bottom: 2px solid #fbbf52;
+  width: 90%;
+}
+
+.title_indicador h6 {
+  margin: 0;
+  text-align: center;
+}
+
+.subtitle_indicador {
+  border-left: 4px solid lightblue;
+  padding: 5px;
+  margin-left: 4px;
+  margin-top: 5px;
+}
+
+@media (min-width: 700px) {
+  .title_indicador {
+    width: 24%;
+  }
+
+  .subtitle_indicador {
+    margin-left: 13px;
+    padding: 10px;
+    margin-top: 0px;
+  }
+}
+
+.dot {
+  height: 7px;
+  width: 7px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+fieldset {
+  width: 90% !important;
+  margin: 30px auto;
+  border: 1px solid #e5e5e5;
+}
+
+legend {
+  color: #747474;
+  font-size: 14px;
+  padding: 3px 5px;
+  width: auto;
+  border-radius: 4px;
+  float: inherit;
+  margin: 0 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* #btnSubmitEstadistica {
+  border: 2px solid gray;
+  color: gray;
+  font-weight: 500;
+  transition: all .2s ease-in-out;
+}
+
+#btnSubmitEstadistica:hover {
+  border: 2px solid lightblue;
+  background: #f2fcff;
+} */
+
+/* == Adjuntos Estadísticas Capacitaciones == */
+
+.div_img_clip {
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  background: lightgray;
+  border-radius: 5px 0 0 5px;
+  padding: 9px;
+  box-shadow: 1px 0px 5px 0px rgb(229 226 226 / 75%);
+}
+
+.div_img_clip svg {
+  font-size: 20px;
+}
+
+.img_clip {
+  width: 38px;
+}
+
+.adjuntar_archivo {
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+.adjuntar_archivo p {
+  padding: 9px 25px 9px 25px;
+  margin: 0;
+  box-shadow: 1px 0px 5px 0px rgb(229 226 226 / 75%);
+  border-radius: 0 20px 20px 0;
+}
+
+.adjuntar_archivo:hover {
+  background-color: #f9f9f9;
+  border-radius: 0 20px 20px 0;
+  box-shadow: 1px 0px 5px 0px rgb(229 226 226 / 75%);
+}
+
+.btn-del_inc {
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  color: #606060;
+  transition: all .3s ease-in;
+}
+
+.btn-del_inc svg {
+  font-size: 15px;
+}
+
+.btn-del_inc:hover {
+  background-color: #f3f3f3;
+}
+
+.i-question_modal {
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+.i-question_modal:hover {
+  color: rgb(120, 196, 221);
+}
+
+#btn_selectEmpresa {
+  cursor: pointer;
+}
+
+#modulo[readonly] {
+  
+  pointer-events: none;
+}
