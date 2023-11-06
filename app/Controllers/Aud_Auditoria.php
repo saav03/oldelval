@@ -88,25 +88,28 @@ class Aud_auditoria extends Auditorias
 
                         # _ Usuario quien carga
                         $emails[] = $datos_emails['correo_usuario_carga'];
-                        // $helper->sendMail($datos_emails, 'Nueva Auditoría de Tipo Auditoria #', $url, 'emails/auditorias/auditoria/nueva', $emails);
+                        $helper->sendMail($datos_emails, 'Nueva Auditoría de Tipo Auditoria #', $url, 'emails/auditorias/auditoria/nueva', $emails);
 
                         # _ Responsable
                         $emails = [];
                         $emails[] = $datos_emails['correo_responsable'];
-                        // $helper->sendMail($datos_emails, 'Nueva Auditoría de Tipo Auditoria #', $url, 'emails/auditorias/auditoria/responsable', $emails);
+                        $helper->sendMail($datos_emails, 'Nueva Auditoría de Tipo Auditoria #', $url, 'emails/auditorias/auditoria/responsable', $emails);
 
                         # _ Relevo Responsable (¡Si existe!)
                         if (isset($datos_emails['correo_relevo'])) {
                             $emails = [];
                             $emails[] = $datos_emails['correo_relevo'];
-                            // $helper->sendMail($datos_emails, 'Nueva Auditoría de Tipo Auditoria #', $url, 'emails/auditorias/auditoria/relevo', $emails);
+                            $helper->sendMail($datos_emails, 'Nueva Auditoría de Tipo Auditoria #', $url, 'emails/auditorias/auditoria/relevo', $emails);
                         }
+
+                        newMov(9, 1, $id_aud, 'Inspección de Auditoría'); //Movimiento (Registra el ID de la Inspección de Auditoría creada)
                     } else {
                         echo json_encode($result_plan['errores']);
                     }
                 } else {
                     $id_aud = $this->model_general->insertG('auditoria_auditoria', $datos);
                     parent::submitRtaPreguntasAud($id_aud, 4, 4, $bloque_respuestas_a, $comentarios_preguntas_a);
+                    newMov(9, 1, $id_aud, 'Inspección de Auditoría'); //Movimiento (Registra el ID de la Inspección de Auditoría creada)
                 }
             else:
                 echo json_encode($result_requiere['errores']);

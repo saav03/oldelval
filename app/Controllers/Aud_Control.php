@@ -88,25 +88,29 @@ class Aud_Control extends Auditorias
 
                         # _ Usuario quien carga
                         $emails[] = $datos_emails['correo_usuario_carga'];
-                        // $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/nueva', $emails);
+                        $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/nueva', $emails);
 
                         # _ Responsable
                         $emails = [];
                         $emails[] = $datos_emails['correo_responsable'];
-                        // $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/responsable', $emails);
+                        $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/responsable', $emails);
 
                         # _ Relevo Responsable (¡Si existe!)
                         if (isset($datos_emails['correo_relevo'])) {
                             $emails = [];
                             $emails[] = $datos_emails['correo_relevo'];
-                            // $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/relevo', $emails);
+                            $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/relevo', $emails);
                         }
+
+                        newMov(9, 1, $id_aud, 'Inspección de Control'); //Movimiento (Registra el ID de la Inspección de Control creada)
+                        
                     } else {
                         echo json_encode($result_plan['errores']);
                     }
                 } else {
                     $id_aud = $this->model_general->insertG('auditoria_control', $datos);
                     parent::submitRtaPreguntasAud($id_aud, 1, 1, $bloque_respuestas, $comentarios_preguntas);
+                    newMov(9, 1, $id_aud, 'Inspección de Control'); //Movimiento (Registra el ID de la Inspección de Control creada)
                 }
             else :
                 echo json_encode($result_requiere['errores']);

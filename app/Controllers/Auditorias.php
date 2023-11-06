@@ -632,7 +632,7 @@ class Auditorias extends BaseController
             }
 
             // La auditoría anterior la actualizamos para que quede obsoleta
-            $id_auditoria = $this->request->getPost('id_auditoria');
+            $id_auditoria_old = $this->request->getPost('id_auditoria');
             
             $data_auditoria_old = [
                 'obsoleto' => 1,
@@ -640,8 +640,12 @@ class Auditorias extends BaseController
                 'fecha_hora_edicion' => date('Y-m-d H:i:s')
             ];
 
-            $this->model_general->updateG('auditorias_titulos', $id_auditoria, $data_auditoria_old);
+            $this->model_general->updateG('auditorias_titulos', $id_auditoria_old, $data_auditoria_old);
 
+            # Registrar los movimientos
+            newMov(9, 3, $id_auditoria_old, 'Inspección: Auditoría Obsoleta'); //Movimiento (Registra el ID de la auditoría obsoleta)
+            newMov(9, 1, $id_auditoria, 'Inspección: Nueva Revisión'); //Movimiento (Registra el ID de la auditoría con nueva revisión)
+            
             // Finaliza la transacción
             $model->db->transCommit();
 

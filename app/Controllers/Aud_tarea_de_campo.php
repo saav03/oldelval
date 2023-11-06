@@ -91,25 +91,29 @@ class Aud_tarea_de_campo extends Auditorias
 
                         # _ Usuario quien carga
                         $emails[] = $datos_emails['correo_usuario_carga'];
-                        // $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea De Campo #', $url, 'emails/auditorias/tarea_de_campo/nueva', $emails);
+                        $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea De Campo #', $url, 'emails/auditorias/tarea_de_campo/nueva', $emails);
 
                         # _ Responsable
                         $emails = [];
                         $emails[] = $datos_emails['correo_responsable'];
-                        // $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea de Campo #', $url, 'emails/auditorias/tarea_de_campo/responsable', $emails);
+                        $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea de Campo #', $url, 'emails/auditorias/tarea_de_campo/responsable', $emails);
 
                         # _ Relevo Responsable (¡Si existe!)
                         if (isset($datos_emails['correo_relevo'])) {
                             $emails = [];
                             $emails[] = $datos_emails['correo_relevo'];
-                            // $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea de Campo #', $url, 'emails/auditorias/tarea_de_campo/relevo', $emails);
+                            $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea de Campo #', $url, 'emails/auditorias/tarea_de_campo/relevo', $emails);
                         }
+                        newMov(9, 1, $id_aud, 'Inspección de Tarea de Campo'); //Movimiento (Registra el ID de la Inspección de Tarea de Campo creada)
+
                     } else {
                         echo json_encode($result_plan['errores']);
                     }
                 } else {
+                    
                     $id_aud = $this->model_general->insertG('auditoria_tarea_de_campo', $datos);
                     parent::submitRtaPreguntasAud($id_aud, 3, 3, $bloque_respuestas_t, $comentarios_preguntas_t);
+                    newMov(9, 1, $id_aud, 'Inspección de Tarea de Campo'); //Movimiento (Registra el ID de la Inspección de Tarea de Campo creada)
                 }
             else:
                 echo json_encode($result_requiere['errores']);

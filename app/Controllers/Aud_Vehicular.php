@@ -95,25 +95,29 @@ class Aud_Vehicular extends Auditorias
 
                         # _ Usuario quien carga
                         $emails[] = $datos_emails['correo_usuario_carga'];
-                        // $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/nueva', $emails);
+                        $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/nueva', $emails);
 
                         # _ Responsable
                         $emails = [];
                         $emails[] = $datos_emails['correo_responsable'];
-                        // $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/responsable', $emails);
+                        $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/responsable', $emails);
 
                         # _ Relevo Responsable (¡Si existe!)
                         if (isset($datos_emails['correo_relevo'])) {
                             $emails = [];
                             $emails[] = $datos_emails['correo_relevo'];
-                            // $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/relevo', $emails);
+                            $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/relevo', $emails);
                         }
+
+                        newMov(9, 1, $id_aud, 'Inspección Vehicular'); //Movimiento (Registra el ID de la Inspección Vehicular creada)
+
                     } else {
                         echo json_encode($result_plan['errores']);
                     }
                 } else {
                     $id_aud = $this->model_general->insertG('auditoria_vehicular', $datos);
                     parent::submitRtaPreguntasAud($id_aud, 0, $modelo_tipo, $bloque_respuestas, $comentarios_preguntas, $tipo_obs);
+                    newMov(9, 1, $id_aud, 'Inspección Vehicular'); //Movimiento (Registra el ID de la Inspección Vehicular creada)
                 }
             else :
                 echo json_encode($result_requiere['errores']);
