@@ -213,7 +213,7 @@ class Model_tarjeta extends Model
 	public function getDataTarjeta($id_obs)
 	{
 		$builder = $this->db->table('tarjeta_observaciones tar_obs');
-		$builder->select('tar_obs.id id_tarjeta, tar_obs.tipo_observacion, tar_obs.observador, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, DATE_FORMAT(tar_obs.fecha_deteccion, "%d/%m/%Y") fecha_deteccion, tar_obs.tipo_observacion observacion, tar_obs.descripcion tar_descripcion, tar_obs.situacion, tar_obs.estado tar_estado, tar_obs.usuario_carga')
+		$builder->select('tar_obs.id id_tarjeta, tar_obs.tipo_observacion, tar_obs.significancia, tar_obs.observador, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, DATE_FORMAT(tar_obs.fecha_deteccion, "%d/%m/%Y") fecha_deteccion, tar_obs.tipo_observacion observacion, tar_obs.descripcion tar_descripcion, tar_obs.situacion, tar_obs.estado tar_estado, tar_obs.usuario_carga')
 			->join('proyectos', 'proyectos.id=tar_obs.proyecto', 'inner')
 			->join('modulos', 'modulos.id=tar_obs.modulo', 'left')
 			->join('estaciones_bombeo', 'estaciones_bombeo.id=tar_obs.estacion_bombeo', 'left')
@@ -225,9 +225,6 @@ class Model_tarjeta extends Model
 
 		/* == Cargo los efectos/impactos == */
 		$tarjeta['efectos'] = $this->getEfectosRelTarjeta($tarjeta['id_tarjeta']);
-		
-		/* == Cargo la significancia == */
-		$tarjeta['significancia'] = $this->getSignificanciaRelTarjeta($tarjeta['id_tarjeta']);
 		
 		/* == Cargo el hallazgo == */
 		$query_hallazgo = $this->getDataHallazgoTarjeta($id_obs);

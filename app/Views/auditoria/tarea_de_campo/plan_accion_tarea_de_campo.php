@@ -66,19 +66,19 @@
                 </legend>
                 <div class="text-center" style="padding: 19px 0!important;">
                     <div class="btn-group btn-group-toggle" style="width: 80%;" role="group" aria-label="">
-                        <input id="aceptable_t" type="checkbox" name="significancia_t[]" class="btn-check blanco_check"
+                        <input id="aceptable_t" type="radio" name="significancia_t" class="btn-check blanco_check"
                             value="1" autocomplete="off">
                         <label class="btn blanco btnsToggle riesgos" for="aceptable_t">Aceptable</label>
 
-                        <input id="moderado_t" type="checkbox" name="significancia_t[]" class="btn-check verde_check"
+                        <input id="moderado_t" type="radio" name="significancia_t" class="btn-check verde_check"
                             value="2" autocomplete="off">
                         <label class="btn verde btnsToggle riesgos" for="moderado_t">Moderado</label>
 
-                        <input id="significativo_t" type="checkbox" name="significancia_t[]"
+                        <input id="significativo_t" type="radio" name="significancia_t"
                             class="btn-check amarillo_checked" value="3" autocomplete="off">
                         <label class="btn amarillo btnsToggle riesgos" for="significativo_t">Significativo</label>
 
-                        <input id="intolerable_t" type="checkbox" name="significancia_t[]" class="btn-check rojo_check"
+                        <input id="intolerable_t" type="radio" name="significancia_t" class="btn-check rojo_check"
                             value="4" autocomplete="off">
                         <label class="btn rojo btnsToggle riesgos" for="intolerable_t">Intolerable</label>
                     </div>

@@ -25,7 +25,6 @@ class Aud_tarea_de_campo extends Auditorias
         $comentarios_preguntas_t = $this->request->getPost('comentarios_preguntas_t');
         var_dump($comentarios_preguntas_t);
         $oportunidad_mejora_t = $this->request->getPost('oportunidad_mejora_t');
-        // var_dump($oportunidad_mejora_t);
 
         $datos = [
             'modelo_tipo' => $this->request->getPost('tipo_auditoria_t'),
@@ -68,6 +67,7 @@ class Aud_tarea_de_campo extends Auditorias
                         'contratista' => $this->request->getPost('contratista_t'),
                         'responsable' => $this->request->getPost('responsable_plan_t'),
                         'relevo_responsable' => $this->request->getPost('relevo_responsable_plan_t'),
+                        'significancia' => $this->request->getPost('significancia_t'),
                         'fecha_cierre' => $this->request->getPost('fecha_cierre_t'),
                         'usuario_carga' => session()->get('id_usuario'),
                     ];
@@ -78,49 +78,37 @@ class Aud_tarea_de_campo extends Auditorias
                         $id_aud = $this->model_general->insertG('auditoria_tarea_de_campo', $datos);
                         parent::submitRtaPreguntasAud($id_aud, 3, 3, $bloque_respuestas_t, $comentarios_preguntas_t);
                         $datos_plan_accion_t['id_auditoria'] = $id_aud;
-                        // var_dump("Id_Aud", $id_aud);
-                        $significancia_t = $this->request->getPost('significancia_t');
-                        // var_dump("Significancia", $significancia);
                         $efectos_t = $this->request->getPost('efecto_impacto_t');
-                        // var_dump("efectos", $efectos);
 
-
-                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion_t, $significancia_t, $efectos_t);
+                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion_t, $efectos_t);
 
                         // # Se envía los E-Mails
                         $datos_emails = $this->model_aud_control->getDataHallazgoEmail_Tarea_campo($id_aud, $id_hallazgo, 3);
-                        // var_dump("datosEmail",$datos_emails);
                         $url = base_url('/auditorias/view_aud_tarea_campo/') . '/' . $datos_emails['id'];
-                        // var_dump("url",$url);
 
                         $datos_emails['url'] = $url;
-                        // var_dump("datos_email[]",$datos_emails['url']);
                         $emails = [];
-                        // var_dump("emails",$emails);
-
 
                         # _ Usuario quien carga
                         $emails[] = $datos_emails['correo_usuario_carga'];
-                        $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea De Campo #', $url, 'emails/auditorias/tarea_de_campo/nueva', $emails);
+                        // $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea De Campo #', $url, 'emails/auditorias/tarea_de_campo/nueva', $emails);
 
                         # _ Responsable
                         $emails = [];
                         $emails[] = $datos_emails['correo_responsable'];
-                        $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea de Campo #', $url, 'emails/auditorias/tarea_de_campo/responsable', $emails);
+                        // $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea de Campo #', $url, 'emails/auditorias/tarea_de_campo/responsable', $emails);
 
                         # _ Relevo Responsable (¡Si existe!)
                         if (isset($datos_emails['correo_relevo'])) {
                             $emails = [];
                             $emails[] = $datos_emails['correo_relevo'];
-                            $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea de Campo #', $url, 'emails/auditorias/tarea_de_campo/relevo', $emails);
+                            // $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea de Campo #', $url, 'emails/auditorias/tarea_de_campo/relevo', $emails);
                         }
                     } else {
                         echo json_encode($result_plan['errores']);
                     }
                 } else {
-                    // var_dump("Entra al else");
                     $id_aud = $this->model_general->insertG('auditoria_tarea_de_campo', $datos);
-                    // var_dump("id_aud", $id_aud);
                     parent::submitRtaPreguntasAud($id_aud, 3, 3, $bloque_respuestas_t, $comentarios_preguntas_t);
                 }
             else:

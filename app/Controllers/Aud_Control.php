@@ -63,6 +63,7 @@ class Aud_Control extends Auditorias
                         'contratista' => $this->request->getPost('contratista'),
                         'responsable' => $this->request->getPost('responsable_plan'),
                         'relevo_responsable' => $this->request->getPost('relevo_responsable_plan'),
+                        'significancia' => $this->request->getPost('significancia'),
                         'fecha_cierre' => $this->request->getPost('fecha_cierre'),
                         'usuario_carga' => session()->get('id_usuario'),
                     ];
@@ -74,11 +75,10 @@ class Aud_Control extends Auditorias
                         parent::submitRtaPreguntasAud($id_aud, 1, 1, $bloque_respuestas, $comentarios_preguntas);
 
                         $datos_plan_accion['id_auditoria'] = $id_aud;
-                        $significancia = $this->request->getPost('significancia');
                         $efectos = $this->request->getPost('efecto_impacto');
 
                         $datos_plan_accion['id_auditoria'] = $id_aud;
-                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion, $significancia, $efectos);
+                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion, $efectos);
 
                         # Se envía los E-Mails
                         $datos_emails = $this->model_aud_control->getDataHallazgoEmail($id_aud, $id_hallazgo, 1);
@@ -88,18 +88,18 @@ class Aud_Control extends Auditorias
 
                         # _ Usuario quien carga
                         $emails[] = $datos_emails['correo_usuario_carga'];
-                        $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/nueva', $emails);
+                        // $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/nueva', $emails);
 
                         # _ Responsable
                         $emails = [];
                         $emails[] = $datos_emails['correo_responsable'];
-                        $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/responsable', $emails);
+                        // $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/responsable', $emails);
 
                         # _ Relevo Responsable (¡Si existe!)
                         if (isset($datos_emails['correo_relevo'])) {
                             $emails = [];
                             $emails[] = $datos_emails['correo_relevo'];
-                            $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/relevo', $emails);
+                            // $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/relevo', $emails);
                         }
                     } else {
                         echo json_encode($result_plan['errores']);

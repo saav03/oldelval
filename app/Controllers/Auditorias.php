@@ -380,9 +380,8 @@ class Auditorias extends BaseController
     /**
      * Carga un plan de acción dependiendo la auditoría que se envía por parámetro
      */
-    public function submitUploadPlanAccion($datos, $significancia_parametros, $efectos_parametros)
+    public function submitUploadPlanAccion($datos, $efectos_parametros)
     {
-
         $helper = new Helper();
         $efectos_separados = [];
         $efectos = join(",", $efectos_parametros);
@@ -400,17 +399,6 @@ class Auditorias extends BaseController
                     'id_efecto' => $e,
                 ];
                 $this->model_general->insertG('obs_rel_hallazgo_efecto', $data);
-            }
-        }
-
-        /* Si hay riesgos asignados, los inserto en la tabla de relación */
-        if (count($significancia_parametros) > 0) {
-            foreach ($significancia_parametros as $s) {
-                $data = [
-                    'id_hallazgo' => $id_hallazgo,
-                    'id_significancia' => $s,
-                ];
-                $this->model_general->insertG('obs_rel_hallazgo_significancia', $data);
             }
         }
 
@@ -555,10 +543,10 @@ class Auditorias extends BaseController
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
         }
-        $data['auditorias_control'] = $this->model_auditorias->getAllTitlesAuditoria();
-        $data['auditorias_checklist'] = $this->model_auditorias->getAllTitlesAuditoria(0);
-        $data['auditorias_tarea_de_campo'] = $this->model_auditorias->getAllTitlesAuditoria(3);
-        $data['auditorias_auditoria'] = $this->model_auditorias->getAllTitlesAuditoria(4);
+        $data['auditorias_control'] = $this->model_auditorias->getAllTitlesAuditoria(1, true);
+        $data['auditorias_checklist'] = $this->model_auditorias->getAllTitlesAuditoria(0, true);
+        $data['auditorias_tarea_de_campo'] = $this->model_auditorias->getAllTitlesAuditoria(3, true);
+        $data['auditorias_auditoria'] = $this->model_auditorias->getAllTitlesAuditoria(4, true);
 
         return template('auditoria_edicion/index', $data);
     }

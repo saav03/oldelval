@@ -71,6 +71,7 @@ class Aud_Vehicular extends Auditorias
                         'contratista' => $this->request->getPost('contratista_v'),
                         'responsable' => $this->request->getPost('responsable_plan_v'),
                         'relevo_responsable' => $this->request->getPost('relevo_responsable_plan_v'),
+                        'significancia' => $this->request->getPost('significancia_v'),
                         'fecha_cierre' => $this->request->getPost('fecha_cierre_v'),
                         'usuario_carga' => session()->get('id_usuario'),
                     ];
@@ -81,11 +82,10 @@ class Aud_Vehicular extends Auditorias
                         parent::submitRtaPreguntasAud($id_aud, 0, 0, $bloque_respuestas, $comentarios_preguntas, $tipo_obs);
 
                         $datos_plan_accion['id_auditoria'] = $id_aud;
-                        $significancia = $this->request->getPost('significancia_v');
                         $efectos = $this->request->getPost('efecto_impacto_v');
 
                         $datos_plan_accion['id_auditoria'] = $id_aud;
-                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion, $significancia, $efectos);
+                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion, $efectos);
 
                         # Se envía los E-Mails
                         $datos_emails = $this->model_aud_vehicular->getDataHallazgoEmail($id_aud, $id_hallazgo, 0);
@@ -95,18 +95,18 @@ class Aud_Vehicular extends Auditorias
 
                         # _ Usuario quien carga
                         $emails[] = $datos_emails['correo_usuario_carga'];
-                        $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/nueva', $emails);
+                        // $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/nueva', $emails);
 
                         # _ Responsable
                         $emails = [];
                         $emails[] = $datos_emails['correo_responsable'];
-                        $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/responsable', $emails);
+                        // $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/responsable', $emails);
 
                         # _ Relevo Responsable (¡Si existe!)
                         if (isset($datos_emails['correo_relevo'])) {
                             $emails = [];
                             $emails[] = $datos_emails['correo_relevo'];
-                            $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/relevo', $emails);
+                            // $helper->sendMail($datos_emails, 'Nuevo CheckList Vehicular #', $url, 'emails/auditorias/vehicular/relevo', $emails);
                         }
                     } else {
                         echo json_encode($result_plan['errores']);

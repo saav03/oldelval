@@ -189,16 +189,16 @@ if (!is_null($t['cierre'])) {
 
                         <div class="p-3 pt-1 text-center">
                             <div class="btn-group btn-group-toggle" style="width: 80%;" role="group" aria-label="">
-                                <input id="aceptable" type="checkbox" name="significancia[]" class="btn-check blanco_check" value="1" autocomplete="off" disabled>
+                                <input id="aceptable" type="checkbox" class="btn-check blanco_check" value="1" autocomplete="off" disabled <?= $t['significancia'] == 1 ? 'checked' : '' ?>>
                                 <label class="btn blanco btnsToggle riesgos" for="aceptable">Aceptable</label>
 
-                                <input id="moderado" type="checkbox" name="significancia[]" class="btn-check verde_check" value="2" autocomplete="off" disabled>
+                                <input id="moderado" type="checkbox" class="btn-check verde_check" value="2" autocomplete="off" disabled <?= $t['significancia'] == 2 ? 'checked' : '' ?>>
                                 <label class="btn verde btnsToggle riesgos" for="moderado">Moderado</label>
 
-                                <input id="significativo" type="checkbox" name="significancia[]" class="btn-check amarillo_checked" value="3" autocomplete="off" disabled>
+                                <input id="significativo" type="checkbox" class="btn-check amarillo_checked" value="3" autocomplete="off" disabled <?= $t['significancia'] == 3 ? 'checked' : '' ?>>
                                 <label class="btn amarillo btnsToggle riesgos" for="significativo">Significativo</label>
 
-                                <input id="intolerable" type="checkbox" name="significancia[]" class="btn-check rojo_check" value="4" autocomplete="off" disabled>
+                                <input id="intolerable" type="checkbox" class="btn-check rojo_check" value="4" autocomplete="off" disabled <?= $t['significancia'] == 4 ? 'checked' : '' ?>>
                                 <label class="btn rojo btnsToggle riesgos" for="intolerable">Intolerable</label>
                             </div>
                         </div>
@@ -410,31 +410,31 @@ if (!is_null($t['cierre'])) {
     });
 </script>
 
-<!-- Checkea los checkbox de la significancia según los que trae de BD -->
+<!-- Checkea los checkbox de la significancia según los que trae de BD (No se está utilizando por el momento) -->
 <script>
-    let significancia = <?= json_encode($t['significancia']); ?>;
-    let checkbox_significancia = document.getElementsByName('significancia[]');
+    // let significancia = <?= json_encode($t['significancia']); ?>;
+    // let checkbox_significancia = document.getElementsByName('significancia[]');
 
-    for (let i = 0; i < checkbox_significancia.length; i++) {
-        for (let j = 0; j < significancia.length; j++) {
-            if (checkbox_significancia[i].value == significancia[j].id_significancia) {
-                checkbox_significancia[i].checked = true;
-                checkbox_significancia[i].disabled = false;
-            }
-        }
-    }
+    // for (let i = 0; i < checkbox_significancia.length; i++) {
+    //     for (let j = 0; j < significancia.length; j++) {
+    //         if (checkbox_significancia[i].value == significancia[j].id_significancia) {
+    //             checkbox_significancia[i].checked = true;
+    //             checkbox_significancia[i].disabled = false;
+    //         }
+    //     }
+    // }
 </script>
 
-<script src="<?= base_url() ?>/assets/js/tarjetaObs/view_obs/modal_riesgo_selected.js"></script>
-<script src="<?= base_url() ?>/assets/js/tarjetaObs/fileDropAdder.js"></script>
+<!-- <script src="<!?= base_url() ?>/assets/js/tarjetaObs/view_obs/modal_riesgo_selected.js"></script> -->
+<!-- <script src="<?= base_url() ?>/assets/js/tarjetaObs/fileDropAdder.js"></script> -->
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/view_obs/descargo.js"></script>
 <script src="<?= base_url() ?>/assets/js/addFiles.js"></script>
 
-<script>
+<!-- <script>
     let arrayImgs = [];
     let container_adj = document.getElementById('container_adj');
     new fileDropAdder(container_adj, 'prueba', 'gallery').init();
-</script>
+</script> -->
 
 <script>
     new addFiles(document.getElementById("gallery_descargos"), 'adj_descargo').init();

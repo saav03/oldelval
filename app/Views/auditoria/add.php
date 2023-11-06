@@ -15,8 +15,8 @@
 
         <div class="card-body">
             <div class="row">
-                <div class="col-xs-12 col-md-4"></div>
-                <div class="col-xs-12 col-md-4 text-center">
+                <div class="col-xs-12 col-md-3"></div>
+                <div class="col-xs-12 col-md-6 text-center">
                     <label class="sz_inp fw-semibold">Seleccione el Tipo</label>
                     <div class="p-3 pt-1 text-center">
 
@@ -30,15 +30,14 @@
 
                         <input id="tarea_de_campo" type="radio" name="seleccion_checklist"
                             class="btn-check btn_gral_check" value="3" autocomplete="off">
-                        <label class="btn blanco btnsToggle riesgos" for="tarea_de_campo">Tarea de
-                            Campo</label>
+                        <label class="btn blanco btnsToggle riesgos" for="tarea_de_campo">Inspección de Obra</label>
                         <input id="auditoria" type="radio" name="seleccion_checklist" class="btn-check btn_gral_check"
                             value="3" autocomplete="off">
                         <label class="btn blanco btnsToggle riesgos" for="auditoria"> Auditoria</label>
 
                     </div>
                 </div>
-                <div class="col-xs-12 col-md-4"></div>
+                <div class="col-xs-12 col-md-3"></div>
             </div>
         </div>
     </div>

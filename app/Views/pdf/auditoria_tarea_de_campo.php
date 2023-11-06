@@ -118,7 +118,7 @@
 
 <head>
     <meta charset="gb18030">
-    <title>Oldelval - Auditoría Tarea de Campo</title>
+    <title>Oldelval - Inspección de Tarea de Campo</title>
     <link href="<?= base_url() ?>/assets/fontawesome/css/fontawesome.css" rel="stylesheet">
     <link href="<?= base_url() ?>/assets/fontawesome/css/solid.css" rel="stylesheet">
     <!-- Our project just needs Font Awesome Solid + Brands -->
@@ -128,7 +128,7 @@
 
 <body>
     <div class="footer">
-        Oldelval | Auditoría N°<?= $auditoria['id_auditoria']; ?> -  Tarea de Campo <span class="pagenum"></span>
+        Oldelval | Inspección N°<?= $auditoria['id_auditoria']; ?> -  Tarea de Campo <span class="pagenum"></span>
     </div>
     <!-- Encabezado -->
     <table width='100%' style="border: 1px solid #494949; border-radius: 5px;">
@@ -136,7 +136,7 @@
             <img src="<?= base_url('assets/img/logo.png') ?>" style="width: 30px; height: 30px;" alt="Logo Oldelval">
         </th>
         <th style="width: 80%; text-align: center; color: #494949; padding-top: 5px; letter-spacing: 1px;">
-            Auditoría  Tarea de Campo - N°<?= $auditoria['id_auditoria']; ?>
+            Inspección de Tarea de Campo - N°<?= $auditoria['id_auditoria']; ?>
         </th>
     </table>
 
@@ -308,32 +308,16 @@
 
             <tbody>
                 <tr>
-                    <?php
-                    $aceptable = '';
-                    $moderado = '';
-                    $significativo = '';
-                    $intolerable = '';
-                    foreach ($hallazgo['significancia'] as $riesgo) : ?>
-                        <?php
-                        switch ($riesgo['id_significancia']) {
-                            case '1':
-                                $aceptable = 'background-color: #f1f1f1; color: #343434; border-top: 1px solid #494949;';
-                                break;
-                            case '2':
-                                $moderado = 'background-color: #ACFF8A; color: #343434; border-top: 1px solid #494949;';
-                                break;
-                            case '3':
-                                $significativo = 'background-color: #FFD68A; color: #343434; border-top: 1px solid #494949;';
-                                break;
-                            case '4':
-                                $intolerable = 'background-color: #FF978A; color: #343434; border-top: 1px solid #494949;';
-                                break;
-                        } ?>
-                    <?php endforeach; ?>
-                    <td style="width: 20%; border-right: 1px solid #494949; padding: 3px 0; <?= $aceptable != '' ? $aceptable : '' ?>">Aceptable</td>
-                    <td style="width: 20%; border-right: 1px solid #494949; padding: 3px 0; <?= $moderado != '' ? $moderado : '' ?>">Moderado</td>
-                    <td style="width: 20%; border-right: 1px solid #494949; padding: 3px 0; <?= $significativo != '' ? $significativo : '' ?>">Significativo</td>
-                    <td style="width: 20%; <?= $intolerable != '' ? $intolerable : '' ?>">Intolerable</td>
+                    <td
+                        style="width: 20%; border-right: 1px solid #494949; padding: 3px 0; <?= $hallazgo['significancia'] == 1 ? 'background-color: #f1f1f1; color: #343434; border-top: 1px solid #494949;' : '' ?>">
+                        Aceptable</td>
+                    <td
+                        style="width: 20%; border-right: 1px solid #494949; padding: 3px 0; <?= $hallazgo['significancia'] == 2 ? 'background-color: #ACFF8A; color: #343434; border-top: 1px solid #494949;' : '' ?>">
+                        Moderado</td>
+                    <td
+                        style="width: 20%; border-right: 1px solid #494949; padding: 3px 0; <?= $hallazgo['significancia'] == 3 ? 'background-color: #FFD68A; color: #343434; border-top: 1px solid #494949;' : '' ?>">
+                        Significativo</td>
+                    <td style="width: 20%; <?= $hallazgo['significancia'] == 4 ? 'background-color: #FF978A; color: #343434; border-top: 1px solid #494949;' : '' ?>">Intolerable</td>
                 </tr>
             </tbody>
         </table>
