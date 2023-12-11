@@ -67,7 +67,7 @@ class Model_mail_tarjeta extends Model
         return $builder->get()->getRowArray();
     }
 
-    public function getDataTarjetaReconocimiento($id_obs)
+    public function getDataTarjetaReconocimiento($id_obs, $id_hallazgo)
     {
         $builder = $this->db->table('tarjeta_observaciones tar_obs');
         $builder->select('tar_obs.id id_obs, tar_obs.fecha_deteccion, tar_obs.tipo_observacion, tar_obs.observador, p.nombre proyecto, th.hallazgo observacion, CONCAT(u.nombre, " ", u.apellido) usuario_carga, u.correo correo_carga, CONCAT(responsable.nombre, " ", responsable.apellido) responsable, responsable.correo responsable_correo')
@@ -75,7 +75,8 @@ class Model_mail_tarjeta extends Model
             ->join('proyectos p', 'p.id=tar_obs.proyecto', 'inner')
             ->join('usuario u', 'u.id=tar_obs.usuario_carga', 'inner')
             ->join('usuario responsable', 'responsable.id=th.responsable', 'inner')
-            ->where('tar_obs.id', $id_obs);
+            ->where('tar_obs.id', $id_obs)
+            ->where('th.id', $id_hallazgo);
         return $builder->get()->getRowArray();
     }
 }

@@ -23,9 +23,9 @@ btn_add_descargo.addEventListener("click", (e) => {
 
   let form = new FormData(document.getElementById("form_descargo"));
 
-  arrayImgs.forEach((img) => {
-    form.append("files[]", img);
-  });
+  // arrayImgs.forEach((img) => {
+  //   form.append("files[]", img);
+  // });
 
   customConfirmationButton(
     "Respuesta del Hallazgo",
@@ -213,24 +213,6 @@ for (let i = 0; i < aceptar_motivo_descargo.length; i++) {
 
 }
 
-
-// rechazar_descargo.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   tipo_rta_descargo.value = 2;
-//   inp_id_descargo.value = rechazar_descargo.getAttribute('data-id');
-//   container_motivo.style.display = "block";
-//   btns_descargos.style.display = "none";
-//   label_motivo.textContent =
-//     "Motivo por el cual se rechaza la respuesta/descargo";
-// });
-
-// aceptar_motivo_descargo.addEventListener("click", (e) => {
-// e.preventDefault();
-/* == Acá se ejecutaría el AJAX == */
-/*
-      Tengo que hacer la diferencia para saber si se está aceptando o rechazando el descargo
-      */
-// });
 for (let i = 0; i < cancelar_motivo_descargo.length; i++) {
   cancelar_motivo_descargo[i].addEventListener("click", (e) => {
     e.preventDefault();

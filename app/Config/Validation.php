@@ -263,11 +263,11 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó el plan de acción',
             ]
         ],
-        'contratista' => [
-            'label' => 'Contratista',
+        'significancia' => [
+            'label' => 'Significancia',
             'rules' => ['required'],
             'errors' => [
-                'required' => 'No se especificó la contratista',
+                'required' => 'No se especificó la significancia del hallazgo',
             ]
         ],
         'responsable' => [
@@ -294,18 +294,18 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó lo observado',
             ]
         ],
+        'significancia' => [
+            'label' => 'Significancia',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'No se especificó la significancia del hallazgo',
+            ]
+        ],
         'responsable' => [
             'label' => 'responsable',
             'rules' => ['required'],
             'errors' => [
                 'required' => 'No se especificó el responsable a notificar',
-            ]
-        ],
-        'contratista' => [
-            'label' => 'Contratista',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'No se especificó la contratista',
             ]
         ],
     ];

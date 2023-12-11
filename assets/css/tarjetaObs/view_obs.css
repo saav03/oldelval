@@ -224,3 +224,42 @@ legend {
   font-weight: 500;
   letter-spacing: 1px;
 }
+
+.btn_add_descargo {
+  background: white;
+  border: 1px solid #bebebe;
+  color: #969696;
+  border-radius: 0;
+  padding: 10px 30px;
+  box-shadow: 0px 12px 6px -10px #bebebe, -20px -20px 60px #ffffff;
+  transition: all .2s ease-in-out;
+}
+
+.btn_add_descargo:hover {
+  color: #969696;
+  background: #f9f9f9;
+}
+
+.btn_cierre {
+  background: white;
+  color: gray;
+  font-size: 16px;
+  letter-spacing: .5px;
+  font-weight: 500;
+  border: 1px solid lightgray;
+  padding: 8px;
+  border-radius: 2px;
+  transition: all .3s ease-in-out;
+}
+
+.btn_cierre:hover {
+  background: #f9f9f9;
+}
+
+.btn_cierre svg {
+  border: 1px solid #7cc77c;
+  padding: 8px;
+  border-radius: 100%;
+  color: #5ba95b;
+  background: #d8ffd8;
+}

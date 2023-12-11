@@ -233,10 +233,9 @@ $routes->get('/TarjetaObs','TarjetaObservaciones::index');
 $routes->get('/TarjetaObs/add_obs','TarjetaObservaciones::view_add_obs');
 $routes->match(['get', 'post'],'/api/TarjetaObs/get/(:num)/(:num)','TarjetaObservaciones::getPaged/$1/$2');
 $routes->match(['get', 'post'],'/api/TarjetaObs/getTotal/','TarjetaObservaciones::getPaged');
-$routes->get('/TarjetaObs/view_obs/(:num)','TarjetaObservaciones::view/$1');
 
 // Esta solo la hago para testear los correos como se visualizan
-$routes->get('/TarjetaObs/testing','TarjetaObservaciones::testing');
+$routes->get('/TarjetaObs/testing/(:num)/(:alphanum)','TarjetaObservaciones::testing/$1/$2');
 // POST
 $routes->post('/TarjetaObs/getModulosFilter/','TarjetaObservaciones::getModulosFilter');
 $routes->post('/TarjetaObs/getEstacionesFilter/','TarjetaObservaciones::getEstacionesFilter');
@@ -244,6 +243,7 @@ $routes->post('/TarjetaObs/submit/','TarjetaObservaciones::submitTarjeta');
 $routes->post('/TarjetaObs/submitDescargo/','TarjetaObservaciones::submitDescargo');
 $routes->post('/TarjetaObs/submitRtaDescargo/','TarjetaObservaciones::submitRtaDescargo');
 $routes->post('/TarjetaObs/submitCerrarObs/','TarjetaObservaciones::submitCerrarObs');
+$routes->get('/TarjetaObs/view_obs/(:num)','TarjetaObservaciones::view/$1');
 
 #V
 #X

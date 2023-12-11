@@ -67,7 +67,7 @@
 </style>
 
 <!-- <script src="<!?= base_url('assets/js/dynamic-table-cells-editable.js') ?>"></script> -->
-
+<title>OLDELVAL | <?= $datos_basicos[0]['nombre_usuario'] . ' ' . $datos_basicos[0]['apellido'] ?> </title>
 <div class="container" style="height: 100vh;">
     <div class="row">
         <div class="col-md-4 col-xs-12">

@@ -12,7 +12,7 @@ const getElementTotales = () => {
 };
 
 const tableOptions = {
-  tableCSSClass: "table_oldelval",
+  tableCSSClass: "table_oldelval text-center",
   pageSize: 10,
   getDataCallback: getElement,
   totalDataCallback: getElementTotales,
@@ -22,6 +22,7 @@ const tableOptions = {
     "Módulo",
     "Estación",
     "Sistema",
+    "Observaciones",
     "Fecha de Detección",
     "Observador",
     "Observación",
@@ -53,8 +54,11 @@ const tableOptions = {
         if (row['sistema']) {return row['sistema']} else {return 'No Aplica'}
       },
     },
-    // "estacion",
-    // "sistema",
+    {
+      key: (row) => {
+        return row['resueltos'] + ' / ' + row['hallazgos']
+      }
+    },
     "fecha_deteccion",
     "observador",
     {
