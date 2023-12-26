@@ -358,7 +358,7 @@ class TarjetaObservaciones extends BaseController
         $results_descargo = $this->model_tarjeta->addDescargo($datos_descargo);
 
         $datos['datos'] = $this->model_mail_tarjeta->getInfoNewDescargo($id_hallazgo, $results_descargo['last_id']);
-        // $helper->sendMailTarjeta($datos, 3);
+        $helper->sendMailTarjeta($datos, 3);
 
         # Se cargan adjuntos si es que realmente existen
         if ($this->request->getPost('adj_descargo-description[]')) {
@@ -411,7 +411,7 @@ class TarjetaObservaciones extends BaseController
         }
 
         $this->model_general->updateG('tarjeta_hallazgos', $id_hallazgo, $data);
-        // $helper->sendMailTarjeta($datos, 4);
+        $helper->sendMailTarjeta($datos, 4);
 
         newMov(11, 1, $id_hallazgo, 'Rta Descargo Tarjeta M.A.S'); //Movimiento (Registra el ID de la Respuesta del Descargo creado)
     }

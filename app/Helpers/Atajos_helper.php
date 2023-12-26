@@ -70,13 +70,13 @@ function generarModalSignificancia()
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header d-flex align-items-center justify-content-between">
-                    <p class="p-0 m-0 fw-semibold">Descripción de Riesgos (Significancia)</p>
+                    <p class="p-0 m-0 fw-semibold">Descripción de Riesgos (Consecuencia)</p>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             <div class="modal-body">
                     <table width="100%" style="border: 2px solid #dfdfdf;">
                         <thead>
-                            <th style="width: 30%; border: 2px solid #dfdfdf; padding: 3px;">Significancia</th>
+                            <th style="width: 30%; border: 2px solid #dfdfdf; padding: 3px;">Consecuencia</th>
                             <th class="text-center" style="width: 70%; border: 2px solid #dfdfdf; padding: 3px;"">Descripción</th>
                         </thead>
 
@@ -107,6 +107,66 @@ function generarModalSignificancia()
                                 <td>
                                     <b>Afecta con consecuencias muy graves o que puede desencadenar en muertes.</b><br>
                                     Muerte de una o más personas, o de algún tercero. Perdida total o reconstrucción de Instalaciones.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    HTML;
+    echo $html;
+}
+
+/**
+ * Modal helper Significancia
+ */
+function generarModalConsecuenciaAmbiental()
+{
+    $hola = 'hola';
+    $html = <<<HTML
+    <div class="modal fade" id="modal_consecuencia_ambiental" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header d-flex align-items-center justify-content-between">
+                    <p class="p-0 m-0 fw-semibold">Descripción de Riesgos (Consecuencia)</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            <div class="modal-body">
+                    <table width="100%" style="border: 2px solid #dfdfdf;">
+                        <thead>
+                            <th style="width: 30%; border: 2px solid #dfdfdf; padding: 3px;">Consecuencia</th>
+                            <th class="text-center" style="width: 70%; border: 2px solid #dfdfdf; padding: 3px;"">Descripción</th>
+                        </thead>
+
+                        <tbody>
+                            <tr style=" border-bottom: 1px solid #f1f1f1;">
+                                <td style="background-color: #f9f9f9; font-weight: bold; text-align: center; letter-spacing: 1px; border-radius: 0; border-right: 2px solid #dfdfdf;">Baja</td>
+                                <td>
+                                    <b>Menor magnitud. </b><br>
+                                    La recuperación es inmediata tras el cese de la actividad y no precisa prácticas protectoras o correctoras.
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f1f1;">
+                                <td style="background-color: #d9ffd9; font-weight: bold; text-align: center; letter-spacing: 1px; border-radius: 0; border-right: 2px solid #dfdfdf;">Media</td>
+                                    <td>
+                                        <b>Moderada magnitud.</b><br>
+                                        La recuperación no precisa medidas protectoras o correctoras intensivas y la consecución de las condiciones ambientales requiere un tiempo máximo de seis meses.
+                                    </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #f1f1f1;">
+                                <td style="background-color: #fffcd9; font-weight: bold; text-align: center; letter-spacing: 1px; border-radius: 0; border-right: 2px solid #dfdfdf;">Alta</td>
+                                <td>
+                                    <b>Seria magnitud.</b><br>
+                                    La recuperación de las condiciones del medio o del factor impactado exige la adecuación de medidas protectoras o correctoras intensivas y, aún con esas medidas, aquella recuperación requiere un tiempo dilatado.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: #f5b4b4; font-weight: bold; text-align: center; letter-spacing: 1px; border-radius: 0; border-right: 2px solid #dfdfdf;">Muy Alta</td>
+                                <td>
+                                    <b>Se produce una afectación de gran magnitud</b><br>
+                                    Altos costos y difíciles medidas para la recomposición del sitio, se produce afectación a recursos de muy alta magnitud, con altos costos. Requiere importantes tiempos de recomposición del sitio.
                                 </td>
                             </tr>
                         </tbody>

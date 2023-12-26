@@ -329,15 +329,19 @@
                         <?php } ?>
                     <?php $i++;
                     endforeach; ?>
-                    <!-- TODO | Arreglar un toque este código, está feito y no anda como debe lpm. ¡Urgente no funciona! -->
                     <?php $check_add_new_descargo = false; ?>
+
                     <?php foreach ($h['descargos'] as $descargo) : ?>
                         <?php
-                        if ($descargo['estado'] == 2) :
+                        if ($descargo['estado'] == 2) {
                             if ($descargo['respuesta'] != null && ($descargo['estado'] == 0 || $descargo['estado'] == 2)) {
                                 $check_add_new_descargo = true;
+                            } else {
+                                $check_add_new_descargo = false;
                             }
-                        endif;
+                        } else if ($descargo['estado'] == 1) {
+                            $check_add_new_descargo = false;
+                        }
                         ?>
                     <?php endforeach; ?>
 

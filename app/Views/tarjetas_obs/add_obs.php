@@ -204,8 +204,8 @@
                         </div>
 
                         <!-- Modal Significancia -->
-                        <!-- <!?php generarModalSignificancia(); ?> -->
-
+                        <?php generarModalSignificancia(); ?>
+                        <?php generarModalConsecuenciaAmbiental(); ?>
                         <br>
 
                     </div>

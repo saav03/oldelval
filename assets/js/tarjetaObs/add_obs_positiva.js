@@ -219,10 +219,7 @@ function getEfectosAndSignificanciaPositivo(
 
   // * Significancia
   let divColSignificancia = el("div.col-xs-12 col-md-6");
-  let labelRiesgoObservado = el(
-    "label.mb-2 sz_inp fw-semibold",
-    "Consecuencia Potencial"
-  );
+  
 
   let divSignificancia = el("div.text-center");
   let divGroupSignificancia = el("div.btn-group btn-group-toggle", {
@@ -231,6 +228,10 @@ function getEfectosAndSignificanciaPositivo(
   });
 
   if (id_consecuencia == 1) {
+    let labelRiesgoObservado = el(
+      "label.mb-2 sz_inp fw-semibold",
+      "Consecuencia Potencial", el('i.fa-regular fa-circle-question ms-2', {style: 'font-size: 17px; cursor: pointer;', 'data-bs-toggle':"modal", 'data-bs-target':"#modal_significancia"}
+    ));
     let labelEfecto = el(
       "label.mb-2 sz_inp fw-semibold",
       { for: "efecto_impacto" },
@@ -299,6 +300,10 @@ function getEfectosAndSignificanciaPositivo(
       return divEfectoEsignificancia;
     }
   } else {
+    let labelRiesgoObservado = el(
+      "label.mb-2 sz_inp fw-semibold",
+      "Consecuencia Potencial", el('i.fa-regular fa-circle-question ms-2', {style: 'font-size: 17px; cursor: pointer;', 'data-bs-toggle':"modal", 'data-bs-target':"#modal_consecuencia_ambiental"}
+    ));
     let labelEfecto = el(
       "label.mb-2 sz_inp fw-semibold",
       { for: "efecto_impacto" },

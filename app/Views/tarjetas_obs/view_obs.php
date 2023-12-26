@@ -158,7 +158,7 @@ $situacion = $t['situacion'] == 1 ? 'Abierta' : 'Cerrada';
             </div>
             <div class="card-body">
                 <div class="text-center">
-                    <span class="text-center">Cerrada el día <?= $t['cierre']['fecha_cierre_format'] ?> por <?= $t['cierre']['responsable_cierre'] ?></span>
+                    <span class="text-center">Cerrada el día <?= $t['cierre']['fecha_cierre_format'] ? $t['cierre']['fecha_cierre_format'] : '' ?> por <?= $t['cierre']['responsable_cierre'] ? $t['cierre']['responsable_cierre'] : '' ?></span>
                 </div>
 
                 <div class="col-xs-12 col-md-12">
@@ -167,7 +167,7 @@ $situacion = $t['situacion'] == 1 ? 'Abierta' : 'Cerrada';
                             Fundamento del Cierre
                         </legend>
                         <div class="row" style="padding: 10px 50px;">
-                            <?= $t['cierre']['motivo'] ?>
+                            <?= $t['cierre']['motivo'] ? $t['cierre']['motivo'] : '' ?>
                         </div>
                     </fieldset>
                 </div>
