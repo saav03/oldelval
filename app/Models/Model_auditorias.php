@@ -589,9 +589,5 @@ class Model_auditorias extends Model
         $builder = $this->db->table('auditorias_preguntas aud_preguntas');
         $builder->select('id, pregunta, subtitulo, titulo')->where('aud_preguntas.titulo', $id)->orderBy('aud_preguntas.orden', 'ASC');
         $preguntas = $builder->get()->getResultArray();
-        echo '<pre>';
-        var_dump($preguntas);
-        echo '</pre>';
-        exit;
     }
 }

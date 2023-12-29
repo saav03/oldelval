@@ -18,7 +18,6 @@ function getBloqueAuditorias(e) {
         fetch(GET_BASE_URL() + "/api/auditorias/getBloqueAud/" + id_auditoria)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 _generar_bloque_preguntas(data);
                 datos_generales.style.display = "block";
 

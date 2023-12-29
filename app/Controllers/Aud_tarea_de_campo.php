@@ -21,9 +21,7 @@ class Aud_tarea_de_campo extends Auditorias
     {
         $helper = new Helper();
         $bloque_respuestas_t = $this->request->getPost('bloque_respuestas_t');
-        var_dump($bloque_respuestas_t);
         $comentarios_preguntas_t = $this->request->getPost('comentarios_preguntas_t');
-        var_dump($comentarios_preguntas_t);
         $oportunidad_mejora_t = $this->request->getPost('oportunidad_mejora_t');
 
         $datos = [
@@ -172,23 +170,10 @@ class Aud_tarea_de_campo extends Auditorias
     public function view_aud_tarea_de_campo_pdf($id_auditoria)
     {
 
-        // var_dump("Entro  en el boton pdf");
-        // Cargar la biblioteca Dompdf
         $dompdf = new Dompdf();
         $data['auditoria'] = $this->getBloqueForViewTareaCampo($id_auditoria);
-        // var_dump($data['auditoria']);
-
         $data['hallazgo'] = $this->model_auditorias->getHallazgoAud($id_auditoria, 3);
-
-        // return view('pdf/auditoria_control', $data);
-        // exit;
-        // Renderizar el contenido como PDF
-        // $dompdf->loadHtml(view('pdf/auditoria_control', [], [], true));
-        // $dompdf->render();
-
-        // Enviar el PDF al navegador
-        // $dompdf->stream('Auditoria.pdf', ['Attachment' => false]);
-
+        
         // Obtener la ruta del directorio que contiene el favicon
         $basePath = realpath(base_url('assets/img/'));
 

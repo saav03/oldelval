@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="<?= base_url('assets/css/auditorias/add.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/auditorias/aud_gral.css') ?>">
-<title>OLDELVAL - Nuevo Checklist</title>
+<title>OLDELVAL - Nueva Inspección</title>
 <div class="container">
     <div class="row">
         <div class="blister-title-container">
-            <h4 class="blister-title">Nuevo Checklist</h4>
+            <h4 class="blister-title">Nueva Inspección</h4>
         </div>
     </div>
 
@@ -15,8 +15,8 @@
 
         <div class="card-body">
             <div class="row">
-                <div class="col-xs-12 col-md-3"></div>
-                <div class="col-xs-12 col-md-6 text-center">
+                <div class="col-xs-12 col-md-2"></div>
+                <div class="col-xs-12 col-md-8 text-center">
                     <label class="sz_inp fw-semibold">Seleccione el Tipo</label>
                     <div class="p-3 pt-1 text-center">
 
@@ -37,22 +37,27 @@
 
                     </div>
                 </div>
-                <div class="col-xs-12 col-md-3"></div>
+                <div class="col-xs-12 col-md-2"></div>
             </div>
         </div>
     </div>
 
+    <!-- Inspección de Control -->
     <section id="checklist_control" style="display: none;">
         <?= view('auditoria/control/add_control'); ?>
     </section>
-
+    
+    <!-- Inspección Vehicular -->
     <section id="checklist_vehicular" style="display: none;">
         <?= view('auditoria/vehicular/add_vehicular'); ?>
     </section>
+
+    <!-- Inspección Tarea de Campo -->
     <section id="checklist_tarea_de_campo" style="display: none;">
         <?= view('auditoria/tarea_de_campo/add_tarea_de_campo'); ?>
     </section>
-
+    
+    <!-- Inspección Auditoría -->
     <section id="checklist_auditoria" style="display: none;">
         <?= view('auditoria/auditoria/add_auditoria'); ?>
     </section>

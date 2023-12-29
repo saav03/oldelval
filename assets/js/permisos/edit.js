@@ -19,7 +19,6 @@ btnSubmit.addEventListener("click", (e) => {
   ).then((result) => {
     if (result.isConfirmed) {
       editPermiso(form).done(function (data) {
-        console.log(data);
       });
       customSuccessAlert(
         "Edición Exitosa",

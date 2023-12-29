@@ -25,10 +25,10 @@
                             <label class="mb-1 fw-semibold">Ingrese que tipo de Auditoria va a realizar</label>
                             <select name="tipo_aud" class="form-select sz_inp">
                                 <option value="">-- Seleccione --</option>
-                                <option value="1">Auditoría de Control</option>
-                                <option value="0">Auditoría CheckList Vehicular</option>
-                                <option value="3">Auditoría CheckList Tarea de Campo</option>
-                                <option value="4">Auditoría CheckList Auditoria</option>
+                                <option value="1">Inspección de Control</option>
+                                <option value="0">Inspección Vehicular</option>
+                                <option value="3">Inspección de Obra</option>
+                                <option value="4">Inspección Auditoria</option>
                             </select>
                         </div>
                     </div>

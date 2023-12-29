@@ -43,7 +43,7 @@
                             <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;">
                                 <tr>
                                     <td style="padding:0 0 36px 0;color:#153643;">
-                                        <h1 style="font-size:24px;margin:5px 0; text-align: center; letter-spacing: 1.2px;">Auditoría - CheckList Tarea de Campo</h1>
+                                        <h1 style="font-size:24px;margin:5px 0; text-align: center; letter-spacing: 1.2px;">Inspección de Obra</h1>
                                         <h2 style="font-size:20px;margin:5px 0; text-align: center; letter-spacing: 1.2px;"><?= $titulo_auditoria ? $titulo_auditoria : '' ; ?></h2>
                                         <h1 style="font-size:18px;text-align: center; letter-spacing: 1.2px; border-bottom: 1px solid lightgray;">N° <?= $id_auditoria ?></h1>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;">Estimado <?= $usuario_carga ? $usuario_carga : ''; ?>, se ha generado un descargo hacia la observación N°1</p>

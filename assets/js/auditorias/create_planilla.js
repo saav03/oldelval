@@ -98,7 +98,6 @@ function generar_pregunta(e) {
     let pregunta = e.getAttribute("data-pregunta");
     let ind_pregunta = e.getAttribute("data-id");
     let div_preguntas = document.getElementById(`${pregunta}`);
-    console.log(pregunta);
     let divCol;
     let divRow = el('div.row', {style:'margin: 5px;'});
 

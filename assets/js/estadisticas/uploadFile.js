@@ -74,8 +74,6 @@ class uploadFile {
             const file = input.files[0];
             //Verificamos que ingresen tipos aceptados
 
-            console.log(file.type);
-
             if ((this.allowedFiles.includes("pdf") && file.type.includes("application/pdf")) || file.type.includes('xml') || file.type.includes('excel') || file.type.includes('word') ||  (this.allowedFiles.includes("image") && file.type.includes("image/"))) {
                 if (this.numberOfFiles == this.maxFileNumber) {
                     alert('Supera la cantidad maxima de archivos')
@@ -110,8 +108,6 @@ class uploadFile {
             style: 'margin-right: 20px;',
             alt: 'Adjunto imagen'
         });
-
-        console.log(file.type);
 
         if (file.type.includes('pdf')) {
             imgClip.src = `${GET_BASE_URL()}/assets/img/PDF.svg`;

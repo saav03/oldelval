@@ -218,7 +218,6 @@
 
     btn_yes_t.addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("Botón 'Si' clickeado");
         btn_yes_t.classList.add("btn_checked");
         btn_no_t.classList.remove("btn_checked");
         oportunidad_mejora_t.value = 1;
@@ -226,7 +225,6 @@
     });
     btn_no_t.addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("Botón 'No' clickeado");
         btn_no_t.classList.add("btn_checked");
         btn_yes_t.classList.remove("btn_checked");
         oportunidad_mejora_t.value = 0;

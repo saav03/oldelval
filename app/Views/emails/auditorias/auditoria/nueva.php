@@ -27,13 +27,6 @@
     </style>
 </head>
 
-<?php
-/* echo '<pre>';
-var_dump($datos);
-echo '</pre>';
-exit; */
-?>
-
 <body style="margin:0;padding:0;">
     <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
         <tr>

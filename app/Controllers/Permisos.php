@@ -284,10 +284,6 @@ class Permisos extends BaseController
                 ];
             }
         }
-
-        echo '<pre>';
-        var_dump($new_permissions);
-        echo '</pre>';
     }
 
     protected function verificacion($datos, $nombre_validacion)

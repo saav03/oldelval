@@ -243,7 +243,6 @@ class model_menu extends Model
 		$builder->join('gg_menu submenu', 'submenu.id=gg_menu.id_menu_padre', 'LEFT');
 		/*	PARAMETROS DE BUSQUEDA */
 
-		//var_dump($params);
 		if ($params) {
 			extract($params);
 			if (!is_null($name) && $name != 'gg_menu') {

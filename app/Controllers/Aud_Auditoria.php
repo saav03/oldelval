@@ -75,7 +75,6 @@ class Aud_auditoria extends Auditorias
                         $id_aud = $this->model_general->insertG('auditoria_auditoria', $datos);
                         parent::submitRtaPreguntasAud($id_aud, 4, 4, $bloque_respuestas_a, $comentarios_preguntas_a);
                         $datos_plan_accion_a['id_auditoria'] = $id_aud;
-                        $datos_plan_accion_a['id_auditoria'] = $id_aud;
                         $efectos = $this->request->getPost('efecto_impacto_a');
 
                         $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion_a, $efectos);

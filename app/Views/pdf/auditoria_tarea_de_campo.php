@@ -118,7 +118,7 @@
 
 <head>
     <meta charset="gb18030">
-    <title>Oldelval - Inspección de Tarea de Campo</title>
+    <title>Oldelval - Inspección de Obra</title>
     <link href="<?= base_url() ?>/assets/fontawesome/css/fontawesome.css" rel="stylesheet">
     <link href="<?= base_url() ?>/assets/fontawesome/css/solid.css" rel="stylesheet">
     <!-- Our project just needs Font Awesome Solid + Brands -->
@@ -128,7 +128,7 @@
 
 <body>
     <div class="footer">
-        Oldelval | Inspección N°<?= $auditoria['id_auditoria']; ?> -  Tarea de Campo <span class="pagenum"></span>
+        Oldelval | Inspección de Obra N°<?= $auditoria['id_auditoria']; ?> <span class="pagenum"></span>
     </div>
     <!-- Encabezado -->
     <table width='100%' style="border: 1px solid #494949; border-radius: 5px;">
@@ -136,7 +136,7 @@
             <img src="<?= base_url('assets/img/logo.png') ?>" style="width: 30px; height: 30px;" alt="Logo Oldelval">
         </th>
         <th style="width: 80%; text-align: center; color: #494949; padding-top: 5px; letter-spacing: 1px;">
-            Inspección de Tarea de Campo - N°<?= $auditoria['id_auditoria']; ?>
+            Inspección de Obra - N°<?= $auditoria['id_auditoria']; ?>
         </th>
     </table>
 

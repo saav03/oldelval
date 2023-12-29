@@ -190,7 +190,6 @@ document
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
 
                         if (!data.exito) {
                             let errors = Object.values(data.errores);

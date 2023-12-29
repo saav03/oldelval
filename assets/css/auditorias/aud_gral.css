@@ -1,5 +1,6 @@
 /** Auditoría Logistica Check **/
 .btn-group-toggle {
+    background-color: white;
     border: 1px solid lightgray;
 }
 
@@ -39,11 +40,15 @@ a:hover {
 }
 
 .btnsToggle {
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 150px;
     border-bottom: 3px solid lightgray;
 }
 
 .btn_gral_check:checked+.blanco {
-    box-shadow: inset 0px 0px 15px -4px rgba(74, 111, 168, 1);
+    box-shadow: inset 0px 0px 9px -5px rgba(74, 111, 168, 1);
     background-color: #dbe8ff;
     border: none;
     border-bottom: 3px solid #7ea0da;
@@ -58,21 +63,21 @@ a:hover {
 }
 
 .verde_check:checked+.verde {
-    box-shadow: inset 0px 0px 17px 0px rgba(124, 184, 76, 1);
+    box-shadow: inset 0px 0px 7px 0px rgba(124, 184, 76, 1);
     background-color: #E9FFCA;
     border: none;
     border-bottom: 3px solid rgb(102 181 114);
 }
 
 .rojo_check:checked+.rojo {
-    box-shadow: inset 0px 0px 17px 0px rgba(189, 53, 53, 1);
+    box-shadow: inset 0px 0px 4px 0px rgba(189, 53, 53, 1);
     background-color: #F1B7B3;
     border: none;
     border-bottom: 3px solid rgb(159 59 59);
 }
 
 .amarillo_checked:checked+.amarillo {
-    box-shadow: inset 0px 0px 17px 0px rgba(233, 220, 118);
+    box-shadow: inset 0px 0px 7px 0px rgba(233, 220, 118);
     background-color: #f9f3d6;
     border: none;
     border-bottom: 3px solid rgba(235, 202, 120, 1);

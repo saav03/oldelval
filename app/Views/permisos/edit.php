@@ -95,7 +95,6 @@ $tipo_modulos = ['heading', 'menu', 'index', 'add'];
     const initialOrderOptions = permisosElems.filter(perm => perm.id_permiso_padre == my_parent);
     if (initialOrderOptions.length > 0) {
         firstOrderNumber = Number.parseInt(initialOrderOptions[0].orden);
-        console.log(firstOrderNumber);
     } else {
         firstOrderNumber = 1;
     }

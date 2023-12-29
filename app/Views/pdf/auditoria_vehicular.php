@@ -111,13 +111,6 @@
     }
 </style>
 
-<?php
-/* echo '<pre>';
-var_dump($auditoria);
-echo '</pre>';
-exit; */
-?>
-
 <html>
 
 <head>

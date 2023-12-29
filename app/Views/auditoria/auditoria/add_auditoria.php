@@ -226,7 +226,6 @@
 
     btn_yes_a.addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("Botón 'Si' clickeado");
         btn_yes_a.classList.add("btn_checked");
         btn_no_a.classList.remove("btn_checked");
         oportunidad_mejora_a.value = 1;
