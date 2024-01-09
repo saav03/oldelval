@@ -259,7 +259,6 @@ class Auditorias extends BaseController
      */
     public function submitCrearNewAuditoria()
     {
-
         $results = $this->validacion_crear_planilla();
 
         if ($results['exito']) {

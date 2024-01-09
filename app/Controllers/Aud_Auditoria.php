@@ -30,7 +30,7 @@ class Aud_auditoria extends Auditorias
             'supervisor_responsable' => $this->request->getPost('supervisor_responsable_a'),
             'fecha_carga' => $this->request->getPost('fecha_hoy_a'),
             'cant_personal' => $this->request->getPost('cant_personal_a'),
-            'num_informe' => $this->request->getPost('num_informe_a'),
+            'num_informe' => 1,
             'proyecto' => $this->request->getPost('proyecto_a'),
             'modulo' => $this->request->getPost('modulo_a'),
             'estacion' => $this->request->getPost('estacion_bombeo_a'),

@@ -74,20 +74,20 @@
                         ?>
                     </select>
                 </div>
-                <div class="col-md-2 col-xs-12">
+                <div class="col-md-3 col-xs-12">
                     <label class="mb-1 fw-semibold mt-2" for="fecha_hoy">Fecha Carga</label>
                     <input type="date" class="form-control text-center sz_inp simulate_dis" name="fecha_hoy_a"
                         value="<?= date('Y-m-d') ?>" readonly>
                 </div>
-                <div class="col-xs-12 col-md-2 mt-2">
+                <div class="col-xs-12 col-md-3 mt-2">
                     <label class="mb-1 fw-semibold">Cantidad del Personal</label>
                     <input type="number" name="cant_personal_a" class="form-control sz_inp"
                         placeholder="Ingrese la cantidad">
                 </div>
-                <div class="col-xs-12 col-md-2 mt-2">
+                <!-- <div class="col-xs-12 col-md-2 mt-2">
                     <label class="mb-1 fw-semibold">N°Informe</label>
                     <input type="text" name="num_informe_a" class="form-control sz_inp" placeholder="#">
-                </div>
+                </div> -->
                 <div class="col-md-3 col-xs-12 mt-2">
                     <label class="mb-1 fw-semibold" for="area">Proyectos <small>(*)</small></label>
                     <select name="proyecto_a" id="proyecto_a" class="form-select sz_inp"

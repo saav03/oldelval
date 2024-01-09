@@ -29,7 +29,7 @@ class Aud_Control extends Auditorias
             'contratista' => $this->request->getPost('contratista'),
             'supervisor_responsable' => $this->request->getPost('supervisor_responsable'),
             'cant_personal' => $this->request->getPost('cant_personal'),
-            'num_informe' => $this->request->getPost('num_informe'),
+            'num_informe' => 1,
             'proyecto' => $this->request->getPost('proyecto'),
             'modulo' => $this->request->getPost('modulo'),
             'estacion' => $this->request->getPost('estacion_bombeo'),

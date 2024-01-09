@@ -30,7 +30,7 @@ class Aud_tarea_de_campo extends Auditorias
             'supervisor_responsable' => $this->request->getPost('supervisor_responsable_t'),
             'fecha_carga' => $this->request->getPost('fecha_hoy_tarea'),
             'cant_personal' => $this->request->getPost('cant_personal_t'),
-            'num_informe' => $this->request->getPost('num_informe_t'),
+            'num_informe' => 1,
             'proyecto' => $this->request->getPost('proyecto_t'),
             'modulo' => $this->request->getPost('modulo_tarea_campo'),
             'estacion' => $this->request->getPost('estacion_bombeo_t'),

@@ -466,13 +466,13 @@ class Validation extends BaseConfig
                 'required' => 'La cantidad del personal es requerido',
             ]
         ],
-        'num_informe' => [
-            'label' => 'num_informe',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'El N° de Informe es requerido',
-            ]
-        ],
+        // 'num_informe' => [
+        //     'label' => 'num_informe',
+        //     'rules' => ['required'],
+        //     'errors' => [
+        //         'required' => 'El N° de Informe es requerido',
+        //     ]
+        // ],
         'proyecto' => [
             'label' => 'proyecto',
             'rules' => ['required'],
@@ -605,13 +605,13 @@ class Validation extends BaseConfig
                 'required' => 'La cantidad del personal es requerido',
             ]
         ],
-        'num_informe' => [
-            'label' => 'num_informe',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'El N° de Informe es requerido',
-            ]
-        ],
+        // 'num_informe' => [
+        //     'label' => 'num_informe',
+        //     'rules' => ['required'],
+        //     'errors' => [
+        //         'required' => 'El N° de Informe es requerido',
+        //     ]
+        // ],
         'proyecto' => [
             'label' => 'proyecto',
             'rules' => ['required'],
@@ -651,13 +651,13 @@ class Validation extends BaseConfig
                 'required' => 'La cantidad del personal es requerido',
             ]
         ],
-        'num_informe' => [
-            'label' => 'num_informe',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'El N° de Informe es requerido',
-            ]
-        ],
+        // 'num_informe' => [
+        //     'label' => 'num_informe',
+        //     'rules' => ['required'],
+        //     'errors' => [
+        //         'required' => 'El N° de Informe es requerido',
+        //     ]
+        // ],
         'proyecto' => [
             'label' => 'proyecto',
             'rules' => ['required'],

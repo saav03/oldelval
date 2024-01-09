@@ -30,22 +30,22 @@
     <div class="card">
         <div class="card-body" style="margin: 20px;">
             <div class="row">
-                <div class="col-xs-12 col-md-3 text-center">
+                <div class="col-xs-12 col-md-4 text-center">
                     <label class="sz_inp fw-semibold text-center">Contratista</label>
                     <input type="text" class="form-control sz_inp" value="<?= isset($auditoria['contratista']) ? $auditoria['contratista'] : 'No Aplica'; ?>" readonly>
                 </div>
-                <div class="col-xs-12 col-md-3 text-center">
+                <div class="col-xs-12 col-md-4 text-center">
                     <label class="sz_inp fw-semibold text-center">Supervisor Responsable</label>
                     <input type="text" class="form-control sz_inp" value="<?= isset($auditoria['supervisor_responsable']) ? $auditoria['supervisor_responsable'] : 'No Aplica'; ?>" readonly>
                 </div>
-                <div class="col-xs-12 col-md-3 text-center">
+                <div class="col-xs-12 col-md-4 text-center">
                     <label class="sz_inp fw-semibold text-center">Cantidad del Personal</label>
                     <input type="number" class="form-control sz_inp text-center" value="<?= isset($auditoria['cant_personal']) ? $auditoria['cant_personal'] : 'No Aplica'; ?>" readonly>
                 </div>
-                <div class="col-xs-12 col-md-3 text-center">
+                <!-- <div class="col-xs-12 col-md-3 text-center">
                     <label class="sz_inp fw-semibold text-center">N°Informe</label>
                     <input type="number" class="form-control sz_inp text-center" value="<?= isset($auditoria['num_informe']) ? $auditoria['num_informe'] : 'No Aplica'; ?>" readonly>
-                </div>
+                </div> -->
             </div>
             <div class="row mt-2">
                 <div class="col-xs-12 col-md-3 text-center">
