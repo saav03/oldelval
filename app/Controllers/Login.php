@@ -9,6 +9,7 @@ class Login extends BaseController
 {
     public function __construct()
     {
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
         $this->session = \Config\Services::session();
     }
 

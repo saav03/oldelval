@@ -9,7 +9,7 @@
 <div class="container">
     <div class="row">
         <div class="blister-title-container">
-            <h4 class="blister-title">Tarjetas de Observaciones</h4>
+            <h4 class="blister-title">Tarjetas M.A.S</h4>
         </div>
     </div>
 </div>
@@ -46,17 +46,6 @@
                                     La fecha de detección es requerida
                                 </div>
                             </div>
-
-                            <!-- <div class="col-xs-12 col-md-3 text-center">
-                                <label for="" class="mb-1 fw-semibold sz_inp text-center">Situación de la Observación <small>(*)</small></label>
-                                <div class="btn-group btn-group-toggle" style="width: 80%;" role="group" aria-label="">
-                                    <input id="abierta" type="radio" name="situacion" class="btn-check blanco_check" value="1" autocomplete="off">
-                                    <label class="btn blanco btnsToggle" for="abierta">Abierta</label>
-
-                                    <input id="cerrada" type="radio" name="situacion" class="btn-check blanco_check" value="0" autocomplete="off">
-                                    <label class="btn blanco btnsToggle" for="cerrada">Cerrada</label>
-                                </div>
-                            </div> -->
                             <div class="col-xs-12 col-md-4">
                                 <label for="" class="mb-1 fw-semibold sz_inp">Observador</label>
                                 <input type="text" name="observador" id="observador" class="form-control sz_inp simulate_dis inp_custom" placeholder="Observador (Opcional)" value="<?= $this->session->get('nombrecompleto'); ?>" readonly>
@@ -198,129 +187,26 @@
                             endforeach; ?>
                         </div>
 
-                        <br>
-                        <br>
-
                         <!-- == Acá comienzan los planes de acción (Vista a parte) == -->
 
-                        <div class="row" id="terminos_observacion">
+                        <section id="contenedor_observaciones"></section>
+
+                        <div class="row mt-4" id="terminos_observacion">
                             <div class="col-xs-12 col-md-12 text-center">
-                                <p class="border_obs fw-semibold">¿Cómo evaluaría la observación actual en términos positivos / oportunidades de mejora?</p>
-                                <div id="alerta_obs_estado" class="mb-2 fw-semibold" style="letter-spacing: .4px; color: #9A4D4D;">
-                                    <span><small>Al seleccionar una Observación Positiva se da automáticamente como cerrada una vez finalizada la carga de la misma</small></span>
-                                </div>
+                                <p class="border_obs fw-semibold">En este apartado puede abordar múltiples observaciones, ya sean sugerencias de optimización o reconocimientos positivos.</p>
+
                                 <div class="d-flex justify-content-center">
-                                    <label class="btn_modify btn_tipo_obs" id="label_tipo_positivo" for="tipo_positivo" style="margin-right: 2px; width: 100%; max-width: 200px;">Positivo</label>
-                                    <input type="radio" name="tipo_observacion" id="tipo_positivo" value="1" hidden>
-                                    <label class="btn_modify btn_tipo_obs" id="label_oportunidad_mejora" for="oportunidad_mejora" style="margin-left: 2px; width: 100%;  max-width: 200px;">Oportunidad de Mejora</label>
-                                    <input type="radio" name="tipo_observacion" id="oportunidad_mejora" value="2" hidden>
+                                    <button class="btn_modify btn_tipo_obs" id="label_tipo_positivo" for="tipo_positivo" style="margin-right: 2px; width: 100%; max-width: 250px; background-color: #509d50;" onclick="generarObservacionPositiva('contenedor_observaciones')"><i class="fa-solid fa-plus"></i> Observación Positiva</button>
+                                  
+                                    <button class="btn_modify btn_tipo_obs" id="label_oportunidad_mejora" for="oportunidad_mejora" onclick="generarObservacionMejora('contenedor_observaciones')"><i class="fa-solid fa-plus"></i> Observación con Mejora</button>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-xs-12 col-md-6">
-                                <fieldset style="border-right: none;">
-                                    <legend class="w-100">
-                                        Efecto / Impacto
-                                    </legend>
-                                    <div class="p-3 pt-1">
-                                        <label for="efecto_impacto" class="mb-2 sz_inp fw-semibold">Seleccione los efectos o impactos observados</label>
-                                        <select class="sz_inp rounded-select" name="efecto_impacto[]" id="efecto_impacto" style="width: 100%" multiple name="native-select" data-search="true" data-silent-initial-value-set="true">
-                                            <?php
-                                            foreach ($efectos as $e) {
-                                                echo  "<option value='" . $e['id'] . "'>" . $e['nombre'] . "</option>";
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </fieldset>
-                            </div>
-                            <div class="col-xs-12 col-md-6">
-                                <fieldset style="border-right: none;">
-                                    <legend class="w-100 d-flex align-items-center">
-                                        Riesgos Observados
-                                        <div class="contain-question_icon" data-bs-toggle="modal" data-bs-target="#modal_significancia">
-                                            <div class="question-icon">
-                                                <span>?</span>
-                                            </div>
-                                        </div>
-                                    </legend>
-                                    <div class="text-center" style="padding: 19px 0!important;">
-                                        <div class="btn-group btn-group-toggle" style="width: 80%; margin-top: 3px;" role="group" aria-label="">
-                                            <input id="aceptable" type="checkbox" disabled name="significancia[]" class="btn-check btn_check_significancia blanco_check" value="1" autocomplete="off">
-                                            <label class="btn blanco btnsToggle riesgos" for="aceptable">Aceptable</label>
-
-                                            <input id="moderado" type="checkbox" disabled name="significancia[]" class="btn-check btn_check_significancia verde_check" value="2" autocomplete="off">
-                                            <label class="btn verde btnsToggle riesgos" for="moderado">Moderado</label>
-
-                                            <input id="significativo" type="checkbox" disabled name="significancia[]" class="btn-check btn_check_significancia amarillo_checked" value="3" autocomplete="off">
-                                            <label class="btn amarillo btnsToggle riesgos" for="significativo">Significativo</label>
-
-                                            <input id="intolerable" type="checkbox" disabled name="significancia[]" class="btn-check btn_check_significancia rojo_check" value="4" autocomplete="off">
-                                            <label class="btn rojo btnsToggle riesgos" for="intolerable">Intolerable</label>
-                                        </div>
-                                    </div>
-                                </fieldset>
                             </div>
                         </div>
 
                         <!-- Modal Significancia -->
                         <?php generarModalSignificancia(); ?>
-
-                        <div class="row mt-3" id="generar_reconocimiento" style="display: none;">
-                            <!-- <div class="col-xs-12 col-md-12 text-center">
-                                <p class="border_obs fw-semibold">¿Desea destacar un reconocimiento positivo?</p>
-                                <div class="d-flex justify-content-center">
-                                    <label class="btn_modify" id="si_ejecutar_reconocimiento" style="margin-right: 2px; width: 100%; max-width: 70px;">Si</label>
-                                    <label class="btn_modify" id="no_ejecutar_reconocimiento" style="margin-left: 2px; width: 100%;  max-width: 70px;">No</label>
-                                    <input type="hidden" name="destacar_reconocimiento" id="destacar_reconocimiento" value="">
-                                </div>
-                            </div> -->
-                        </div>
-
-                        <div class="row mt-3" id="obs_cerrada_sin_plan" style="display: none;">
-                            <div class="col-xs-12 col-md-12 text-center">
-                                <p class="fw-semibold mb-1">La Observación actual se registrará en su estado 'Cerrado'</p>
-                                <p class="fw-semibold">Por lo tanto, no habrá plan de acción para su ejecución</p>
-                            </div>
-                        </div>
-
+                        <?php generarModalConsecuenciaAmbiental(); ?>
                         <br>
-
-                        <!-- Todos los Planes de acción  -->
-
-                        <section id="section_plan_accion" style="display: none;">
-                            <?= view('tarjetas_obs/plan_accion') ?>
-                        </section>
-
-                        <section id="section_obs_positiva" style="display: none;">
-                            <?= view('tarjetas_obs/reconocimiento') ?>
-                        </section>
-
-                        <br>
-
-                        <div class="modal fade" id="matrizRiesgoModal" role="dialog">
-                            <div class="modal-dialog modal-lg" style="max-width: 1417px;">
-                                <div class="modal-content">
-                                    <div class="modal-body" style="overflow-x:auto;">
-                                        <?= $tabla; ?>
-                                    </div>
-                                    <input type="hidden" id="currentDesvioRiesgo">
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn_mod_danger" data-bs-dismiss="modal">Confirmar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div hidden>
-                            <div class='wrapper' id="checkis">
-                                <svg class='checkmark' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'>
-                                    <circle class='checkmark__circle' cx='26' cy='26' r='25' fill='none' />
-                                    <path class='checkmark__check' fill='none' d='M14.1 27.2l7.1 7.2 16.7-16.8' />
-                                </svg>
-                            </div>
-                        </div>
 
                     </div>
 
@@ -343,45 +229,52 @@
     let tipo_hallazgo = <?= json_encode($tipo_hallazgo); ?>;
     let contratista = <?= json_encode($contratistas); ?>;
     let responsable = <?= json_encode($responsables); ?>;
+    let efectos = <?= json_encode($efectos); ?>;
+    let significancia = <?= json_encode($significancia); ?>;
+    var aux = 1;
+    var contador = 1;
+    var responsables_contratista = [];
 </script>
 
-
-<script src="<?= base_url() ?>/assets/js/addFiles.js"></script>
 <script src="<?= base_url() ?>/assets/js/virtual-select.min.js"></script>
-<script src="<?= base_url() ?>/assets/js/tarjetaObs/modal_riesgo.js"></script>
-<script src="<?= base_url() ?>/assets/js/tarjetaObs/fileDropAdder.js"></script>
-<script src="<?= base_url() ?>/assets/js/tarjetaObs/fileDropAdderPositive.js"></script>
+<script src="<?= base_url() ?>/assets/js/addFiles.js"></script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/add.js"></script>
-<script src="<?= base_url() ?>/assets/js/tarjetaObs/submit.js"></script>
-<script src="<?= base_url() ?>/assets/js/tarjetaObs/add_plan_accion.js"></script>
-<script src="<?= base_url() ?>/assets/js/tarjetaObs/add_obs_positiva.js"></script>
 
 <script>
     document.querySelector('#contratista').addEventListener('change', function() {
-        fetch(GET_BASE_URL() + "/usuario/getResponsables/" + this.value)
-            .then(response => response.json()) // Parsear la respuesta como JSON
-            .then(data => {
-                let options = [];
-                data.forEach(item => {
-                    let objeto = {
-                        label: item.usuario_nombre,
-                        value: item.id_usuario
-                    }
-                    options.push(objeto);
-                });
-                document.querySelector('#responsable').setOptions(options);
-                document.querySelector('#relevo_responsable').setOptions(options);
-                document.querySelector('#responsable_reconocimiento').setOptions(options);
-            })
-            .catch(error => {
-                // console.error('Error:', error);
-            });
-    });
-</script>
+        let id_contratista = this.value;
+        responsables_contratista = responsable.filter((e) => e.empresa == id_contratista);
 
-<script>
-    new addFiles(document.getElementById("gallery"), 'adj_observacion').init();
+        let selectorResponsables = document.querySelectorAll('.responsable');
+        let selectorResponsablesRelevo = document.querySelectorAll('.relevo_responsable');
+
+        // * Selector de responsables (Se resetea cuando escucha un cambio en el selector de contratista)
+        selectorResponsables.forEach(e => {
+            let options = [];
+            responsables_contratista.forEach(r => {
+                let objeto = {
+                    label: r.nombre + ' ' + r.apellido,
+                    value: r.id
+                }
+                options.push(objeto);
+            });
+            document.querySelector('#'+e.getAttribute('id')).setOptions(options);
+        });
+
+        // * Selector de relevo de responsables (Se resetea cuando escucha un cambio en el selector de contratista)
+        selectorResponsablesRelevo.forEach(e => {
+            let options = [];
+            responsables_contratista.forEach(r => {
+                let objeto = {
+                    label: r.nombre + ' ' + r.apellido,
+                    value: r.id
+                }
+                options.push(objeto);
+            });
+            document.querySelector('#'+e.getAttribute('id')).setOptions(options);
+        });
+    })
 </script>
-<script>
-    new addFiles(document.getElementById("gallery_reconocimiento"), 'adj_observacion_positive').init();
-</script>
+<script src="<?= base_url() ?>/assets/js/tarjetaObs/submit.js"></script>
+<script src="<?= base_url() ?>/assets/js/tarjetaObs/add_plan_accion.js"></script>
+<script src="<?= base_url() ?>/assets/js/tarjetaObs/add_obs_positiva.js"></script>

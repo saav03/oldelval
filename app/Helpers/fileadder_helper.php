@@ -41,11 +41,6 @@ function cargarArchivos($FILES_name, $path, $name_prefix, $bd_info, $quality = 6
     $archivos_post = $_FILES[$FILES_name];
     $descripciones_post = $CI->input->post("$FILES_name-description");
 
-    echo '<pre>';
-    var_dump($descripciones_post);
-    echo '</pre>';
-    exit;
-
     $arreglo_bd = []; //Para la carga a la BD
     if(!empty($archivos_post["name"])){
         //Existen archivos

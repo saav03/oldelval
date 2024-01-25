@@ -263,11 +263,11 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó el plan de acción',
             ]
         ],
-        'contratista' => [
-            'label' => 'Contratista',
+        'significancia' => [
+            'label' => 'Significancia',
             'rules' => ['required'],
             'errors' => [
-                'required' => 'No se especificó la contratista',
+                'required' => 'No se especificó la significancia del hallazgo',
             ]
         ],
         'responsable' => [
@@ -294,18 +294,18 @@ class Validation extends BaseConfig
                 'required' => 'No se especificó lo observado',
             ]
         ],
+        'significancia' => [
+            'label' => 'Significancia',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'No se especificó la significancia del hallazgo',
+            ]
+        ],
         'responsable' => [
             'label' => 'responsable',
             'rules' => ['required'],
             'errors' => [
                 'required' => 'No se especificó el responsable a notificar',
-            ]
-        ],
-        'contratista' => [
-            'label' => 'Contratista',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'No se especificó la contratista',
             ]
         ],
     ];
@@ -466,13 +466,13 @@ class Validation extends BaseConfig
                 'required' => 'La cantidad del personal es requerido',
             ]
         ],
-        'num_informe' => [
-            'label' => 'num_informe',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'El N° de Informe es requerido',
-            ]
-        ],
+        // 'num_informe' => [
+        //     'label' => 'num_informe',
+        //     'rules' => ['required'],
+        //     'errors' => [
+        //         'required' => 'El N° de Informe es requerido',
+        //     ]
+        // ],
         'proyecto' => [
             'label' => 'proyecto',
             'rules' => ['required'],
@@ -605,13 +605,13 @@ class Validation extends BaseConfig
                 'required' => 'La cantidad del personal es requerido',
             ]
         ],
-        'num_informe' => [
-            'label' => 'num_informe',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'El N° de Informe es requerido',
-            ]
-        ],
+        // 'num_informe' => [
+        //     'label' => 'num_informe',
+        //     'rules' => ['required'],
+        //     'errors' => [
+        //         'required' => 'El N° de Informe es requerido',
+        //     ]
+        // ],
         'proyecto' => [
             'label' => 'proyecto',
             'rules' => ['required'],
@@ -651,13 +651,13 @@ class Validation extends BaseConfig
                 'required' => 'La cantidad del personal es requerido',
             ]
         ],
-        'num_informe' => [
-            'label' => 'num_informe',
-            'rules' => ['required'],
-            'errors' => [
-                'required' => 'El N° de Informe es requerido',
-            ]
-        ],
+        // 'num_informe' => [
+        //     'label' => 'num_informe',
+        //     'rules' => ['required'],
+        //     'errors' => [
+        //         'required' => 'El N° de Informe es requerido',
+        //     ]
+        // ],
         'proyecto' => [
             'label' => 'proyecto',
             'rules' => ['required'],

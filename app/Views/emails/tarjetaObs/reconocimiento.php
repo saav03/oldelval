@@ -47,7 +47,7 @@
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px; text-align: center;">Datos de la Observación</p>
                                         <hr>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Fecha de Detección: </b><?= $datos['fecha_deteccion'] ?></p>
-                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Tipo de Observación: </b><?= $datos['tipo_observacion'] == 1 ? 'Observación Positiva' : 'Posibilidad de Mejora' ?></p>
+                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Tipo de Observación: </b> Observación Positiva</p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Observador: </b><?= $datos['usuario_carga'] ?></p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Proyecto: </b><?= $datos['proyecto'] ?></p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px; text-align: center;"><b>Descripción de lo Observado</b></p>

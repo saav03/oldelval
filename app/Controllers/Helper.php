@@ -126,7 +126,8 @@ class Helper extends Controller
             case '1': // Nueva Tarjeta Creada
                 $id = $datos['datos'][0]['id_obs'];
                 $subject = 'Nueva Tarjeta de Observación #' . $id;
-                $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . $id;
+                $datos['url'] = base_url('/TarjetaObs/view_obs') . '/' . $id . '/true';
+                $datos['mail'] = true;
                 $vista = view('emails/tarjetaObs/nueva', $datos);
                 $correos[] = $datos['datos'][0]['correo_carga'];
                 break;

@@ -43,7 +43,7 @@ for (let i = 0; i < btnUploadAud.length; i++) {
         // }
         let form = new FormData(document.getElementById(`${id_form}`));
         customConfirmationButton(
-            "Crear Auditoría",
+            "Cargar Inspección",
             "¿Confirma la carga de la misma?",
             "Cargar",
             "Cancelar",
@@ -54,7 +54,7 @@ for (let i = 0; i < btnUploadAud.length; i++) {
                     .done(function (data) {
                         customSuccessAlert(
                             "Carga Exitosa",
-                            "La auditoría se cargó correctamente",
+                            "La Inspección se cargó correctamente",
                             "swal_edicion"
                         ).then((result) => {
                             if (result.isConfirmed) {

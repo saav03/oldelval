@@ -29,7 +29,7 @@ class Aud_Control extends Auditorias
             'contratista' => $this->request->getPost('contratista'),
             'supervisor_responsable' => $this->request->getPost('supervisor_responsable'),
             'cant_personal' => $this->request->getPost('cant_personal'),
-            'num_informe' => $this->request->getPost('num_informe'),
+            'num_informe' => 1,
             'proyecto' => $this->request->getPost('proyecto'),
             'modulo' => $this->request->getPost('modulo'),
             'estacion' => $this->request->getPost('estacion_bombeo'),
@@ -63,6 +63,7 @@ class Aud_Control extends Auditorias
                         'contratista' => $this->request->getPost('contratista'),
                         'responsable' => $this->request->getPost('responsable_plan'),
                         'relevo_responsable' => $this->request->getPost('relevo_responsable_plan'),
+                        'significancia' => $this->request->getPost('significancia'),
                         'fecha_cierre' => $this->request->getPost('fecha_cierre'),
                         'usuario_carga' => session()->get('id_usuario'),
                     ];
@@ -74,11 +75,10 @@ class Aud_Control extends Auditorias
                         parent::submitRtaPreguntasAud($id_aud, 1, 1, $bloque_respuestas, $comentarios_preguntas);
 
                         $datos_plan_accion['id_auditoria'] = $id_aud;
-                        $significancia = $this->request->getPost('significancia');
                         $efectos = $this->request->getPost('efecto_impacto');
 
                         $datos_plan_accion['id_auditoria'] = $id_aud;
-                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion, $significancia, $efectos);
+                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion, $efectos);
 
                         # Se envía los E-Mails
                         $datos_emails = $this->model_aud_control->getDataHallazgoEmail($id_aud, $id_hallazgo, 1);
@@ -101,12 +101,16 @@ class Aud_Control extends Auditorias
                             $emails[] = $datos_emails['correo_relevo'];
                             $helper->sendMail($datos_emails, 'Nueva Auditoría Control #', $url, 'emails/auditorias/control/relevo', $emails);
                         }
+
+                        newMov(9, 1, $id_aud, 'Inspección de Control'); //Movimiento (Registra el ID de la Inspección de Control creada)
+                        
                     } else {
                         echo json_encode($result_plan['errores']);
                     }
                 } else {
                     $id_aud = $this->model_general->insertG('auditoria_control', $datos);
                     parent::submitRtaPreguntasAud($id_aud, 1, 1, $bloque_respuestas, $comentarios_preguntas);
+                    newMov(9, 1, $id_aud, 'Inspección de Control'); //Movimiento (Registra el ID de la Inspección de Control creada)
                 }
             else :
                 echo json_encode($result_requiere['errores']);

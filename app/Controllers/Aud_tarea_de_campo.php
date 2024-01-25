@@ -21,11 +21,8 @@ class Aud_tarea_de_campo extends Auditorias
     {
         $helper = new Helper();
         $bloque_respuestas_t = $this->request->getPost('bloque_respuestas_t');
-        var_dump($bloque_respuestas_t);
         $comentarios_preguntas_t = $this->request->getPost('comentarios_preguntas_t');
-        var_dump($comentarios_preguntas_t);
         $oportunidad_mejora_t = $this->request->getPost('oportunidad_mejora_t');
-        // var_dump($oportunidad_mejora_t);
 
         $datos = [
             'modelo_tipo' => $this->request->getPost('tipo_auditoria_t'),
@@ -33,7 +30,7 @@ class Aud_tarea_de_campo extends Auditorias
             'supervisor_responsable' => $this->request->getPost('supervisor_responsable_t'),
             'fecha_carga' => $this->request->getPost('fecha_hoy_tarea'),
             'cant_personal' => $this->request->getPost('cant_personal_t'),
-            'num_informe' => $this->request->getPost('num_informe_t'),
+            'num_informe' => 1,
             'proyecto' => $this->request->getPost('proyecto_t'),
             'modulo' => $this->request->getPost('modulo_tarea_campo'),
             'estacion' => $this->request->getPost('estacion_bombeo_t'),
@@ -68,6 +65,7 @@ class Aud_tarea_de_campo extends Auditorias
                         'contratista' => $this->request->getPost('contratista_t'),
                         'responsable' => $this->request->getPost('responsable_plan_t'),
                         'relevo_responsable' => $this->request->getPost('relevo_responsable_plan_t'),
+                        'significancia' => $this->request->getPost('significancia_t'),
                         'fecha_cierre' => $this->request->getPost('fecha_cierre_t'),
                         'usuario_carga' => session()->get('id_usuario'),
                     ];
@@ -78,26 +76,16 @@ class Aud_tarea_de_campo extends Auditorias
                         $id_aud = $this->model_general->insertG('auditoria_tarea_de_campo', $datos);
                         parent::submitRtaPreguntasAud($id_aud, 3, 3, $bloque_respuestas_t, $comentarios_preguntas_t);
                         $datos_plan_accion_t['id_auditoria'] = $id_aud;
-                        // var_dump("Id_Aud", $id_aud);
-                        $significancia_t = $this->request->getPost('significancia_t');
-                        // var_dump("Significancia", $significancia);
                         $efectos_t = $this->request->getPost('efecto_impacto_t');
-                        // var_dump("efectos", $efectos);
 
-
-                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion_t, $significancia_t, $efectos_t);
+                        $id_hallazgo = parent::submitUploadPlanAccion($datos_plan_accion_t, $efectos_t);
 
                         // # Se envía los E-Mails
                         $datos_emails = $this->model_aud_control->getDataHallazgoEmail_Tarea_campo($id_aud, $id_hallazgo, 3);
-                        // var_dump("datosEmail",$datos_emails);
                         $url = base_url('/auditorias/view_aud_tarea_campo/') . '/' . $datos_emails['id'];
-                        // var_dump("url",$url);
 
                         $datos_emails['url'] = $url;
-                        // var_dump("datos_email[]",$datos_emails['url']);
                         $emails = [];
-                        // var_dump("emails",$emails);
-
 
                         # _ Usuario quien carga
                         $emails[] = $datos_emails['correo_usuario_carga'];
@@ -114,14 +102,16 @@ class Aud_tarea_de_campo extends Auditorias
                             $emails[] = $datos_emails['correo_relevo'];
                             $helper->sendMail($datos_emails, 'Nueva Auditoría Tarea de Campo #', $url, 'emails/auditorias/tarea_de_campo/relevo', $emails);
                         }
+                        newMov(9, 1, $id_aud, 'Inspección de Tarea de Campo'); //Movimiento (Registra el ID de la Inspección de Tarea de Campo creada)
+
                     } else {
                         echo json_encode($result_plan['errores']);
                     }
                 } else {
-                    // var_dump("Entra al else");
+                    
                     $id_aud = $this->model_general->insertG('auditoria_tarea_de_campo', $datos);
-                    // var_dump("id_aud", $id_aud);
                     parent::submitRtaPreguntasAud($id_aud, 3, 3, $bloque_respuestas_t, $comentarios_preguntas_t);
+                    newMov(9, 1, $id_aud, 'Inspección de Tarea de Campo'); //Movimiento (Registra el ID de la Inspección de Tarea de Campo creada)
                 }
             else:
                 echo json_encode($result_requiere['errores']);
@@ -180,23 +170,10 @@ class Aud_tarea_de_campo extends Auditorias
     public function view_aud_tarea_de_campo_pdf($id_auditoria)
     {
 
-        // var_dump("Entro  en el boton pdf");
-        // Cargar la biblioteca Dompdf
         $dompdf = new Dompdf();
         $data['auditoria'] = $this->getBloqueForViewTareaCampo($id_auditoria);
-        // var_dump($data['auditoria']);
-
         $data['hallazgo'] = $this->model_auditorias->getHallazgoAud($id_auditoria, 3);
-
-        // return view('pdf/auditoria_control', $data);
-        // exit;
-        // Renderizar el contenido como PDF
-        // $dompdf->loadHtml(view('pdf/auditoria_control', [], [], true));
-        // $dompdf->render();
-
-        // Enviar el PDF al navegador
-        // $dompdf->stream('Auditoria.pdf', ['Attachment' => false]);
-
+        
         // Obtener la ruta del directorio que contiene el favicon
         $basePath = realpath(base_url('assets/img/'));
 

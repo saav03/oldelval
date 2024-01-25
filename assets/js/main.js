@@ -53,7 +53,6 @@
       localStorage.removeItem('myMenu');
       localStorage.removeItem('myMenuSolo');//because if it is desplegable content the solo item still on, and we dont want that
       localStorage.setItem('myMenu', elemMenu[i].id);
-      console.log(elemMenu[i].id);
     })
   }
   for (let i = 0; i < elemMenuSolo.length; i++) {
@@ -61,14 +60,10 @@
       localStorage.removeItem('myMenuSolo');
       localStorage.removeItem('myMenu');
       localStorage.setItem('myMenuSolo', elemMenuSolo[i].id);
-      console.log(elemMenuSolo[i].id);
     })
   }
-  console.log(localStorage.getItem("ls1 ",'myMenu'));
-  console.log(localStorage.getItem("ls2 ",'myMenuSolo'));
   window.addEventListener('DOMContentLoaded', (event) => {
     setTimeout(() => {
-      console.log('DOM fully loaded and parsed');
     let elem = localStorage.getItem('myMenu');
     let elem2 = localStorage.getItem('myMenuSolo');
     if(elem){

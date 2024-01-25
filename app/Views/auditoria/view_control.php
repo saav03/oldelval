@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="<?= base_url('assets/css/auditorias/aud_gral.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/auditorias/aud_plan_control.css') ?>">
-
+<title>OLDELVAL - Inspección de Control</title>
 <div class="container">
     <div class="row" style="box-shadow: 0px 0px 10px 10px rgba(250,250,250,1);">
         <div class="col-md-12" style="border-radius: 10px;background: #fcfdff;border-bottom: 2px solid #f1f1f1;border-top: 2px solid #f1f1f1;">
-            <h5 class="text-center" style="padding: 10px;color: #84baeb;font-size: 24px;letter-spacing: 1px;">Auditoría Control - N°<?= $auditoria['id_auditoria']; ?></h5>
+            <h5 class="text-center" style="padding: 10px;color: #84baeb;font-size: 24px;letter-spacing: 1px;">Inspección de Control - N°<?= $auditoria['id_auditoria']; ?></h5>
 
             <div class="row">
                 <div class="col-xs-12 col-md-3"></div>
@@ -30,22 +30,22 @@
     <div class="card">
         <div class="card-body" style="margin: 20px;">
             <div class="row">
-                <div class="col-xs-12 col-md-3 text-center">
+                <div class="col-xs-12 col-md-4 text-center">
                     <label class="sz_inp fw-semibold text-center">Contratista</label>
                     <input type="text" class="form-control sz_inp" value="<?= isset($auditoria['contratista']) ? $auditoria['contratista'] : 'No Aplica'; ?>" readonly>
                 </div>
-                <div class="col-xs-12 col-md-3 text-center">
+                <div class="col-xs-12 col-md-4 text-center">
                     <label class="sz_inp fw-semibold text-center">Supervisor Responsable</label>
                     <input type="text" class="form-control sz_inp" value="<?= isset($auditoria['supervisor_responsable']) ? $auditoria['supervisor_responsable'] : 'No Aplica'; ?>" readonly>
                 </div>
-                <div class="col-xs-12 col-md-3 text-center">
+                <div class="col-xs-12 col-md-4 text-center">
                     <label class="sz_inp fw-semibold text-center">Cantidad del Personal</label>
                     <input type="number" class="form-control sz_inp text-center" value="<?= isset($auditoria['cant_personal']) ? $auditoria['cant_personal'] : 'No Aplica'; ?>" readonly>
                 </div>
-                <div class="col-xs-12 col-md-3 text-center">
+                <!-- <div class="col-xs-12 col-md-3 text-center">
                     <label class="sz_inp fw-semibold text-center">N°Informe</label>
                     <input type="number" class="form-control sz_inp text-center" value="<?= isset($auditoria['num_informe']) ? $auditoria['num_informe'] : 'No Aplica'; ?>" readonly>
-                </div>
+                </div> -->
             </div>
             <div class="row mt-2">
                 <div class="col-xs-12 col-md-3 text-center">

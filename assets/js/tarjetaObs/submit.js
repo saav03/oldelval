@@ -47,7 +47,7 @@ document
           .fail((err, textStatus, xhr) => {
             let errors = Object.values(JSON.parse(err.responseText));
             errors = errors.join(". ");
-            customShowErrorAlert(null, errors, 'swal_edicion');
+            customShowErrorAlert(null, errors, "swal_edicion");
           });
       }
     });

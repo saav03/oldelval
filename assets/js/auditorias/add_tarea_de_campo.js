@@ -20,7 +20,6 @@ function getBloqueAuditorias_t(e) {
         fetch(GET_BASE_URL() + "/api/auditorias/getBloqueAud/" + id_auditoria)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 _generar_bloque_preguntas_t(data);
                 datosgenerales_tarea = document.getElementById('datosgenerales_tarea');
                 datosgenerales_tarea.style.display = "block"

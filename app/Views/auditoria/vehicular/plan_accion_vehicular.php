@@ -61,16 +61,16 @@
                 </legend>
                 <div class="text-center" style="padding: 19px 0!important;">
                     <div class="btn-group btn-group-toggle" style="width: 80%;" role="group" aria-label="">
-                        <input id="aceptable_v" type="checkbox" name="significancia_v[]" class="btn-check blanco_check" value="1" autocomplete="off">
+                        <input id="aceptable_v" type="radio" name="significancia_v" class="btn-check blanco_check" value="1" autocomplete="off">
                         <label class="btn blanco btnsToggle riesgos" for="aceptable_v">Aceptable</label>
 
-                        <input id="moderado_v" type="checkbox" name="significancia_v[]" class="btn-check verde_check" value="2" autocomplete="off">
+                        <input id="moderado_v" type="radio" name="significancia_v" class="btn-check verde_check" value="2" autocomplete="off">
                         <label class="btn verde btnsToggle riesgos" for="moderado_v">Moderado</label>
 
-                        <input id="significativo_v" type="checkbox" name="significancia_v[]" class="btn-check amarillo_checked" value="3" autocomplete="off">
+                        <input id="significativo_v" type="radio" name="significancia_v" class="btn-check amarillo_checked" value="3" autocomplete="off">
                         <label class="btn amarillo btnsToggle riesgos" for="significativo_v">Significativo</label>
 
-                        <input id="intolerable_v" type="checkbox" name="significancia_v[]" class="btn-check rojo_check" value="4" autocomplete="off">
+                        <input id="intolerable_v" type="radio" name="significancia_v" class="btn-check rojo_check" value="4" autocomplete="off">
                         <label class="btn rojo btnsToggle riesgos" for="intolerable_v">Intolerable</label>
                     </div>
 

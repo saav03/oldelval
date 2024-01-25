@@ -74,8 +74,6 @@ class Auditorias extends BaseController
         $results = $this->model_auditorias->addDescargo($datos_descargo);
         $id_descargo = $results['last_id']['id'];
 
-        var_dump("id_hallazgo", $id_hallazgo);
-        var_dump("id_descargo", $id_descargo);
         # Envío de correo
 
         if ($tipo_obs == 1) { # En caso de que sea una Auditoría de Control
@@ -88,7 +86,6 @@ class Auditorias extends BaseController
         } else {
             if ($tipo_obs == 3) {
                 $datos_emails = $this->model_mail_auditoria->getInfoNewDescargoAudTarea_de_campo($id_hallazgo, $id_descargo);
-                var_dump($datos_emails);
                 $url = base_url('/auditorias/view_aud_tarea_campo/') . '/' . $datos_emails['id_hallazgo'];
 
                 $emails[] = $datos_emails['correo_carga'];
@@ -96,9 +93,7 @@ class Auditorias extends BaseController
             } else {
                 if ($tipo_obs == 4) {
                     $datos_emails = $this->model_mail_auditoria->getInfoNewDescargoAudAuditoria($id_hallazgo, $id_descargo);
-                    var_dump($datos_emails);
                     $url = base_url('/auditorias/view_aud_auditoria/') . '/' . $datos_emails['id_auditoria'];
-                    var_dump($url);
                     $emails[] = $datos_emails['correo_carga'];
                     $helper->sendMail($datos_emails, 'Nuevo Descargo | CheckList Auditoria #', $url, 'emails/auditorias/tarea_de_campo/descargo', $emails, 'id_auditoria');
                 } else {
@@ -143,17 +138,13 @@ class Auditorias extends BaseController
             'id_usuario_rta' => session()->get('id_usuario'),
             'fecha_hora_respuesta' => date('Y-m-d H:i:s'),
         ];
-        var_dump($datos_rta_descargo);
-
 
         $this->model_auditorias->editDescargo($datos_rta_descargo, $id_descargo);
 
         # Envío de correo
 
         if ($tipo_obs == 1) { # En caso de que sea una Auditoría de Control
-            var_dump("Entra en el 1");
             $datos_emails = $this->model_mail_auditoria->getRespuestaDescargoAudControl($id_descargo);
-            var_dump($datos_emails);
             $url = base_url('/auditorias/view_aud_control/') . '/' . $datos_emails['id_auditoria'];
             $emails[] = $datos_emails['correo_responsable'];
             $helper->sendMail($datos_emails, 'Nueva Respuesta | Auditoría Control #', $url, 'emails/auditorias/control/respuesta', $emails, 'id_auditoria');
@@ -167,7 +158,6 @@ class Auditorias extends BaseController
             } else {
                 if ($tipo_obs == 4) {
                     $datos_emails = $this->model_mail_auditoria->getRespuestaDescargoAudAuditoria($id_descargo);
-                    var_dump($datos_emails);
                     $url = base_url('/auditorias/view_aud_auditoria/') . '/' . $datos_emails['id_auditoria'];
                     $emails[] = $datos_emails['correo_responsable'];
                     $helper->sendMail($datos_emails, 'Nueva Respuesta | CheckList Auditoria #', $url, 'emails/auditorias/auditoria/respuesta', $emails, 'id_auditoria');
@@ -269,7 +259,6 @@ class Auditorias extends BaseController
      */
     public function submitCrearNewAuditoria()
     {
-        
         $results = $this->validacion_crear_planilla();
 
         if ($results['exito']) {
@@ -380,9 +369,8 @@ class Auditorias extends BaseController
     /**
      * Carga un plan de acción dependiendo la auditoría que se envía por parámetro
      */
-    public function submitUploadPlanAccion($datos, $significancia_parametros, $efectos_parametros)
+    public function submitUploadPlanAccion($datos, $efectos_parametros)
     {
-
         $helper = new Helper();
         $efectos_separados = [];
         $efectos = join(",", $efectos_parametros);
@@ -400,17 +388,6 @@ class Auditorias extends BaseController
                     'id_efecto' => $e,
                 ];
                 $this->model_general->insertG('obs_rel_hallazgo_efecto', $data);
-            }
-        }
-
-        /* Si hay riesgos asignados, los inserto en la tabla de relación */
-        if (count($significancia_parametros) > 0) {
-            foreach ($significancia_parametros as $s) {
-                $data = [
-                    'id_hallazgo' => $id_hallazgo,
-                    'id_significancia' => $s,
-                ];
-                $this->model_general->insertG('obs_rel_hallazgo_significancia', $data);
             }
         }
 
@@ -449,29 +426,36 @@ class Auditorias extends BaseController
                     'rta' => $rta['rta'],
                 ];
 
+                // if ($aud_tipo == 1) {
+                //     $this->model_general->insertG('aud_rtas_control', $respuestas);
+                //     $tabla = 'aud_rtas_control';
+                // } else {
+                //     if ($aud_tipo == 0) {
+                //         $this->model_general->insertG('aud_rtas_vehicular', $respuestas);
+                //         $tabla = 'aud_rtas_vehicular';
+                //     } else {
+                //         if ($aud_tipo == 3) {
+                //             $this->model_general->insertG('aud_rtas_tarea_de_campo', $respuestas);
+                //             $tabla = 'aud_rtas_tarea_de_campo';
+                //         } else {
+                //             $this->model_general->insertG('aud_rtas_auditorias', $respuestas);
+                //             $tabla = 'aud_rtas_auditorias';
+                //         }
+                //     }
+                // }
+
                 if ($aud_tipo == 1) {
-                    var_dump("Entra en 1  ");
                     $this->model_general->insertG('aud_rtas_control', $respuestas);
                     $tabla = 'aud_rtas_control';
+                } else if ($aud_tipo == 0) {
+                    $this->model_general->insertG('aud_rtas_vehicular', $respuestas);
+                    $tabla = 'aud_rtas_vehicular';
+                } else if ($aud_tipo == 3) {
+                    $this->model_general->insertG('aud_rtas_tarea_de_campo', $respuestas);
+                    $tabla = 'aud_rtas_tarea_de_campo';
                 } else {
-                    if ($aud_tipo == 0) {
-                        var_dump("Entra en 2  ");
-
-                        $this->model_general->insertG('aud_rtas_vehicular', $respuestas);
-                        $tabla = 'aud_rtas_vehicular';
-                    } else {
-                        if ($aud_tipo == 3) {
-                            var_dump("Entra en 3  ");
-
-                            $this->model_general->insertG('aud_rtas_tarea_de_campo', $respuestas);
-                            $tabla = 'aud_rtas_tarea_de_campo';
-                        } else {
-                            var_dump("Entra en 4  ");
-
-                            $this->model_general->insertG('aud_rtas_auditorias', $respuestas);
-                            $tabla = 'aud_rtas_auditorias';
-                        }
-                    }
+                    $this->model_general->insertG('aud_rtas_auditorias', $respuestas);
+                    $tabla = 'aud_rtas_auditorias';
                 }
             }
         }
@@ -530,9 +514,6 @@ class Auditorias extends BaseController
 
         # Para el responsable
         $datos_emails = $this->model_mail_auditoria->getRespuestaDescargoAudControl(11);
-        echo '<pre>';
-        var_dump($datos_emails);
-        echo '</pre>';
         $emails[] = $datos_emails['correo_responsable'];
         $url = base_url('/auditorias/view_aud_control/') . '/' . $datos_emails['id'];
         $datos_emails['url'] = $url;
@@ -555,10 +536,10 @@ class Auditorias extends BaseController
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
         }
-        $data['auditorias_control'] = $this->model_auditorias->getAllTitlesAuditoria();
-        $data['auditorias_checklist'] = $this->model_auditorias->getAllTitlesAuditoria(0);
-        $data['auditorias_tarea_de_campo'] = $this->model_auditorias->getAllTitlesAuditoria(3);
-        $data['auditorias_auditoria'] = $this->model_auditorias->getAllTitlesAuditoria(4);
+        $data['auditorias_control'] = $this->model_auditorias->getAllTitlesAuditoria(1, true);
+        $data['auditorias_checklist'] = $this->model_auditorias->getAllTitlesAuditoria(0, true);
+        $data['auditorias_tarea_de_campo'] = $this->model_auditorias->getAllTitlesAuditoria(3, true);
+        $data['auditorias_auditoria'] = $this->model_auditorias->getAllTitlesAuditoria(4, true);
 
         return template('auditoria_edicion/index', $data);
     }
@@ -577,9 +558,9 @@ class Auditorias extends BaseController
      */
     public function submitEdicionPlanilla()
     {
-        
+
         $model = new Model_general();
-        
+
         $data_title = [
             'nombre' => $this->request->getPost('titulo_auditoria'),
             'tipo_aud' => $this->request->getPost('tipo_aud'),
@@ -598,7 +579,7 @@ class Auditorias extends BaseController
                 $model->db->transRollback();
                 return json_encode($result);
             }
-            
+
             # Agregar nuevo título de la Auditoria
             $id_auditoria = $this->model_general->insertG('auditorias_titulos', $data_title);
             $aux = 1;
@@ -612,16 +593,16 @@ class Auditorias extends BaseController
                     'nombre' => $b['subtitulo'],
                     'id_titulo' => $id_auditoria,
                 ];
-                
+
                 // Validamos los subtítulos de cada bloque
                 $validate_subt = $this->verificacion($data_subt, 'validation_subtitulo');
-                if(!$validate_subt['exito']) {
+                if (!$validate_subt['exito']) {
                     $model->db->transRollback();
                     return json_encode($validate_subt);
                 }
 
                 $id_subtitle = $this->model_general->insertG('auditorias_subtitulos', $data_subt);
-                
+
                 foreach ($b['preguntas_editadas'] as $p) {
 
                     $data_pregunta = [
@@ -633,7 +614,7 @@ class Auditorias extends BaseController
 
                     // Validamos cada pregunta
                     $validate_question = $this->verificacion($data_pregunta, 'validation_pregunta');
-                    if(!$validate_question['exito']) {
+                    if (!$validate_question['exito']) {
                         $model->db->transRollback();
                         return json_encode($validate_question);
                     }
@@ -644,21 +625,24 @@ class Auditorias extends BaseController
             }
 
             // La auditoría anterior la actualizamos para que quede obsoleta
-            $id_auditoria = $this->request->getPost('id_auditoria');
-            
+            $id_auditoria_old = $this->request->getPost('id_auditoria');
+
             $data_auditoria_old = [
                 'obsoleto' => 1,
                 'usuario_edicion' => session()->get('id_usuario'),
                 'fecha_hora_edicion' => date('Y-m-d H:i:s')
             ];
 
-            $this->model_general->updateG('auditorias_titulos', $id_auditoria, $data_auditoria_old);
+            $this->model_general->updateG('auditorias_titulos', $id_auditoria_old, $data_auditoria_old);
+
+            # Registrar los movimientos
+            newMov(9, 3, $id_auditoria_old, 'Inspección: Auditoría Obsoleta'); //Movimiento (Registra el ID de la auditoría obsoleta)
+            newMov(9, 1, $id_auditoria, 'Inspección: Nueva Revisión'); //Movimiento (Registra el ID de la auditoría con nueva revisión)
 
             // Finaliza la transacción
             $model->db->transCommit();
 
             echo json_encode($result);
-
         } catch (\Exception $error) {
             $model->db->transRollback();
             return 'Ha ocurrido un error en el registro de la auditoría: ' . $error->getMessage();

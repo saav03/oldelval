@@ -4,7 +4,6 @@ const i_question_modal = document.querySelectorAll('.i-question_modal');
 let txt = '';
 
 for (let i = 0; i < i_question_modal.length; i++) {
-    // console.log(i_question_modal[i]);
     let id_indice_kpi = i_question_modal[i].getAttribute('data-id');
     i_question_modal[i].addEventListener('click', () => {
         txt = '';
@@ -352,7 +351,6 @@ for (let i = 0; i < i_question_modal.length; i++) {
                 indice_contain.innerHTML = txt;
                 break;
         }
-        // console.log(i_question_modal[i].getAttribute('data-id'));
     })
 
 }

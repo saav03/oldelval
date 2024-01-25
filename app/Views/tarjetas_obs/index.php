@@ -1,10 +1,10 @@
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/index.css" rel="stylesheet">
-<title>OLDELVAL - Tarjetas de Observaciones</title>
+<title>OLDELVAL - Tarjetas M.A.S</title>
 <div class="container ">
     <div class="row">
         <div class="col-md-12">
             <div class="blister-title-container">
-                <h4 class="blister-title">Tarjeta de Observaciones</h4>
+                <h4 class="blister-title">Tarjetas M.A.S</h4>
             </div>
         </div>
     </div>

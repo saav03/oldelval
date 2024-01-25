@@ -343,13 +343,15 @@ class Model_auditorias extends Model
         return $query->getResultArray();
     }
 
-    public function getAllTitlesAuditoria($tipo = 1)
+    public function getAllTitlesAuditoria($tipo = 1, $obsoleto = false)
     {
         $builder = $this->db->table('auditorias_titulos');
         $builder->select('*');
 
         $builder->where('tipo_aud', $tipo);
-        $builder->where('obsoleto', NULL);
+        if (!$obsoleto) {
+            $builder->where('obsoleto', NULL);
+        }
         $builder->where('estado', 1);
 
 
@@ -410,7 +412,7 @@ class Model_auditorias extends Model
     public function getHallazgoAud($id_auditoria, $tipo)
     {
         $builder = $this->db->table('obs_hallazgos h');
-        $builder->select('h.id id_hallazgo, h.id_auditoria, h.tipo_auditoria, h.hallazgo, h.plan_accion, h.efecto_impacto, empresas.nombre contratista, CONCAT(responsable.nombre," ", responsable.apellido) responsable, h.responsable id_responsable, h.relevo_responsable id_relevo, CONCAT(relevo.nombre," ", relevo.apellido) relevo, h.significancia, h.fecha_cierre fecha_cierre, DATE_FORMAT(h.fecha_cierre, "%d/%m/%Y") fecha_cierre_format, DATE_FORMAT(h.fecha_hora_carga, "%d/%m/%Y") fecha_hora_carga, h.usuario_carga id_usuario_carga, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
+        $builder->select('h.id id_hallazgo, h.id_auditoria, h.tipo_auditoria, h.hallazgo, h.plan_accion, h.efecto_impacto, empresas.nombre contratista, CONCAT(responsable.nombre," ", responsable.apellido) responsable, h.responsable id_responsable, h.relevo_responsable id_relevo, h.significancia, CONCAT(relevo.nombre," ", relevo.apellido) relevo, h.significancia, h.fecha_cierre fecha_cierre, DATE_FORMAT(h.fecha_cierre, "%d/%m/%Y") fecha_cierre_format, DATE_FORMAT(h.fecha_hora_carga, "%d/%m/%Y") fecha_hora_carga, h.usuario_carga id_usuario_carga, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
             ->join('empresas', 'empresas.id=h.contratista', 'inner')
             ->join('usuario responsable', 'responsable.id=h.responsable', 'inner')
             ->join('usuario relevo', 'relevo.id=h.relevo_responsable', 'left')
@@ -422,8 +424,6 @@ class Model_auditorias extends Model
             $id_hallazgo = $hallazgo['id_hallazgo'];
             /* == Efectos relacionados al hallazgo == */
             $hallazgo['efectos'] = $this->getEfectosRelHallazgo($id_hallazgo);
-            /* == Significancia relacionadas al hallazgo == */
-            $hallazgo['significancia'] = $this->getSignificanciaRelHallazgo($id_hallazgo);
 
             /* == Cargo los descargos pertenecientes al Hallazgo == */
             $descargos = $this->getDescargosHallazgo($hallazgo['id_hallazgo']);
@@ -589,9 +589,5 @@ class Model_auditorias extends Model
         $builder = $this->db->table('auditorias_preguntas aud_preguntas');
         $builder->select('id, pregunta, subtitulo, titulo')->where('aud_preguntas.titulo', $id)->orderBy('aud_preguntas.orden', 'ASC');
         $preguntas = $builder->get()->getResultArray();
-        echo '<pre>';
-        var_dump($preguntas);
-        echo '</pre>';
-        exit;
     }
 }

@@ -111,10 +111,6 @@ class Perfil extends BaseController
                             'id_permiso' => $p,
                             'estado' => '1',
                         ];
-
-                        echo '<pre>';
-                        var_dump($datos);
-                        echo '</pre>';
                         $this->model_general->insertG('gg_rel_usuario_permiso', $datos);
                     }
                 }

@@ -19,7 +19,6 @@ btnSubmit.addEventListener("click", (e) => {
   ).then((result) => {
     if (result.isConfirmed) {
       addPermiso(form).done(function (data) {
-        console.log(data);
       });
       customSuccessAlert(
         "Carga Exitosa",

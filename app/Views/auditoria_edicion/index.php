@@ -36,7 +36,7 @@
                             <div class="nav nav-tabs" role="tablist">
                                 <button type="button" id="tabButtons-1" class="nav-item nav-link btn_aud btn-aud_active active" data-bs-toggle="tab" data-bs-target="#tabButtons-pane-1" role="tab" aria-controls="tabButtons-pane-1" aria-selected="true">Control</button>
                                 <button type="button" id="tabButtons-2" class="nav-item nav-link btn_aud btn-aud_active" data-bs-toggle="tab" data-bs-target="#tabButtons-pane-2" role="tab" aria-controls="tabButtons-pane-2" aria-selected="false"> Vehicular</button>
-                                <button type="button" id="tabButtons-3" class="nav-item nav-link btn_aud btn-aud_active" data-bs-toggle="tab" data-bs-target="#tabButtons-pane-3" role="tab" aria-controls="tabButtons-pane-3" aria-selected="false"> Tarea de Campo</button>
+                                <button type="button" id="tabButtons-3" class="nav-item nav-link btn_aud btn-aud_active" data-bs-toggle="tab" data-bs-target="#tabButtons-pane-3" role="tab" aria-controls="tabButtons-pane-3" aria-selected="false"> Inspección de Obra</button>
                                 <button type="button" id="tabButtons-4" class="nav-item nav-link btn_aud btn-aud_active" data-bs-toggle="tab" data-bs-target="#tabButtons-pane-4" role="tab" aria-controls="tabButtons-pane-4" aria-selected="false"> Auditoria</button>
                             </div>
                         </nav>

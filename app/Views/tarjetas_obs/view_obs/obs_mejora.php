@@ -118,6 +118,8 @@ if ($tarjeta['cierre'] == null) : ?>
             </div>
         </div>
 
+        
+
         <div>
             <br>
             <div class="row">
@@ -127,8 +129,8 @@ if ($tarjeta['cierre'] == null) : ?>
                 <?php if (is_null($tarjeta['cierre'])) : ?>
                     <?php if ($tarjeta['usuario_carga'] != session()->get('id_usuario') && $tarjeta['hallazgo']['responsable'] == session()->get('id_usuario') || $tarjeta['hallazgo']['relevo_responsable'] == session()->get('id_usuario')) : ?>
                         <div class="row" id="btns_descargos">
-                            <div style="margin: 15px 0 0 71px;">
-                                <button class="btn_modify" id="add_descargo" data-bs-toggle="modal" data-bs-target="#modal_add_descargo">Agregar Descargo</button>
+                            <div class="text-center">
+                                <button class="btn_add_descargo" id="add_descargo" data-bs-toggle="modal" data-bs-target="#modal_add_descargo">Agregar Descargo</button>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -137,20 +139,6 @@ if ($tarjeta['cierre'] == null) : ?>
             </div>
         </div>
 
-    </div>
-</div>
-
-<div class="modal fade" id="matrizRiesgoModal" role="dialog">
-    <div class="modal-dialog modal-lg" style="max-width: 1417px;">
-        <div class="modal-content">
-            <div class="modal-body" style="overflow-x:auto;">
-                <?= $tabla; ?>
-            </div>
-            <input type="hidden" id="currentDesvioRiesgo">
-            <div class="modal-footer">
-                <button type="button" class="btn_mod_danger" data-bs-dismiss="modal">Confirmar</button>
-            </div>
-        </div>
     </div>
 </div>
 <div hidden>
