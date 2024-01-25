@@ -14,8 +14,10 @@ class Model_estadisticas extends Model
 	{
 		// $id_tipo = 1;
 		$builder = $this->db->table('estadisticas_planilla est');
-		$builder->select('est.id id_estadistica, est.tipo tipo, est.periodo, est.anio, est.atrasado, u_carga.nombre u_carga_nombre, u_carga.apellido u_carga_apellido, est.contratista, DATE_FORMAT(est.fecha_hora_carga, "%Y-%m-%d") f_fecha_hora_carga, est.proyecto, est.modulo, est.estacion estacion, est.sistema sistema')
+		$builder->select('est.id id_estadistica, est.tipo tipo, a_p.id anio_id, periodos.mes periodo, est.anio, est.atrasado, u_carga.nombre u_carga_nombre, u_carga.apellido u_carga_apellido, est.contratista, DATE_FORMAT(est.fecha_hora_carga, "%Y-%m-%d") f_fecha_hora_carga, est.proyecto, est.modulo, est.estacion estacion, est.sistema sistema')
 			->join('usuario u_carga', 'u_carga.id=est.usuario_carga', 'inner')
+			->join('periodos', 'periodos.id=est.periodo', 'inner')
+			->join('anio_periodos a_p', 'a_p.id=periodos.anio', 'inner')
 			->where('tipo', $id_tipo)
 			->where('est.id', $id_estadistica);
 		$query = $builder->get()->getResultArray();
@@ -282,10 +284,12 @@ class Model_estadisticas extends Model
 		return $tipos_final;
 	}
 
-	public function getPeriodos()
+	public function getPeriodos($year_id)
 	{
 		$builder = $this->db->table('periodos p');
-		$builder->select('*');
+		$builder->select('p.id, p.mes, a_p.anio, p.fecha_ini, p.fecha_venc, p.fecha_fin');
+		$builder->join('anio_periodos a_p', 'a_p.id=p.anio', 'inner');
+		$builder->where('p.anio', $year_id);
 		return $builder->get()->getResultArray();
 	}
 
@@ -296,8 +300,9 @@ class Model_estadisticas extends Model
 		if ($soloMax) {
 			$builder->select("COUNT(*) cantidad");
 		} else {
-			$builder->select("e.id id_estadistica, empresas.nombre contratista, proyectos.nombre proyecto, e.tipo, e.periodo, e.anio, e.fecha_hora_carga, u_carga.nombre nombre_u_carga, u_carga.apellido apellido_u_carga, e.estado")
+			$builder->select("e.id id_estadistica, empresas.nombre contratista, proyectos.nombre proyecto, e.tipo, periodos.mes periodo, e.anio, e.fecha_hora_carga, u_carga.nombre nombre_u_carga, u_carga.apellido apellido_u_carga, e.estado")
 				->join('empresas', 'empresas.id=e.contratista', 'inner')
+				->join('periodos', 'periodos.id=e.periodo', 'inner')
 				->join('proyectos', 'proyectos.id=e.proyecto', 'inner')
 				->join('usuario u_carga', 'u_carga.id=e.usuario_carga', 'inner')
 				->orderBy('e.id', 'DESC')

@@ -121,6 +121,8 @@ $routes->post('/TarjetaObs/getEstacionesFilter/','TarjetaObservaciones::getEstac
 
 //ESTADÍSTICAS INCIDENTES
 $routes->get('/estadisticas','Estadisticas::index');
+$routes->get('/api/estadisticas/getYearsPeriod/(:num)','Estadisticas::getYearsPeriod/$1');
+
 $routes->get('/estadisticas/view/(:num)/(:num)','Estadisticas::view/$1/$2');
 $routes->post('/estadisticas/changeState/(:num)','Estadisticas::changeState/$1');
 

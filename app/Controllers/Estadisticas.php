@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Controllers\BaseController;
 use Config\Validation;
 
@@ -38,8 +39,8 @@ class Estadisticas extends BaseController
         } else {
 
             $data['estadistica'] = $this->model_estadisticas->getEstadistica($id_estadistica, $id_tipo);
-
-            $periodos = $this->model_estadisticas->getPeriodos();
+            $anio = $data['estadistica'][0]['anio_id'];
+            $periodos = $this->model_estadisticas->getPeriodos($anio);
             $meses = $this->meses();
 
             foreach ($periodos as $key => $p) {
@@ -97,9 +98,23 @@ class Estadisticas extends BaseController
 
     protected function getEncabezado($id_tipo)
     {
-        $periodos = $this->model_estadisticas->getPeriodos();
-        $meses = $this->meses();
+        /*
+        Voy a llevar solo los periodos a partir de la fecha actual hacia atrás
+        */
+        $data['anio_periodos'] =  $this->model_general->getAll('anio_periodos');
+        $data['proyectos'] =  $this->model_general->getAllEstadoActivo('proyectos');
+        $data['estaciones'] =  $this->model_general->getAllEstadoActivo('estaciones_bombeo');
+        $data['sistemas'] =  $this->model_general->getAllEstadoActivo('sistemas_oleoductos');
+        $data['contratista'] =  $this->model_empresas->getEmpresas($this->session->get('empresa'));
+        $data['contratistas'] =  $this->model_empresas->getEmpresas(0);
+        $data['planilla'] = $this->model_estadisticas->getDataPlanillaIncidente($id_tipo);
+        return $data;
+    }
 
+    public function getYearsPeriod($year_id)
+    {
+        $periodos = $this->model_estadisticas->getPeriodos($year_id);
+        $meses = $this->meses();
         $periodos_disponibles = [];
 
         /* == Fecha actual == */
@@ -127,18 +142,8 @@ class Estadisticas extends BaseController
                 }
             }
         }
-
-        /*
-        Voy a llevar solo los periodos a partir de la fecha actual hacia atrás
-        */
-        $data['periodos'] = $periodos_disponibles;
-        $data['proyectos'] =  $this->model_general->getAllEstadoActivo('proyectos');
-        $data['estaciones'] =  $this->model_general->getAllEstadoActivo('estaciones_bombeo');
-        $data['sistemas'] =  $this->model_general->getAllEstadoActivo('sistemas_oleoductos');
-        $data['contratista'] =  $this->model_empresas->getEmpresas($this->session->get('empresa'));
-        $data['contratistas'] =  $this->model_empresas->getEmpresas(0);
-        $data['planilla'] = $this->model_estadisticas->getDataPlanillaIncidente($id_tipo);
-        return $data;
+        $periodos_format = $periodos_disponibles;
+        echo json_encode($periodos_format);
     }
 
     /**
@@ -174,6 +179,7 @@ class Estadisticas extends BaseController
         $datos = [
             'tipo' => $id_tipo,
             'contratista' => $this->request->getPost('contratista'),
+            'anio' => $this->request->getPost('anio_periodo'),
             'periodo' => $this->request->getPost('periodo'),
             'proyecto' => $this->request->getPost('proyecto'),
             'modulo' => $this->request->getPost('modulo') == '-1' ? -1 : $this->request->getPost('modulo'),
@@ -194,7 +200,7 @@ class Estadisticas extends BaseController
                 $datos['atrasado'] = 0;
                 $periodo = explode('pre_', $periodo);
             }
-            $datos['anio'] = intval(date('Y'));
+            // $datos['anio'] = intval(date('Y'));
             $datos['periodo'] = $periodo[1];
             // $datos['fecha_hora_carga'] = date('Y-m-d H:i:s');
             $datos['usuario_carga'] = session()->get('id_usuario');
@@ -216,7 +222,7 @@ class Estadisticas extends BaseController
                         $archivoTemporal = $_FILES["adj_capacitaciones"]["tmp_name"][$i];
 
                         $extension = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-                        $nombre = "adj_capacitacion-". date('Y-m-d-H-i-s') . "." . $extension;
+                        $nombre = "adj_capacitacion-" . date('Y-m-d-H-i-s') . "." . $extension;
                         $uploadPath = $upload_ruta . $nombre;
 
                         if (in_array(strtolower($extension), ["pdf", "doc", "docx", "docm", "xls", "xlsx", "xlsb"])) {
@@ -326,7 +332,8 @@ class Estadisticas extends BaseController
     /**
      * Agrega el Indice IF AAP
      */
-    public function submitIndiceIFAAP() {
+    public function submitIndiceIFAAP()
+    {
         $data = [
             'id_estadistica' => $this->request->getPost('id_estadistica'),
             'id_indicador' => 14,

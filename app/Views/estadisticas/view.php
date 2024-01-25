@@ -16,7 +16,7 @@ switch ($estadistica[0]['tipo']) {
 
 $id_indice_ifaap = '';
 ?>
-
+<title>OLDELVAL - Estadística <?= $tipo_estadistica ?></title>
 <div class="container">
 
     <div class="row">
