@@ -54,45 +54,25 @@ class Model_auditorias extends Model
             ->orderBy('orden', 'ASC');
         return $builder->get()->getResultArray();
     }
+    /* Finaliza la sección donde los métodos van de la mano xd */
     /* ==================================================================================================================== */
 
-    public function getRtasFromPreguntaAudControl($id_aud_planilla, $id_pregunta)
+    /**
+     * Obtiene las respuestas de la Inspección/Auditoría cargada
+     */
+    public function getRespuestasAuditoria($id_aud_planilla, $id_pregunta)
     {
-        $builder = $this->db->table('aud_rtas_control');
+        $builder = $this->db->table('auditoria_respuestas');
         $builder->select('*')
             ->where('id_auditoria', $id_aud_planilla)
             ->where('id_pregunta', $id_pregunta);
         return $builder->get()->getResultArray();
     }
 
-    public function getRtasFromPreguntaAudVehicular($id_aud_planilla, $id_pregunta)
-    {
-        $builder = $this->db->table('aud_rtas_vehicular');
-        $builder->select('*')
-            ->where('id_auditoria', $id_aud_planilla)
-            ->where('id_pregunta', $id_pregunta);
-        return $builder->get()->getResultArray();
-    }
-
-    public function getRtasFromPreguntaAudTarea_campo($id_aud_planilla, $id_pregunta)
-    {
-        $builder = $this->db->table('aud_rtas_tarea_de_campo');
-        $builder->select('*')
-            ->where('id_auditoria', $id_aud_planilla)
-            ->where('id_pregunta', $id_pregunta);
-        return $builder->get()->getResultArray();
-    }
-
-    public function getRtasFromPreguntaAud_auditoria($id_aud_planilla, $id_pregunta)
-    {
-        $builder = $this->db->table('aud_rtas_auditorias');
-        $builder->select('*')
-            ->where('id_auditoria', $id_aud_planilla)
-            ->where('id_pregunta', $id_pregunta);
-        return $builder->get()->getResultArray();
-    }
-
-
+    /**
+     * Obtiene el ID de las preguntas de una Inspección/Auditorías
+     * Su lógica está en el método getCompleteInspection() del controlador Auditorias.php
+     */
     public function getIdPreguntasAuditorias($id_subtitulo, $id_auditoria)
     {
         $builder = $this->db->table('auditorias_preguntas');
@@ -104,51 +84,69 @@ class Model_auditorias extends Model
         return $builder->get()->getResultArray();
     }
 
-    public function getAllPagedControl($offset, $tamanioPagina, $params, $soloMax = FALSE)
+    ###################### NUEVA AUDITORIAS (NUEVO CODIGO ACTUALIZADO)
+    public function getAllPaged($offset, $tamanioPagina, $params, $soloMax = FALSE)
     {
-        $modelo_tipo_control = isset($params['modelo_tipo_control']) && $params['modelo_tipo_control'] ? $params['modelo_tipo_control'] : false;
+        $auditoria = $params['auditoria'];
+        $modelo_tipo = isset($params['modelo_tipo']) && $params['modelo_tipo'] ? $params['modelo_tipo'] : false;
         $contratista = isset($params['contratista']) && $params['contratista'] ? $params['contratista'] : false;
         $supervisor = isset($params['supervisor']) && $params['supervisor'] ? $params['supervisor'] : false;
-        $proyecto_aud_control = isset($params['proyecto_aud_control']) && $params['proyecto_aud_control'] ? $params['proyecto_aud_control'] : false;
-        $usuario_carga_control = isset($params['usuario_carga_control']) && $params['usuario_carga_control'] ? $params['usuario_carga_control'] : false;
-        $desde = isset($params['fecha_desde_control']) && $params['fecha_desde_control'] ? $params['fecha_desde_control'] : false;
-        $hasta = isset($params['fecha_hasta_control']) && $params['fecha_hasta_control'] ? $params['fecha_hasta_control'] : false;
+        $proyecto = isset($params['proyecto']) && $params['proyecto'] ? $params['proyecto'] : false;
+        $usuario_carga = isset($params['usuario_carga']) && $params['usuario_carga'] ? $params['usuario_carga'] : false;
+        $desde = isset($params['fecha_desde']) && $params['fecha_desde'] ? $params['fecha_desde'] : false;
+        $hasta = isset($params['fecha_hasta']) && $params['fecha_hasta'] ? $params['fecha_hasta'] : false;
+        $equipo = isset($params['equipo']) && $params['equipo'] ? $params['equipo'] : false;
+        $conductor = isset($params['conductor']) && $params['conductor'] ? $params['conductor'] : false;
+        // $num_interno = isset($params['num_interno']) && $params['num_interno'] ? $params['num_interno'] : false;
+        $resultado = isset($params['resultado']) && $params['resultado'] ? $params['resultado'] : false;
+        $builder = $this->db->table('auditoria a');
 
-
-        $builder = $this->db->table('auditoria_control aud_control');
-
-        if ($modelo_tipo_control) {
-            $builder->where('aud_control.modelo_tipo', $modelo_tipo_control);
-        }
-        if ($contratista) {
-            $builder->where('aud_control.contratista', $contratista);
-        }
-        if ($supervisor) {
+        if ($modelo_tipo)
+            $builder->where('a.modelo_tipo', $modelo_tipo);
+        if ($contratista)
+            $builder->where('a.contratista', $contratista);
+        // TODO | Solo filtra por el nombre, pero no por el apellido (Arreglar)
+        if ($supervisor)
             $builder->like('u_supervisor.nombre', $supervisor, 'both');
+        if ($proyecto)
+            $builder->where('a.proyecto', $proyecto);
+        if ($usuario_carga)
+            $builder->like('u_carga.nombre', $usuario_carga, 'both');
+
+        if ($auditoria == 2) {
+            if ($equipo)
+                $builder->like('a.equipo', $equipo, 'both');
+            if ($conductor)
+                $builder->like('a.conductor', $conductor, 'both');
+
+            if ($resultado) {
+                if ($resultado == 1) {
+                    $builder->where('a.resultado_inspeccion', 1);
+                } else {
+                    $builder->where('a.resultado_inspeccion', 0);
+                }
+            }
         }
-        if ($proyecto_aud_control) {
-            $builder->where('aud_control.proyecto', $proyecto_aud_control);
-        }
-        if ($usuario_carga_control) {
-            $builder->like('u_carga.nombre', $usuario_carga_control, 'both');
-        }
-        if ($desde) {
-            $builder->where("aud_control.fecha_carga >=", $desde);
-        }
-        if ($hasta) {
-            $builder->where("aud_control.fecha_carga <=", $hasta);
-        }
+
+        if ($desde)
+            $builder->where("a.fecha_hora_carga >=", $desde);
+        if ($hasta)
+            $builder->where("a.fecha_hora_carga <=", $hasta);
+
 
         if ($soloMax) {
-            $builder->select("COUNT(*) cantidad");
+            $builder->select("COUNT(*) cantidad")
+                ->where('a.auditoria', $auditoria);
         } else {
-            $builder->select("aud_control.id id_auditoria, aud_title.nombre modelo_tipo, emp.nombre contratista, CONCAT(u_supervisor.nombre,' ',u_supervisor.apellido) as supervisor, proyectos.nombre as proyecto, CONCAT(u_carga.nombre,' ',u_carga.apellido) usuario_carga, DATE_FORMAT(aud_control.fecha_carga, '%d/%m/%Y') as fecha_carga_format, aud_control.estado")
-                ->join('empresas emp', 'emp.id=aud_control.contratista', 'inner')
-                ->join('auditorias_titulos as aud_title', 'aud_title.id=aud_control.modelo_tipo', 'inner')
-                ->join('proyectos', 'proyectos.id=aud_control.proyecto', 'inner')
-                ->join('usuario u_supervisor', 'u_supervisor.id=aud_control.supervisor_responsable', 'inner')
-                ->join('usuario u_carga', 'u_carga.id=aud_control.usuario_carga', 'inner')
-                ->orderBy('aud_control.id', 'DESC')
+            $vehicular_query = $auditoria == 2 ? ', a.conductor, a.equipo, a.resultado_inspeccion' : '';
+            $builder->select("a.id id_auditoria, a_title.nombre modelo_tipo, emp.nombre contratista, CONCAT(u_supervisor.nombre,' ',u_supervisor.apellido) as supervisor, p.nombre as proyecto, CONCAT(u_carga.nombre,' ',u_carga.apellido) usuario_carga, DATE_FORMAT(a.fecha_hora_carga, '%d/%m/%Y') as fecha_carga_format" . $vehicular_query)
+                ->join('empresas emp', 'emp.id=a.contratista', 'inner')
+                ->join('auditorias_titulos a_title', 'a_title.id=a.modelo_tipo', 'inner')
+                ->join('proyectos p', 'p.id=a.proyecto', 'inner')
+                ->join('usuario u_supervisor', 'u_supervisor.id=a.supervisor_responsable', 'inner')
+                ->join('usuario u_carga', 'u_carga.id=a.usuario_carga', 'inner')
+                ->where('a.auditoria', $auditoria)
+                ->orderBy('a.id', 'DESC')
                 ->limit($tamanioPagina, $offset);
         }
         $query = $builder->get();
@@ -172,177 +170,10 @@ class Model_auditorias extends Model
         return $query->getResultArray();
     }
 
-    public function getAllPagedVehicular($offset, $tamanioPagina, $params, $soloMax = FALSE)
-    {
-
-        $id_aud_vehicular = isset($params['id_aud_vehicular']) && $params['id_aud_vehicular'] ? $params['id_aud_vehicular'] : false;
-        $modelo_tipo_vehicular = isset($params['modelo_tipo_vehicular']) && $params['modelo_tipo_vehicular'] ? $params['modelo_tipo_vehicular'] : false;
-        $equipo = isset($params['equipo']) && $params['equipo'] ? $params['equipo'] : false;
-        $conductor = isset($params['conductor']) && $params['conductor'] ? $params['conductor'] : false;
-        $num_interno = isset($params['num_interno_vehicular']) && $params['num_interno_vehicular'] ? $params['num_interno_vehicular'] : false;
-        $titular = isset($params['titular']) && $params['titular'] ? $params['titular'] : false;
-        $proyecto = isset($params['proyecto_aud_vehicular']) && $params['proyecto_aud_vehicular'] ? $params['proyecto_aud_vehicular'] : false;
-        $resultado = isset($params['resultado_inspeccion']) && $params['resultado_inspeccion'] ? $params['resultado_inspeccion'] : false;
-        $usuario_carga = isset($params['usuario_carga_vehicular']) && $params['usuario_carga_vehicular'] ? $params['usuario_carga_vehicular'] : false;
-        $desde = isset($params['fecha_desde_vehicular']) && $params['fecha_desde_vehicular'] ? $params['fecha_desde_vehicular'] : false;
-        $hasta = isset($params['fecha_hasta_vehicular']) && $params['fecha_hasta_vehicular'] ? $params['fecha_hasta_vehicular'] : false;
-
-        $builder = $this->db->table('auditoria_vehicular aud_vehicular');
-
-        if ($id_aud_vehicular) {
-            $builder->where('aud_vehicular.id', $id_aud_vehicular);
-        }
-        if ($modelo_tipo_vehicular) {
-            $builder->where('aud_vehicular.modelo_tipo', $modelo_tipo_vehicular);
-        }
-        if ($equipo) {
-            $builder->like('aud_vehicular.equipo', $equipo, 'both');
-        }
-        if ($conductor) {
-            $builder->like('u_conductor.nombre', $conductor, 'both');
-        }
-        if ($num_interno) {
-            $builder->like('aud_vehicular.num_interno', $num_interno, 'both');
-        }
-        if ($titular) {
-            $builder->like('u_titular.nombre', $titular, 'both');
-        }
-        if ($proyecto) {
-            $builder->where('aud_vehicular.proyecto', $proyecto);
-        }
-        if ($resultado == 1) {
-            $builder->where('aud_vehicular.resultado_inspeccion', '1');
-        } else if ($resultado == 2) {
-            $builder->where('aud_vehicular.resultado_inspeccion', '0');
-        }
-        if ($usuario_carga) {
-            $builder->like('u_carga.nombre', $usuario_carga, 'both');
-        }
-        if ($desde) {
-            $builder->where("aud_vehicular.fecha_hora_carga >=", $desde);
-        }
-        if ($hasta) {
-            $builder->where("aud_vehicular.fecha_hora_carga <=", $hasta);
-        }
-
-        if ($soloMax) {
-            $builder->select("COUNT(*) cantidad");
-        } else {
-            $builder->select("aud_vehicular.id id_auditoria, aud_title.nombre modelo_tipo, aud_vehicular.equipo, CONCAT(u_conductor.nombre,' ',u_conductor.apellido) as conductor, aud_vehicular.num_interno, CONCAT(u_titular.nombre,' ',u_titular.apellido) as titular, proyectos.nombre proyecto, IF (aud_vehicular.resultado_inspeccion = 1, 'Satisfactoria', 'No Satisfactoria') as resultado_inspeccion, CONCAT(u_carga.nombre,' ',u_carga.apellido) as usuario_carga, DATE_FORMAT(aud_vehicular.fecha_hora_carga, '%d/%m/%Y') as fecha_carga_format, aud_vehicular.estado")
-                ->orderBy('aud_vehicular.id', 'DESC')
-                ->limit($tamanioPagina, $offset);
-        }
-        $builder->join('auditorias_titulos as aud_title', 'aud_title.id=aud_vehicular.modelo_tipo', 'inner')
-            ->join('proyectos', 'proyectos.id=aud_vehicular.proyecto', 'inner')
-            ->join('usuario u_titular', 'u_titular.id=aud_vehicular.titular', 'inner')
-            ->join('usuario u_conductor', 'u_conductor.id=aud_vehicular.conductor', 'inner')
-            ->join('usuario u_carga', 'u_carga.id=aud_vehicular.usuario_carga', 'inner');
-        $query = $builder->get();
-        return $query->getResultArray();
-    }
-
-    public function getAllPaged_auditoria($offset, $tamanioPagina, $params, $soloMax = FALSE)
-    {
-        $modelo_tipo_auditoria_a = isset($params['modelo_tipo_auditoria_a']) && $params['modelo_tipo_auditoria_a'] ? $params['modelo_tipo_auditoria_a'] : false;
-        $contratista = isset($params['contratista_auditoria_a']) && $params['contratista_auditoria_a'] ? $params['contratista_auditoria_a'] : false;
-        $supervisor = isset($params['supervisor_auditoria_a']) && $params['supervisor_auditoria_a'] ? $params['supervisor_auditoria_a'] : false;
-        $proyecto_aud_auditoria_a = isset($params['proyecto_aud_auditoria_a']) && $params['proyecto_aud_auditoria_a'] ? $params['proyecto_aud_auditoria_a'] : false;
-        $usuario_carga_auditoria_a = isset($params['usuario_carga_auditoria_a']) && $params['usuario_carga_auditoria_a'] ? $params['usuario_carga_auditoria_a'] : false;
-        $desde = isset($params['fecha_desde_auditoria_a']) && $params['fecha_desde_auditoria_a'] ? $params['fecha_desde_auditoria_a'] : false;
-        $hasta = isset($params['fecha_hasta_auditoria_a']) && $params['fecha_hasta_auditoria_a'] ? $params['fecha_hasta_auditoria_a'] : false;
-
-
-        $builder = $this->db->table('auditoria_auditoria aud_auditoria_auditoria');
-
-        if ($modelo_tipo_auditoria_a) {
-            $builder->where('aud_auditoria_auditoria.modelo_tipo', $modelo_tipo_auditoria_a);
-        }
-        if ($contratista) {
-            $builder->where('aud_auditoria_auditoria.contratista', $contratista);
-        }
-        if ($supervisor) {
-            $builder->like('u_supervisor.nombre', $supervisor, 'both');
-        }
-        if ($proyecto_aud_auditoria_a) {
-            $builder->where('aud_auditoria_auditoria.proyecto', $proyecto_aud_auditoria_a);
-        }
-        if ($usuario_carga_auditoria_a) {
-            $builder->like('u_carga.nombre', $usuario_carga_auditoria_a, 'both');
-        }
-        if ($desde) {
-            $builder->where("aud_auditoria_auditoria.fecha_carga >=", $desde);
-        }
-        if ($hasta) {
-            $builder->where("aud_auditoria_auditoria.fecha_carga <=", $hasta);
-        }
-
-        if ($soloMax) {
-            $builder->select("COUNT(*) cantidad");
-        } else {
-            $builder->select("aud_auditoria_auditoria.id id_auditoria, aud_title.nombre modelo_tipo, emp.nombre contratista, CONCAT(u_supervisor.nombre,' ',u_supervisor.apellido) as supervisor, proyectos.nombre as proyecto, CONCAT(u_carga.nombre,' ',u_carga.apellido) usuario_carga, DATE_FORMAT(aud_auditoria_auditoria.fecha_carga, '%d/%m/%Y') as fecha_carga_format, aud_auditoria_auditoria.estado")
-                ->join('empresas emp', 'emp.id=aud_auditoria_auditoria.contratista', 'inner')
-                ->join('auditorias_titulos as aud_title', 'aud_title.id=aud_auditoria_auditoria.modelo_tipo', 'inner')
-                ->join('proyectos', 'proyectos.id=aud_auditoria_auditoria.proyecto', 'inner')
-                ->join('usuario u_supervisor', 'u_supervisor.id=aud_auditoria_auditoria.supervisor_responsable', 'inner')
-                ->join('usuario u_carga', 'u_carga.id=aud_auditoria_auditoria.usuario_carga', 'inner')
-                ->orderBy('aud_auditoria_auditoria.id', 'DESC')
-                ->limit($tamanioPagina, $offset);
-        }
-        $query = $builder->get();
-        return $query->getResultArray();
-    }
-
-    public function getAllPagedTarea_de_campo($offset, $tamanioPagina, $params, $soloMax = FALSE)
-    {
-        $modelo_tipo_auditoria_tarea_de_campo = isset($params['modelo_tipo_tarea_de_campo']) && $params['modelo_tipo_tarea_de_campo'] ? $params['modelo_tipo_tarea_de_campo'] : false;
-        $contratista = isset($params['contratista_tarea_de_campo']) && $params['contratista_tarea_de_campo'] ? $params['contratista_tarea_de_campo'] : false;
-        $supervisor = isset($params['supervisor_tarea_de_campo']) && $params['supervisor_tarea_de_campo'] ? $params['supervisor_tarea_de_campo'] : false;
-        $proyecto_aud_auditoria_tarea_de_campo = isset($params['proyecto_aud_tarea_de_campo']) && $params['proyecto_aud_tarea_de_campo'] ? $params['proyecto_aud_tarea_de_campo'] : false;
-        $usuario_carga_auditoria_tarea_de_campo = isset($params['usuario_carga_tarea_de_campo']) && $params['usuario_carga_tarea_de_campo'] ? $params['usuario_carga_tarea_de_campo'] : false;
-        $desde = isset($params['fecha_desde_tarea_de_campo']) && $params['fecha_desde_tarea_de_campo'] ? $params['fecha_desde_tarea_de_campo'] : false;
-        $hasta = isset($params['fecha_hasta_tarea_de_campo']) && $params['fecha_hasta_tarea_de_campo'] ? $params['fecha_hasta_tarea_de_campo'] : false;
-
-
-        $builder = $this->db->table('auditoria_tarea_de_campo aud_auditoria_tarea_de_campo');
-
-        if ($modelo_tipo_auditoria_tarea_de_campo) {
-            $builder->where('aud_auditoria_tarea_de_campo.modelo_tipo', $modelo_tipo_auditoria_tarea_de_campo);
-        }
-        if ($contratista) {
-            $builder->where('aud_auditoria_tarea_de_campo.contratista', $contratista);
-        }
-        if ($supervisor) {
-            $builder->like('u_supervisor.nombre', $supervisor, 'both');
-        }
-        if ($proyecto_aud_auditoria_tarea_de_campo) {
-            $builder->where('aud_auditoria_tarea_de_campo.proyecto', $proyecto_aud_auditoria_tarea_de_campo);
-        }
-        if ($usuario_carga_auditoria_tarea_de_campo) {
-            $builder->like('u_carga.nombre', $usuario_carga_auditoria_tarea_de_campo, 'both');
-        }
-        if ($desde) {
-            $builder->where("aud_auditoria_tarea_de_campo.fecha_carga >=", $desde);
-        }
-        if ($hasta) {
-            $builder->where("aud_auditoria_tarea_de_campo.fecha_carga <=", $hasta);
-        }
-
-        if ($soloMax) {
-            $builder->select("COUNT(*) cantidad");
-        } else {
-            $builder->select("aud_auditoria_tarea_de_campo.id id_auditoria, aud_title.nombre modelo_tipo, emp.nombre contratista, CONCAT(u_supervisor.nombre,' ',u_supervisor.apellido) as supervisor, proyectos.nombre as proyecto, CONCAT(u_carga.nombre,' ',u_carga.apellido) usuario_carga, DATE_FORMAT(aud_auditoria_tarea_de_campo.fecha_carga, '%d/%m/%Y') as fecha_carga_format, aud_auditoria_tarea_de_campo.estado")
-                ->join('empresas emp', 'emp.id=aud_auditoria_tarea_de_campo.contratista', 'inner')
-                ->join('auditorias_titulos as aud_title', 'aud_title.id=aud_auditoria_tarea_de_campo.modelo_tipo', 'inner')
-                ->join('proyectos', 'proyectos.id=aud_auditoria_tarea_de_campo.proyecto', 'inner')
-                ->join('usuario u_supervisor', 'u_supervisor.id=aud_auditoria_tarea_de_campo.supervisor_responsable', 'inner')
-                ->join('usuario u_carga', 'u_carga.id=aud_auditoria_tarea_de_campo.usuario_carga', 'inner')
-                ->orderBy('aud_auditoria_tarea_de_campo.id', 'DESC')
-                ->limit($tamanioPagina, $offset);
-        }
-        $query = $builder->get();
-        return $query->getResultArray();
-    }
-
+    /**
+     * Obtiene cada título de las Inspecciones/Auditorías cargadas
+     * Esto se hace principalmente para cargar una Inspección y saber de que tipo se está cargando
+     */
     public function getAllTitlesAuditoria($tipo = 1, $obsoleto = false)
     {
         $builder = $this->db->table('auditorias_titulos');
@@ -361,165 +192,24 @@ class Model_auditorias extends Model
     /**
      * Trae el bloque completo de la auditoría con sus preguntas y sus respuestas
      */
-    public function getBloqueCompletoAudControl($id_auditoria)
+    public function getBloqueInspectionComplete($id_auditoria)
     {
-        $builder = $this->db->table('auditoria_control aud_control');
-        $builder->select('aud_control.id as id_auditoria, aud_control.modelo_tipo, empresas.nombre as contratista, CONCAT(u_supervisor.nombre," ", u_supervisor.apellido) as supervisor_responsable, DATE_FORMAT(aud_control.fecha_carga, "%d/%m/%Y") as fecha_carga_format, aud_control.cant_personal, aud_control.num_informe, proyectos.nombre proyecto, modulos.nombre modulo, estacion.nombre estacion, sistema.nombre sistema, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
-            ->join('empresas', 'empresas.id=aud_control.contratista', 'inner')
-            ->join('usuario u_supervisor', 'u_supervisor.id=aud_control.supervisor_responsable', 'inner')
-            ->join('proyectos', 'proyectos.id=aud_control.proyecto', 'inner')
-            ->join('modulos', 'modulos.id=aud_control.modulo', 'left')
-            ->join('estaciones_bombeo estacion', 'estacion.id=aud_control.estacion', 'left')
-            ->join('sistemas_oleoductos sistema', 'sistema.id=aud_control.sistema', 'left')
-            ->join('usuario u_carga', 'u_carga.id=aud_control.usuario_carga', 'left')
-            ->where('aud_control.id', $id_auditoria);
-        $auditoria = $builder->get()->getRowArray();
-        return $auditoria;
-    }
-
-    public function getBloqueCompletoAudTareaCampo($id_auditoria)
-    {
-        $builder = $this->db->table('auditoria_tarea_de_campo aud_auditoria_tarea_de_campo');
-        $builder->select('aud_auditoria_tarea_de_campo.id as id_auditoria, aud_auditoria_tarea_de_campo.modelo_tipo, empresas.nombre as contratista, CONCAT(u_supervisor.nombre," ", u_supervisor.apellido) as supervisor_responsable, DATE_FORMAT(aud_auditoria_tarea_de_campo.fecha_carga, "%d/%m/%Y") as fecha_carga_format, aud_auditoria_tarea_de_campo.cant_personal, aud_auditoria_tarea_de_campo.num_informe, proyectos.nombre proyecto, modulos.nombre modulo, estacion.nombre estacion, sistema.nombre sistema, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
-            ->join('empresas', 'empresas.id=aud_auditoria_tarea_de_campo.contratista', 'inner')
-            ->join('usuario u_supervisor', 'u_supervisor.id=aud_auditoria_tarea_de_campo.supervisor_responsable', 'inner')
-            ->join('proyectos', 'proyectos.id=aud_auditoria_tarea_de_campo.proyecto', 'inner')
-            ->join('modulos', 'modulos.id=aud_auditoria_tarea_de_campo.modulo', 'left')
-            ->join('estaciones_bombeo estacion', 'estacion.id=aud_auditoria_tarea_de_campo.estacion', 'left')
-            ->join('sistemas_oleoductos sistema', 'sistema.id=aud_auditoria_tarea_de_campo.sistema', 'left')
-            ->join('usuario u_carga', 'u_carga.id=aud_auditoria_tarea_de_campo.usuario_carga', 'left')
-            ->where('aud_auditoria_tarea_de_campo.id', $id_auditoria);
-        $auditoria = $builder->get()->getRowArray();
-        return $auditoria;
-    }
-
-    public function getBloqueCompletoAud_auditoria($id_auditoria)
-    {
-        $builder = $this->db->table('auditoria_auditoria aud_auditoria_auditoria');
-        $builder->select('aud_auditoria_auditoria.id as id_auditoria, aud_auditoria_auditoria.modelo_tipo, empresas.nombre as contratista, CONCAT(u_supervisor.nombre," ", u_supervisor.apellido) as supervisor_responsable, DATE_FORMAT(aud_auditoria_auditoria.fecha_carga, "%d/%m/%Y") as fecha_carga_format, aud_auditoria_auditoria.cant_personal, aud_auditoria_auditoria.num_informe, proyectos.nombre proyecto, modulos.nombre modulo, estacion.nombre estacion, sistema.nombre sistema, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
-            ->join('empresas', 'empresas.id=aud_auditoria_auditoria.contratista', 'inner')
-            ->join('usuario u_supervisor', 'u_supervisor.id=aud_auditoria_auditoria.supervisor_responsable', 'inner')
-            ->join('proyectos', 'proyectos.id=aud_auditoria_auditoria.proyecto', 'inner')
-            ->join('modulos', 'modulos.id=aud_auditoria_auditoria.modulo', 'left')
-            ->join('estaciones_bombeo estacion', 'estacion.id=aud_auditoria_auditoria.estacion', 'left')
-            ->join('sistemas_oleoductos sistema', 'sistema.id=aud_auditoria_auditoria.sistema', 'left')
-            ->join('usuario u_carga', 'u_carga.id=aud_auditoria_auditoria.usuario_carga', 'left')
-            ->where('aud_auditoria_auditoria.id', $id_auditoria);
-        $auditoria = $builder->get()->getRowArray();
-        return $auditoria;
-    }
-
-    public function getHallazgoAud($id_auditoria, $tipo)
-    {
-        $builder = $this->db->table('obs_hallazgos h');
-        $builder->select('h.id id_hallazgo, h.id_auditoria, h.tipo_auditoria, h.hallazgo, h.plan_accion, h.efecto_impacto, empresas.nombre contratista, CONCAT(responsable.nombre," ", responsable.apellido) responsable, h.responsable id_responsable, h.relevo_responsable id_relevo, h.significancia, CONCAT(relevo.nombre," ", relevo.apellido) relevo, h.significancia, h.fecha_cierre fecha_cierre, DATE_FORMAT(h.fecha_cierre, "%d/%m/%Y") fecha_cierre_format, DATE_FORMAT(h.fecha_hora_carga, "%d/%m/%Y") fecha_hora_carga, h.usuario_carga id_usuario_carga, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
-            ->join('empresas', 'empresas.id=h.contratista', 'inner')
-            ->join('usuario responsable', 'responsable.id=h.responsable', 'inner')
-            ->join('usuario relevo', 'relevo.id=h.relevo_responsable', 'left')
-            ->join('usuario u_carga', 'u_carga.id=h.usuario_carga', 'inner')
-            ->where('h.id_auditoria', $id_auditoria)
-            ->where('h.tipo_auditoria', $tipo);
-        $hallazgo = $builder->get()->getRowArray();
-        if (!empty($hallazgo)) {
-            $id_hallazgo = $hallazgo['id_hallazgo'];
-            /* == Efectos relacionados al hallazgo == */
-            $hallazgo['efectos'] = $this->getEfectosRelHallazgo($id_hallazgo);
-
-            /* == Cargo los descargos pertenecientes al Hallazgo == */
-            $descargos = $this->getDescargosHallazgo($hallazgo['id_hallazgo']);
-
-            if (!is_null($descargos)) {
-                /* == Cargo los Adjuntos del Hallazgo == */
-                $adj_hallazgo = $this->getAdjHallazgo($id_hallazgo);
-                $hallazgo['adjuntos'] = $adj_hallazgo;
-
-                foreach ($descargos as $key => $d) {
-                    /* == Cargo los adjuntos de todos los hallazgos == */
-                    $adj_descargos = $this->getAdjDescargosHallazgo($d['id_descargo']);
-                    $descargos[$key]['descargos_adj'] = $adj_descargos;
-                }
-
-                $hallazgo['descargos'] = $descargos;
-            }
-
-            /* == Cierre de la tarjeta (Si es que está cerrada) == */
-            $cierre = $this->getCierreMotivoHallazgo($id_hallazgo);
-            $hallazgo['cierre'] = $cierre;
-        }
-
-
-
-        return $hallazgo;
-    }
-
-
-    public function getSignificanciaRelHallazgo($id_hallazgo)
-    {
-        $builder = $this->db->table('obs_rel_hallazgo_significancia orhs');
-        $builder->select('orhs.id id_rel_significancia, orhs.id_significancia, s.nombre nombre_significancia')
-            ->join('significancia s', 's.id=orhs.id_significancia', 'inner')
-            ->where('id_hallazgo', $id_hallazgo);
-        return $builder->get()->getResultArray();
-    }
-    public function getEfectosRelHallazgo($id_hallazgo)
-    {
-        $builder = $this->db->table('obs_rel_hallazgo_efecto orhe');
-        $builder->select('orhe.id id_rel_efecto, orhe.id_efecto, e.nombre nombre_efecto')
-            ->join('efectos_impactos e', 'e.id=orhe.id_efecto', 'inner')
-            ->where('id_hallazgo', $id_hallazgo);
-        return $builder->get()->getResultArray();
-    }
-    public function getDescargosHallazgo($id_hallazgo)
-    {
-        $builder = $this->db->table('obs_hallazgos_descargos ohd');
-        $builder->select('ohd.id id_descargo, ohd.id_hallazgo, ohd.estado estado_descargo, ohd.motivo, DATE_FORMAT(ohd.fecha_hora_motivo, "%d/%m/%Y") fecha_hora_motivo, ohd.respuesta, DATE_FORMAT(ohd.fecha_hora_respuesta, "%d/%m/%Y") fecha_hora_respuesta, CONCAT(u_descargo.nombre," ", u_descargo.apellido) usuario_descargo, CONCAT(u_rta.nombre," ", u_rta.apellido) usuario_respuesta')
-            ->join('usuario u_descargo', 'u_descargo.id=ohd.id_usuario', 'inner')
-            ->join('usuario u_rta', 'u_rta.id=ohd.id_usuario_rta', 'left')
-            ->where('ohd.id_hallazgo', $id_hallazgo);
-        return $builder->get()->getResultArray();
-    }
-    public function getAdjHallazgo($id_hallazgo)
-    {
-        $builder = $this->db->table('obs_hallazgos_adj oha');
-        $builder->select('*')
-            ->where('oha.id_hallazgo', $id_hallazgo);
-        return $builder->get()->getResultArray();
-    }
-    public function getAdjDescargosHallazgo($id_descargo)
-    {
-        $builder = $this->db->table('obs_descargos_adjuntos oda');
-        $builder->select('*')
-            ->where('oda.id_descargo', $id_descargo);
-        return $builder->get()->getResultArray();
-    }
-    protected function getCierreMotivoHallazgo($id_hallazgo)
-    {
-        $builder = $this->db->table('obs_hallazgo_cierre ohc');
-        $builder->select('ohc.*, CONCAT(u.nombre," ", u.apellido) usuario_cierre')
-            ->join('usuario u', 'u.id=ohc.id_usuario_cierre', 'inner')
-            ->where('ohc.id_hallazgo_obs', $id_hallazgo);
-        return $builder->get()->getRowArray();
-    }
-
-    /**
-     * Trae el bloque completo de la auditoría con sus preguntas y sus respuestas
-     */
-    public function getBloqueCompletoAudVehicular($id_auditoria)
-    {
-        $builder = $this->db->table('auditoria_vehicular aud_vehicular');
-        $builder->select('aud_vehicular.id id_auditoria, aud_vehicular.modelo_tipo, cont.nombre as contratista, aud_vehicular.equipo, CONCAT(conductor.nombre, " ", conductor.apellido) conductor, aud_vehicular.num_interno, aud_vehicular.marca, aud_vehicular.modelo, aud_vehicular.patente, CONCAT(titular.nombre, " ", titular.apellido) titular, aud_vehicular.fecha, aud_vehicular.hora, proyectos.nombre proyecto, tarea_que_realiza, resultado_inspeccion, medidas_implementar, DATE_FORMAT(aud_vehicular.fecha_hora_carga, "%d/%m/%Y") fecha_carga_format, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
-            ->join('usuario conductor', 'conductor.id=aud_vehicular.conductor', 'inner')
-            ->join('usuario titular', 'titular.id=aud_vehicular.titular', 'inner')
-            ->join('empresas cont', 'cont.id = aud_vehicular.contratista', 'left')
-            ->join('proyectos', 'proyectos.id=aud_vehicular.proyecto', 'inner')
-            ->join('usuario u_carga', 'u_carga.id=aud_vehicular.usuario_carga', 'left')
-            ->where('aud_vehicular.id', $id_auditoria);
+        $builder = $this->db->table('auditoria a');
+        $builder->select('a.id as id_auditoria, a.auditoria, a.modelo_tipo, empresas.nombre as contratista, a.equipo, a.conductor, a.num_interno, CONCAT(u_supervisor.nombre," ", u_supervisor.apellido) as supervisor_responsable, DATE_FORMAT(a.fecha_hora_carga, "%Y-%m-%d") fecha_carga, DATE_FORMAT(a.fecha_hora_carga, "%d/%m/%Y") as fecha_carga_format, a.cant_personal, a.marca, a.modelo, a.patente, DATE_FORMAT(a.hora, "%H:%i") hora, proyectos.nombre proyecto, modulos.nombre modulo, estacion.nombre estacion, sistema.nombre sistema, a.tarea_que_realiza, a.resultado_inspeccion, a.medidas_implementar, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
+            ->join('empresas', 'empresas.id=a.contratista', 'inner')
+            ->join('usuario u_supervisor', 'u_supervisor.id=a.supervisor_responsable', 'inner')
+            ->join('proyectos', 'proyectos.id=a.proyecto', 'inner')
+            ->join('modulos', 'modulos.id=a.modulo', 'left')
+            ->join('estaciones_bombeo estacion', 'estacion.id=a.estacion', 'left')
+            ->join('sistemas_oleoductos sistema', 'sistema.id=a.sistema', 'left')
+            ->join('usuario u_carga', 'u_carga.id=a.usuario_carga', 'left')
+            ->where('a.id', $id_auditoria);
         $auditoria = $builder->get()->getRowArray();
         return $auditoria;
     }
 
     /**
-     * Actualiza los comentarios de las respuestas después de que se carga una auditoría
+     * Actualiza los comentarios de las respuestas después de que se carga una auditoría/inspección
      */
     public function updateComentarioRta($datos, $tabla)
     {
@@ -537,17 +227,20 @@ class Model_auditorias extends Model
     public function updateTipoObsRta($datos)
     {
         extract($datos);
-        $builder = $this->db->table('aud_rtas_vehicular');
+        $builder = $this->db->table('auditoria_respuestas');
         $builder->set('tipo_obs', $tipo_obs);
         $builder->where('id_auditoria', $id_auditoria);
         $builder->where('id_pregunta', $id_pregunta);
         $builder->update();
     }
 
+    /**
+     * Como su nombre indica, carga un nuevo descargo para el hallazgo creado previamente
+     */
     public function addDescargo($datos)
     {
         $this->db->transStart();
-        $builder = $this->db->table('obs_hallazgos_descargos');
+        $builder = $this->db->table('auditoria_hallazgo_descargos');
         $builder->insert($datos);
         $this->db->transComplete();
         if ($this->db->transStatus() === FALSE) {
@@ -559,11 +252,15 @@ class Model_auditorias extends Model
         }
         return $results;
     }
+    /**
+     * El nombre tal vez esté mal, no edita un descargo, sino, que actualiza las columnas que estén
+     * referenciadas a una respuesta, si el descargo obtiene una respuesta, entonces se genera un update de esos datos
+     */
     public function editDescargo($datos, $id_descargo)
     {
         $this->db->transStart();
-        $builder = $this->db->table('obs_hallazgos_descargos');
-        $builder->where('obs_hallazgos_descargos.id', $id_descargo);
+        $builder = $this->db->table('auditoria_hallazgo_descargos insp_descargo');
+        $builder->where('insp_descargo.id', $id_descargo);
         $builder->update($datos);
         $this->db->transComplete();
         if ($this->db->transStatus() === FALSE) {
@@ -584,10 +281,173 @@ class Model_auditorias extends Model
         $this->db->query("UPDATE `$tabla` SET `estado` = CASE WHEN estado = 1 THEN 0 ELSE 1 END WHERE `$tabla`.`id` = " . $id_auditoria);
     }
 
+    /**
+     * Obtiene las preguntas para poder editar una Inspección/Auditoría
+     */
     public function getAudEdition($id)
     {
         $builder = $this->db->table('auditorias_preguntas aud_preguntas');
         $builder->select('id, pregunta, subtitulo, titulo')->where('aud_preguntas.titulo', $id)->orderBy('aud_preguntas.orden', 'ASC');
         $preguntas = $builder->get()->getResultArray();
+    }
+
+    /* === Auditorias (Nueva forma realizada con JS) ===  */
+    /**
+     * Carga una nueva inspección en la base de datos
+     * La tabla es la misma para las cuatro Inspecciones que hay cargadas por el momento
+     */
+    public function createInspection($datos)
+    {
+        $this->db->transStart();
+        $builder = $this->db->table('auditoria');
+        $builder->insert($datos);
+        $this->db->transComplete();
+        if ($this->db->transStatus() === FALSE) {
+            $this->response->setStatusCode(400);
+            $results = ['status' => false, 'message' => 'Fallo en la transaccion'];
+        } else {
+            $last_id = $builder->select('id')->orderBy('id', 'DESC')->get()->getRowArray();
+            $results = ['status' => true, 'message' => 'OK', 'last_id' => $last_id];
+        }
+        return $results;
+    }
+
+    /**
+     * Crea los hallazgos para la Auditoría creada 
+     * (Una Auditoría puede tener muchos hallazgos asignados (positivos y con oportunidad de mejora)
+     */
+    public function createHallazgoAuditoria($data)
+    {
+        $this->db->transStart();
+        $builder = $this->db->table('auditoria_hallazgos');
+        $builder->insert($data);
+        $this->db->transComplete();
+        if ($this->db->transStatus() === FALSE) {
+            $this->response->setStatusCode(400);
+            $results = ['status' => false, 'message' => 'Fallo en la transaccion'];
+        } else {
+            $last_id = $builder->select('id')->orderBy('id', 'DESC')->get()->getRowArray();
+            $results = ['status' => true, 'message' => 'OK', 'last_id' => $last_id];
+        }
+        return $results;
+    }
+
+    /**
+     * Trae todos los hallazgos pertenecientes al ID pasado por parámetro de la Inspección
+     */
+    public function getHallazgosInspeccion($id_inspeccion)
+    {
+        $builder = $this->db->table('auditoria_hallazgos h');
+        $builder->select('h.id id_hallazgo, h.id_auditoria, h.hallazgo, h.plan_accion, c.id tipo_aspecto, c.nombre aspecto, h.significancia, h.resuelto, t_p.id id_tipo, t_p.nombre tipo_obs, u_r.id id_responsable, CONCAT(u_r.nombre," ", u_r.apellido) usuario_responsable, u_r_r.id id_relevo_responsable, CONCAT(u_r_r.nombre," ", u_r_r.apellido) relevo_responsable, h.fecha_cierre, DATE_FORMAT(h.fecha_cierre, "%d/%m/%Y") fecha_cierre_f, u_c.id id_usuario_carga, CONCAT(u_c.nombre," ", u_c.apellido) usuario_carga')
+            ->join('consecuencias c', 'c.id=h.aspecto', 'join')
+            ->join('tipo_hallazgo t_p', 't_p.id=h.tipo', 'join')
+            ->join('usuario u_r', 'u_r.id=h.responsable', 'join')
+            ->join('usuario u_r_r', 'u_r_r.id=h.relevo_responsable', 'left')
+            ->join('usuario u_c', 'u_c.id=h.usuario_carga', 'join')
+            ->where('h.estado', 1)
+            ->where('h.id_auditoria', $id_inspeccion);
+        $query = $builder->get();
+        return $query->getResultArray();
+    }
+    /**
+     * Obtiene los adjuntos del hallazgo cargado previamente
+     */
+    public function getAdjHallazgoInspection($id_hallazgo)
+    {
+        $builder = $this->db->table('auditoria_hallazgos_adjuntos insp_hallazgo_adj');
+        $builder->select('*')
+            ->where('insp_hallazgo_adj.id_hallazgo', $id_hallazgo);
+        return $builder->get()->getResultArray();
+    }
+    /**
+     * Trae los efectos de la tabla de relación 'auditoria_rel_efecto' de cada hallazgo correspondiente
+     */
+    public function getEfectosRelHallazgo($id_hallazgo)
+    {
+        $builder = $this->db->table('auditoria_rel_efecto are');
+        $builder->select('are.id id_rel_efecto, are.efecto_id, e.nombre nombre_efecto')
+            ->join('efectos_impactos e', 'e.id=are.efecto_id', 'inner')
+            ->where('hallazgo_id', $id_hallazgo);
+        return $builder->get()->getResultArray();
+    }
+
+    /**
+     * Obtiene los descargos del hallazgo
+     */
+    public function getDescargoHallazgoInspection($id_hallazgo)
+    {
+        $builder = $this->db->table('auditoria_hallazgo_descargos insp_hallazgo_descargo');
+        $builder->select('insp_hallazgo_descargo.id, insp_hallazgo_descargo.estado, insp_hallazgo_descargo.motivo, DATE_FORMAT(insp_hallazgo_descargo.fecha_hora_motivo, "%d/%m/%Y %H:%i:%s") fecha_hora_motivo, insp_hallazgo_descargo.respuesta, DATE_FORMAT(insp_hallazgo_descargo.fecha_hora_respuesta, "%d/%m/%Y %H:%i:%s") fecha_hora_respuesta, u.nombre, u.apellido, u_rta.nombre nombre_user_rta, u_rta.apellido apellido_user_rta')
+            ->join('usuario u', 'u.id=insp_hallazgo_descargo.id_usuario', 'inner')
+            ->join('usuario u_rta', 'u_rta.id=insp_hallazgo_descargo.id_usuario_rta', 'left')
+            ->where('insp_hallazgo_descargo.id_hallazgo', $id_hallazgo);
+        return $builder->get()->getResultArray();
+    }
+    /**
+     * Trae todos aquellos adjuntos que pertenezcan al descargo solicitado por parámetro
+     */
+    public function getAdjDescargosHallazgo($id_descargo)
+    {
+        $builder = $this->db->table('auditoria_descargos_adj insp_adj_descargo');
+        $builder->select('*')
+            ->where('insp_adj_descargo.id_descargo', $id_descargo);
+        return $builder->get()->getResultArray();
+    }
+
+    public function delete($id_inspeccion = null, bool $purge = false)
+    {
+        $builder = $this->db->table('auditoria')
+            ->where('id', $id_inspeccion)
+            ->delete();
+    }
+
+    public function getIdHallazgos($id_inspeccion)
+    {
+        $builder = $this->db->table('auditoria_hallazgos');
+        $builder->select('id')
+            ->where('id_auditoria', $id_inspeccion);
+        return $builder->get()->getResultArray();
+    }
+
+    public function getNameAdjuntos($id_hallazgo) {
+        $builder = $this->db->table('auditoria_hallazgos_adjuntos');
+        $builder->select('adjunto')
+            ->where('id_hallazgo', $id_hallazgo);
+        return $builder->get()->getResultArray();
+    }
+
+    public function getIdDescargos($id_hallazgos)
+    {
+        $builder = $this->db->table('auditoria_hallazgo_descargos');
+        $builder->select('id')
+            ->where('id_hallazgo', $id_hallazgos);
+        return $builder->get()->getRowArray();
+    }
+    public function getNameAdjuntosDescargos($id_descargo) {
+        $builder = $this->db->table('auditoria_descargos_adj');
+        $builder->select('adjunto')
+            ->where('id_descargo', $id_descargo);
+        return $builder->get()->getResultArray();
+    }
+
+    /* TODO LO QUE SE HAGA ACA ES AUXILIAR, SE VA A EJECUTAR UNA VEZ Y NO SE EJECUTA MÁS */
+    public function getRespuestasInspeccionAux($id_inspeccion, $tabla) {
+        $builder = $this->db->table($tabla);
+        $builder->select('*')
+        ->where('id_auditoria', $id_inspeccion);
+        return $builder->get()->getResultArray();
+    }
+    public function getHallazgoInspeccionAux($id_inspeccion, $tipo_auditoria) {
+        $builder = $this->db->table('obs_hallazgos');
+        $builder->select('*')
+        ->where('id_auditoria', $id_inspeccion)
+        ->where('tipo_auditoria', $tipo_auditoria);
+        return $builder->get()->getRowArray();
+    }
+    public function getHallazgosAdjuntosAux($id_hallazgo) {
+        $builder = $this->db->table('obs_hallazgos_adj');
+        $builder->select('*')
+        ->where('id_hallazgo', $id_hallazgo);
+        return $builder->get()->getResultArray();
     }
 }

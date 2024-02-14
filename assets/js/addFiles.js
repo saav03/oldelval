@@ -113,9 +113,9 @@ class addFiles {
     makePreview(fileType, reader){
         let preview;
         if(this.isPDF(fileType)){
-            // preview = el("img.fileAdderPDF");
-            // setAttr(preview, {src: base_url()+'assets/images/pdf-icon.png'});
-            preview = el('i.fa fa-file-pdf-o fileAddPDF');
+            preview = el("img.fileAdderPDF");
+            setAttr(preview, {src: `${GET_BASE_URL()}/assets/img/PDF_ADJ.png`});
+            // preview = el('i.fa fa-file-pdf-o fileAddPDF');
         }else{
             preview = el("img.fileAddImage");
             setAttr(preview, {src: reader.target.result});

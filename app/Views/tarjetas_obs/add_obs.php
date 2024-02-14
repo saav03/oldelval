@@ -214,11 +214,9 @@
                         <input type="submit" id="btnSubmit" class="btn_modify" value="Cargar Observación">
                     </div>
                     <br>
-
                 </form>
             </div>
         </div>
-
     </div>
 </div>
 

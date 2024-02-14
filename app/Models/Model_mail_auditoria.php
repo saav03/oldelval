@@ -8,146 +8,102 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
 
 class Model_mail_tarjeta extends Model
 {
-    public function getInfoNewDescargo($id_hallazgo, $id_descargo)
+    /**
+     * Cuando se crea una nueva Inspección, obtiene los datos para poder enviar los correos
+     */
+    public function getDataNewInspection($id_inspection, $auditoria)
     {
-        $builder = $this->db->table('tarjeta_hallazgo_descargos descargo');
-        $builder->select('obs.id id_obs, u.nombre u_nombre_carga, u.apellido u_apellido_carga, u.correo correo_carga, u_responde.nombre u_nombre_responde, u_responde.apellido u_apellido_responde, descargo.id_hallazgo id_hallazgo, descargo.id id_descargo, descargo.motivo, descargo.estado estado_descargo, DATE_FORMAT(fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(hallazgo.fecha_cierre, "%d/%m/%Y") fecha_vencimiento')
-            ->join('tarjeta_hallazgos hallazgo', 'hallazgo.id=descargo.id_hallazgo', 'inner')
-            ->join('tarjeta_observaciones obs', 'obs.id=hallazgo.id_tarjeta', 'inner')
-            ->join('usuario u', 'u.id=obs.usuario_carga', 'inner')
-            ->join('usuario u_responde', 'u_responde.id=descargo.id_usuario', 'inner')
-            ->where('descargo.id_hallazgo', $id_hallazgo)
-            ->where('descargo.id', $id_descargo);
+        $builder = $this->db->table('auditoria a')
+            ->select('a.id id, auditoria, a_titulos.nombre modelo_tipo, CONCAT(u_carga.nombre, " ", u_carga.apellido) usuario_carga, u_carga.correo correo_usuario_carga, DATE_FORMAT(a.fecha_hora_carga, "%d/%m/%Y") fecha_carga_format, CONCAT(u_supervisor.nombre, " ", u_supervisor.apellido) usuario_responsable, u_supervisor.correo correo_supervisor,  p.nombre proyecto')
+            ->join('auditorias_titulos a_titulos', 'a_titulos.id=a.modelo_tipo', 'inner')
+            ->join('usuario u_carga', 'u_carga.id=a.usuario_carga', 'inner')
+            ->join('usuario u_supervisor', 'u_supervisor.id=a.supervisor_responsable', 'inner')
+            ->join('proyectos p', 'p.id=a.proyecto', 'inner')
+            ->where('a.id', $id_inspection);
+        $query = $builder->get()->getRowArray();
+
+        switch ($auditoria) {
+            case '1':
+                $nombre_inspeccion = 'Inspección de Control';
+                break;
+            case '2':
+                $nombre_inspeccion = 'Inspección Vehicular';
+                break;
+            case '3':
+                $nombre_inspeccion = 'Inspección de Obra';
+                break;
+            case '4':
+                $nombre_inspeccion = 'Inspección de Auditoría';
+                break;
+        }
+        $query['auditoria'] = $nombre_inspeccion;
+        return $query;
+    }
+
+    /**
+     * Obtiene los datos del hallazgo creado para poder enviarlo a través del correo
+     * Si $segundo_responsable es 'false' entonces es el responsable, caso contrario es el relevo
+     */
+    public function getDataNewObservacion($auditoria, $id_hallazgo, $segundo_responsable) {
+        $builder = $this->db->table('auditoria_hallazgos a_h');
+        $builder->select('a.id id_inspeccion, a_h.id id, CONCAT(u_carga.nombre, " ", u_carga.apellido) usuario_carga, u_carga.correo correo_usuario_carga, CONCAT(u_responsable.nombre, " ", u_responsable.apellido) responsable, u_responsable.correo correo_usuario_responsable, DATE_FORMAT(a_h.fecha_cierre, "%d/%m/%Y") fecha_cierre, tipo.nombre tipo, p.nombre proyecto')
+            ->join('auditoria a', 'a.id=a_h.id_auditoria', 'inner')
+            ->join('usuario u_carga', 'u_carga.id=a_h.usuario_carga', 'inner');
+            if (!$segundo_responsable) {
+                $builder->join('usuario u_responsable', 'u_responsable.id=a_h.responsable', 'inner');
+            } else {
+                $builder->join('usuario u_responsable', 'u_responsable.id=a_h.relevo_responsable', 'left');
+            }
+            $builder->join('tipo_hallazgo tipo', 'tipo.id=a_h.tipo', 'inner')
+            ->join('proyectos p', 'p.id=a.proyecto', 'inner')
+            ->where('a_h.id', $id_hallazgo);
+        $query = $builder->get()->getRowArray();
+
+        switch ($auditoria) {
+            case '1':
+                $nombre_inspeccion = 'Inspección de Control';
+                break;
+            case '2':
+                $nombre_inspeccion = 'Inspección Vehicular';
+                break;
+            case '3':
+                $nombre_inspeccion = 'Inspección de Obra';
+                break;
+            case '4':
+                $nombre_inspeccion = 'Inspección de Auditoría';
+                break;
+        }
+        $query['auditoria'] = $nombre_inspeccion;
+
+        return $query;
+    }
+
+    /**
+     * Obtiene los datos de un nuevo descargo para enviarlo por correo
+     */
+    public function getDataNewDescargo($id_descargo) {
+        $builder = $this->db->table('auditoria_hallazgo_descargos aud_h_d')
+        ->select('aud_h_d.id id_descargo, aud_h.id id_hallazgo, aud.id id_inspeccion, aud.auditoria, CONCAT(u_carga.nombre, " ", u_carga.apellido) usuario_carga, u_carga.correo correo_usuario_carga, aud_h_d.motivo, CONCAT(u_rta.nombre, " ", u_rta.apellido) usuario_rta, DATE_FORMAT(aud_h_d.fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(aud_h.fecha_cierre, "%d/%m/%Y") fecha_cierre')
+        ->join('auditoria_hallazgos aud_h', 'aud_h.id=aud_h_d.id_hallazgo', 'inner')
+        ->join('auditoria aud', 'aud.id=aud_h.id_auditoria', 'inner')
+        ->join('usuario u_carga', 'u_carga.id=aud_h.usuario_carga', 'inner')
+        ->join('usuario u_rta', 'u_rta.id=aud_h_d.id_usuario', 'inner')
+        ->where('aud_h_d.id', $id_descargo);
         $query = $builder->get()->getRowArray();
         return $query;
     }
 
     /**
-     * Respuesta Descargo Auditoría Control
+     * Obtiene los datos del descargo que se cargó previamente
      */
-    public function getRespuestaDescargoAudControl($id_descargo)
-    {
-        $builder = $this->db->table('obs_hallazgos_descargos descargo');
-        $builder->select('hallazgo.id ,at.nombre titulo_auditoria,,id_hallazgo,hallazgo.id_auditoria ,descargo.id_usuario_rta id_usuario_rta, descargo.estado estado_rta, descargo.respuesta, CONCAT(u.nombre, " ", u.apellido) usuario_carga, u.correo correo_carga, CONCAT(u_responde.nombre, " ", u_responde.apellido) usuario_responde, u_responde.correo correo_responsable, DATE_FORMAT(descargo.fecha_hora_respuesta, "%d/%m/%Y") fecha_rta')
-            ->join('obs_hallazgos hallazgo', 'hallazgo.id=descargo.id_hallazgo', 'left')
-            ->join('auditoria_control ac', ' ac.id=hallazgo.id_auditoria', 'left')
-            ->join('auditorias_titulos at', 'at.id=ac.modelo_tipo', 'left')
-            ->join('usuario u', 'u.id=hallazgo.usuario_carga', 'left')
-            ->join('usuario u_responde', 'u_responde.id=descargo.id_usuario', 'left')
-            ->where('descargo.id', $id_descargo);
-        return $builder->get()->getRowArray();
-    }
-
-   
-
-    public function getRespuestaDescargoAudAuditoria($id_descargo)
-    {
-        $builder = $this->db->table('obs_hallazgos_descargos descargo');
-        $builder->select('hallazgo.id ,at.nombre titulo_auditoria,,id_hallazgo,hallazgo.id_auditoria ,descargo.id_usuario_rta id_usuario_rta, descargo.estado estado_rta, descargo.respuesta, CONCAT(u.nombre, " ", u.apellido) usuario_carga, u.correo correo_carga, CONCAT(u_responde.nombre, " ", u_responde.apellido) usuario_responde, u_responde.correo correo_responsable, DATE_FORMAT(descargo.fecha_hora_respuesta, "%d/%m/%Y") fecha_rta')
-            ->join('obs_hallazgos hallazgo', 'hallazgo.id=descargo.id_hallazgo', 'left')
-            ->join('auditoria_auditoria ac', ' ac.id=hallazgo.id_auditoria', 'left')
-            ->join('auditorias_titulos at', 'at.id=ac.modelo_tipo', 'left')
-            ->join('usuario u', 'u.id=hallazgo.usuario_carga', 'left')
-            ->join('usuario u_responde', 'u_responde.id=descargo.id_usuario', 'left')
-            ->where('descargo.id', $id_descargo);
-        return $builder->get()->getRowArray();
-    }
-
-    
-    public function getRespuestaDescargoAudTarea_campo($id_descargo)
-    {
-        $builder = $this->db->table('obs_hallazgos_descargos descargo');
-        $builder->select('hallazgo.id ,at.nombre titulo_auditoria,,id_hallazgo,hallazgo.id_auditoria ,descargo.id_usuario_rta id_usuario_rta, descargo.estado estado_rta, descargo.respuesta, CONCAT(u.nombre, " ", u.apellido) usuario_carga, u.correo correo_carga, CONCAT(u_responde.nombre, " ", u_responde.apellido) usuario_responde, u_responde.correo correo_responsable, DATE_FORMAT(descargo.fecha_hora_respuesta, "%d/%m/%Y") fecha_rta')
-            ->join('obs_hallazgos hallazgo', 'hallazgo.id=descargo.id_hallazgo', 'left')
-            ->join('auditoria_tarea_de_campo ac', ' ac.id=hallazgo.id_auditoria', 'left')
-            ->join('auditorias_titulos at', 'at.id=ac.modelo_tipo', 'left')
-            ->join('usuario u', 'u.id=hallazgo.usuario_carga', 'left')
-            ->join('usuario u_responde', 'u_responde.id=descargo.id_usuario', 'left')
-            ->where('descargo.id', $id_descargo);
-        return $builder->get()->getRowArray();
-    }
-
-    public function getRespuestaDescargoAudVehicular($id_descargo)
-    {
-        $builder = $this->db->table('obs_hallazgos_descargos descargo');
-        $builder->select('hallazgo.id ,at.nombre titulo_auditoria,,id_hallazgo,hallazgo.id_auditoria ,descargo.id_usuario_rta id_usuario_rta, descargo.estado estado_rta, descargo.respuesta, CONCAT(u.nombre, " ", u.apellido) usuario_carga, u.correo correo_carga, CONCAT(u_responde.nombre, " ", u_responde.apellido) usuario_responde, u_responde.correo correo_responsable, DATE_FORMAT(descargo.fecha_hora_respuesta, "%d/%m/%Y") fecha_rta')
-            ->join('obs_hallazgos hallazgo', 'hallazgo.id=descargo.id_hallazgo', 'left')
-            ->join('auditoria_vehicular ac', ' ac.id=hallazgo.id_auditoria', 'left')
-            ->join('auditorias_titulos at', 'at.id=ac.modelo_tipo', 'left')
-            ->join('usuario u', 'u.id=hallazgo.usuario_carga', 'left')
-            ->join('usuario u_responde', 'u_responde.id=descargo.id_usuario', 'left')
-            ->where('descargo.id', $id_descargo);
-        return $builder->get()->getRowArray();
-    }
-
-    /**
-     * Descargo para la Auditoría CheckList Vehicular
-     */
-    public function getInfoNewDescargoAudVehicular($id_hallazgo, $id_descargo)
-    {
-        $builder = $this->db->table('obs_hallazgos_descargos descargo');
-        $builder->select('av.id, at.nombre titulo_auditoria, hallazgo.id_auditoria,CONCAT(u.nombre, " ", u.apellido) usuario_carga, u.correo correo_carga, CONCAT(u_responde.nombre, " ", u_responde.apellido) usuario_responde, descargo.id_hallazgo id_hallazgo, descargo.id id_descargo, descargo.motivo, descargo.estado estado_descargo, DATE_FORMAT(fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(hallazgo.fecha_cierre, "%d/%m/%Y") fecha_vencimiento')
-            ->join('obs_hallazgos hallazgo', 'hallazgo.id=descargo.id_hallazgo', 'inner')
-            ->join('auditoria_vehicular av', 'av.id=hallazgo.id_auditoria', 'inner')
-            ->join('auditorias_titulos at', 'at.id=av.modelo_tipo', 'inner')
-            ->join('usuario u', 'u.id=hallazgo.usuario_carga', 'inner')
-            ->join('usuario u_responde', 'u_responde.id=descargo.id_usuario', 'inner')
-            ->where('descargo.id_hallazgo', $id_hallazgo)
-            ->where('descargo.id', $id_descargo);
-        $query = $builder->get()->getRowArray();
-        return $query;
-    }
-
-
-
-    /**
-     * Descargo para la Auditoría Control
-     */
-    public function getInfoNewDescargoAudControl($id_hallazgo, $id_descargo)
-    {
-        $builder = $this->db->table('obs_hallazgos_descargos descargo');
-        $builder->select('ac.id , at.nombre titulo_auditoria,hallazgo.id_auditoria, CONCAT(u.nombre, " ", u.apellido) usuario_carga, u.correo correo_carga, CONCAT(u_responde.nombre, " ", u_responde.apellido) usuario_responde, descargo.id_hallazgo id_hallazgo, descargo.id , descargo.motivo, descargo.estado estado_descargo, DATE_FORMAT(fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(hallazgo.fecha_cierre, "%d/%m/%Y") fecha_vencimiento')
-            ->join('obs_hallazgos hallazgo', 'hallazgo.id=descargo.id_hallazgo', 'left')
-            ->join('auditoria_control ac', 'ac.id=hallazgo.id_auditoria', 'left')
-            ->join('auditorias_titulos at', 'at.id=ac.modelo_tipo', 'left')
-            ->join('usuario u', 'u.id=hallazgo.usuario_carga', 'left')
-            ->join('usuario u_responde', 'u_responde.id=descargo.id_usuario', 'left')
-            ->where('descargo.id_hallazgo', $id_hallazgo)
-            ->where('descargo.id', $id_descargo);
-        $query = $builder->get()->getRowArray();
-        return $query;
-    }
-
-
-    /**
-     * Descargo para la Auditoría Control
-     */
-    public function getInfoNewDescargoAudTarea_de_campo($id_hallazgo, $id_descargo)
-    {
-        $builder = $this->db->table('obs_hallazgos_descargos descargo');
-        $builder->select('at.nombre AS titulo_auditoria,descargo.id_hallazgo,hallazgo.id_auditoria, CONCAT(u.nombre, " ", u.apellido) AS usuario_carga, u.correo AS correo_carga, CONCAT(u_responde.nombre, " ", u_responde.apellido) AS usuario_responde, descargo.id_hallazgo, descargo.id, descargo.motivo, descargo.estado AS estado_descargo, DATE_FORMAT(descargo.fecha_hora_motivo, "%d/%m/%Y") AS fecha_motivo, DATE_FORMAT(hallazgo.fecha_cierre, "%d/%m/%Y") AS fecha_vencimiento')
-            ->join('obs_hallazgos hallazgo', 'hallazgo.id = descargo.id_hallazgo', 'inner')
-            ->join('auditoria_tarea_de_campo ac', 'ac.id = hallazgo.id_auditoria', 'left')
-            ->join('auditorias_titulos at', 'at.id = ac.modelo_tipo', 'left')
-            ->join('usuario u', 'u.id = hallazgo.usuario_carga', 'left')
-            ->join('usuario u_responde', 'u_responde.id = descargo.id_usuario', 'left')
-            ->where('descargo.id_hallazgo', $id_hallazgo)
-            ->where('descargo.id', $id_descargo);
-        $query = $builder->get()->getRowArray();
-        return $query;
-    }
-
-    public function getInfoNewDescargoAudAuditoria($id_hallazgo, $id_descargo)
-    {
-        $builder = $this->db->table('obs_hallazgos_descargos descargo');
-        $builder->select('at.nombre AS titulo_auditoria,descargo.id_hallazgo,hallazgo.id_auditoria, CONCAT(u.nombre, " ", u.apellido) AS usuario_carga, u.correo AS correo_carga, CONCAT(u_responde.nombre, " ", u_responde.apellido) AS usuario_responde, descargo.id_hallazgo, descargo.id, descargo.motivo, descargo.estado AS estado_descargo, DATE_FORMAT(descargo.fecha_hora_motivo, "%d/%m/%Y") AS fecha_motivo, DATE_FORMAT(hallazgo.fecha_cierre, "%d/%m/%Y") AS fecha_vencimiento')
-            ->join('obs_hallazgos hallazgo', 'hallazgo.id = descargo.id_hallazgo', 'inner')
-            ->join('auditoria_auditoria ac', 'ac.id = hallazgo.id_auditoria', 'left')
-            ->join('auditorias_titulos at', 'at.id = ac.modelo_tipo', 'left')
-            ->join('usuario u', 'u.id = hallazgo.usuario_carga', 'left')
-            ->join('usuario u_responde', 'u_responde.id = descargo.id_usuario', 'left')
-            ->where('descargo.id_hallazgo', $id_hallazgo)
-            ->where('descargo.id', $id_descargo);
+    public function getDataRtaDescargo($id_descargo) {
+        $builder = $this->db->table('auditoria_hallazgo_descargos aud_h_d')
+        ->select('aud_h_d.id id_descargo, aud_h.id id_hallazgo, aud.id id_inspeccion, aud.auditoria, CONCAT(u_carga_hallazgo.nombre, " ", u_carga_hallazgo.apellido) usuario_carga_hallazgo, u_carga_hallazgo.correo correo_usuario_carga_hallazgo, aud_h_d.respuesta, CONCAT(u_carga_descargo.nombre, " ", u_carga_descargo.apellido) usuario_carga_descargo, u_carga_descargo.correo correo_usuario_carga_descargo, DATE_FORMAT(aud_h_d.fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(aud_h.fecha_cierre, "%d/%m/%Y") fecha_cierre, aud_h_d.estado')
+        ->join('auditoria_hallazgos aud_h', 'aud_h.id=aud_h_d.id_hallazgo', 'inner')
+        ->join('auditoria aud', 'aud.id=aud_h.id_auditoria', 'inner')
+        ->join('usuario u_carga_hallazgo', 'u_carga_hallazgo.id=aud_h.usuario_carga', 'inner')
+        ->join('usuario u_carga_descargo', 'u_carga_descargo.id=aud_h_d.usuario_carga', 'inner')
+        ->where('aud_h_d.id', $id_descargo);
         $query = $builder->get()->getRowArray();
         return $query;
     }

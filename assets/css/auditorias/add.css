@@ -1,169 +1,166 @@
 #main {
-    height: 100vh!important;
+  height: 100vh !important;
 }
 
 /** Resultado de la Inspección (CheckBox) **/
 .content {
-    margin: auto;
-    padding: 15px;
-    max-width: 800px;
-    text-align: center;
+  margin: auto;
+  padding: 15px;
+  max-width: 800px;
+  text-align: center;
 }
 
 .dpx {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .label_satisfactoria {
-    display: block;
-    line-height: 25px;
+  display: block;
+  line-height: 25px;
 }
 
 .label_satisfactoria input {
-    margin-bottom: 4px;
+  margin-bottom: 4px;
 }
 
 .option-input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    -o-appearance: none;
-    appearance: none;
-    position: relative;
-    top: 13.33333px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    transition: all 0.15s ease-out 0s;
-    background: #cbd1d8;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    display: inline-block;
-    margin-right: 0.5rem;
-    outline: none;
-    position: relative;
-    z-index: 1000;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  position: relative;
+  top: 13.33333px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  transition: all 0.15s ease-out 0s;
+  background: #cbd1d8;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 0.5rem;
+  outline: none;
+  position: relative;
+  z-index: 1000;
 }
 
 .option-input:hover {
-    background: #9faab7;
+  background: #9faab7;
 }
 
 .option-input:checked {
-    background: #5596d4;
+  background: #5596d4;
 }
 
 .option-input:checked::before {
-    width: 25px;
-    height: 25px;
-    display: flex;
-    content: '✔';
-    font-size: 15px;
-    font-weight: bold;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-    /* font-family: 'Font Awesome 5 Free'; */
+  width: 25px;
+  height: 25px;
+  display: flex;
+  content: "✔";
+  font-size: 15px;
+  font-weight: bold;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
 }
 
 .option-input:checked::after {
-    -webkit-animation: click-wave 0.65s;
-    -moz-animation: click-wave 0.65s;
-    animation: click-wave 0.65s;
-    background: #5596d4;
-    content: '';
-    display: block;
-    position: relative;
-    z-index: 100;
+  -webkit-animation: click-wave 0.65s;
+  -moz-animation: click-wave 0.65s;
+  animation: click-wave 0.65s;
+  background: #5596d4;
+  content: "";
+  display: block;
+  position: relative;
+  z-index: 100;
 }
 
 .option-input.radio {
-    border-radius: 15%;
+  border-radius: 15%;
 }
 
 .option-input.radio::after {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 @keyframes click-wave {
-    0% {
-        height: 25px;
-        width: 25px;
-        opacity: 0.35;
-        position: relative;
-    }
+  0% {
+    height: 25px;
+    width: 25px;
+    opacity: 0.35;
+    position: relative;
+  }
 
-    100% {
-        height: 200px;
-        width: 200px;
-        margin-left: -80px;
-        margin-top: -80px;
-        opacity: 0;
-    }
+  100% {
+    height: 200px;
+    width: 200px;
+    margin-left: -80px;
+    margin-top: -80px;
+    opacity: 0;
+  }
 }
 
 /** add_control.php **/
 .adj_gallery {
-    padding: 0px 10px 10px 16px;
+  padding: 0px 10px 10px 16px;
 }
 
 .adj_gallery p {
-    margin: 0;
+  margin: 0;
 }
 
 .btn_toggle_plan {
-    width: 7%;
-    padding: 5px;
-    border: 1px solid #f1f1f1;
-    border-radius: 6px;
-    background-color: lightgray;
-    letter-spacing: 0.4px;
-    font-weight: bold;
-    color: black;
+  width: 7%;
+  padding: 5px;
+  border: 1px solid #f1f1f1;
+  border-radius: 6px;
+  background-color: lightgray;
+  letter-spacing: 0.4px;
+  font-weight: bold;
+  color: black;
 }
 
 .btn_toggle_plan.btn_checked {
-    background-color: #608AD0;
-    color: white;
+  background-color: #608ad0;
+  color: white;
 }
 
 #toggle_plan,
 #toggle_plan_v,
 #toggle_plan_t,
 #toggle_plan_a {
-    display: none;
+  display: none;
 }
 
 .container_plan,
 .container_plan_v,
 .container_plan_t,
 .container_plan_a {
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.4s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease-in-out;
 }
 
-
-
-#toggle_plan:checked~.container_plan {
-    max-height: 100% !important;
+#toggle_plan:checked ~ .container_plan {
+  max-height: 100% !important;
 }
 
-#toggle_plan_v:checked~.container_plan_v {
-    max-height: 100% !important;
+#toggle_plan_v:checked ~ .container_plan_v {
+  max-height: 100% !important;
 }
 
-#toggle_plan_v:checked~.container_plan_t {
-    max-height: 100% !important;
+#toggle_plan_v:checked ~ .container_plan_t {
+  max-height: 100% !important;
 }
 
-#toggle_plan_a:checked~.container_plan_a {
-    max-height: 100% !important;
+#toggle_plan_a:checked ~ .container_plan_a {
+  max-height: 100% !important;
 }
 
 #efecto_impacto,
@@ -182,62 +179,176 @@
 #contratista_plan_a,
 #responsable_plan_a,
 #relevo_responsable_plan_a {
-    max-width: 100%;
-    padding: 3px;
-    border-radius: 15px !important;
-    margin-top: -5px;
+  max-width: 100%;
+  padding: 3px;
+  border-radius: 15px !important;
+  margin-top: -5px;
 }
 
-#toggle_plan_t:checked~.container_plan_t {
-    max-height: 100%;
-    overflow: visible;
+#toggle_plan_t:checked ~ .container_plan_t {
+  max-height: 100%;
+  overflow: visible;
 }
 
-#toggle_plan_a:checked~.container_plan_a {
-    max-height: 100%;
-    overflow: visible;
+#toggle_plan_a:checked ~ .container_plan_a {
+  max-height: 100%;
+  overflow: visible;
 }
 
 .rounded-select {
-    border-radius: 20px;
+  border-radius: 20px;
 }
 
 .riesgos {
-    transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .riesgos.blanco:hover {
-    background-color: #F9F9F9;
-    border-bottom: 3px solid #f1f1f1;
+  background-color: #f9f9f9;
+  border-bottom: 3px solid #f1f1f1;
 }
 
-.blanco_check:checked+.riesgos.blanco:hover {
-    border-bottom: 3px solid #CACACA;
+.blanco_check:checked + .riesgos.blanco:hover {
+  border-bottom: 3px solid #cacaca;
 }
 
 .riesgos.verde:hover {
-    background-color: #eaffea;
-    border-bottom: 3px solid #d1f8d1;
+  background-color: #eaffea;
+  border-bottom: 3px solid #d1f8d1;
 }
 
-.verde_check:checked+.riesgos.verde:hover {
-    border-bottom: 3px solid rgb(102 181 114);
+.verde_check:checked + .riesgos.verde:hover {
+  border-bottom: 3px solid rgb(102 181 114);
 }
 
 .riesgos.amarillo:hover {
-    background-color: #FFF8CE;
-    border-bottom: 3px solid #FCE594;
+  background-color: #fff8ce;
+  border-bottom: 3px solid #fce594;
 }
 
-.amarillo_checked:checked+.riesgos.amarillo:hover {
-    border-bottom: 3px solid rgba(235, 202, 120, 1);
+.amarillo_checked:checked + .riesgos.amarillo:hover {
+  border-bottom: 3px solid rgba(235, 202, 120, 1);
 }
 
 .riesgos.rojo:hover {
-    background-color: #FFC5C5;
-    border-bottom: 3px solid #E28282;
+  background-color: #ffc5c5;
+  border-bottom: 3px solid #e28282;
 }
 
-.rojo_check:checked+.riesgos.rojo:hover {
-    border-bottom: 3px solid rgb(159 59 59);
+.rojo_check:checked + .riesgos.rojo:hover {
+  border-bottom: 3px solid rgb(159 59 59);
+}
+
+/* Agregar una Inspección */
+#contratista,
+#supervisor_responsable {
+  max-width: 100%;
+  padding: 3px;
+  border-radius: 15px !important;
+  margin-top: -5px;
+}
+
+/* Tarjeta de Observaciones */
+
+.btn_del_hallazgo {
+  background: #2e2e2e;
+  color: white;
+  border: none;
+  padding: 3px 16px;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn_del_hallazgo:hover {
+  background-color: #531717;
+}
+
+.fieldset_mejora {
+  border: 1px solid #7c212145;
+  border-top: none;
+}
+
+.fieldset_mejora .legend_mejora {
+  background: #b13939b0;
+}
+
+.fieldset_positivo {
+  border: 1px solid #2c7c2145;
+  border-top: none;
+}
+
+.fieldset_positivo .legend_positivo {
+  background: #56ba7eb0;
+}
+
+.fieldset_add_hallazgo {
+  border-right: none;
+  border-top: none;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.fieldset_add_hallazgo .legend_add {
+  color: white;
+  border-radius: 2px;
+  float: left !important;
+  padding: 8px;
+  margin: 0 !important;
+  font-size: 14px;
+  width: auto;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+#label_oportunidad_mejora {
+  cursor: pointer;
+  background-color: #e84a4aeb;
+  margin-left: 2px;
+  width: 100%;
+  max-width: 250px;
+}
+
+.label_aspecto {
+  margin-right: 2px;
+  width: 100%;
+  max-width: 250px;
+  border: 1px solid #cbcbcb;
+  padding: 7px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.seguridad_input:checked + .label_aspecto {
+  box-shadow: inset 0 0 10px rgb(0 0 0 / 9%);
+}
+
+.ambiental_input:checked + .label_aspecto {
+  box-shadow: inset 0 0 10px rgb(0 0 0 / 9%);
+}
+
+.selectMultiple {
+  max-width: 100% !important;
+  padding: 3px !important;
+  border-radius: 15px !important;
+  margin-top: -5px !important;
+}
+
+.header-perfil {
+  border: none;
+  padding: 8px 0px;
+}
+
+#riesgo_seguridad_salud,
+#contratista_plan,
+#contratista,
+#responsable,
+#relevo_responsable,
+#responsable_reconocimiento,
+#contratista_reconocimiento {
+  max-width: 100%;
+  padding: 3px;
+  border-radius: 15px !important;
+  margin-top: -5px;
 }

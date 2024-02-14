@@ -1,13 +1,14 @@
 /*
-========================
-Agregar descargo
-========================
-*/
+======================
+Crea un nuevo descargo 
+======================
+*/ 
+const btn_add_descargo = document.getElementById('btn_add_descargo');
 
-function addDescargoAjax(form) {
+function addDescargo(form) {
   return $.ajax({
     type: "POST",
-    url: GET_BASE_URL() + "/auditorias/submitDescargo",
+    url: GET_BASE_URL() + "/auditorias/createDescargo",
     data: form,
     processData: false,
     contentType: false,
@@ -17,34 +18,30 @@ function addDescargoAjax(form) {
   });
 }
 
-const btn_add_descargo = document.getElementById("btn_add_descargo");
-btn_add_descargo.addEventListener("click", (e) => {
+btn_add_descargo.addEventListener('click', e => {
   e.preventDefault();
 
   let form = new FormData(document.getElementById("form_descargo"));
 
-  arrayImgs.forEach((img) => {
-    form.append("files[]", img);
-  });
-
   customConfirmationButton(
-    "Respuesta del Hallazgo",
-    "¿Confirma la carga de la misma?",
-    "Cargar",
+    "Enviar Descargo",
+    "¿Confirma enviar el descargo?",
+    "Enviar",
     "Cancelar",
     "swal_edicion"
   ).then((result) => {
     if (result.isConfirmed) {
-      addDescargoAjax(form)
+      addDescargo(form)
         .done(function (data) {
           customSuccessAlert(
-            "Registro Exitoso",
-            "El descargo se registró correctamente",
-            "swal_edicion"
+              "Envío Exitoso",
+              "El descargo se envió correctamente",
+              "swal_edicion"
           ).then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
+              if (result.isConfirmed) {
+                  // window.location.replace(GET_BASE_URL() + "/auditorias");
+                  window.location.reload();
+              }
           });
         })
         .fail((err, textStatus, xhr) => {
@@ -54,64 +51,13 @@ btn_add_descargo.addEventListener("click", (e) => {
         });
     }
   });
-});
-
+})
 
 /*
-==================
-Cerrar Observación
-==================
-*/
-function cerrarObservacion(form) {
-  return $.ajax({
-    type: "POST",
-    url: GET_BASE_URL() + "/auditorias/submitCloseObs",
-    data: form,
-    processData: false,
-    contentType: false,
-    beforeSend: function () {
-      loadingAlert();
-    },
-  });
-}
-
-const btn_cerrar_obs = document.getElementById("btn_cerrar_obs");
-
-btn_cerrar_obs.addEventListener("click", e => {
-  e.preventDefault();
-
-  let form = new FormData(document.getElementById("form_cierre_obs"));
-
-  customConfirmationButton(
-    "Cierre de la Observación",
-    "¿Confirma la finalización de la misma?",
-    "Cerrar Observación",
-    "Cancelar",
-    "swal_edicion"
-  ).then((result) => {
-    if (result.isConfirmed) {
-      cerrarObservacion(form)
-        .done(function (data) {
-          customSuccessAlert(
-            "Observación Concluida/Finalizada",
-            "La observación se cerró correctamente",
-            "swal_edicion"
-          ).then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
-        })
-        .fail((err, textStatus, xhr) => {
-          let errors = Object.values(JSON.parse(err.responseText));
-          errors = errors.join(". ");
-          customShowErrorAlert(null, errors, "swal_edicion");
-        });
-    }
-  });
-});
-
-/* == Botones de los descargos == */
+============================
+Acepta o rechaza un descargo 
+============================
+*/ 
 const aceptar_descargo = document.querySelectorAll(".aceptar_descargo");
 const rechazar_descargo = document.querySelectorAll(".rechazar_descargo");
 
@@ -122,6 +68,7 @@ const aceptar_motivo_descargo = document.querySelectorAll(
 const cancelar_motivo_descargo = document.querySelectorAll(
   ".cancelar_motivo_descargo"
 );
+
 
 /* == Contenedor de botones en lo descargos == */
 const btns_descargos = document.querySelectorAll(".btns_descargos");
@@ -167,7 +114,7 @@ Agregar respuesta al descargo
 function addRtaDescargo(form) {
   return $.ajax({
     type: "POST",
-    url: GET_BASE_URL() + "/auditorias/submitRtaDescargo",
+    url: GET_BASE_URL() + "/auditorias/createRtaDescargo",
     data: form,
     processData: false,
     contentType: false,
@@ -214,24 +161,6 @@ for (let i = 0; i < aceptar_motivo_descargo.length; i++) {
 
 }
 
-
-// rechazar_descargo.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   tipo_rta_descargo.value = 2;
-//   inp_id_descargo.value = rechazar_descargo.getAttribute('data-id');
-//   container_motivo.style.display = "block";
-//   btns_descargos.style.display = "none";
-//   label_motivo.textContent =
-//     "Motivo por el cual se rechaza la respuesta/descargo";
-// });
-
-// aceptar_motivo_descargo.addEventListener("click", (e) => {
-// e.preventDefault();
-/* == Acá se ejecutaría el AJAX == */
-/*
-      Tengo que hacer la diferencia para saber si se está aceptando o rechazando el descargo
-      */
-// });
 for (let i = 0; i < cancelar_motivo_descargo.length; i++) {
   cancelar_motivo_descargo[i].addEventListener("click", (e) => {
     e.preventDefault();

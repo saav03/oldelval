@@ -53,47 +53,26 @@ $routes->match(['get', 'post'],'/api/auditorias/getBloqueAud/(:num)','Auditorias
 
 /* == Auditorías == */
 $routes->get('/auditorias','Auditorias::index');
-$routes->post('/auditorias/submitDescargo','Auditorias::submitDescargo');
-$routes->post('/auditorias/submitRtaDescargo','Auditorias::submitRtaDescargo');
-$routes->post('/auditorias/submitCloseObs','Aud_Control::submitCerrarHallazgo');
+$routes->get('/auditorias/view/(:num)','Auditorias::view/$1');
+$routes->post('/auditorias/createDescargo','Auditorias::createDescargo');
+$routes->post('/auditorias/createRtaDescargo','Auditorias::createRtaDescargo');
+$routes->match(['get', 'post'],'/api/auditorias/getAuditorias/(:num)/(:num)/(:num)','Auditorias::getPaged/$1/$2/$3');
+$routes->match(['get', 'post'],'/api/auditorias/getTotalAuditorias/(:num)','Auditorias::getPaged/$1');
+$routes->get('/pdf/auditorias/inspeccion/(:num)','Auditorias::visualizePDF/$1');
 
 $routes->post('/auditorias/changeState/(:num)/(:num)','Auditorias::changeState/$1/$2');
 
 $routes->get('/auditorias/testing','Auditorias::testing');
+$routes->get('/auditorias/getAudType/(:num)','Auditorias::getAudType/$1');
 
 $routes->match(['get', 'post'],'/auditoria/add','Auditorias::add');
 $routes->match(['get', 'post'],'/auditoria/addPlanilla','Auditorias::addPlanilla');
 $routes->match(['get', 'post'],'/Auditorias/submit','Auditorias::submitCrearNewAuditoria');
 $routes->match(['get', 'post'],'/Auditorias/autocomplete','Auditorias::autocomplete_responsable');
-$routes->post('/Auditorias/submitUpload/','Auditorias::submitUpload');
+$routes->post('/auditoria/create','Auditorias::submitInspeccion');
+$routes->post('/auditorias/delete','Auditorias::destroy');
 
-/* == Auditorías Control == */
-$routes->post('/audcontrol/submitPlanilla','Aud_Control::submitPlanilla');
-$routes->match(['get', 'post'],'/api/auditorias/getControl/(:num)/(:num)','Aud_Control::getPagedControl/$1/$2');
-$routes->match(['get', 'post'],'/api/auditorias/getTotalControl/','Aud_Control::getPagedControl');
-$routes->get('/auditorias/view_aud_control/(:num)','Aud_Control::view_aud_control/$1');
-$routes->get('/pdf/auditoria_control/(:num)','Aud_Control::view_aud_control_pdf/$1');
-/* == Auditorías Vehicular == */
-$routes->post('/audvehicular/submitPlanilla','Aud_Vehicular::submitPlanilla');
-$routes->match(['get', 'post'],'/api/auditorias/getVehicular/(:num)/(:num)','Aud_Vehicular::getPagedVehicular/$1/$2');
-$routes->match(['get', 'post'],'/api/auditorias/getTotalVehicular/','Aud_Vehicular::getPagedVehicular');
-$routes->get('/auditorias/view_aud_vehicular/(:num)','Aud_Vehicular::view_aud_vehicular/$1');
-$routes->get('/pdf/auditoria_vehicular/(:num)','Aud_Vehicular::view_aud_vehicular_pdf/$1');
-
-
-/* == Auditorías Tarea de Campo == */
-$routes->post('/audtarea_de_campo/submitPlanilla', 'Aud_tarea_de_campo::submitPlanilla');
-$routes->match(['get', 'post'], '/api/auditorias/get_tarea_campo/(:num)/(:num)', 'Aud_tarea_de_campo::getPaged_tarea_de_campo/$1/$2');
-$routes->match(['get', 'post'], '/api/auditorias/getTotal_tarea_campo/', 'Aud_tarea_de_campo::getPaged_tarea_de_campo');
-$routes->get('/auditorias/view_aud_tarea_campo/(:num)', 'Aud_tarea_de_campo::view_aud_tarea_campo/$1');
-$routes->get('/pdf/auditoria_tarea_de_campo/(:num)', 'Aud_tarea_de_campo::view_aud_tarea_de_campo_pdf/$1');
-
-/* == Auditorías Auditorias== */
-$routes->post('/aud_auditoria/submitPlanilla', 'Aud_Auditoria::submitPlanilla');
-$routes->match(['get', 'post'], '/api/auditorias/get_auditoria/(:num)/(:num)', 'Aud_Auditoria::getPaged_auditoria/$1/$2');
-$routes->match(['get', 'post'], '/api/auditorias/getTotal_auditoria/', 'Aud_Auditoria::getPaged_auditoria');
-$routes->get('/auditorias/view_aud_auditoria/(:num)', 'Aud_Auditoria::view_aud_auditoria/$1');
-$routes->get('/pdf/auditoria_auditoria/(:num)', 'Aud_Auditoria::view_aud_auditoria_pdf/$1');
+$routes->get('auditorias/changeInspecciones/(:num)', 'Auditorias::getAudToInspection/$1');
 
 /* == Auditorías Edición == */
 $routes->get('auditorias/planillas', 'Auditorias::getAllAuds');
@@ -103,8 +82,6 @@ $routes->get('auditorias/planillas/(:num)', 'Auditorias::getAudEdition/$1');
 $routes->match(['get', 'post'],'/api/auditorias/getControlEdicion/(:num)/(:num)','Aud_Control::getPagedEdicionControl/$1/$2');
 $routes->match(['get', 'post'],'/api/auditorias/getTotalControlEdicion/','Aud_Control::getPagedEdicionControl');
 $routes->post('/auditoria/submitEdicionPlanilla', 'Auditorias::submitEdicionPlanilla');
-
-
 
 #B
 #C
@@ -140,8 +117,6 @@ $routes->match(['get', 'post'],'/addGestionVehicular','Estadisticas::addGestionV
 
 // ESTADÍSTICAS CAPACITACIONES
 $routes->match(['get', 'post'],'/addCapacitaciones','Estadisticas::addCapacitaciones');
-
-
 
 #F
 #G

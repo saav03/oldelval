@@ -66,7 +66,7 @@ function crearSelectorMod(data) {
   selector.setAttribute("onchange", "filtrarEstacionesMod(this)");
 
   mount(divSetModules, selector);
-  setChildren(selector_modulos_div, divSetModules);
+  setChildren(document.getElementById("selector_modulos_div"), divSetModules);
 }
 
 /**
@@ -103,7 +103,7 @@ function crearSelectorEstaciones(data, id_proyecto) {
   selector.setAttribute("onchange", "validacionEstaciones()");
 
   mount(divSetModules, selector);
-  setChildren(selector_estaciones_div, divSetModules);
+  setChildren(document.getElementById("selector_estaciones_div"), divSetModules);
 }
 
 /**
@@ -140,7 +140,7 @@ function crearSelectorSistemas(data, id_proyecto) {
   selector.setAttribute("onchange", "validacionSistemas()");
 
   mount(divSetModules, selector);
-  setChildren(selector_sistemas_div, divSetModules);
+  setChildren(document.getElementById("selector_sistemas_div"), divSetModules);
 }
 
 /**
@@ -198,7 +198,7 @@ function validacionEstaciones(e = '') {
   selector.setAttribute("onchange", "validacionSistemas()");
 
   mount(divSetModules, selector);
-  setChildren(selector_sistemas_div, divSetModules);
+  setChildren(document.getElementById("selector_sistemas_div"), divSetModules);
 }
 
 /**
@@ -240,5 +240,6 @@ function validacionSistemas(e = '') {
   selector.setAttribute("onchange", "validacionEstaciones()");
 
   mount(divSetModules, selector);
-  setChildren(selector_estaciones_div, divSetModules);
+  setChildren(document.getElementById("selector_estaciones_div"), divSetModules);
 }
+

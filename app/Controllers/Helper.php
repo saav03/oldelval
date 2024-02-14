@@ -218,21 +218,15 @@ class Helper extends Controller
 
     /**
      * Envía un correo
+     * Siempre y cuando lo que venga en $datos['id] tiene que ser así obligado!
      */
-    public function sendMail($datos, $subject_param, $url = '', $view = '', $emails = [], $valor=NULL)
+    public function sendMail($datos, $subject, $view = '', $emails = [])
     {
         $correos = [];
         $email = \Config\Services::email();
 
-        # Datos que son necesarios para un correcto envío de e-mail
-        if ($valor) {
-            $id = isset($datos[$valor]) ? $datos[$valor] : '';
-        } else {
-            $id = isset($datos['id']) ? $datos['id'] : '';
-        }
-
-        $subject = $subject_param . $id;
-        $datos['url'] = $url;
+        // $subject = $subject_param . $datos['id'];
+        // $datos['url'] = $url;
         $vista = view($view, $datos);
 
         # Cargo los correos enviados por parámetros
@@ -240,7 +234,7 @@ class Helper extends Controller
             $correos[] = $e;
         }
 
-        $correos[] = 'mdinamarca@blister.com.ar';
+        // $correos[] = 'mdinamarca@blister.com.ar';
         $message = $vista;
         $config = [];
         $config['protocol'] = 'smtp';

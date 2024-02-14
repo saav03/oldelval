@@ -153,9 +153,16 @@
                 <?php if (!empty($h['adjuntos'])) { ?>
                     <?php foreach ($h['adjuntos'] as $adj) : ?>
                         <div class="col-xs-12 col-md-4 text-center">
-                            <a href="<?= base_url("uploads/tarjetaObs/") . '/' . $adj['adjunto'] ?>" target="_blank">
-                                <img id="img_descargo" src="<?= base_url("uploads/tarjetaObs/") . '/' . $adj['adjunto'] ?>" alt="">
-                            </a>
+
+                            <?php if (strpos($adj['adjunto'], '.pdf')) : ?>
+                                <a href="<?= base_url("uploads/tarjetaObs/") . '/' . $adj['adjunto'] ?>" target="_blank">
+                                    <img id="img_descargo" src="<?= base_url("assets/img/pdf_adj_show.png") ?>" alt="Adjunto del PDF">
+                                </a>
+                            <?php else : ?>
+                                <a href="<?= base_url("uploads/tarjetaObs/") . '/' . $adj['adjunto'] ?>" target="_blank">
+                                    <img id="img_descargo" src="<?= base_url("uploads/tarjetaObs/") . '/' . $adj['adjunto'] ?>" alt="Adjunto del Hallazgo">
+                                </a>
+                            <?php endif; ?>
 
                             <?php if ($adj['desc_adjunto'] != '') { ?>
                                 <p class="mt-2"><?= $adj['desc_adjunto'] ?></p>

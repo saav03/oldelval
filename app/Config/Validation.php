@@ -713,4 +713,27 @@ class Validation extends BaseConfig
             ]
         ]
     ];
+    public $validation_auditoria = [
+        'contratista' => [
+            'label' => 'Contratista',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'La Contratista es requerida',
+            ]
+        ],
+        'supervisor_responsable' => [
+            'label' => 'Supervisor Responsable',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El Supervisor Responsable es requerido',
+            ]
+        ],
+        'proyecto' => [
+            'label' => 'Proyecto',
+            'rules' => ['required'],
+            'errors' => [
+                'required' => 'El Proyecto es requerido',
+            ]
+        ],
+    ];
 }

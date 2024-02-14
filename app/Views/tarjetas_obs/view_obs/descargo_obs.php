@@ -44,7 +44,19 @@ $usuario_carga = $tarjeta['usuario_carga'];
                                 <?php foreach ($d['descargos_adj'] as $d_adj) : ?>
 
                                     <div class="col-xs-12 col-md-4 text-center">
-                                        <img id="img_descargo" src="<?= base_url("uploads/tarjetaObs/descargos/" . $d_adj['adjunto']) ?>">
+
+                                        <?php if (strpos($adj['adjunto'], '.pdf')) : ?>
+                                            <a href="<?= base_url("uploads/tarjetaObs/descargos") . '/' . $adj['adjunto'] ?>" target="_blank">
+                                                <img id="img_descargo" src="<?= base_url("assets/img/pdf_adj_show.png") ?>" alt="Adjunto de la Respuesta">
+                                            </a>
+                                        <?php else : ?>
+                                            <a href="<?= base_url("uploads/tarjetaObs/descargos") . '/' . $adj['adjunto'] ?>" target="_blank">
+                                                <img id="img_descargo" src="<?= base_url("uploads/tarjetaObs/descargos/" . $d_adj['adjunto']) ?>" alt="Adjunto de la Respuesta">
+                                            </a>
+                                        <?php endif; ?>
+
+
+
                                         <?php if ($d_adj['desc_adjunto'] != '') { ?>
                                             <p class="mt-2"><?= $d_adj['desc_adjunto'] ?></p>
                                         <?php } else { ?>

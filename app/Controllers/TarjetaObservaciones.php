@@ -474,6 +474,7 @@ class TarjetaObservaciones extends BaseController
 
     public function getPaged($offset = NULL, $tamanioPagina = NULL)
     {
+
         if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
             $response = $this->model_tarjeta->getAllPaged($offset, $tamanioPagina);
         } else {

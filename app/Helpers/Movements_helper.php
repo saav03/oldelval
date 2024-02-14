@@ -1,6 +1,9 @@
 <?php
 
 
+/**
+ * 
+ */
 function newMov($id_modulo,$accion,$id_afectado = null,$id_input = null) //$id_input es para la edicion, identifica que input fue modificado
 {
     $model_movimiento = model('Model_movimiento');

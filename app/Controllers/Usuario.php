@@ -222,7 +222,7 @@ class Usuario extends BaseController
             'mensaje' => $this->request->getPost('mensaje'),
             'clave' => $this->request->getPost('clave'),
         ];
-        $helper->sendMail($datos, 'Credenciales de Ingreso', '', 'emails/credentials/credentials', $emails);
+        $helper->sendMail($datos, 'Credenciales de Ingreso', 'emails/credentials/credentials', $emails);
 
         newMov(8, 6, $id_usuario, 'Envío de Credenciales'); //Movimiento
     }
