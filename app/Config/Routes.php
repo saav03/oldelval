@@ -65,12 +65,13 @@ $routes->post('/auditorias/changeState/(:num)/(:num)','Auditorias::changeState/$
 $routes->get('/auditorias/testing','Auditorias::testing');
 $routes->get('/auditorias/getAudType/(:num)','Auditorias::getAudType/$1');
 
-$routes->match(['get', 'post'],'/auditoria/add','Auditorias::add');
 $routes->match(['get', 'post'],'/auditoria/addPlanilla','Auditorias::addPlanilla');
+$routes->match(['get', 'post'],'/auditoria/add','Auditorias::add');
 $routes->match(['get', 'post'],'/Auditorias/submit','Auditorias::submitCrearNewAuditoria');
 $routes->match(['get', 'post'],'/Auditorias/autocomplete','Auditorias::autocomplete_responsable');
 $routes->post('/auditoria/create','Auditorias::submitInspeccion');
 $routes->post('/auditorias/delete','Auditorias::destroy');
+$routes->post('/auditorias/delete_inspection','Auditorias::destroy_inspection');
 
 $routes->get('auditorias/changeInspecciones/(:num)', 'Auditorias::getAudToInspection/$1');
 
@@ -182,6 +183,10 @@ $routes->post('/Permisos/enablePermission','Permisos::enable');
 #Q
 #R
 #S
+$routes->get('/sistema','Sistema::view');
+$routes->post('/sistema/store','Sistema::store');
+$routes->post('/sistema/removeMaintenance','Sistema::removeMaintenance');
+
 #T
 #U
 //USUARIOS

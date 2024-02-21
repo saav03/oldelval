@@ -59,22 +59,26 @@ class Model_general extends Model
         return $result->getResultArray();
     }
 
-    public function getAllEstadoActivo($tabla) {
+    public function getAllEstadoActivo($tabla, $order = null)
+    {
         //Igual a getAllActivo pero trae solo los elementos activos de la tabla. Requiere que la tabla tenga un campo de 'estado' y que 1 sea su valor true.
         $builder = $this->db->table($tabla);
         $builder->where('estado', 1);
+        if ($order) {
+            $builder->orderBy($order[0], $order[1]);
+        }
         $result = $builder->get();
         return $result->getResultArray();
     }
 
     public function getLastId($tabla)
     {
-       $builder = $this->db->table($tabla);
-       $builder->select('id');
-       $builder->orderBy('id', 'DESC');
-       $builder->limit(1);
-       $result = $builder->get();
-       return $result->getRowArray();
+        $builder = $this->db->table($tabla);
+        $builder->select('id');
+        $builder->orderBy('id', 'DESC');
+        $builder->limit(1);
+        $result = $builder->get();
+        return $result->getRowArray();
     }
 
     public function get($tabla, $id)
@@ -84,6 +88,14 @@ class Model_general extends Model
         $builder->where('id', $id);
         $result = $builder->get();
         return $result->getRowArray();
+    }
+
+    public function getModified($tabla, $id, $where = 'id')
+    {
+        $builder = $this->db->table($tabla);
+        $builder->where($where, $id);
+        $result = $builder->get();
+        return $result->getResultArray();
     }
 
     public function activar($tabla, $id)
@@ -105,7 +117,14 @@ class Model_general extends Model
         $builder->where('id', $id);
         $builder->delete();
     }
-    public function get_mov($id_afectado) {
+    public function deleteModified($tabla, $id, $where = 'id')
+    {
+        $builder = $this->db->table($tabla);
+        $builder->where($where, $id);
+        $builder->delete();
+    }
+    public function get_mov($id_afectado)
+    {
         $builder = $this->db->table('mov_movimientos');
         $builder->select('mov_movimientos.id, id_usuario, id_modulo, id_accion, id_afectado, DATE_FORMAT(fecha_hora, "%d/%m/%Y %h:%i:%s") fecha_hora_format, comentario, u.nombre nombre_editor, u.apellido apellido_editor');
         $builder->join('usuario u', 'u.id=mov_movimientos.id_usuario', 'inner');
@@ -113,5 +132,15 @@ class Model_general extends Model
         $builder->orderBy('mov_movimientos.fecha_hora', 'DESC');
         $result = $builder->get();
         return $result->getRowArray();
+    }
+
+    /**
+     * Obtiene información para saber si el sistema está en mantenimiento en tal fecha o no
+     */
+    public function getMaintenance()
+    {
+        $builder = $this->db->table('maintenance');
+        $builder->select('status, DATE_FORMAT(hora, "%H:%i") hora, DATE_FORMAT(fecha, "%d/%m/%Y") fecha');
+        return $builder->get()->getRowArray();
     }
 }

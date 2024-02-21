@@ -1,4 +1,11 @@
 <?php $permiso_edicion = vista_access('vista_editpermiso'); ?>
+<?php $permiso_eliminar_inspeccion = vista_access('eliminar_inspeccion'); ?>
+
+<style>
+    table td {
+        padding: 10px 9.6px !important;
+    }
+</style>
 
 <title>OLDELVAL - Auditorías</title>
 <link rel="stylesheet" href="<?= base_url('assets/css/auditorias/index.css') ?>">
@@ -51,7 +58,7 @@
                                             <th>Nombre</th>
                                             <th>N° Revisión</th>
                                             <th>Estado</th>
-                                            <th>Acciones</th>
+                                            <th class="text-center">Acciones</th>
                                         </thead>
 
                                         <tbody>
@@ -61,10 +68,15 @@
                                                     <td><?= $control['nombre'] ?></td>
                                                     <td><?= $control['revision'] ?></td>
                                                     <td class="<?= $control['obsoleto'] == 1 ? 'obsoleto' : 'activo' ?>"><?= $control['obsoleto'] == 1 ? 'Obsoleto' : 'Activo'  ?></td>
-                                                    <td class="text-center">
+                                                    <td class="d-flex justify-content-center align-items-center text-center">
                                                         <div>
                                                             <a target="_blank" class="td_acciones" href="<?= base_url() ?>/auditorias/planillas/<?= $control['id'] ?>">Ver</a>
                                                         </div>
+                                                        <?php if ($permiso_eliminar_inspeccion) : ?>
+                                                            <div class="ms-2">
+                                                                <button class="btn-desactivar" onclick="actDeleteInspection(<?= $control['id'] ?>)"><i class="fas fa-trash"></i></button>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -91,10 +103,15 @@
                                                     <td><?= $checklist['nombre'] ?></td>
                                                     <td><?= $checklist['revision'] ?></td>
                                                     <td class="<?= $checklist['obsoleto'] == 1 ? 'obsoleto' : 'activo' ?>"><?= $checklist['obsoleto'] == 1 ? 'Obsoleto' : 'Activo'  ?></td>
-                                                    <td class="text-center">
+                                                    <td class="d-flex justify-content-center align-items-center text-center">
                                                         <div>
                                                             <a target="_blank" class="td_acciones" href="<?= base_url() ?>/auditorias/planillas/<?= $checklist['id'] ?>">Ver</a>
                                                         </div>
+                                                        <?php if ($permiso_eliminar_inspeccion) : ?>
+                                                            <div class="ms-2">
+                                                                <button class="btn-desactivar" onclick="actDeleteInspection(<?= $checklist['id'] ?>)"><i class="fas fa-trash"></i></button>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -121,10 +138,15 @@
                                                     <td><?= $task['nombre'] ?></td>
                                                     <td><?= $task['revision'] ?></td>
                                                     <td class="<?= $task['obsoleto'] == 1 ? 'obsoleto' : 'activo' ?>"><?= $task['obsoleto'] == 1 ? 'Obsoleto' : 'Activo'  ?></td>
-                                                    <td class="text-center">
+                                                    <td class="d-flex justify-content-center align-items-center text-center">
                                                         <div>
                                                             <a target="_blank" class="td_acciones" href="<?= base_url() ?>/auditorias/planillas/<?= $task['id'] ?>">Ver</a>
                                                         </div>
+                                                        <?php if ($permiso_eliminar_inspeccion) : ?>
+                                                            <div class="ms-2">
+                                                                <button class="btn-desactivar" onclick="actDeleteInspection(<?= $task['id'] ?>)"><i class="fas fa-trash"></i></button>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -151,10 +173,15 @@
                                                     <td><?= $auditoria['nombre'] ?></td>
                                                     <td><?= $auditoria['revision'] ?></td>
                                                     <td class="<?= $auditoria['obsoleto'] == 1 ? 'obsoleto' : 'activo' ?>"><?= $auditoria['obsoleto'] == 1 ? 'Obsoleto' : 'Activo'  ?></td>
-                                                    <td class="text-center">
+                                                    <td class="d-flex justify-content-center align-items-center text-center">
                                                         <div>
                                                             <a target="_blank" class="td_acciones" href="<?= base_url() ?>/auditorias/planillas/<?= $auditoria['id'] ?>">Ver</a>
                                                         </div>
+                                                        <?php if ($permiso_eliminar_inspeccion) : ?>
+                                                            <div class="ms-2">
+                                                                <button class="btn-desactivar" onclick="actDeleteInspection(<?= $auditoria['id'] ?>)"><i class="fas fa-trash"></i></button>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -173,3 +200,39 @@
 
 <!-- <script src="<!?= base_url() ?>/assets/js/auditorias_edicion/historico.js"></script> -->
 <script src="<?= base_url() ?>/assets/js/auditorias_edicion/edicion.js"></script>
+
+<!-- Eliminar una Inspección -->
+<script>
+    function actDeleteInspection(id_inspeccion) {
+        event.preventDefault();
+        let form = new FormData();
+        form.append('id_inspeccion', id_inspeccion);
+        customConfirmationButton(
+            "Eliminar Inspección",
+            "¿Está seguro de eliminar esta inspección? (No se podrá recuperar)",
+            "Eliminar",
+            "Cancelar",
+            "swal_edicion"
+        ).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`${GET_BASE_URL()}/auditorias/delete_inspection`, {
+                        method: "POST",
+                        body: form
+                    }).then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        if (data.error == 400) {
+                            customShowErrorAlert(null, 'Parámetros no Válidos', 'swal_edicion');
+                        } else {
+                            customSuccessAlert(
+                                "Inspección Eliminada",
+                                "La Inspección se eliminó correctamente",
+                                "swal_edicion"
+                            )
+                            // window.location.reload();
+                        }
+                    });
+            }
+        });
+    }
+</script>

@@ -525,7 +525,7 @@ class Auditorias extends BaseController
             return redirect()->to('login');
         }
         $data['auditorias_control'] = $this->model_auditorias->getAllTitlesAuditoria(1, true);
-        $data['auditorias_checklist'] = $this->model_auditorias->getAllTitlesAuditoria(0, true);
+        $data['auditorias_checklist'] = $this->model_auditorias->getAllTitlesAuditoria(2, true);
         $data['auditorias_tarea_de_campo'] = $this->model_auditorias->getAllTitlesAuditoria(3, true);
         $data['auditorias_auditoria'] = $this->model_auditorias->getAllTitlesAuditoria(4, true);
 
@@ -1129,6 +1129,33 @@ class Auditorias extends BaseController
         // Esto se ejecuta después de que eliminó los adjuntos del servidor
         # Eliminar Inspección
         $this->model_auditorias->delete($id_inspeccion);
+    }
+
+    /**
+     * Elimina una Inspección (Planilla más que nada) con sus subtítulos y preguntas
+     * (Recomendable no eliminar porque si solamente, ver bien antes de eliminar una Inspección)
+     */
+    public function destroy_inspection() {
+        $id_inspeccion = $this->request->getPost('id_inspeccion');
+        $titulo = $this->model_general->get('auditorias_titulos', $id_inspeccion);
+
+        # Si no hay coincidencia con el ID a eliminar, entonces no hace nada
+        if (is_null($titulo)) {
+            $response = ['error' => 400];
+            echo json_encode($response);
+            return;
+        }
+
+        # Caso contrario, eliminamos los subtítulos perteneciente a ese título de la Inspección
+        $this->model_general->deleteModified('auditorias_subtitulos', $titulo['id'], 'id_titulo');
+        
+        # También, eliminamos las preguntas pertenecientes a ese título de la Inspección
+        $this->model_general->deleteModified('auditorias_preguntas', $titulo['id'], 'titulo');
+        
+        # Por último, eliminamos el título de la Inspección
+        $this->model_general->deleteModified('auditorias_titulos', $titulo['id']);
+
+        echo json_encode($titulo);
     }
 
     /**

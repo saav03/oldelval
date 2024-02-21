@@ -61,7 +61,7 @@ class TarjetaObservaciones extends BaseController
 
     public function view_add_obs()
     {
-        $data['proyectos'] =  $this->model_general->getAllEstadoActivo('proyectos');
+        $data['proyectos'] =  $this->model_general->getAllEstadoActivo('proyectos', ['nombre', 'ASC']);
         $data['estaciones'] =  $this->model_general->getAllEstadoActivo('estaciones_bombeo');
         $data['sistemas'] =  $this->model_general->getAllEstadoActivo('sistemas_oleoductos');
         $data['indicadores'] =  $this->model_general->getAllEstadoActivo('tarjeta_indicadores');
@@ -228,14 +228,14 @@ class TarjetaObservaciones extends BaseController
                         $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
 
                         // * Para el responsable
-                        if ($h['responsable'] != '')
-                            $helper->sendMailTarjeta($datos_hallazgo, 2);
+                        // if ($h['responsable'] != '')
+                        //     $helper->sendMailTarjeta($datos_hallazgo, 2);
 
                         // * Para el segundo responsable
-                        if ($h['relevo_responsable'] != '') {
-                            $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo, true);
-                            $helper->sendMailTarjeta($datos_hallazgo, 5);
-                        }
+                        // if ($h['relevo_responsable'] != '') {
+                        //     $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo, true);
+                        //     $helper->sendMailTarjeta($datos_hallazgo, 5);
+                        // }
                     }
                 }
 
@@ -300,15 +300,15 @@ class TarjetaObservaciones extends BaseController
                         $data_reconocimiento = [];
                         $data_reconocimiento['datos'] = $this->model_mail_tarjeta->getDataTarjetaReconocimiento($id_tarjeta, $id_hallazgo);
                         // * Envío de correo para el responsable
-                        if ($h['responsable'] != '')
-                            $helper->sendMailTarjeta($data_reconocimiento, 6);
+                        // if ($h['responsable'] != '')
+                        //     $helper->sendMailTarjeta($data_reconocimiento, 6);
                     }
                 }
 
                 $datos_hallazgo = [];
                 // * Para quien carga la tarjeta
-                $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
-                $helper->sendMailTarjeta($datos_hallazgo, 1);
+                // $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
+                // $helper->sendMailTarjeta($datos_hallazgo, 1);
             }
 
             // * Si todos los hallazgos son positivos, entonces la tarjeta se da como cerrada desde un principio
@@ -357,8 +357,8 @@ class TarjetaObservaciones extends BaseController
 
         $results_descargo = $this->model_tarjeta->addDescargo($datos_descargo);
 
-        $datos['datos'] = $this->model_mail_tarjeta->getInfoNewDescargo($id_hallazgo, $results_descargo['last_id']);
-        $helper->sendMailTarjeta($datos, 3);
+        // $datos['datos'] = $this->model_mail_tarjeta->getInfoNewDescargo($id_hallazgo, $results_descargo['last_id']);
+        // $helper->sendMailTarjeta($datos, 3);
 
         # Se cargan adjuntos si es que realmente existen
         if ($this->request->getPost('adj_descargo-description[]')) {
@@ -404,16 +404,18 @@ class TarjetaObservaciones extends BaseController
             $data = [
                 'resuelto' => 1
             ];
+            $movimiento_rta = 13;
         } else {
             $data = [
                 'resuelto' => null
             ];
+            $movimiento_rta = 12;
         }
 
         $this->model_general->updateG('tarjeta_hallazgos', $id_hallazgo, $data);
-        $helper->sendMailTarjeta($datos, 4);
+        // $helper->sendMailTarjeta($datos, 4);
 
-        newMov(11, 1, $id_hallazgo, 'Rta Descargo Tarjeta M.A.S'); //Movimiento (Registra el ID de la Respuesta del Descargo creado)
+        newMov($movimiento_rta, 2, $results_descargo['last_id'], 'Rta Descargo Tarjeta M.A.S'); //Movimiento (Registra el ID de la Respuesta del Descargo creado)
     }
 
     /**

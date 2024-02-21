@@ -190,6 +190,9 @@ class Estadisticas extends BaseController
         $datos_estadisticas = $this->verificacion($datos, 'validation_estadistica');
 
         if ($datos_estadisticas['exito']) {
+            $anio = $this->model_general->get('anio_periodos', $this->request->getPost('anio_periodo'));
+            $datos['anio'] = $anio['anio'];
+            
             $periodo = $_POST['periodo'];
 
             /** == Periodo == **/

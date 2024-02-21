@@ -1,76 +1,68 @@
 <div class="card">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
+  <div class="card-body pb-0">
+    <h5 class="card-title">Total Inspecciones <span>| Este mes</span></h5>
 
-              <li><a class="dropdown-item" href="#">Today</a></li>
-              <li><a class="dropdown-item" href="#">This Month</a></li>
-              <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-          </div>
+    <div id="trafficChart" style="min-height: 500px;" class="echart"></div>
+    <script>
+      let control = <?= json_encode($inspeccion_graphic_cake['control']); ?>;
+      let vehicular = <?= json_encode($inspeccion_graphic_cake['vehicular']); ?>;
+      let obra = <?= json_encode($inspeccion_graphic_cake['obra']); ?>;
+      let auditoria = <?= json_encode($inspeccion_graphic_cake['auditoria']); ?>;
 
-          <div class="card-body pb-0">
-            <h5 class="card-title">Total Auditorías <span>| mes</span></h5>
+      document.addEventListener("DOMContentLoaded", () => {
+        echarts.init(document.querySelector("#trafficChart")).setOption({
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            top: '5%',
+            left: 'center'
+          },
+          series: [{
+            name: 'Inspecciones',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            itemStyle: {
+              borderRadius: 12,
+              borderColor: '#fff',
+              borderWidth: 3
+            },
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '18',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: [{
+                value: control,
+                name: 'Inspección de Control'
+              },
+              {
+                value: vehicular,
+                name: 'Inspección Vehicular'
+              },
+              {
+                value: obra,
+                name: 'Inspección de Obra'
+              },
+              {
+                value: auditoria,
+                name: 'Inspección de Auditoría'
+              },
+            ]
+          }]
+        });
+      });
+    </script>
 
-            <div id="trafficChart" style="min-height: 500px;" class="echart"></div>
-
-            <script>
-              document.addEventListener("DOMContentLoaded", () => {
-                echarts.init(document.querySelector("#trafficChart")).setOption({
-                  tooltip: {
-                    trigger: 'item'
-                  },
-                  legend: {
-                    top: '5%',
-                    left: 'center'
-                  },
-                  series: [{
-                    name: 'Access From',
-                    type: 'pie',
-                    radius: ['40%', '70%'],
-                    avoidLabelOverlap: false,
-                    label: {
-                      show: false,
-                      position: 'center'
-                    },
-                    emphasis: {
-                      label: {
-                        show: true,
-                        fontSize: '18',
-                        fontWeight: 'bold'
-                      }
-                    },
-                    labelLine: {
-                      show: false
-                    },
-                    data: [{
-                        value: 35,
-                        name: 'LOD1'
-                      },
-                      {
-                        value: 15,
-                        name: 'Levantamiento de cargas'
-                      },
-                      {
-                        value: 20,
-                        name: 'Transporte Pesado'
-                      },
-                      {
-                        value: 7,
-                        name: 'Medio Ambiente'
-                      },
-                      {
-                        value: 48,
-                        name: 'Checklist Vehicular'
-                      }
-                    ]
-                  }]
-                });
-              });
-            </script>
-
-          </div>
-        </div>
+  </div>
+</div>

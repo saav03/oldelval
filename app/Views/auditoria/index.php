@@ -1,10 +1,5 @@
 <?php $permiso_edicion = vista_access('vista_editpermiso'); ?>
-<?php $permiso_eliminar_inspeccion = vista_access('eliminar_inspeccion');
-// echo '<pre>';
-// var_dump($permiso_eliminar_inspeccion);
-// echo '</pre>';
-// exit;
-?>
+<?php $permiso_eliminar_inspeccion = vista_access('eliminar_inspeccion');?>
 <title>OLDELVAL - Inspecciones</title>
 <link rel="stylesheet" href="<?= base_url('assets/css/auditorias/index.css') ?>">
 <div class="container ">
