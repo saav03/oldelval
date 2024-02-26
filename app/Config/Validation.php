@@ -725,7 +725,7 @@ class Validation extends BaseConfig
             'label' => 'Supervisor Responsable',
             'rules' => ['required'],
             'errors' => [
-                'required' => 'El Supervisor Responsable es requerido',
+                'required' => 'El Supervisor es requerido',
             ]
         ],
         'proyecto' => [

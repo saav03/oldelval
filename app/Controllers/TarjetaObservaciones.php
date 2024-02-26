@@ -28,6 +28,11 @@ class TarjetaObservaciones extends BaseController
         return template('tarjetas_obs/index');
     }
 
+    public function index_pendientes()
+    {
+        return template('tarjetas_obs/index_pendientes');
+    }
+
     public function view($id)
     {
         $data['tarjeta'] =  $this->model_tarjeta->getDataTarjeta($id);
@@ -474,14 +479,14 @@ class TarjetaObservaciones extends BaseController
         return $verificacion;
     }
 
-    public function getPaged($offset = NULL, $tamanioPagina = NULL)
+    public function getPaged($offset = NULL, $tamanioPagina = NULL, $pendientes = 0)
     {
 
         if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
-            $response = $this->model_tarjeta->getAllPaged($offset, $tamanioPagina);
+            $response = $this->model_tarjeta->getAllPaged($offset, $tamanioPagina, false, $pendientes);
         } else {
-            if (is_null($offset) && is_null($tamanioPagina)) {
-                $response = $this->model_tarjeta->getAllPaged($offset, $tamanioPagina, true);
+            if ((is_null($offset) || $offset == 0) && (is_null($tamanioPagina) || $tamanioPagina == 0)) {
+                $response = $this->model_tarjeta->getAllPaged($offset, $tamanioPagina, true, $pendientes);
                 $response = (int)$response[0]['cantidad'];
             } else {
                 http_response_code(400);

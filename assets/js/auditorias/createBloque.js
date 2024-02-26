@@ -164,7 +164,7 @@ function createEncabezado(id_aud, tipo) {
     label = el("label.mb-1 fw-semibold", "Conductor");
     input = el("input.form-control sz_inp", {
       name: "conductor",
-      placeholder: "Ingrese el conductor",
+      placeholder: "(Nombre + Apellido)",
     });
 
     // Conductor
@@ -175,29 +175,33 @@ function createEncabezado(id_aud, tipo) {
 
     col = el("div.col-md-3 col-xs-12 mt-2");
     div = el("div");
-    label = el("label.mb-1 fw-semibold", "Supervisor Responsable");
-    select = el("select.sz_inp", {
+    label = el("label.mb-1 fw-semibold", "Supervisor");
+    input = el("input.form-control sz_inp", {
       name: "supervisor_responsable",
-      id: "supervisor_responsable",
-      style: "width: 100%;",
-      "data-search": "true",
-      "data-silent-initial-value-set": "true",
+      placeholder: "(Nombre + Apellido)",
     });
+    // select = el("select.sz_inp", {
+    //   name: "supervisor_responsable",
+    //   id: "supervisor_responsable",
+    //   style: "width: 100%;",
+    //   "data-search": "true",
+    //   "data-silent-initial-value-set": "true",
+    // });
 
-    usuarios.forEach((gral) => {
-      opt = el(
-        "option",
-        {
-          value: gral.id,
-        },
-        gral.nombre + " " + gral.apellido
-      );
-      mount(select, opt);
-    });
+    // usuarios.forEach((gral) => {
+    //   opt = el(
+    //     "option",
+    //     {
+    //       value: gral.id,
+    //     },
+    //     gral.nombre + " " + gral.apellido
+    //   );
+    //   mount(select, opt);
+    // });
 
-    // Supervisor Responsable
+    // Supervisor
     mount(div, label);
-    mount(div, select);
+    mount(div, input);
     mount(col, div);
     mount(row, col);
     // ---------
@@ -207,7 +211,6 @@ function createEncabezado(id_aud, tipo) {
     input = el("input.form-control sz_inp", {
       name: "num_interno",
       placeholder: "Ingrese el N°",
-      type: "number",
     });
 
     // N° Interno
@@ -218,7 +221,7 @@ function createEncabezado(id_aud, tipo) {
 
     col = el("div.col-md-3 col-xs-12 mt-2");
     div = el("div");
-    label = el("label.mb-1 fw-semibold", "Proyectos");
+    label = el("label.mb-1 fw-semibold", "Proyectos / Área");
     select = el("select.sz_inp form-select", {
       name: "proyecto",
       id: "proyecto",
@@ -347,37 +350,41 @@ function createEncabezado(id_aud, tipo) {
     document
       .getElementById("contratista")
       .setAttribute("onchange", "changeResponsable(this)");
-    VirtualSelect.init({
-      ele: "#supervisor_responsable",
-      placeholder: "Seleccione el supervisor",
-    });
-    document.getElementById("supervisor_responsable").setValue(0);
+    // VirtualSelect.init({
+    //   ele: "#supervisor_responsable",
+    //   placeholder: "Seleccione el supervisor",
+    // });
+    // document.getElementById("supervisor_responsable").setValue(0);
   } else {
     col = el("div.col-md-3 col-xs-12 mt-2");
     div = el("div");
-    label = el("label.mb-1 fw-semibold", "Supervisor Responsable");
-    select = el("select.sz_inp", {
+    label = el("label.mb-1 fw-semibold", "Supervisor");
+    input = el("input.form-control sz_inp", {
       name: "supervisor_responsable",
-      id: "supervisor_responsable",
-      style: "width: 100%;",
-      "data-search": "true",
-      "data-silent-initial-value-set": "true",
+      placeholder: "(Nombre + Apellido)",
     });
+    // select = el("select.sz_inp", {
+    //   name: "supervisor_responsable",
+    //   id: "supervisor_responsable",
+    //   style: "width: 100%;",
+    //   "data-search": "true",
+    //   "data-silent-initial-value-set": "true",
+    // });
 
-    usuarios.forEach((gral) => {
-      opt = el(
-        "option",
-        {
-          value: gral.id,
-        },
-        gral.nombre + " " + gral.apellido
-      );
-      mount(select, opt);
-    });
+    // usuarios.forEach((gral) => {
+    //   opt = el(
+    //     "option",
+    //     {
+    //       value: gral.id,
+    //     },
+    //     gral.nombre + " " + gral.apellido
+    //   );
+    //   mount(select, opt);
+    // });
 
-    // Supervisor Responsable
+    // Supervisor
     mount(div, label);
-    mount(div, select);
+    mount(div, input);
     mount(col, div);
     mount(row, col);
     // ---------
@@ -413,7 +420,7 @@ function createEncabezado(id_aud, tipo) {
 
     col = el("div.col-md-3 col-xs-12 mt-2");
     div = el("div");
-    label = el("label.mb-1 fw-semibold", "Proyectos");
+    label = el("label.mb-1 fw-semibold", "Proyectos / Área");
     select = el("select.sz_inp form-select", {
       name: "proyecto",
       id: "proyecto",
@@ -523,15 +530,15 @@ function createEncabezado(id_aud, tipo) {
       ele: "#contratista",
       placeholder: "Seleccione la contratista",
     });
-    VirtualSelect.init({
-      ele: "#supervisor_responsable",
-      placeholder: "Seleccione el supervisor",
-    });
+    // VirtualSelect.init({
+    //   ele: "#supervisor_responsable",
+    //   placeholder: "Seleccione el supervisor",
+    // });
     document.getElementById("contratista").setValue(0);
     document
       .getElementById("contratista")
       .setAttribute("onchange", "changeResponsable(this)");
-    document.getElementById("supervisor_responsable").setValue(0);
+    // document.getElementById("supervisor_responsable").setValue(0);
   }
 
   return encabezado;

@@ -60,13 +60,14 @@ class Model_tarjeta extends Model
 	/**
 	 * Típico histórico del DynamicTable
 	 */
-	public function getAllPaged($offset, $tamanioPagina, $soloMax = FALSE)
+	public function getAllPaged($offset, $tamanioPagina, $soloMax = FALSE, $pendientes = 0)
 	{
 		$builder = $this->db->table('tarjeta_observaciones tar_obs');
 		if ($soloMax) {
 			$builder->select("COUNT(DISTINCT tar_obs.id) cantidad");
 			$builder->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
-				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left');
+					->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left');
+
 			if (!vista_access('nueva_observacion')) {
 				$builder->where("user_responsable.id", session()->get('id_usuario'));
 			}
@@ -78,8 +79,14 @@ class Model_tarjeta extends Model
 				->join('modulos', 'modulos.id=tar_obs.modulo', 'left')
 				->join('estaciones_bombeo', 'estaciones_bombeo.id=tar_obs.estacion_bombeo', 'left')
 				->join('sistemas_oleoductos', 'sistemas_oleoductos.id=tar_obs.sistema_oleoducto', 'left')
-				->where('tar_obs.estado', 1)
-				->groupBy('tar_obs.id')
+				->where('tar_obs.estado', 1);
+
+				// if ($pendientes) {
+				// 	$builder->where('responsable', session()->get('id_usuario'))
+				// 			->where('resuelto IS NULL');
+				// }
+
+				$builder->groupBy('tar_obs.id')
 				->orderBy('tar_obs.id', 'DESC')
 				->limit($tamanioPagina, $offset);
 
@@ -88,7 +95,13 @@ class Model_tarjeta extends Model
 				$builder->where("user_responsable.id", session()->get('id_usuario'));
 			}
 		}
+		if ($pendientes) {
+			$builder->where('tarjeta_hallazgos.responsable', session()->get('id_usuario'))
+					->where('tarjeta_hallazgos.resuelto IS NULL');
+		}
+
 		// echo '<pre>';
+		// echo $pendientes;
 		// var_dump($builder->getCompiledSelect());
 		// echo '</pre>';
 		// exit;

@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="blister-title-container">
-                <h4 class="blister-title">Tarjetas M.A.S</h4>
+                <h4 class="blister-title">Tarjetas M.A.S - Pendientes</h4>
             </div>
         </div>
     </div>
@@ -20,6 +20,6 @@
 </div>
 
 <script>
-    let pendiente = 0;
+    let pendiente = 1;
 </script>
 <script src="<?= base_url() ?>/assets/js/tarjetaObs/index/historico.js"></script>

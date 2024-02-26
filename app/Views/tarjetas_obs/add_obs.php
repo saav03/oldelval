@@ -81,7 +81,7 @@
 
                         <div class="row">
                             <div class="col-xs-12 col-md-6">
-                                <label for="" class="mb-1 fw-semibold sz_inp">Proyectos <small>(*)</small></label>
+                                <label for="" class="mb-1 fw-semibold sz_inp">Proyectos / Área <small>(*)</small></label>
                                 <select name="proyecto" id="proyecto" class="form-select sz_inp inp_custom" onchange="filtrarModulos(this)" required>
                                     <option value="">-- Seleccione --</option>
                                     <?php foreach ($proyectos as $p) : ?>

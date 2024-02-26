@@ -212,9 +212,10 @@ $routes->post('/usuario/editarPermisosUsuario','Usuario::editarPermisosUsuario')
 
 // TARJETAS DE OBSERVACIONES
 $routes->get('/TarjetaObs','TarjetaObservaciones::index');
+$routes->get('/TarjetaObs/pendientes','TarjetaObservaciones::index_pendientes');
 $routes->get('/TarjetaObs/add_obs','TarjetaObservaciones::view_add_obs');
-$routes->match(['get', 'post'],'/api/TarjetaObs/get/(:num)/(:num)','TarjetaObservaciones::getPaged/$1/$2');
-$routes->match(['get', 'post'],'/api/TarjetaObs/getTotal/','TarjetaObservaciones::getPaged');
+$routes->match(['get', 'post'],'/api/TarjetaObs/get/(:num)/(:num)/(:num)','TarjetaObservaciones::getPaged/$1/$2/$3');
+$routes->match(['get', 'post'],'/api/TarjetaObs/getTotal/(:num)/(:num)/(:num)','TarjetaObservaciones::getPaged/$1/$2/$3');
 
 // Esta solo la hago para testear los correos como se visualizan
 $routes->get('/TarjetaObs/testing/(:num)/(:alphanum)','TarjetaObservaciones::testing/$1/$2');

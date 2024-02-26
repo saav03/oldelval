@@ -31,7 +31,7 @@
                     </ul>
                 </div>
 
-                <div class="card-body" onclick="window.location.replace('<?= base_url('/TarjetaObs') ?>')">
+                <div class="card-body" onclick="window.location.replace('<?= base_url('/TarjetaObs/pendientes') ?>')">
                     <h5 class="card-title">Pendientes <span id="span_tarjeta">| Tarjeta M.A.S <small>(Total)</small></span></h5>
 
                     <div class="d-flex align-items-center">

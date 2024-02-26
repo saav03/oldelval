@@ -14,10 +14,9 @@ class Model_mail_tarjeta extends Model
     public function getDataNewInspection($id_inspection, $auditoria)
     {
         $builder = $this->db->table('auditoria a')
-            ->select('a.id id, auditoria, a_titulos.nombre modelo_tipo, CONCAT(u_carga.nombre, " ", u_carga.apellido) usuario_carga, u_carga.correo correo_usuario_carga, DATE_FORMAT(a.fecha_hora_carga, "%d/%m/%Y") fecha_carga_format, CONCAT(u_supervisor.nombre, " ", u_supervisor.apellido) usuario_responsable, u_supervisor.correo correo_supervisor,  p.nombre proyecto')
+            ->select('a.id id, auditoria, a_titulos.nombre modelo_tipo, CONCAT(u_carga.nombre, " ", u_carga.apellido) usuario_carga, u_carga.correo correo_usuario_carga, DATE_FORMAT(a.fecha_hora_carga, "%d/%m/%Y") fecha_carga_format, a.supervisor_responsable,  p.nombre proyecto')
             ->join('auditorias_titulos a_titulos', 'a_titulos.id=a.modelo_tipo', 'inner')
             ->join('usuario u_carga', 'u_carga.id=a.usuario_carga', 'inner')
-            ->join('usuario u_supervisor', 'u_supervisor.id=a.supervisor_responsable', 'inner')
             ->join('proyectos p', 'p.id=a.proyecto', 'inner')
             ->where('a.id', $id_inspection);
         $query = $builder->get()->getRowArray();

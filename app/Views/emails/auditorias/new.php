@@ -52,7 +52,7 @@
                                         <p style="margin:20px 0 12px 0;font-size:15px;line-height:24px; text-align: center;">Datos de la Inspección</p>
                                         <hr>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Fecha de Detección: </b> <?= $fecha_carga_format ?> </p>
-                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Supervisor Responsable: </b> <?= $usuario_responsable ?> </p>
+                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Supervisor: </b> <?= $supervisor_responsable ?> </p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Proyecto: </b> <?= $proyecto ?></p>
                                     </td>
                                 </tr>

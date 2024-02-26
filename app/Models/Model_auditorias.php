@@ -107,7 +107,7 @@ class Model_auditorias extends Model
             $builder->where('a.contratista', $contratista);
         // TODO | Solo filtra por el nombre, pero no por el apellido (Arreglar)
         if ($supervisor)
-            $builder->like('u_supervisor.nombre', $supervisor, 'both');
+            $builder->like('a.supervisor_responsable', $supervisor, 'both');
         if ($proyecto)
             $builder->where('a.proyecto', $proyecto);
         if ($usuario_carga)
@@ -139,11 +139,10 @@ class Model_auditorias extends Model
                 ->where('a.auditoria', $auditoria);
         } else {
             $vehicular_query = $auditoria == 2 ? ', a.conductor, a.equipo, a.resultado_inspeccion' : '';
-            $builder->select("a.id id_auditoria, a_title.nombre modelo_tipo, emp.nombre contratista, CONCAT(u_supervisor.nombre,' ',u_supervisor.apellido) as supervisor, p.nombre as proyecto, CONCAT(u_carga.nombre,' ',u_carga.apellido) usuario_carga, DATE_FORMAT(a.fecha_hora_carga, '%d/%m/%Y') as fecha_carga_format" . $vehicular_query)
+            $builder->select("a.id id_auditoria, a_title.nombre modelo_tipo, emp.nombre contratista, a.supervisor_responsable supervisor, p.nombre as proyecto, CONCAT(u_carga.nombre,' ',u_carga.apellido) usuario_carga, DATE_FORMAT(a.fecha_hora_carga, '%d/%m/%Y') as fecha_carga_format" . $vehicular_query)
                 ->join('empresas emp', 'emp.id=a.contratista', 'inner')
                 ->join('auditorias_titulos a_title', 'a_title.id=a.modelo_tipo', 'inner')
                 ->join('proyectos p', 'p.id=a.proyecto', 'inner')
-                ->join('usuario u_supervisor', 'u_supervisor.id=a.supervisor_responsable', 'inner')
                 ->join('usuario u_carga', 'u_carga.id=a.usuario_carga', 'inner')
                 ->where('a.auditoria', $auditoria)
                 ->orderBy('a.id', 'DESC')
@@ -195,9 +194,8 @@ class Model_auditorias extends Model
     public function getBloqueInspectionComplete($id_auditoria)
     {
         $builder = $this->db->table('auditoria a');
-        $builder->select('a.id as id_auditoria, a.auditoria, a.modelo_tipo, empresas.nombre as contratista, a.equipo, a.conductor, a.num_interno, CONCAT(u_supervisor.nombre," ", u_supervisor.apellido) as supervisor_responsable, DATE_FORMAT(a.fecha_hora_carga, "%Y-%m-%d") fecha_carga, DATE_FORMAT(a.fecha_hora_carga, "%d/%m/%Y") as fecha_carga_format, a.cant_personal, a.marca, a.modelo, a.patente, DATE_FORMAT(a.hora, "%H:%i") hora, proyectos.nombre proyecto, modulos.nombre modulo, estacion.nombre estacion, sistema.nombre sistema, a.tarea_que_realiza, a.resultado_inspeccion, a.medidas_implementar, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
+        $builder->select('a.id as id_auditoria, a.auditoria, a.modelo_tipo, empresas.nombre as contratista, a.equipo, a.conductor, a.num_interno, a.supervisor_responsable, DATE_FORMAT(a.fecha_hora_carga, "%Y-%m-%d") fecha_carga, DATE_FORMAT(a.fecha_hora_carga, "%d/%m/%Y") as fecha_carga_format, a.cant_personal, a.marca, a.modelo, a.patente, DATE_FORMAT(a.hora, "%H:%i") hora, proyectos.nombre proyecto, modulos.nombre modulo, estacion.nombre estacion, sistema.nombre sistema, a.tarea_que_realiza, a.resultado_inspeccion, a.medidas_implementar, CONCAT(u_carga.nombre," ", u_carga.apellido) usuario_carga')
             ->join('empresas', 'empresas.id=a.contratista', 'inner')
-            ->join('usuario u_supervisor', 'u_supervisor.id=a.supervisor_responsable', 'inner')
             ->join('proyectos', 'proyectos.id=a.proyecto', 'inner')
             ->join('modulos', 'modulos.id=a.modulo', 'left')
             ->join('estaciones_bombeo estacion', 'estacion.id=a.estacion', 'left')

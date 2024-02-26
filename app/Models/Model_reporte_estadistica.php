@@ -35,6 +35,8 @@ class Model_reporte_estadisticas extends Model
         switch ($filter) {
             case 'hoy':
                 $builder->where('DAY(e_p.fecha_hora_carga)', date('d'));
+                $builder->where('YEAR(e_p.fecha_hora_carga)', date('Y'));
+                $builder->where('MONTH(e_p.fecha_hora_carga)', date('m'));
                 break;
             case 'mes':
                 $builder->where('MONTH(e_p.fecha_hora_carga)', date('m'));

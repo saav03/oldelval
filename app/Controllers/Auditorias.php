@@ -871,7 +871,6 @@ class Auditorias extends BaseController
      * [Envío de Correos]
      * Envía los correos a los siguientes usuarios =>
      * - El usuario quien carga
-     * - El usuario supervisor responsable
      */
     protected function _sendEmailNewInspection($id_inspection, $auditoria)
     {
@@ -881,7 +880,7 @@ class Auditorias extends BaseController
 
         $emails = [];
         $emails[] = $datos['correo_usuario_carga'];
-        $emails[] = $datos['correo_supervisor'];
+        // $emails[] = $datos['correo_supervisor']; // No existe más el ID del supervisor responsable, ahora es un inp text
 
         // Correo en copia
         $emails[] = 'mdinamarca@blister.com.ar';

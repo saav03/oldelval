@@ -1,12 +1,12 @@
 const getElement = (pageNumber, pageSize) => {
   return fetch(
-    `${GET_BASE_URL()}/api/TarjetaObs/get/${pageNumber}/${pageSize}`, {
+    `${GET_BASE_URL()}/api/TarjetaObs/get/${pageNumber}/${pageSize}/${pendiente}`, {
       method: "POST",
     }
   );
 };
 const getElementTotales = () => {
-  return fetch(`${GET_BASE_URL()}/api/TarjetaObs/getTotal`, {
+  return fetch(`${GET_BASE_URL()}/api/TarjetaObs/getTotal/0/0/${pendiente}`, {
     method: "POST",
   });
 };
