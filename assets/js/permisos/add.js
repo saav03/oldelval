@@ -24,7 +24,11 @@ btnSubmit.addEventListener("click", (e) => {
         "Carga Exitosa",
         "El permiso se agregó correctamente",
         "swal_edicion"
-      );
+      ).then((result) => {
+        if (result.isConfirmed) {
+          window.location.replace(GET_BASE_URL() + "/permisos");
+        }
+      });
     }
   });
 });

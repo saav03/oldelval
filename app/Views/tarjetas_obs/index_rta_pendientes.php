@@ -1,10 +1,10 @@
 <link href="<?= base_url() ?>/assets/css/tarjetaObs/index.css" rel="stylesheet">
 <title>OLDELVAL - Tarjetas M.A.S</title>
-<div class="container">
+<div class="container ">
     <div class="row">
         <div class="col-md-12">
             <div class="blister-title-container">
-                <h4 class="blister-title">Tarjetas M.A.S</h4>
+                <h4 class="blister-title">Tarjetas M.A.S - Respuestas Pendientes</h4>
             </div>
         </div>
     </div>
@@ -19,7 +19,4 @@
     </div>
 </div>
 
-<script>
-    let pendiente = 0;
-</script>
-<script src="<?= base_url() ?>/assets/js/tarjetaObs/index/historico.js"></script>
+<script src="<?= base_url() ?>/assets/js/tarjetaObs/index/his_rta_pendientes.js"></script>

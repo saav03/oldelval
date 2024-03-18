@@ -51,6 +51,12 @@ $routes->match(['get', 'post'],'/api/access/get/(:num)/(:num)','Usuario::getPage
 $routes->match(['get', 'post'],'/api/access/getTotal/','Usuario::getPagedAccess');
 $routes->match(['get', 'post'],'/api/auditorias/getBloqueAud/(:num)','Auditorias::getBloqueAud/$1');
 
+/* == Notificaciones == */
+$routes->get('/notificaciones', 'Notificacion::get');
+$routes->post('/notificacion_leida', 'Notificacion::notificacion_leida');
+$routes->post('/all_notis_leidas', 'Notificacion::setear_notificaciones_leidas');
+$routes->get('/notificaciones/index', 'Notificacion::index');
+
 /* == Auditorías == */
 $routes->get('/auditorias','Auditorias::index');
 $routes->get('/auditorias/view/(:num)','Auditorias::view/$1');
@@ -213,12 +219,24 @@ $routes->post('/usuario/editarPermisosUsuario','Usuario::editarPermisosUsuario')
 // TARJETAS DE OBSERVACIONES
 $routes->get('/TarjetaObs','TarjetaObservaciones::index');
 $routes->get('/TarjetaObs/pendientes','TarjetaObservaciones::index_pendientes');
+$routes->get('/TarjetaObs/rta_pendientes','TarjetaObservaciones::index_rta_pendientes');
+$routes->get('/TarjetaObs/completadas','TarjetaObservaciones::index_tarjetas_completadas');
 $routes->get('/TarjetaObs/add_obs','TarjetaObservaciones::view_add_obs');
+
+// Obtiene las Tarjetas M.A.S en total y también aquellas donde estén con algunos descargos pendientes
 $routes->match(['get', 'post'],'/api/TarjetaObs/get/(:num)/(:num)/(:num)','TarjetaObservaciones::getPaged/$1/$2/$3');
 $routes->match(['get', 'post'],'/api/TarjetaObs/getTotal/(:num)/(:num)/(:num)','TarjetaObservaciones::getPaged/$1/$2/$3');
 
+// Obtiene las Tarjetas M.A.S donde tenga que dar respuesta a los descargos que se realizan en cada una.
+$routes->match(['get', 'post'],'/api/RtaPendientes/get/(:num)/(:num)','TarjetaObservaciones::getRtaPendientesPaged/$1/$2');
+$routes->match(['get', 'post'],'/api/RtaPendientes/getTotal/','TarjetaObservaciones::getRtaPendientesPaged');
+
+// Obtiene las Tarjetas M.A.S completadas del usuario logueado
+$routes->match(['get', 'post'],'/api/totalTarjetas/get/(:num)/(:num)','TarjetaObservaciones::getTotalTarjetasPaged/$1/$2');
+$routes->match(['get', 'post'],'/api/totalTarjetas/getTotal/','TarjetaObservaciones::getTotalTarjetasPaged');
+
 // Esta solo la hago para testear los correos como se visualizan
-$routes->get('/TarjetaObs/testing/(:num)/(:alphanum)','TarjetaObservaciones::testing/$1/$2');
+$routes->get('/TarjetaObs/testing','TarjetaObservaciones::testing');
 // POST
 $routes->post('/TarjetaObs/getModulosFilter/','TarjetaObservaciones::getModulosFilter');
 $routes->post('/TarjetaObs/getEstacionesFilter/','TarjetaObservaciones::getEstacionesFilter');

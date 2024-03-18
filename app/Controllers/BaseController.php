@@ -49,6 +49,7 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
         helper('Verify_access');
         helper('Movements');
+        helper('set_notificacion');
         helper('Atajos');
         helper('templateUrl');
     }

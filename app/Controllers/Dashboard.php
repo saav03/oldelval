@@ -29,15 +29,27 @@ class Dashboard extends BaseController
             return redirect()->to('login');
         } else {
 
+
             $data['maintenance'] = $this->model_general->getMaintenance();
             $actividad_reciente = $this->model_movimiento->getRecentActivity();
             $data['actividad_reciente'] = $this->_modifyRecentActivity($actividad_reciente);
 
             # Cantidad de Observaciones Pendientes (CARD)
+            // (Descargos pendientes)
             $data['obs_tarjeta_pendiente']['principal'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente(session()->get('id_usuario'));
             $data['obs_tarjeta_pendiente']['hoy'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente_filter(session()->get('id_usuario'), 'hoy');
             $data['obs_tarjeta_pendiente']['mes'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente_filter(session()->get('id_usuario'), 'mes');
             $data['obs_tarjeta_pendiente']['year'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente_filter(session()->get('id_usuario'), 'year');
+
+            # Cantidad de Respuestas pendientes de los descargos (CARD)
+            $data['rta_descargos_pendientes'] = $this->model_reporte_tarjeta->get_descargos_rta_hallazgos_pendiente(session()->get('id_usuario'));
+            $data['hallazgo_totales_propios'] = $this->model_reporte_tarjeta->get_hallazgos_totales_propios(session()->get('id_usuario'));
+
+            # Cantidad de Tarjetas M.A.S propias completadas
+            $data['get_total_tarjetas_propias_cerradas'] = $this->model_reporte_tarjeta->get_total_tarjetas_propias(session()->get('id_usuario'), 0);
+
+            # Cantidad de Tarjetas M.A.S propias en total
+            $data['get_total_tarjetas_propias'] = $this->model_reporte_tarjeta->get_total_tarjetas_propias(session()->get('id_usuario'));
 
             # Cantidad de Inspecciones
             $data['inspecciones'] = $this->model_reporte_inspecciones->getInspecciones();
@@ -85,7 +97,7 @@ class Dashboard extends BaseController
             $nameMonth = $this->_nameMonth();
             $nameMonth = substr($nameMonth, 0, 3);
             for ($i = 1; $i <= count($data['obs_graphic_months']['aceptable']); $i++) {
-                $data['month'][] = $i . ' Feb';
+                $data['month'][] = $i . ' ' . $nameMonth;
             }
 
             $data['all_months'] = all_months_name();
@@ -109,6 +121,7 @@ class Dashboard extends BaseController
             switch ($act['id_modulo']) {
                 case '1': // Usuario
                     $usuario = $this->model_general->get('usuario', $act['id_afectado']);
+                    $actividad[$key]['estado'] = 'primary';
                     switch ($act['id_accion']) {
                         case '1':
                             $comentario = $act['nombre_usuario'] . ' generó un nuevo usuario <b style="color: gray; text-decoration: none;">#' . $act['id_afectado'] . '</b> ' . $usuario['nombre'] . ' ' . $usuario['apellido'];
@@ -116,8 +129,6 @@ class Dashboard extends BaseController
                         case '2':
                             break;
                         case '3':
-                            
-                            
                             $comentario = $act['nombre_usuario'] . ' editó al usuario <b style="color: gray; text-decoration: none;">#' . $act['id_afectado'] . '</b> ' . $usuario['nombre'] . ' ' . $usuario['apellido'];
                             break;
                     }
@@ -129,8 +140,19 @@ class Dashboard extends BaseController
                 case '4': // Grupos
                     break;
                 case '5': // Permisos
+                    $actividad[$key]['estado'] = 'primary';
+                    switch ($act['id_accion']) {
+                        case '1':
+                            $comentario = $act['nombre_usuario'] . ' generó un nuevo permiso';
+                            break;
+                        case '2':
+                            break;
+                        case '3':
+                            break;
+                    }
                     break;
                 case '6': // Tarjeta
+                    $actividad[$key]['estado'] = 'primary';
                     switch ($act['id_accion']) {
                         case '1':
                             $comentario = 'Nueva  <a href="" style="color: gray; text-decoration: none;"><b>Tarjeta M.A.S #' . $act['id_afectado'] . '</b></a> generada por ' . $act['nombre_usuario'];
@@ -138,6 +160,7 @@ class Dashboard extends BaseController
                     }
                     break;
                 case '7': // Estadística
+                    $actividad[$key]['estado'] = 'primary';
                     switch ($act['id_accion']) {
                         case '1':
                             $comentario = $act['nombre_usuario'] . ' ha creado una <b style="color: gray;"><b>Estadística #' . $act['id_afectado'] . '</b></b>';
@@ -145,6 +168,7 @@ class Dashboard extends BaseController
                     }
                     break;
                 case '8': // Credencial Usuario
+                    $actividad[$key]['estado'] = 'primary';
                     switch ($act['id_accion']) {
                         case '1':
                             $comentario = $act['nombre_usuario'] . ' realizó un envío de credenciales';
@@ -152,6 +176,7 @@ class Dashboard extends BaseController
                     }
                     break;
                 case '9': // Auditoría / Inspección
+                    $actividad[$key]['estado'] = 'primary';
                     switch ($act['id_accion']) {
                         case '1':
                             $comentario = 'Nueva  <b style="color: gray; text-decoration: none;"><b>Inspección #' . $act['id_afectado'] . '</b></b> generada por ' . $act['nombre_usuario'];
@@ -159,19 +184,28 @@ class Dashboard extends BaseController
                     }
                     break;
                 case '10': // Descargo
+                    $actividad[$key]['estado'] = 'primary';
                     switch ($act['id_accion']) {
                         case '1':
                             $comentario = $act['nombre_usuario'] . ' realizó un <b style="color: gray;"><b>Descargo #' . $act['id_afectado'] . '</b></b> para la Tarjeta M.A.S';
                             break;
                     }
                     break;
-                case '11': // Rta Descargo
+                case '11': // Rechazar el Descargo (Inspección)
+                    $actividad[$key]['estado'] = 'danger';
+                    $comentario = $act['nombre_usuario'] . ' rechazó el <b href="" style="color: gray;"><b>Descargo #' . $act['id_afectado'] . '</b></b> de la Inspección';
                     break;
                 case '12': // Rechazar el Descargo (Tarjeta M.A.S)
+                    $actividad[$key]['estado'] = 'danger';
                     $comentario = $act['nombre_usuario'] . ' rechazó el <b style="color: gray;"><b>Descargo #' . $act['id_afectado'] . '</b></b> de la Tarjeta M.A.S';
                     break;
                 case '13':  // Aceptar el Descargo (Tarjeta M.A.S)
+                    $actividad[$key]['estado'] = 'success';
                     $comentario = $act['nombre_usuario'] . ' aprobó el <b href="" style="color: gray;"><b>Descargo #' . $act['id_afectado'] . '</b></b> de la Tarjeta M.A.S';
+                    break;
+                case '14':  // Aceptar el Descargo (Inspección)
+                    $actividad[$key]['estado'] = 'success';
+                    $comentario = $act['nombre_usuario'] . ' aprobó el <b href="" style="color: gray;"><b>Descargo #' . $act['id_afectado'] . '</b></b> de la Inspección';
                     break;
             }
 
@@ -261,7 +295,7 @@ class Dashboard extends BaseController
         $m = date('m');
         $total_days = cal_days_in_month(CAL_GREGORIAN, $m, $y);
         $days_of_month = [];
-        for ($day = 1; $day < $total_days; $day++) {
+        for ($day = 1; $day <= $total_days; $day++) {
             if ($day < 10) {
                 $day = 0 . $day;
             }

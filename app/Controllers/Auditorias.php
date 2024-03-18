@@ -92,6 +92,8 @@ class Auditorias extends BaseController
             $helper->cargarArchivos('adj_descargo', 'uploads/auditorias/descargos/', 'obs_descargo', $bd_info, $this->request->getPost('adj_descargo-description'));
         }
 
+        
+
         # Envío de Correos 
         $this->_sendEmailNewDescargo($results_descargo['last_id']['id']);
 
@@ -131,6 +133,19 @@ class Auditorias extends BaseController
         // Correo en copia
         $emails[] = 'mdinamarca@blister.com.ar';
 
+        # Notificación (Para el responsable)
+        $notificacion = [
+            'titulo' => 'Se ha generado un nuevo descargo para la Inspección #' . $data['id_inspeccion'],
+            'tipo' => 1,
+            'referencia' => 2, // Inspección
+            'descripcion' => '',
+            'url' => 'auditorias/view/',
+            'id_opcionales' => $data['id_inspeccion'],
+            'usuario_notificado' => $data['usuario_carga_id']
+        ];
+        setNotificacion($notificacion);
+        #-#-#-#-#-#-#
+
         $helper->sendMail($data, 'Nuevo Descargo #' . $id_descargo . ' - ' . $type_aud . ' #' . $data['id_inspeccion'], 'emails/auditorias/new_descargo', $emails);
     }
 
@@ -156,16 +171,20 @@ class Auditorias extends BaseController
         $result = $this->model_auditorias->editDescargo($datos_rta_descargo, $id_descargo);
 
         # Envío de Correos
-        $this->_sendEmailRtaDescargo($id_descargo);
+        $this->_sendEmailRtaDescargo($id_descargo, $estado);
 
-        newMov(11, 3, $result['last_id']['id'], 'Respuesta del Descargo'); //Movimiento (Registra el ID del Descargo Creado)
+        if ($estado == 1) {
+            newMov(11, 3, $result['last_id']['id'], 'Acepta Descargo | Inspección'); //Movimiento (Registra el ID del Descargo Creado)
+        } else {
+            newMov(14, 3, $result['last_id']['id'], 'Rechaza Descargo | Inspección'); //Movimiento (Registra el ID del Descargo Creado)
+        }
     }
     /**
      * [Envío de Correos]
      * Envía el correo a los siguientes usuario:
      * => El usuario quien cargó el descargo (ya que se lo respondieron si aceptaron/rechazaron el mismo)
      */
-    protected function _sendEmailRtaDescargo($id_descargo)
+    protected function _sendEmailRtaDescargo($id_descargo, $estado)
     {
         $helper = new Helper();
         $data = $this->model_mail_auditoria->getDataRtaDescargo($id_descargo);
@@ -190,6 +209,34 @@ class Auditorias extends BaseController
 
         # Correo en copia
         $emails[] = 'mdinamarca@blister.com.ar';
+
+        if ($estado == 1) {
+            # Notificación
+            $notificacion = [
+                'titulo' => '¡Han aceptado su descargo para la Inspección #' . $data['id_inspeccion'] . '!',
+                'tipo' => 2,
+                'referencia' => 2, // Inspección
+                'descripcion' => 'Le informamos que se ha aceptado el descargo correctamente',
+                'url' => 'auditorias/view/',
+                'id_opcionales' => $data['id_inspeccion'],
+                'usuario_notificado' => $data['user_carga_descargo_id']
+            ];
+            setNotificacion($notificacion);
+            #-#-#-#-#-#-#
+        } else {
+            # Notificación
+            $notificacion = [
+                'titulo' => '¡Han rechazado su descargo para la Inspección #' . $data['id_inspeccion'] . '!',
+                'tipo' => 3,
+                'referencia' => 2, // Inspección
+                'descripcion' => 'Le informamos lamentablemente que se ha rechazado el descargo',
+                'url' => 'auditorias/view/',
+                'id_opcionales' => $data['id_inspeccion'],
+                'usuario_notificado' => $data['user_carga_descargo_id']
+            ];
+            setNotificacion($notificacion);
+            #-#-#-#-#-#-#
+        }
 
         $helper->sendMail($data, 'Nueva Respuesta | Descargo #' . $id_descargo . ' - ' . $type_aud . ' #' . $data['id_inspeccion'], 'emails/auditorias/rta_descargo', $emails);
     }
@@ -328,26 +375,6 @@ class Auditorias extends BaseController
                     $aux++;
                 }
             }
-            exit;
-            // for ($i = 0; $i < count($contenedor); $i++) {
-
-            //     $data_subt = [
-            //         'nombre' => $contenedor[$i]['subtitle'],
-            //         'id_titulo' => $id_title
-            //     ];
-            //     $id_subtitle = $this->model_general->insertG('auditorias_subtitulos', $data_subt);
-
-            //     for ($j = 0; $j < count($contenedor[$i]['preguntas']); $j++) {
-            //         $data_ask = [
-            //             'pregunta' => $contenedor[$i]['preguntas'][$j],
-            //             'subtitulo' => $id_subtitle,
-            //             'orden' => $aux,
-            //             'titulo' => $id_title
-            //         ];
-            //         $this->model_general->insertG('auditorias_preguntas', $data_ask);
-            //         $aux++;
-            //     }
-            // }
         } else {
             echo json_encode($results['errores']);
         }
@@ -728,7 +755,6 @@ class Auditorias extends BaseController
                         $hallazgo_creado = $this->model_auditorias->createHallazgoAuditoria($data);
                         $id_hallazgo = $hallazgo_creado['last_id'];
 
-
                         // * Insertar los efectos de ese hallazgo creado
                         if ($h['efectos']) {
                             $efectos_separados = [];
@@ -759,6 +785,32 @@ class Auditorias extends BaseController
                             $helper->cargarArchivos('adjuntos_hallazgos_' . $key, 'uploads/auditorias/hallazgos/', 'obs_auditoria', $bd_info, $this->request->getPost('adjuntos_hallazgos_' . $key . '-description'));
                         }
                         // * ---
+
+                        # Notificación (Para el responsable)
+                        $notificacion = [
+                            'titulo' => 'Ha sido asignado como responsable en la Inspección #' . $insert_auditoria['last_id']['id'],
+                            'tipo' => 1,
+                            'referencia' => 2, // Inspección
+                            'descripcion' => 'Se le notifica que ha sido asignado como responsable de dar tratamiento a una Observación de Mejora en la Inspección #' . $insert_auditoria['last_id']['id'],
+                            'url' => 'auditorias/view/',
+                            'id_opcionales' => $insert_auditoria['last_id']['id'],
+                            'usuario_notificado' => $h['responsable']
+                        ];
+                        setNotificacion($notificacion);
+                        #-#-#-#-#-#-#
+
+                        # Notificación (Para el relevo del responsable)
+                        $notificacion = [
+                            'titulo' => 'Ha sido asignado como segundo responsable en la Inspección #' . $insert_auditoria['last_id']['id'],
+                            'tipo' => 1,
+                            'referencia' => 2, // Inspección
+                            'descripcion' => 'Se le notifica que ha sido asignado como segundo responsable de dar tratamiento a una Observación de Mejora en la Inspección #' . $insert_auditoria['last_id']['id'],
+                            'url' => 'auditorias/view/',
+                            'id_opcionales' => $insert_auditoria['last_id']['id'],
+                            'usuario_notificado' => $h['relevo_responsable']
+                        ];
+                        setNotificacion($notificacion);
+                        #-#-#-#-#-#-#
 
                         # Envío de E-Mails - Responsable
                         if ($h['responsable'] != '')
@@ -830,6 +882,19 @@ class Auditorias extends BaseController
                             $helper->cargarArchivos('adjuntos_hallazgos_positivos_' . $key, 'uploads/auditorias/hallazgos/', 'obs_auditoria', $bd_info, $this->request->getPost('adjuntos_hallazgos_positivos_' . $key . '-description'));
                         }
                         // * ---
+
+                        # Notificación Positiva (Para el responsable)
+                        $notificacion = [
+                            'titulo' => 'Ha recibido un reconocimiento en la Inspección #' . $insert_auditoria['last_id']['id'],
+                            'tipo' => 2,
+                            'referencia' => 2, // Inspección
+                            'descripcion' => 'Se le notifica que ha sido reconocido positivamente en la observación de la Inspección #' . $insert_auditoria['last_id']['id'],
+                            'url' => 'auditorias/view/',
+                            'id_opcionales' => $insert_auditoria['last_id']['id'],
+                            'usuario_notificado' => $h['responsable']
+                        ];
+                        setNotificacion($notificacion);
+                        #-#-#-#-#-#-#
 
                         # Envío de E-Mails - Observación Positiva
                         if ($h['responsable'] != '')
@@ -919,7 +984,6 @@ class Auditorias extends BaseController
         $emails = [];
         $emails[] = $datos['correo_usuario_carga'];
         $emails[] = $datos['correo_usuario_responsable'];
-
 
         $ruta = 'emails/auditorias/new_obs_mejora';
         // En caso de que el segundo responsable sea 'true' se cambia la ruta
@@ -1134,7 +1198,8 @@ class Auditorias extends BaseController
      * Elimina una Inspección (Planilla más que nada) con sus subtítulos y preguntas
      * (Recomendable no eliminar porque si solamente, ver bien antes de eliminar una Inspección)
      */
-    public function destroy_inspection() {
+    public function destroy_inspection()
+    {
         $id_inspeccion = $this->request->getPost('id_inspeccion');
         $titulo = $this->model_general->get('auditorias_titulos', $id_inspeccion);
 
@@ -1147,10 +1212,10 @@ class Auditorias extends BaseController
 
         # Caso contrario, eliminamos los subtítulos perteneciente a ese título de la Inspección
         $this->model_general->deleteModified('auditorias_subtitulos', $titulo['id'], 'id_titulo');
-        
+
         # También, eliminamos las preguntas pertenecientes a ese título de la Inspección
         $this->model_general->deleteModified('auditorias_preguntas', $titulo['id'], 'titulo');
-        
+
         # Por último, eliminamos el título de la Inspección
         $this->model_general->deleteModified('auditorias_titulos', $titulo['id']);
 
@@ -1164,8 +1229,11 @@ class Auditorias extends BaseController
      */
     public function testing()
     {
-        // echo view('emails/auditorias/new_descargo', $data);
-        // $id_inspeccion = $this->request->getPost('id_inspeccion');
+        $data = $this->model_mail_auditoria->getDataNewDescargo(2);
+        echo '<pre>';
+        var_dump($data);
+        echo '</pre>';
+        exit;
     }
 
 

@@ -25,6 +25,9 @@
 <!-- Tree Script -->
 <script src="<?= base_url('/assets/js/gijgo.js') ?>"></script>
 
+<!-- Notificaciones -->
+<script src="<?= base_url('/assets/js/notificacion/notificacion.js') ?>"></script>
+
 </body>
 
 </html>

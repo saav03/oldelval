@@ -43,7 +43,7 @@
                                 <tr>
                                     <td style="padding:0 0 36px 0;color:#153643;">
                                         <h1 style="font-size:24px;margin:5px 0; text-align: center; letter-spacing: 1.2px;">Credenciales de Ingreso</h1>
-                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;">Estimado, <br>
+                                        <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;">Estimado/da, <br>
                                         <?= $mensaje; ?></p>
                                         <p style="margin:20px 0 12px 0;font-size:15px;line-height:24px;"><b>Usuario:</b> <?= $correo; ?></p>
                                         <p style="margin:0 0 12px 0;font-size:15px;line-height:24px;"><b>Clave:</b> <?= $clave; ?></p>
@@ -60,7 +60,7 @@
                                 <tr>
                                     <td style="padding:0;width:50%;" align="left">
                                         <p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#ffffff;">
-                                            &reg; Blister, Neuquén - Argentina, <script>
+                                            &reg; Blister Technologies, Neuquén - Argentina, <script>
                                                 document.write(new Date().getFullYear())
                                             </script>
                                         </p>

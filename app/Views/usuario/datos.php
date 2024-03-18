@@ -93,7 +93,7 @@
                         </div>
                         <div class="col-xs-12">
                             <label class="mb-1 mt-2 fw-semibold sz_inp">Descripción del mensaje a enviar</label>
-                            <textarea class="form-control sz_inp inp_custom" name="mensaje" cols="30" rows="5">Estimado, le informamos que se le han otorgado las credenciales de acceso necesarias para iniciar sesión en nuestro sistema. A continuación, encontrará la información de inicio de sesión que le permitirá acceder a todas las funcionalidades y recursos disponibles</textarea>
+                            <textarea class="form-control sz_inp inp_custom" name="mensaje" cols="30" rows="5">Le informamos que se le han otorgado las credenciales de acceso necesarias para iniciar sesión en nuestro sistema. A continuación, encontrará la información de inicio de sesión que le permitirá acceder a todas las funcionalidades y recursos disponibles</textarea>
                         </div>
                         <div class="col-xs-12">
                             <label class="mb-1 mt-2 fw-semibold sz_inp">Clave de acceso</label>

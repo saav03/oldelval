@@ -5,9 +5,14 @@
                 cursor: pointer;
                 transform: scale(1.05);
             }
+
+            .answer-card .card-icon {
+                color: yellow;
+                background-color: yellow;
+            }
         </style>
         <!-- Observaciones Card -->
-        <div class="col-xxl-4 col-md-6">
+        <div class="col-md-4">
 
             <div class="card info-card warning-card card_hover">
 
@@ -32,7 +37,7 @@
                 </div>
 
                 <div class="card-body" onclick="window.location.replace('<?= base_url('/TarjetaObs/pendientes') ?>')">
-                    <h5 class="card-title">Pendientes <span id="span_tarjeta">| Tarjeta M.A.S <small>(Total)</small></span></h5>
+                    <h5 class="card-title">Descargos Pendientes <span id="span_tarjeta">| Tarjeta M.A.S <small>(Total)</small></span></h5>
 
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -48,9 +53,9 @@
             </div>
         </div> <!-- End Observaciones Card -->
 
-        <!-- Inspecciones Card -->
-        <div class="col-xxl-4 col-md-6">
-            <div class="card info-card success-card card_hover" >
+        <div class="col-md-4">
+
+            <div class="card info-card answer-card card_hover">
 
                 <div class="filter">
                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -59,68 +64,75 @@
                             <h6>Filtros</h6>
                         </li>
 
-                        <li><button class="dropdown-item" onclick="filterInspecciones('hoy')">Hoy</button></li>
-                        <li><button class="dropdown-item" onclick="filterInspecciones('mes')">Este mes</button></li>
-                        <li><button class="dropdown-item" onclick="filterInspecciones('year')">Este año</button></li>
+                        <li>
+                            <button class="dropdown-item" onclick="filterPendientes('hoy')">Hoy</button>
+                        </li>
+
+                        <li>
+                            <button class="dropdown-item" onclick="filterPendientes('mes')">Este mes</button>
+                        </li>
+                        <li>
+                            <button class="dropdown-item" onclick="filterPendientes('year')">Este año</button>
+                        </li>
                     </ul>
                 </div>
 
-                <div class="card-body" onclick="window.location.replace('<?= base_url('/auditorias') ?>')">
-                    <h5 class="card-title">Realizados <span id="span_inspecciones">| Inspecciones <small>(Mensual)</small></span></h5>
-
+                <div class="card-body" onclick="window.location.replace('<?= base_url('/TarjetaObs/rta_pendientes') ?>')">
+                    <h5 class="card-title">Respuestas Pendientes <span id="span_tarjeta">| Tarjeta M.A.S <small>(Total)</small></span></h5>
 
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="fa-solid fa-list-check"></i>
+                        <i class="fa-regular fa-comment-dots"></i>
                         </div>
                         <div class="ps-3">
-                            <h6 id="cantidad_inspecciones"><?= $inspecciones['total'] ?></h6>
-                            <span class="text-success small pt-1 fw-bold"><?= $inspecciones['este_mes'] ?></span> <span class="text-muted small pt-2 ps-1">Este mes</span>
-
+                            <h6 id="cantidad_pendiente"><?= $rta_descargos_pendientes['cantidad'] ?></h6>
+                            <span class="text-muted small pt-2 ps-1">de <?= $hallazgo_totales_propios['cantidad'] ?> hallazgos en total</span>
                         </div>
                     </div>
                 </div>
 
             </div>
-        </div><!-- End Inspecciones Card -->
+        </div> <!-- End Observaciones Card -->
 
-        <!-- Estadísticas Card -->
-        <div class="col-xxl-4 col-xl-12">
+        <div class="col-md-4">
 
-            <div class="card info-card info-card card_hover">
+            <div class="card info-card success-card card_hover">
 
                 <div class="filter">
                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        
                         <li class="dropdown-header text-start">
                             <h6>Filtros</h6>
                         </li>
 
-                        <li><button class="dropdown-item" onclick="filterEstadisticas('hoy')">Hoy</button></li>
-                        <li><button class="dropdown-item" onclick="filterEstadisticas('mes')">Este mes</button></li>
-                        <li><button class="dropdown-item" onclick="filterEstadisticas('year')">Este año</button></li>
+                        <li>
+                            <button class="dropdown-item" onclick="filterPendientes('hoy')">Hoy</button>
+                        </li>
+
+                        <li>
+                            <button class="dropdown-item" onclick="filterPendientes('mes')">Este mes</button>
+                        </li>
+                        <li>
+                            <button class="dropdown-item" onclick="filterPendientes('year')">Este año</button>
+                        </li>
                     </ul>
                 </div>
 
-                <div class="card-body" onclick="window.location.replace('<?= base_url('/estadisticas') ?>')">
-                    <h5 class="card-title">Carga Mensual <span id="span_estadistica">| Estadistica <small>(Mensual)</small></span></h5>
+                <div class="card-body" onclick="window.location.replace('<?= base_url('/TarjetaObs/completadas') ?>')">
+                    <h5 class="card-title">Completadas <span id="span_tarjeta">| Tarjeta M.A.S <small>(Total)</small></span></h5>
 
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="fa-regular fa-calendar"></i>
+                        <i class="fa-solid fa-book-open"></i>
                         </div>
                         <div class="ps-3">
-                            <h6 id="cantidad_estadistica"><?= $estadisticas['principal']['este_mes'] ?></h6>
-                            <span class="text-success small pt-1 fw-bold"><?= $estadisticas['hoy']['cantidad'] ?></span> <span class="text-muted small pt-2 ps-1">Planillas cargadas hoy</span>
-
+                            <h6 id="cantidad_pendiente"><?= $get_total_tarjetas_propias_cerradas['cantidad'] ?></h6> <span class="text-muted small pt-2 ps-1">de <?= $get_total_tarjetas_propias['cantidad'] ?> tarjetas en total</span>
                         </div>
                     </div>
-
                 </div>
-            </div>
 
-        </div><!-- End Estadísticas Card -->
+            </div>
+        </div> <!-- End Observaciones Card -->
 
         <script>
             /* Observaciones Pendientes */

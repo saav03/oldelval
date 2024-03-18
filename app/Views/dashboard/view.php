@@ -54,14 +54,20 @@
 
   <section class="section dashboard">
     <div class="row">
+      <!-- OBS Card -->
+      <?= view('dashboard/components/obs_cards'); ?>
+      <!-- End OBS Card -->
+    </div>
+
+
+    <div class="row">
 
       <!-- Left side columns -->
       <div class="col-lg-8">
         <div class="row">
 
-          <!-- OBS Card -->
-          <?= view('dashboard/components/obs_cards'); ?>
-          <!-- End OBS Card -->
+        <?= view('dashboard/components/obs_cards2'); ?>
+
 
           <!-- Graphic -->
           <?= view('dashboard/components/graphic'); ?>

@@ -18,13 +18,16 @@ btnSubmit.addEventListener("click", (e) => {
     "swal_edicion"
   ).then((result) => {
     if (result.isConfirmed) {
-      editPermiso(form).done(function (data) {
-      });
+      editPermiso(form).done(function (data) {});
       customSuccessAlert(
         "Edición Exitosa",
         "El permiso se editó correctamente",
         "swal_edicion"
-      );
+      ).then((result) => {
+        if (result.isConfirmed) {
+          window.location.replace(GET_BASE_URL() + "/permisos");
+        }
+      });
     }
   });
 });
@@ -41,4 +44,3 @@ function editPermiso(form) {
     },
   });
 }
-

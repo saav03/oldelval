@@ -1,112 +1,80 @@
 <div class="d-flex align-items-center justify-content-between">
-      <a href="<?= base_url() ?>" class="logo d-flex align-items-center" style="color:#00b8e6">
-        <img src="<?= base_url('assets/img/logo.png') ?>" alt="">
-        <span class="d-none d-lg-block">OLDELVAL</span>
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
+  <a href="<?= base_url() ?>" class="logo d-flex align-items-center" style="color:#00b8e6">
+    <img src="<?= base_url('assets/img/logo.png') ?>" alt="">
+    <span class="d-none d-lg-block">OLDELVAL</span>
+  </a>
+  <i class="bi bi-list toggle-sidebar-btn"></i>
+</div><!-- End Logo -->
 
-    <!-- <div class="search-bar">
+<!-- <div class="search-bar">
       <form class="search-form d-flex align-items-center" method="POST" action="#">
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
     </div> --><!-- End Search Bar -->
 
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
+<style>
+  .notifications {
+    width: 500px;
+  }
 
-        <!-- <li class="nav-item d-block d-lg-none">
+  .new {
+    background: #e5f3f7;
+    font-weight: 500 !important;
+  }
+
+  @media (200px < width < 1200px) {
+    .notifications {
+      width: auto;
+    }
+  }
+</style>
+
+<nav class="header-nav ms-auto">
+  <ul class="d-flex align-items-center">
+
+    <!-- <li class="nav-item d-block d-lg-none">
           <a class="nav-link nav-icon search-bar-toggle " href="#">
             <i class="bi bi-search"></i>
           </a>
         </li> --><!-- End Search Icon-->
 
-        <li class="nav-item dropdown">
+    <li class="nav-item dropdown">
 
-          <!-- <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a> -->
-          <!-- End Notification Icon -->
+      <a class="nav-link nav-icon icon_cant_notis" href="#" data-bs-toggle="dropdown">
+        <i class="bi bi-bell"></i>
+        <span class="badge bg-primary badge-number cant_notifications"></span>
+      </a>
+      <!-- End Notification Icon -->
 
-          <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+        <li class="dropdown-header">
+          <span id="notificaciones_nuevas">
+          </span>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
 
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
+        <div class="contenedor_notificaciones"></div>
+        
+        <li class="dropdown-footer">
+          <a href="<?= base_url("notificaciones/index") ?>">Ver todas las notificaciones</a>
+        </li>
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+      </ul><!-- End Notification Dropdown Items -->
 
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
+    </li><!-- End Notification Nav -->
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+    <li class="nav-item dropdown">
 
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
-          </ul> --><!-- End Notification Dropdown Items -->
-
-        </li><!-- End Notification Nav -->
-
-        <li class="nav-item dropdown">
-
-          <!-- <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+      <!-- <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-chat-left-text"></i>
             <span class="badge bg-success badge-number">3</span>
           </a> -->
-          <!-- End Messages Icon -->
+      <!-- End Messages Icon -->
 
-          <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+      <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
             <li class="dropdown-header">
               You have 3 new messages
               <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
@@ -163,69 +131,69 @@
 
           </ul> --><!-- End Messages Dropdown Items -->
 
-        </li><!-- End Messages Nav -->
+    </li><!-- End Messages Nav -->
 
-        <li class="nav-item dropdown pe-3">
+    <li class="nav-item dropdown pe-3">
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-          <img src="<?= session()->get('img_perfil') != "" ? base_url('uploads/fotosPerfil/'.session()->get('img_perfil')) : base_url('assets/images/perfil/no-pic.png'); ?>" alt="" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?= session()->get('nombre') ?></span>
-          </a><!-- End Profile Iamge Icon -->
+      <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+        <img src="<?= session()->get('img_perfil') != "" ? base_url('uploads/fotosPerfil/' . session()->get('img_perfil')) : base_url('assets/images/perfil/no-pic.png'); ?>" alt="" class="rounded-circle">
+        <span class="d-none d-md-block dropdown-toggle ps-2"><?= session()->get('nombre') ?></span>
+      </a><!-- End Profile Iamge Icon -->
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6><?= session()->get('nombrecompleto') ?></h6>
-              <!-- <span><!?php 
+      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+        <li class="dropdown-header">
+          <h6><?= session()->get('nombrecompleto') ?></h6>
+          <!-- <span><!?php 
              $names = array_column(session()->get('grupos'),'nombre');
              foreach($names as $name){
               echo $name.' ';
              }
              ?></span> -->
-             <span><?= session()->get('competencia'); ?></span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+          <span><?= session()->get('competencia'); ?></span>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="<?= base_url('/perfil/view/'.session()->get('id_usuario')) ?>">
-                <i class="bi bi-person"></i>
-                <span>Mi Perfil</span>
-              </a>
-            </li>
-            <!-- <li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center" href="<?= base_url('/perfil/view/' . session()->get('id_usuario')) ?>">
+            <i class="bi bi-person"></i>
+            <span>Mi Perfil</span>
+          </a>
+        </li>
+        <!-- <li>
               <hr class="dropdown-divider">
             </li> -->
 
-            <!-- <li>
+        <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
             </li> -->
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
 
-            <!-- <li>
+        <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                 <i class="bi bi-question-circle"></i>
                 <span>Need Help?</span>
               </a>
             </li> -->
-            <!-- <li>
+        <!-- <li>
               <hr class="dropdown-divider">
             </li> -->
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="<?= base_url("logout") ?>">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Cerrar Sesion</span>
-              </a>
-            </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center" href="<?= base_url("logout") ?>">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Cerrar Sesion</span>
+          </a>
+        </li>
 
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
+      </ul><!-- End Profile Dropdown Items -->
+    </li><!-- End Profile Nav -->
 
-      </ul>
-    </nav><!-- End Icons Navigation -->
+  </ul>
+</nav><!-- End Icons Navigation -->

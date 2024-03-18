@@ -33,6 +33,16 @@ class TarjetaObservaciones extends BaseController
         return template('tarjetas_obs/index_pendientes');
     }
 
+    public function index_rta_pendientes()
+    {
+        return template('tarjetas_obs/index_rta_pendientes');
+    }
+
+    public function index_tarjetas_completadas()
+    {
+        return template('tarjetas_obs/index_tarjetas_completadas');
+    }
+
     public function view($id)
     {
         $data['tarjeta'] =  $this->model_tarjeta->getDataTarjeta($id);
@@ -76,7 +86,6 @@ class TarjetaObservaciones extends BaseController
         $data['tipo_hallazgo'] =  $this->model_general->getAllEstadoActivo(' tarjeta_tipo_hallazgo');
         $data['contratistas'] =  $this->model_general->getAllEstadoActivo(' empresas');
         $data['responsables'] =  $this->model_general->getAllActivo(' usuario');
-        // $data['modulos'] =  $this->model_general->getAllEstadoActivo('modulos');
         return template('tarjetas_obs/add_obs', $data);
     }
 
@@ -228,19 +237,45 @@ class TarjetaObservaciones extends BaseController
                         }
                         // * ---
 
+                        # Notificación (Para el responsable)
+                        $notificacion = [
+                            'titulo' => 'Ha sido asignado como responsable en la Tarjeta M.A.S #' . $id_tarjeta['id'],
+                            'tipo' => 1,
+                            'referencia' => 1, // Tarjeta M.A.S
+                            'descripcion' => 'Se le notifica que ha sido asignado como responsable de dar tratamiento a una Observación de Mejora en la Tarjeta M.A.S #' . $id_tarjeta['id'],
+                            'url' => 'TarjetaObs/view_obs/',
+                            'id_opcionales' => $id_tarjeta['id'],
+                            'usuario_notificado' => $h['responsable']
+                        ];
+                        setNotificacion($notificacion);
+                        #-#-#-#-#-#-#
+
+                        # Notificación (Para el relevo del responsable)
+                        $notificacion = [
+                            'titulo' => 'Ha sido asignado como segundo responsable en la Tarjeta M.A.S #' . $id_tarjeta['id'],
+                            'tipo' => 1,
+                            'referencia' => 1, // Tarjeta M.A.S
+                            'descripcion' => 'Se le notifica que ha sido asignado como segundo responsable de dar tratamiento a una Observación de Mejora en la Tarjeta M.A.S #' . $id_tarjeta['id'],
+                            'url' => 'TarjetaObs/view_obs/',
+                            'id_opcionales' => $id_tarjeta['id'],
+                            'usuario_notificado' => $h['relevo_responsable']
+                        ];
+                        setNotificacion($notificacion);
+                        #-#-#-#-#-#-#
+
                         // * Envío de E-Mails
                         $datos_hallazgo = [];
                         $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
 
                         // * Para el responsable
-                        // if ($h['responsable'] != '')
-                        //     $helper->sendMailTarjeta($datos_hallazgo, 2);
+                        if ($h['responsable'] != '')
+                            $helper->sendMailTarjeta($datos_hallazgo, 2);
 
                         // * Para el segundo responsable
-                        // if ($h['relevo_responsable'] != '') {
-                        //     $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo, true);
-                        //     $helper->sendMailTarjeta($datos_hallazgo, 5);
-                        // }
+                        if ($h['relevo_responsable'] != '') {
+                            $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo, true);
+                            $helper->sendMailTarjeta($datos_hallazgo, 5);
+                        }
                     }
                 }
 
@@ -304,16 +339,30 @@ class TarjetaObservaciones extends BaseController
 
                         $data_reconocimiento = [];
                         $data_reconocimiento['datos'] = $this->model_mail_tarjeta->getDataTarjetaReconocimiento($id_tarjeta, $id_hallazgo);
+
+                        # Notificación (Para el responsable)
+                        $notificacion = [
+                            'titulo' => 'Ha recibido un reconocimiento en la Tarjeta M.A.S #' . $id_tarjeta['id'],
+                            'tipo' => 2,
+                            'referencia' => 1, // Tarjeta M.A.S
+                            'descripcion' => 'Se le notifica que ha sido reconocido positivamente en la observación de la Tarjeta M.A.S #' . $id_tarjeta['id'],
+                            'url' => 'TarjetaObs/view_obs/',
+                            'id_opcionales' => $id_tarjeta['id'],
+                            'usuario_notificado' => $h['responsable']
+                        ];
+                        setNotificacion($notificacion);
+                        #-#-#-#-#-#-#
+
                         // * Envío de correo para el responsable
-                        // if ($h['responsable'] != '')
-                        //     $helper->sendMailTarjeta($data_reconocimiento, 6);
+                        if ($h['responsable'] != '')
+                            $helper->sendMailTarjeta($data_reconocimiento, 6);
                     }
                 }
 
                 $datos_hallazgo = [];
                 // * Para quien carga la tarjeta
-                // $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
-                // $helper->sendMailTarjeta($datos_hallazgo, 1);
+                $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
+                $helper->sendMailTarjeta($datos_hallazgo, 1);
             }
 
             // * Si todos los hallazgos son positivos, entonces la tarjeta se da como cerrada desde un principio
@@ -361,9 +410,22 @@ class TarjetaObservaciones extends BaseController
         ];
 
         $results_descargo = $this->model_tarjeta->addDescargo($datos_descargo);
+        $datos['datos'] = $this->model_mail_tarjeta->getInfoNewDescargo($id_hallazgo, $results_descargo['last_id']);
 
-        // $datos['datos'] = $this->model_mail_tarjeta->getInfoNewDescargo($id_hallazgo, $results_descargo['last_id']);
-        // $helper->sendMailTarjeta($datos, 3);
+        # Notificación (Para el responsable)
+        $notificacion = [
+            'titulo' => 'Se ha generado un nuevo descargo para la Tarjeta M.A.S #' . $datos['datos']['id_obs'],
+            'tipo' => 1,
+            'referencia' => 1, // Tarjeta M.A.S
+            'descripcion' => '',
+            'url' => 'TarjetaObs/view_obs/',
+            'id_opcionales' => $datos['datos']['id_obs'],
+            'usuario_notificado' => $datos['datos']['id_usuario_carga']
+        ];
+        setNotificacion($notificacion);
+        #-#-#-#-#-#-#
+
+        $helper->sendMailTarjeta($datos, 3);
 
         # Se cargan adjuntos si es que realmente existen
         if ($this->request->getPost('adj_descargo-description[]')) {
@@ -402,6 +464,34 @@ class TarjetaObservaciones extends BaseController
         $results_descargo = $this->model_tarjeta->editDescargo($datos_rta_descargo, $id_descargo);
         $datos['datos'] = $this->model_mail_tarjeta->getRespuestaDescargo($id_descargo);
 
+        if ($estado == 1) {
+            # Notificación
+            $notificacion = [
+                'titulo' => '¡Han aceptado su descargo para la Tarjeta M.A.S #' . $datos['datos']['id_obs'] . '!',
+                'tipo' => 2,
+                'referencia' => 1, // Tarjeta M.A.S
+                'descripcion' => 'Le informamos que se ha aceptado el descargo correctamente',
+                'url' => 'TarjetaObs/view_obs/',
+                'id_opcionales' => $datos['datos']['id_obs'],
+                'usuario_notificado' => $datos['datos']['id_usuario_responde']
+            ];
+            setNotificacion($notificacion);
+            #-#-#-#-#-#-#
+        } else {
+            # Notificación
+            $notificacion = [
+                'titulo' => '¡Han rechazado su descargo para la Tarjeta M.A.S #' . $datos['datos']['id_obs'] . '!',
+                'tipo' => 3,
+                'referencia' => 1, // Tarjeta M.A.S
+                'descripcion' => 'Le informamos lamentablemente que se ha rechazado el descargo',
+                'url' => 'TarjetaObs/view_obs/',
+                'id_opcionales' => $datos['datos']['id_obs'],
+                'usuario_notificado' => $datos['datos']['id_usuario_responde']
+            ];
+            setNotificacion($notificacion);
+            #-#-#-#-#-#-#
+        }
+
         // * Actualiza el hallazgo y lo setea como resuelto
         $id_hallazgo = $datos['datos']['id_hallazgo'];
         $id_tarjeta = $datos['datos']['id_obs'];
@@ -418,7 +508,8 @@ class TarjetaObservaciones extends BaseController
         }
 
         $this->model_general->updateG('tarjeta_hallazgos', $id_hallazgo, $data);
-        // $helper->sendMailTarjeta($datos, 4);
+
+        $helper->sendMailTarjeta($datos, 4);
 
         newMov($movimiento_rta, 2, $results_descargo['last_id'], 'Rta Descargo Tarjeta M.A.S'); //Movimiento (Registra el ID de la Respuesta del Descargo creado)
     }
@@ -499,7 +590,49 @@ class TarjetaObservaciones extends BaseController
         echo json_encode($response);
     }
 
-    public function testing($id, $email)
+    public function getRtaPendientesPaged($offset = NULL, $tamanioPagina = NULL)
     {
+        if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
+            $response = $this->model_tarjeta->getRtaPendientesAllPaged($offset, $tamanioPagina, false);
+        } else {
+            if ((is_null($offset) || $offset == 0) && (is_null($tamanioPagina) || $tamanioPagina == 0)) {
+                $response = $this->model_tarjeta->getRtaPendientesAllPaged($offset, $tamanioPagina, true);
+                $response = (int)$response[0]['cantidad'];
+            } else {
+                http_response_code(400);
+                $response = [
+                    'error' => 400,
+                    'message' => "Parametros no validos"
+                ];
+            }
+        }
+        echo json_encode($response);
+    }
+
+    /**
+     * 
+     */
+    public function getTotalTarjetasPaged($offset = NULL, $tamanioPagina = NULL)
+    {
+        if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
+            $response = $this->model_tarjeta->getTotalTarjetasAllPaged($offset, $tamanioPagina, false);
+        } else {
+            if ((is_null($offset) || $offset == 0) && (is_null($tamanioPagina) || $tamanioPagina == 0)) {
+                $response = $this->model_tarjeta->getTotalTarjetasAllPaged($offset, $tamanioPagina, true);
+                $response = (int)$response[0]['cantidad'];
+            } else {
+                http_response_code(400);
+                $response = [
+                    'error' => 400,
+                    'message' => "Parametros no validos"
+                ];
+            }
+        }
+        echo json_encode($response);
+    }
+
+    public function testing()
+    {
+       
     }
 }

@@ -66,11 +66,7 @@ class Model_tarjeta extends Model
 		if ($soloMax) {
 			$builder->select("COUNT(DISTINCT tar_obs.id) cantidad");
 			$builder->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
-					->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left');
-
-			if (!vista_access('nueva_observacion')) {
-				$builder->where("user_responsable.id", session()->get('id_usuario'));
-			}
+				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left');
 		} else {
 			$builder->select("tar_obs.id id_tarjeta, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, COUNT(tarjeta_hallazgos.resuelto) resueltos, COUNT(tarjeta_hallazgos.id) hallazgos, DATE_FORMAT(tar_obs.fecha_deteccion, '%d/%m/%Y') fecha_deteccion, tar_obs.observador, tar_obs.tipo_observacion observacion, tar_obs.situacion, tar_obs.estado tar_estado")
 				->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
@@ -81,32 +77,111 @@ class Model_tarjeta extends Model
 				->join('sistemas_oleoductos', 'sistemas_oleoductos.id=tar_obs.sistema_oleoducto', 'left')
 				->where('tar_obs.estado', 1);
 
-				// if ($pendientes) {
-				// 	$builder->where('responsable', session()->get('id_usuario'))
-				// 			->where('resuelto IS NULL');
-				// }
-
-				$builder->groupBy('tar_obs.id')
+			$builder->groupBy('tar_obs.id')
 				->orderBy('tar_obs.id', 'DESC')
 				->limit($tamanioPagina, $offset);
+		}
 
-			/* == Si no tiene el permiso para agregar una observación entonces para el histórico filtra por el responsable == */
-			if (!vista_access('nueva_observacion')) {
-				$builder->where("user_responsable.id", session()->get('id_usuario'));
+		# Si no es Admin, y no tengo permiso para ver todas las Tarjetas, entonces..
+		if (!session()->get('superadmin')) {
+
+			if (!vista_access('ver_todo_tarjetas')) {
+				# Si tengo el permiso de ver solamente las Tarjetas que el usuario carga..
+				if (vista_access('ver_sus_tarjetas')) {
+					$builder->where('tar_obs.usuario_carga', session()->get('id_usuario'));
+	
+					# Si el ve sus Tarjetas que el carga y también las que es Responsable/Segundo Responsable
+					if (vista_access('ver_sus_tarjetas_responsable')) {
+						$builder->orWhere('tarjeta_hallazgos.responsable', session()->get('id_usuario'));
+						$builder->orWhere('tarjeta_hallazgos.relevo_responsable', session()->get('id_usuario'));
+					}
+	
+				} else {
+					# Si no tiene permisos para ver las Tarjetas que él carga pero si para ver aquellas en las que es Responsable/Segundo Responsable
+					if (vista_access('ver_sus_tarjetas_responsable')) {
+						$builder->where('tarjeta_hallazgos.responsable', session()->get('id_usuario'));
+						$builder->orWhere('tarjeta_hallazgos.relevo_responsable', session()->get('id_usuario'));
+					} else {
+						return [];
+					}
+				}
 			}
 		}
+
 		if ($pendientes) {
 			$builder->where('tarjeta_hallazgos.responsable', session()->get('id_usuario'))
-					->where('tarjeta_hallazgos.resuelto IS NULL');
+				->where('tarjeta_hallazgos.resuelto IS NULL');
 		}
 
 		// echo '<pre>';
-		// echo $pendientes;
 		// var_dump($builder->getCompiledSelect());
 		// echo '</pre>';
 		// exit;
-		$query = $builder->get();
-		return $query->getResultArray();
+		return $builder->get()->getResultArray();
+	}
+
+	/**
+	 * 
+	 */
+	public function getRtaPendientesAllPaged($offset, $tamanioPagina, $soloMax = FALSE)
+	{
+		$builder = $this->db->table('tarjeta_observaciones tar_obs');
+
+		if ($soloMax) {
+			$builder->select("COUNT(DISTINCT tar_obs.id) cantidad");
+			$builder->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
+				->join('tarjeta_hallazgo_descargos t_h_d', 't_h_d.id_hallazgo=tarjeta_hallazgos.id', 'inner')
+				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left')
+				->where('tar_obs.estado', 1)
+				->where('tar_obs.usuario_carga', session()->get('id_usuario'))
+				->where('t_h_d.respuesta IS NULL')
+				->where('tarjeta_hallazgos.resuelto IS NULL');
+		} else {
+			$builder->select("tar_obs.id id_tarjeta, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, COUNT(tarjeta_hallazgos.resuelto) resueltos, COUNT(tarjeta_hallazgos.id) hallazgos, DATE_FORMAT(tar_obs.fecha_deteccion, '%d/%m/%Y') fecha_deteccion, tar_obs.observador, tar_obs.tipo_observacion observacion, tar_obs.situacion, tar_obs.estado tar_estado")
+				->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
+				->join('tarjeta_hallazgo_descargos t_h_d', 't_h_d.id_hallazgo=tarjeta_hallazgos.id', 'inner')
+				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left')
+				->join('proyectos', 'proyectos.id=tar_obs.proyecto', 'inner')
+				->join('modulos', 'modulos.id=tar_obs.modulo', 'left')
+				->join('estaciones_bombeo', 'estaciones_bombeo.id=tar_obs.estacion_bombeo', 'left')
+				->join('sistemas_oleoductos', 'sistemas_oleoductos.id=tar_obs.sistema_oleoducto', 'left')
+				->where('tar_obs.estado', 1)
+				->where('tar_obs.usuario_carga', session()->get('id_usuario'))
+				->where('t_h_d.respuesta IS NULL')
+				->where('tarjeta_hallazgos.resuelto IS NULL')
+				->groupBy('tar_obs.id')
+				->orderBy('tar_obs.id', 'DESC')
+				->limit($tamanioPagina, $offset);
+		}
+		return $builder->get()->getResultArray();
+	}
+
+	public function getTotalTarjetasAllPaged($offset, $tamanioPagina, $soloMax = FALSE)
+	{
+		$builder = $this->db->table('tarjeta_observaciones tar_obs');
+
+		if ($soloMax) {
+			$builder->select("COUNT(DISTINCT tar_obs.id) cantidad");
+			$builder->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
+				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left')
+				->where('tar_obs.estado', 1)
+				->where('tar_obs.usuario_carga', session()->get('id_usuario'));
+		} else {
+			$builder->select("tar_obs.id id_tarjeta, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, COUNT(tarjeta_hallazgos.resuelto) resueltos, COUNT(tarjeta_hallazgos.id) hallazgos, DATE_FORMAT(tar_obs.fecha_deteccion, '%d/%m/%Y') fecha_deteccion, tar_obs.observador, tar_obs.tipo_observacion observacion, tar_obs.situacion, tar_obs.estado tar_estado")
+				->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
+				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left')
+				->join('proyectos', 'proyectos.id=tar_obs.proyecto', 'inner')
+				->join('modulos', 'modulos.id=tar_obs.modulo', 'left')
+				->join('estaciones_bombeo', 'estaciones_bombeo.id=tar_obs.estacion_bombeo', 'left')
+				->join('sistemas_oleoductos', 'sistemas_oleoductos.id=tar_obs.sistema_oleoducto', 'left')
+				->where('tar_obs.estado', 1)
+				->where('tar_obs.usuario_carga', session()->get('id_usuario'))
+				->where('tar_obs.situacion', 0)
+				->groupBy('tar_obs.id')
+				->orderBy('tar_obs.id', 'DESC')
+				->limit($tamanioPagina, $offset);
+		}
+		return $builder->get()->getResultArray();
 	}
 
 	/**

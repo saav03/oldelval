@@ -44,7 +44,7 @@ class Model_mail_tarjeta extends Model
     public function getInfoNewDescargo($id_hallazgo, $id_descargo)
     {
         $builder = $this->db->table('tarjeta_hallazgo_descargos descargo');
-        $builder->select('obs.id id_obs, u.nombre u_nombre_carga, u.apellido u_apellido_carga, u.correo correo_carga, u_responde.nombre u_nombre_responde, u_responde.apellido u_apellido_responde, descargo.id_hallazgo id_hallazgo, descargo.id id_descargo, descargo.motivo, descargo.estado estado_descargo, DATE_FORMAT(fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(hallazgo.fecha_cierre, "%d/%m/%Y") fecha_vencimiento')
+        $builder->select('obs.id id_obs, u.id id_usuario_carga, u.nombre u_nombre_carga, u.apellido u_apellido_carga, u.correo correo_carga, u_responde.nombre u_nombre_responde, u_responde.apellido u_apellido_responde, descargo.id_hallazgo id_hallazgo, descargo.id id_descargo, descargo.motivo, descargo.estado estado_descargo, DATE_FORMAT(fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(hallazgo.fecha_cierre, "%d/%m/%Y") fecha_vencimiento')
             ->join('tarjeta_hallazgos hallazgo', 'hallazgo.id=descargo.id_hallazgo', 'inner')
             ->join('tarjeta_observaciones obs', 'obs.id=hallazgo.id_tarjeta', 'inner')
             ->join('usuario u', 'u.id=obs.usuario_carga', 'inner')
@@ -58,7 +58,7 @@ class Model_mail_tarjeta extends Model
     public function getRespuestaDescargo($id_descargo)
     {
         $builder = $this->db->table('tarjeta_hallazgo_descargos descargo');
-        $builder->select('obs.id id_obs, hallazgo.id id_hallazgo, descargo.id_usuario_rta usuario_rta, descargo.estado estado_rta, descargo.respuesta, u.nombre u_nombre_carga, u.apellido u_apellido_carga, u.correo correo_carga, u_responde.nombre u_nombre_responde, u_responde.apellido u_apellido_responde, u_responde.correo correo_responsable, DATE_FORMAT(descargo.fecha_hora_respuesta, "%d/%m/%Y") fecha_rta')
+        $builder->select('obs.id id_obs, hallazgo.id id_hallazgo, descargo.id_usuario_rta usuario_rta, descargo.estado estado_rta, descargo.respuesta, u.nombre u_nombre_carga, u.apellido u_apellido_carga, u.correo correo_carga, u_responde.id id_usuario_responde, u_responde.nombre u_nombre_responde, u_responde.apellido u_apellido_responde, u_responde.correo correo_responsable, DATE_FORMAT(descargo.fecha_hora_respuesta, "%d/%m/%Y") fecha_rta')
             ->join('tarjeta_hallazgos hallazgo', 'hallazgo.id=descargo.id_hallazgo', 'inner')
             ->join('tarjeta_observaciones obs', 'obs.id=hallazgo.id_tarjeta', 'inner')
             ->join('usuario u', 'u.id=obs.usuario_carga', 'inner')

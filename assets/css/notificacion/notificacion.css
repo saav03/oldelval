@@ -1,0 +1,53 @@
+.card_check {
+  box-shadow: none;
+  border-radius: 7px !important;
+  border: 1px solid lightblue !important;
+  cursor: pointer;
+}
+
+.card_check .card-header {
+  background-color: lightblue;
+  color: white;
+  border-radius: 5px 5px 0 0 !important;
+  font-weight: 500;
+}
+
+.card_check .card-body {
+  background-color: #f3fcff;
+  border-radius: 0 0 7px 7px;
+}
+
+.card_no_check {
+  cursor: pointer;
+  box-shadow: none;
+  border-radius: 7px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.card_no_check .card-header {
+  background-color: #f1f1f1;
+  border-radius: 5px 5px 0 0 !important;
+  font-weight: 500;
+}
+
+.noti_pendiente {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background-color: #c11b1b;
+  animation: parpadeo 1s infinite;
+}
+
+@keyframes parpadeo {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

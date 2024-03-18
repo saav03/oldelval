@@ -82,7 +82,7 @@ class Model_mail_tarjeta extends Model
      */
     public function getDataNewDescargo($id_descargo) {
         $builder = $this->db->table('auditoria_hallazgo_descargos aud_h_d')
-        ->select('aud_h_d.id id_descargo, aud_h.id id_hallazgo, aud.id id_inspeccion, aud.auditoria, CONCAT(u_carga.nombre, " ", u_carga.apellido) usuario_carga, u_carga.correo correo_usuario_carga, aud_h_d.motivo, CONCAT(u_rta.nombre, " ", u_rta.apellido) usuario_rta, DATE_FORMAT(aud_h_d.fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(aud_h.fecha_cierre, "%d/%m/%Y") fecha_cierre')
+        ->select('aud_h_d.id id_descargo, aud_h.id id_hallazgo, aud.id id_inspeccion, aud.auditoria, u_carga.id usuario_carga_id, CONCAT(u_carga.nombre, " ", u_carga.apellido) usuario_carga, u_carga.correo correo_usuario_carga, aud_h_d.motivo, CONCAT(u_rta.nombre, " ", u_rta.apellido) usuario_rta, DATE_FORMAT(aud_h_d.fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(aud_h.fecha_cierre, "%d/%m/%Y") fecha_cierre')
         ->join('auditoria_hallazgos aud_h', 'aud_h.id=aud_h_d.id_hallazgo', 'inner')
         ->join('auditoria aud', 'aud.id=aud_h.id_auditoria', 'inner')
         ->join('usuario u_carga', 'u_carga.id=aud_h.usuario_carga', 'inner')
@@ -97,11 +97,12 @@ class Model_mail_tarjeta extends Model
      */
     public function getDataRtaDescargo($id_descargo) {
         $builder = $this->db->table('auditoria_hallazgo_descargos aud_h_d')
-        ->select('aud_h_d.id id_descargo, aud_h.id id_hallazgo, aud.id id_inspeccion, aud.auditoria, CONCAT(u_carga_hallazgo.nombre, " ", u_carga_hallazgo.apellido) usuario_carga_hallazgo, u_carga_hallazgo.correo correo_usuario_carga_hallazgo, aud_h_d.respuesta, CONCAT(u_carga_descargo.nombre, " ", u_carga_descargo.apellido) usuario_carga_descargo, u_carga_descargo.correo correo_usuario_carga_descargo, DATE_FORMAT(aud_h_d.fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(aud_h.fecha_cierre, "%d/%m/%Y") fecha_cierre, aud_h_d.estado')
+        ->select('aud_h_d.id id_descargo, aud_h.id id_hallazgo, aud.id id_inspeccion, aud.auditoria, CONCAT(u_carga_hallazgo.nombre, " ", u_carga_hallazgo.apellido) usuario_carga_hallazgo, u_carga_hallazgo.correo correo_usuario_carga_hallazgo, aud_h_d.respuesta, u_carga_descargo.id user_carga_descargo_id, CONCAT(u_carga_descargo.nombre, " ", u_carga_descargo.apellido) usuario_carga_descargo, u_carga_descargo.correo correo_usuario_carga_descargo, u_rta_descargo.id user_rta_descargo_id, DATE_FORMAT(aud_h_d.fecha_hora_motivo, "%d/%m/%Y") fecha_motivo, DATE_FORMAT(aud_h.fecha_cierre, "%d/%m/%Y") fecha_cierre, aud_h_d.estado')
         ->join('auditoria_hallazgos aud_h', 'aud_h.id=aud_h_d.id_hallazgo', 'inner')
         ->join('auditoria aud', 'aud.id=aud_h.id_auditoria', 'inner')
         ->join('usuario u_carga_hallazgo', 'u_carga_hallazgo.id=aud_h.usuario_carga', 'inner')
-        ->join('usuario u_carga_descargo', 'u_carga_descargo.id=aud_h_d.usuario_carga', 'inner')
+        ->join('usuario u_carga_descargo', 'u_carga_descargo.id=aud_h_d.id_usuario', 'left')
+        ->join('usuario u_rta_descargo', 'u_rta_descargo.id=aud_h_d.id_usuario_rta', 'left')
         ->where('aud_h_d.id', $id_descargo);
         $query = $builder->get()->getRowArray();
         return $query;

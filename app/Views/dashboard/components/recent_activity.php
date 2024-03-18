@@ -30,7 +30,7 @@
                 <div class="activity-item d-flex">
                     <div class="activite-label"><?= $act['tiempo'] ?></div>
                     <!-- ACA TE QUEDASTE | Tenés que terminar la actividad reciente y también 'Tus Observaciones' -->
-                    <i class='bi bi-circle-fill activity-badge text-<?= $clase ?> align-self-start'></i>
+                    <i class='bi bi-circle-fill activity-badge text-<?= $act['estado'] ?> align-self-start'></i>
                     <div class="activity-content">
                         <?= $act['comentario'] ?>
                         <!-- Martin Lagos aprobó el <label class="fw-bold text-dark">Hallazgo #3</label> en la <a href="#" class="fw-bold text-dark">Auditoria #21</a>. -->

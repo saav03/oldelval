@@ -70,6 +70,44 @@ class Model_reporte_tarjeta extends Model
     }
 
     /**
+     * 
+     */
+    public function get_descargos_rta_hallazgos_pendiente($id_usuario)
+    {
+        $builder = $this->db->table('tarjeta_hallazgos t_h');
+        $builder->select('COUNT(t_h_d.id) cantidad')
+            ->join('tarjeta_hallazgo_descargos t_h_d', 't_h_d.id_hallazgo=t_h.id', 'inner')
+            ->where('usuario_carga', $id_usuario)
+            ->where('t_h_d.respuesta IS NULL')
+            ->where('resuelto IS NULL');
+        return $builder->get()->getRowArray();
+    }
+
+    /**
+     * 
+     */
+    public function get_hallazgos_totales_propios($id_usuario)
+    {
+        $builder = $this->db->table('tarjeta_hallazgos t_h');
+        $builder->select('COUNT(t_h.id) cantidad')
+            ->where('usuario_carga', $id_usuario);
+        return $builder->get()->getRowArray();
+    }
+
+    /**
+     * 
+     */
+    public function get_total_tarjetas_propias($id_usuario, $situacion = '')
+    {
+        $builder = $this->db->table('tarjeta_observaciones t_a');
+        $builder->select('COUNT(t_a.id) cantidad');
+        if ($situacion != '')
+            $builder->where('t_a.situacion', $situacion);
+        $builder->where('usuario_carga', $id_usuario);
+        return $builder->get()->getRowArray();
+    }
+
+    /**
      * Obtiene la cantidad de Hallazgos dependiendo el aspecto y la significancia que se pase por parámetro
      * Por el momento trae todas las tarjetas, no solamente del usuario
      */
