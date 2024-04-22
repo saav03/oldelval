@@ -1,3 +1,5 @@
+<?php if (vista_access('index_auditoria')) : ?>
+
 <div class="card">
   <div class="card-body pb-0">
     <h5 class="card-title">Total Inspecciones <span>| Este mes</span></h5>
@@ -66,3 +68,4 @@
 
   </div>
 </div>
+<?php endif; ?>

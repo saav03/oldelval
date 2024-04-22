@@ -28,6 +28,9 @@ class Estadisticas extends BaseController
             return redirect()->to('login');
         } else {
             // $data['datos_basicos'] = $this->model_usuario->getDatos(session()->get('id_usuario'));
+            if (!vista_access('index_estadisticas')) {
+                return redirect()->to('/dashboard');
+            }
             return template('estadisticas/index'/*, $data*/);
         }
     }
@@ -37,6 +40,10 @@ class Estadisticas extends BaseController
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
         } else {
+
+            if (!vista_access('index_estadisticas')) {
+                return redirect()->to('/dashboard');
+            }
 
             $data['estadistica'] = $this->model_estadisticas->getEstadistica($id_estadistica, $id_tipo);
             $anio = $data['estadistica'][0]['anio_id'];
@@ -71,6 +78,9 @@ class Estadisticas extends BaseController
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
         } else {
+            if (!vista_access('agregar_est_incidente')) {
+                return redirect()->to('/dashboard');
+            }
             $data = $this->getEncabezado(1);
             return template('estadisticas/add', $data);
         }
@@ -81,6 +91,9 @@ class Estadisticas extends BaseController
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
         } else {
+            if (!vista_access('agregar_capacitaciones')) {
+                return redirect()->to('/dashboard');
+            }
             $data = $this->getEncabezado(2);
             return template('estadisticas/capacitaciones/add', $data);
         }
@@ -91,6 +104,9 @@ class Estadisticas extends BaseController
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
         } else {
+            if (!vista_access('agregar_gestion_vehicular')) {
+                return redirect()->to('/dashboard');
+            }
             $data = $this->getEncabezado(3);
             return template('estadisticas/gestion_vehicular/add', $data);
         }
@@ -192,7 +208,7 @@ class Estadisticas extends BaseController
         if ($datos_estadisticas['exito']) {
             $anio = $this->model_general->get('anio_periodos', $this->request->getPost('anio_periodo'));
             $datos['anio'] = $anio['anio'];
-            
+
             $periodo = $_POST['periodo'];
 
             /** == Periodo == **/

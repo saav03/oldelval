@@ -3,6 +3,8 @@
         cursor: pointer;
     }
 </style>
+<?php if (vista_access('index_auditoria')) : ?>
+
 <div class="col-12">
     <div class="card recent-sales overflow-auto">
 
@@ -94,3 +96,4 @@
         </div>
     </div>
 </div>
+<?php endif; ?>

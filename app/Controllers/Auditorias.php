@@ -38,6 +38,9 @@ class Auditorias extends BaseController
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
         } else {
+            if (!vista_access('index_auditoria')) {
+                return redirect()->to('/dashboard');
+            }
             $data['auditorias_control'] = $this->model_auditorias->getAllTitlesAuditoria();
             $data['auditorias_checklist'] = $this->model_auditorias->getAllTitlesAuditoria(0);
             $data['auditorias_tarea_de_campo'] = $this->model_auditorias->getAllTitlesAuditoria(3);
@@ -47,6 +50,7 @@ class Auditorias extends BaseController
             $data['modulos'] = $this->model_general->getAllEstadoActivo('modulos');
             $data['estaciones'] = $this->model_general->getAllEstadoActivo('estaciones_bombeo');
             $data['sistemas'] = $this->model_general->getAllEstadoActivo('sistemas_oleoductos');
+
             return template('auditoria/index', $data);
         }
     }
@@ -92,7 +96,7 @@ class Auditorias extends BaseController
             $helper->cargarArchivos('adj_descargo', 'uploads/auditorias/descargos/', 'obs_descargo', $bd_info, $this->request->getPost('adj_descargo-description'));
         }
 
-        
+
 
         # Envío de Correos 
         $this->_sendEmailNewDescargo($results_descargo['last_id']['id']);
@@ -1070,6 +1074,9 @@ class Auditorias extends BaseController
     {
         if (!$this->session->get('isLogin')) {
             return redirect()->to('login');
+        }
+        if (!vista_access('index_auditoria')) {
+            return redirect()->to('/dashboard');
         }
 
         $data['auditoria'] =  $this->getCompleteInspection($id_inspection);
