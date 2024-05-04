@@ -15,9 +15,28 @@ class Model_usuario extends Model
         return $builder->get()->getResultArray();
     }
 
-    public function getAllPaged($offset, $tamanioPagina, $soloMax = FALSE)
+    public function getAllPaged($offset, $tamanioPagina, $params, $soloMax = FALSE)
     {
+        $id_usuario = isset($params['id_usuario']) && $params['id_usuario'] ? $params['id_usuario'] : false;
+        $nombre = isset($params['nombre']) && $params['nombre'] ? $params['nombre'] : false;
+        $apellido = isset($params['apellido']) && $params['apellido'] ? $params['apellido'] : false;
+        $correo = isset($params['correo']) && $params['correo'] ? $params['correo'] : false;
+        
         $builder = $this->db->table('usuario u');
+
+        if ($id_usuario) {
+            $builder->where('u.id', $id_usuario);
+        }
+        if ($nombre) {
+            $builder->like('u.nombre', $nombre, 'both');
+        }
+        if ($apellido) {
+            $builder->like('u.apellido', $apellido, 'both');
+        }
+        if ($correo) {
+            $builder->like('u.correo', $correo, 'both');
+        }
+
         if ($soloMax) {
             $builder->select("COUNT(*) cantidad");
         } else {

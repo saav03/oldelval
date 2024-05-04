@@ -57,6 +57,7 @@ class Usuario extends BaseController
 
     public function getPagedUsuario($id_user, $offset = NULL, $tamanioPagina = NULL)
     {
+
         if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
             $response = $this->model_logs->getAllPagedUsuario($offset, $tamanioPagina, $id_user);
         } else {
@@ -76,11 +77,18 @@ class Usuario extends BaseController
 
     public function getPaged($offset = NULL, $tamanioPagina = NULL)
     {
+        $params = [
+            'id_usuario' => $this->request->getPost("id_usuario"),
+            'nombre' => $this->request->getPost("nombre"),
+            'apellido' => $this->request->getPost("apellido"),
+            'correo' => $this->request->getPost("correo"),
+        ];
+
         if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
-            $response = $this->model_usuario->getAllPaged($offset, $tamanioPagina);
+            $response = $this->model_usuario->getAllPaged($offset, $tamanioPagina, $params);
         } else {
             if (is_null($offset) && is_null($tamanioPagina)) {
-                $response = $this->model_usuario->getAllPaged($offset, $tamanioPagina, true);
+                $response = $this->model_usuario->getAllPaged($offset, $tamanioPagina, $params, true);
                 $response = (int)$response[0]['cantidad'];
             } else {
                 http_response_code(400);

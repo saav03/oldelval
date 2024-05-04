@@ -111,14 +111,14 @@ function generarObservacionPositiva(id_contenedor) {
     name: `hallazgos_positivos[${contador}][responsable]`,
     id: `responsable_${contador}`,
     style: "width: 100%;",
-    "data-serach": "true",
+    "data-search": "true",
     "data-silent-initial-value-set": "true",
   });
   responsables_contratista.forEach((responsable) => {
     let option = el(
       "option",
       { value: responsable.id },
-      responsable.nombre + ' ' + responsable.apellido
+      responsable.responsable_name
     );
     mount(select, option);
   });

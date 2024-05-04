@@ -78,4 +78,38 @@ class Model_reporte_inspecciones extends Model
             ->join('usuario u', 'a_h.responsable=u.id');
         return $builder->get()->getResultArray();
     }
+
+    /**
+     * Obtiene de aquellas Inspecciones, las observaciones que se hayan realizado y donde el responsable es el usuario que está
+     * iniciado sesión
+     * [IMPORTANTE => Se encarga de sumar todos los pendientes en relación a las observaciones de las Inspecciones]
+     */
+    public function get_inspecciones_pendiente($id_usuario) {
+        $builder = $this->db->table('auditoria_hallazgos aud_h');
+        $builder->select('COUNT(DISTINCT aud_h.id) cantidad')
+            ->where('aud_h.responsable', $id_usuario)
+            ->where('aud_h.resuelto', null);
+        $query = $builder->get()->getRowArray();
+
+        # Obtenemos la consulta y sumamos todas las cantidades. Es decir, sumamos aquellos hallazgos donde el usuario es responsable
+        # Y también donde tiene que responder de los descargos
+        $cantidad_rta_pendientes = $this->_get_descargos_rta_hallazgos_pendiente($id_usuario);
+        $query['cantidad'] = $query['cantidad'] + $cantidad_rta_pendientes['cantidad'];
+
+        return $query;
+    }
+
+    /**
+     * Obtiene la cantidad de descargos pendiente de una respuesta del usuario quien está logueado
+     */
+    protected function _get_descargos_rta_hallazgos_pendiente($id_usuario)
+    {
+        $builder = $this->db->table('auditoria_hallazgos aud_h');
+        $builder->select('COUNT(a_h_d.id) cantidad')
+            ->join('auditoria_hallazgo_descargos a_h_d', 'a_h_d.id_hallazgo=aud_h.id', 'inner')
+            ->where('usuario_carga', $id_usuario)
+            ->where('a_h_d.respuesta IS NULL')
+            ->where('resuelto IS NULL');
+        return $builder->get()->getRowArray();
+    }
 }

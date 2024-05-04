@@ -122,35 +122,36 @@
 <!-- Bloque de Preguntas y Respuestas -->
 <?= view('auditoria/components/bloque_rtas', $auditoria); ?>
 
-<div class="container">
-    <div class="card mt-4 mb-0 card_title_initial">
-        <div class="card-header card_modif_aud">
-            Observaciones
+<?php if (count($auditoria['hallazgos']) > 0) : ?>
+    <div class="container">
+        <div class="card mt-4 mb-0 card_title_initial">
+            <div class="card-header card_modif_aud">
+                Observaciones
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <?php foreach ($auditoria['hallazgos'] as $h) : ?>
+                    <?php if ($h['id_tipo'] == 2) : ?>
+                        <?php $data['h'] = $h;
+                        ?>
+                        <?= view('auditoria/components/obs_mejora', $data); ?>
+                        <br>
+                    <?php else : ?>
+                        <?php $data['h'] = $h; ?>
+                        <?= view('auditoria/components/obs_positiva', $data); ?>
+                        <br>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <!-- Boton de volver -->
+        <div>
+            <a href="<?= base_url('auditorias') ?>" class="btn_modify">Volver al Histórico</a>
         </div>
     </div>
-
-    <div class="card">
-        <div class="card-body">
-            <?php foreach ($auditoria['hallazgos'] as $h) : ?>
-                <?php if ($h['id_tipo'] == 2) : ?>
-                    <?php $data['h'] = $h;
-                    ?>
-                    <?= view('auditoria/components/obs_mejora', $data); ?>
-                    <br>
-                <?php else : ?>
-                    <?php $data['h'] = $h; ?>
-                    <?= view('auditoria/components/obs_positiva', $data); ?>
-                    <br>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </div>
-    </div>
-    <!-- Boton de volver -->
-    <div>
-        <a href="<?= base_url('auditorias') ?>" class="btn_modify">Volver al Histórico</a>
-    </div>
-</div>
-
+<?php endif; ?>
 
 <!-- Modales -->
 <?= view('auditoria/modals/descargo'); ?>

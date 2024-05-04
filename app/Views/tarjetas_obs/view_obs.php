@@ -174,7 +174,8 @@ $situacion = $t['situacion'] == 1 ? 'Abierta' : 'Cerrada';
             </div>
         </div>
     <?php else : ?>
-        <?php if ($t['hallazgos_pendientes']['cantidad_sin_resolver'] == 0) : ?>
+
+        <?php if ($t['hallazgos_pendientes']['cantidad_sin_resolver'] == 0 && $t['usuario_carga'] == session()->get('id_usuario')) : ?>
             <div class="row">
                 <div class="col-xs-12 col-md-4"></div>
                 <div class="col-xs-12 col-md-4 d-flex align-items-center">

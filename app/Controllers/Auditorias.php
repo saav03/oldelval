@@ -1067,6 +1067,26 @@ class Auditorias extends BaseController
         echo json_encode($response);
     }
 
+    public function getPagedPendientes($offset = NULL, $tamanioPagina = NULL)
+    {
+
+        if ((is_numeric($offset) && $offset >= 0) && (is_numeric($tamanioPagina) && $tamanioPagina > 0)) {
+            $response = $this->model_auditorias->getAllPagedPendientes($offset, $tamanioPagina);
+        } else {
+            if (is_null($offset) && is_null($tamanioPagina)) {
+                $response = $this->model_auditorias->getAllPagedPendientes($offset, $tamanioPagina, true);
+                $response = (int)$response[0]['cantidad'];
+            } else {
+                http_response_code(400);
+                $response = [
+                    'error' => 400,
+                    'message' => "Parametros no validos"
+                ];
+            }
+        }
+        echo json_encode($response);
+    }
+
     /**
      * Carga la vista del la Inspección
      */

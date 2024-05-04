@@ -34,15 +34,21 @@ class Dashboard extends BaseController
             $actividad_reciente = $this->model_movimiento->getRecentActivity();
             $data['actividad_reciente'] = $this->_modifyRecentActivity($actividad_reciente);
 
-            # Cantidad de Observaciones Pendientes (CARD)
-            // (Descargos pendientes)
-            $data['obs_tarjeta_pendiente']['principal'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente(session()->get('id_usuario'));
-            $data['obs_tarjeta_pendiente']['hoy'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente_filter(session()->get('id_usuario'), 'hoy');
-            $data['obs_tarjeta_pendiente']['mes'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente_filter(session()->get('id_usuario'), 'mes');
-            $data['obs_tarjeta_pendiente']['year'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente_filter(session()->get('id_usuario'), 'year');
 
-            # Cantidad de Respuestas pendientes de los descargos (CARD)
-            $data['rta_descargos_pendientes'] = $this->model_reporte_tarjeta->get_descargos_rta_hallazgos_pendiente(session()->get('id_usuario'));
+            # Cantidad de Hallazgos de la Tarjeta M.A.S vencidas
+            $data['hallazgos_vencidos'] = $this->model_reporte_tarjeta->get_hallazgos_vencidos(session()->get('id_usuario'));
+            # Cantidad de Observaciones Pendientes (CARD)
+            // Pendientes de la Tarjeta M.A.S (Observaciones)
+            $data['mis_pendientes']['tarjeta_mas'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente(session()->get('id_usuario'));
+
+            // Pendientes de las Inspecciones (Observaciones)
+            $data['mis_pendientes']['inspecciones'] = $this->model_reporte_inspecciones->get_inspecciones_pendiente(session()->get('id_usuario'));
+
+            # Filtros (Por el momento lo comenté porque ni lo usan)
+            // $data['obs_tarjeta_pendiente']['hoy'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente_filter(session()->get('id_usuario'), 'hoy');
+            // $data['obs_tarjeta_pendiente']['mes'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente_filter(session()->get('id_usuario'), 'mes');
+            // $data['obs_tarjeta_pendiente']['year'] = $this->model_reporte_tarjeta->get_tarjeta_pendiente_filter(session()->get('id_usuario'), 'year');
+
             $data['hallazgo_totales_propios'] = $this->model_reporte_tarjeta->get_hallazgos_totales_propios(session()->get('id_usuario'));
 
             # Cantidad de Tarjetas M.A.S propias completadas
@@ -169,11 +175,7 @@ class Dashboard extends BaseController
                     break;
                 case '8': // Credencial Usuario
                     $actividad[$key]['estado'] = 'primary';
-                    switch ($act['id_accion']) {
-                        case '1':
-                            $comentario = $act['nombre_usuario'] . ' realizó un envío de credenciales';
-                            break;
-                    }
+                    $comentario = $act['nombre_usuario'] . ' realizó un envío de credenciales';
                     break;
                 case '9': // Auditoría / Inspección
                     $actividad[$key]['estado'] = 'primary';

@@ -23,12 +23,15 @@ class Model_reporte_tarjeta extends Model
             ->where('t_h.resuelto', null);
         $query = $builder->get()->getRowArray();
 
-        # Suma el total de las Tarjetas M.A.S
-        $builder->select('COUNT(tar_obs.id) total');
-        $query['total'] = $builder->get()->getRow('total');
+        $cantidad_rta_pendientes = $this->_get_descargos_rta_hallazgos_pendiente($id_usuario);
+        $query['cantidad'] = $query['cantidad'] + $cantidad_rta_pendientes['cantidad'];
 
-        $porcentaje = ($query['cantidad'] / $query['total']) * 100;
-        $query['porcentaje'] = number_format($porcentaje, 2, '.', '');
+        # Suma el total de las Tarjetas M.A.S
+        // $builder->select('COUNT(tar_obs.id) total');
+        // $query['total'] = $builder->get()->getRow('total');
+
+        // $porcentaje = ($query['cantidad'] / $query['total']) * 100;
+        // $query['porcentaje'] = number_format($porcentaje, 2, '.', '');
 
         return $query;
     }
@@ -72,7 +75,7 @@ class Model_reporte_tarjeta extends Model
     /**
      * 
      */
-    public function get_descargos_rta_hallazgos_pendiente($id_usuario)
+    protected function _get_descargos_rta_hallazgos_pendiente($id_usuario)
     {
         $builder = $this->db->table('tarjeta_hallazgos t_h');
         $builder->select('COUNT(t_h_d.id) cantidad')
@@ -134,6 +137,20 @@ class Model_reporte_tarjeta extends Model
             ->where('aspecto', $aspecto)
             ->where('significancia', $significancia)
             ->groupBy('mes');
+        return $builder->get()->getResultArray();
+    }
+
+    /**
+     * 
+     */
+    public function get_hallazgos_vencidos($id_usuario) {
+        $builder = $this->db->table('tarjeta_observaciones t_a');
+        $builder->select('t_h.id, t_h.id_tarjeta, t_h.hallazgo, t_h.plan_accion, t_h.significancia, DATE_FORMAT(t_h.fecha_cierre, "%d/%m/%Y") fecha_cierre_f, CONCAT(u_r.nombre, " ", u_r.apellido) responsable')
+        ->join('tarjeta_hallazgos t_h', 't_h.id_tarjeta=t_a.id', 'inner')
+        ->join('usuario u_r', 'u_r.id=t_h.responsable', 'inner')
+        ->where('t_h.fecha_cierre <', date('Y-m-d'))
+        ->where('t_h.resuelto', null)
+        ->where('t_a.usuario_carga', $id_usuario);
         return $builder->get()->getResultArray();
     }
 }

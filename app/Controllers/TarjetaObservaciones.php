@@ -21,6 +21,7 @@ class TarjetaObservaciones extends BaseController
         $this->model_mail_tarjeta = model('Model_mail_tarjeta');
         $this->model_proyectos = model('Model_proyectos');
         $this->model_estacion = model('Model_estacion');
+        $this->model_responsable_empresas = model('Model_responsable_empresas');
     }
 
     public function index()
@@ -84,8 +85,8 @@ class TarjetaObservaciones extends BaseController
         $data['efectos'] =  $this->model_general->getAllEstadoActivo('efectos_impactos');
         $data['significancia'] =  $this->model_general->getAllEstadoActivo('significancia');
         $data['tipo_hallazgo'] =  $this->model_general->getAllEstadoActivo(' tarjeta_tipo_hallazgo');
-        $data['contratistas'] =  $this->model_general->getAllEstadoActivo(' empresas');
-        $data['responsables'] =  $this->model_general->getAllActivo(' usuario');
+        $data['contratistas'] =  $this->model_tarjeta->getAllEmpresas();
+        $data['responsables'] =  $this->model_responsable_empresas->getAllResponsables(true, false);
         return template('tarjetas_obs/add_obs', $data);
     }
 
@@ -119,6 +120,7 @@ class TarjetaObservaciones extends BaseController
         $model = new Model_tarjeta();
         $helper = new Helper();
         $obs_oportunidad_mejora = !is_null($this->request->getPost('hallazgos_mejoras')) && count($this->request->getPost('hallazgos_mejoras')) > 0 ? true : false;
+        $all_plan_accion_implementado = true;
 
         $datos_tarjeta  = [
             'contratista'    => $this->request->getPost('contratista'),
@@ -195,6 +197,14 @@ class TarjetaObservaciones extends BaseController
                             'fecha_cierre' => $h['fecha_cierre'],
                             'usuario_carga' => session()->get('id_usuario')
                         ];
+
+                        if (!isset($h['plan_accion_implementado'])) {
+                            $all_plan_accion_implementado = false;
+                        } else {
+                            $data['resuelto'] = 1;
+                            $data['plan_accion_implementado'] = 1;
+                        }
+
                         $result_hallazgo = $this->verificacion($data, 'validation_hallazgo');
 
                         if (!$result_hallazgo['exito']) {
@@ -268,13 +278,20 @@ class TarjetaObservaciones extends BaseController
                         $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo);
 
                         // * Para el responsable
-                        if ($h['responsable'] != '')
-                            $helper->sendMailTarjeta($datos_hallazgo, 2);
+                        if ($h['responsable'] != '') {
+                            if (!isset($h['plan_accion_implementado'])) {
+                                $helper->sendMailTarjeta($datos_hallazgo, 2);
+                            } else {
+                                $helper->sendMailTarjeta($datos_hallazgo, 7);
+                            }
+                        }
 
                         // * Para el segundo responsable
                         if ($h['relevo_responsable'] != '') {
-                            $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo, true);
-                            $helper->sendMailTarjeta($datos_hallazgo, 5);
+                            if (!isset($h['plan_accion_implementado'])) {
+                                $datos_hallazgo['datos'] = $this->model_mail_tarjeta->getInfoTarjetaCreada($id_tarjeta, $id_hallazgo, true);
+                                $helper->sendMailTarjeta($datos_hallazgo, 5);
+                            }
                         }
                     }
                 }
@@ -366,7 +383,8 @@ class TarjetaObservaciones extends BaseController
             }
 
             // * Si todos los hallazgos son positivos, entonces la tarjeta se da como cerrada desde un principio
-            if (!$obs_oportunidad_mejora) {
+            // * O todos los hallazgos tienen plan de acción implementado, entonces no hay nada para dar tratamiento
+            if (!$obs_oportunidad_mejora || $all_plan_accion_implementado) {
 
                 /* Cierra la observación */
                 $datos_actualizar_tarjeta = [
@@ -375,7 +393,7 @@ class TarjetaObservaciones extends BaseController
                 $this->model_general->updateG('tarjeta_observaciones', $id_tarjeta, $datos_actualizar_tarjeta);
 
                 $data_cierre = [
-                    'motivo'    => 'Tarjeta M.A.S con Observaciones Positivas',
+                    'motivo'    => $all_plan_accion_implementado ? 'Tarjeta M.A.S sin Tratamientos' :  'Tarjeta M.A.S con Observaciones Positivas',
                     'cierre_manual'    => 0,
                     'id_tarjeta_obs' => $id_tarjeta,
                     'id_usuario_cierre' => session()->get('id_usuario'),
@@ -633,6 +651,6 @@ class TarjetaObservaciones extends BaseController
 
     public function testing()
     {
-       
+        return template('emails/tarjetaObs/responsable_read_only');
     }
 }

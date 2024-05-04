@@ -226,7 +226,7 @@
     let clasificaciones = <?= json_encode($clasificaciones); ?>;
     let tipo_hallazgo = <?= json_encode($tipo_hallazgo); ?>;
     let contratista = <?= json_encode($contratistas); ?>;
-    let responsable = <?= json_encode($responsables); ?>;
+    let responsables = <?= json_encode($responsables); ?>;
     let efectos = <?= json_encode($efectos); ?>;
     let significancia = <?= json_encode($significancia); ?>;
     var aux = 1;
@@ -241,8 +241,8 @@
 <script>
     document.querySelector('#contratista').addEventListener('change', function() {
         let id_contratista = this.value;
-        responsables_contratista = responsable.filter((e) => e.empresa == id_contratista);
-
+        responsables_contratista = responsables.filter((e) => e.id_empresa == id_contratista);
+        console.log('Estos son los usuarios responsables contratistas: ', responsables_contratista)
         let selectorResponsables = document.querySelectorAll('.responsable');
         let selectorResponsablesRelevo = document.querySelectorAll('.relevo_responsable');
 
@@ -251,7 +251,7 @@
             let options = [];
             responsables_contratista.forEach(r => {
                 let objeto = {
-                    label: r.nombre + ' ' + r.apellido,
+                    label: r.responsable_name,
                     value: r.id
                 }
                 options.push(objeto);
@@ -264,7 +264,7 @@
             let options = [];
             responsables_contratista.forEach(r => {
                 let objeto = {
-                    label: r.nombre + ' ' + r.apellido,
+                    label: r.responsable_name,
                     value: r.id
                 }
                 options.push(objeto);

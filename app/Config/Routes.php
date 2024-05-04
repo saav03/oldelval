@@ -64,6 +64,9 @@ $routes->post('/auditorias/createDescargo','Auditorias::createDescargo');
 $routes->post('/auditorias/createRtaDescargo','Auditorias::createRtaDescargo');
 $routes->match(['get', 'post'],'/api/auditorias/getAuditorias/(:num)/(:num)/(:num)','Auditorias::getPaged/$1/$2/$3');
 $routes->match(['get', 'post'],'/api/auditorias/getTotalAuditorias/(:num)','Auditorias::getPaged/$1');
+$routes->match(['get', 'post'],'/api/auditorias/getPendientes/(:num)/(:num)','Auditorias::getPagedPendientes/$1/$2');
+$routes->match(['get', 'post'],'/api/auditorias/getTotalPendientes/','Auditorias::getPagedPendientes');
+
 $routes->get('/pdf/auditorias/inspeccion/(:num)','Auditorias::visualizePDF/$1');
 
 $routes->post('/auditorias/changeState/(:num)/(:num)','Auditorias::changeState/$1/$2');
@@ -164,6 +167,8 @@ $routes->match(['get', 'post'],'/api/menu/getTotal/','Menu::getPaged');
 $routes->match(['get', 'post'],'/api/menu/edit/','Menu::edit');
 #N
 #O
+$routes->get('/observaciones/pendientes','Observaciones::index');
+
 #P
 //PERFIL
 $routes->get('/perfil','Perfil::index');
@@ -188,6 +193,12 @@ $routes->post('/Permisos/enablePermission','Permisos::enable');
 
 #Q
 #R
+$routes->get('/responsables','ResponsableEmpresas::index');
+$routes->post('/responsable/delete','ResponsableEmpresas::delete');
+$routes->post('/responsable/add','ResponsableEmpresas::store');
+$routes->match(['get', 'post'],'/api/responsable_empresas/get/(:num)/(:num)','ResponsableEmpresas::getPaged/$1/$2');
+$routes->match(['get', 'post'],'/api/responsable_empresas/getTotal/','ResponsableEmpresas::getPaged');
+
 #S
 $routes->get('/sistema','Sistema::view');
 $routes->post('/sistema/store','Sistema::store');

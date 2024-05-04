@@ -153,6 +153,62 @@ class Model_auditorias extends Model
     }
 
     /**
+     * 
+     */
+    public function getAllPagedPendientes($offset, $tamanioPagina, $soloMax = FALSE)
+    {
+        $builder = $this->db->table('auditoria a');
+
+        if ($soloMax) {
+            $builder->select("COUNT(a.id) cantidad");
+        } else {
+            $builder->select("a.id id_auditoria, a.auditoria, a_title.nombre modelo_tipo, emp.nombre contratista, a.supervisor_responsable supervisor, p.nombre as proyecto, CONCAT(u_carga.nombre,' ',u_carga.apellido) usuario_carga, DATE_FORMAT(a.fecha_hora_carga, '%d/%m/%Y') as fecha_carga_format");
+            // ->limit($tamanioPagina, $offset);
+        }
+        $builder->join('auditoria_hallazgos a_h', 'a_h.id_auditoria=a.id', 'left')
+            ->join('auditoria_hallazgo_descargos a_h_d', 'a_h_d.id_hallazgo=a_h.id', 'left')
+            ->join('empresas emp', 'emp.id=a.contratista', 'inner')
+            ->join('auditorias_titulos a_title', 'a_title.id=a.modelo_tipo', 'inner')
+            ->join('proyectos p', 'p.id=a.proyecto', 'inner')
+            ->join('usuario u_carga', 'u_carga.id=a.usuario_carga', 'inner')
+            ->where('a_h.responsable', session()->get('id_usuario'))
+            ->where('a_h.resuelto', null)
+            ->orderBy('a.id', 'DESC');
+        $query = $builder->get()->getResultArray();
+
+        if (isset($query[0]['cantidad'])) {
+            $cantidad = $query[0]['cantidad'];
+        }
+        # Otra subconsulta
+
+        if ($soloMax) {
+            $builder->select("COUNT(a.id) cantidad");
+        } else {
+            $builder->select("a.id id_auditoria, a.auditoria, a_title.nombre modelo_tipo, emp.nombre contratista, a.supervisor_responsable supervisor, p.nombre as proyecto, CONCAT(u_carga.nombre,' ',u_carga.apellido) usuario_carga, DATE_FORMAT(a.fecha_hora_carga, '%d/%m/%Y') as fecha_carga_format");
+        }
+        $builder->join('auditoria_hallazgos a_h', 'a_h.id_auditoria=a.id', 'left')
+            ->join('auditoria_hallazgo_descargos a_h_d', 'a_h_d.id_hallazgo=a_h.id', 'inner')
+            ->join('empresas emp', 'emp.id=a.contratista', 'inner')
+            ->join('auditorias_titulos a_title', 'a_title.id=a.modelo_tipo', 'inner')
+            ->join('proyectos p', 'p.id=a.proyecto', 'inner')
+            ->join('usuario u_carga', 'u_carga.id=a.usuario_carga', 'inner')
+            ->where('a_h.usuario_carga', session()->get('id_usuario'))
+            ->where('a_h_d.respuesta', null)
+            ->orderBy('a.id', 'DESC');
+        $query2 = $builder->get()->getResultArray();
+        if (isset($query2[0]['cantidad'])) {
+            $cantidad = $cantidad + $query2[0]['cantidad'];
+        }
+
+        if (isset($query[0]['cantidad'])) {
+            $query[0]['cantidad'] = $cantidad;
+        }
+        $resultado = array_merge($query, $query2);
+
+        return $resultado;
+    }
+
+    /**
      * Tabla de Edición de las Auditorías de Control
      */
     public function getAllPagedControlEdicion($offset, $tamanioPagina, $soloMax = FALSE)
@@ -407,7 +463,8 @@ class Model_auditorias extends Model
         return $builder->get()->getResultArray();
     }
 
-    public function getNameAdjuntos($id_hallazgo) {
+    public function getNameAdjuntos($id_hallazgo)
+    {
         $builder = $this->db->table('auditoria_hallazgos_adjuntos');
         $builder->select('adjunto')
             ->where('id_hallazgo', $id_hallazgo);
@@ -421,7 +478,8 @@ class Model_auditorias extends Model
             ->where('id_hallazgo', $id_hallazgos);
         return $builder->get()->getRowArray();
     }
-    public function getNameAdjuntosDescargos($id_descargo) {
+    public function getNameAdjuntosDescargos($id_descargo)
+    {
         $builder = $this->db->table('auditoria_descargos_adj');
         $builder->select('adjunto')
             ->where('id_descargo', $id_descargo);
@@ -429,23 +487,26 @@ class Model_auditorias extends Model
     }
 
     /* TODO LO QUE SE HAGA ACA ES AUXILIAR, SE VA A EJECUTAR UNA VEZ Y NO SE EJECUTA MÁS */
-    public function getRespuestasInspeccionAux($id_inspeccion, $tabla) {
+    public function getRespuestasInspeccionAux($id_inspeccion, $tabla)
+    {
         $builder = $this->db->table($tabla);
         $builder->select('*')
-        ->where('id_auditoria', $id_inspeccion);
+            ->where('id_auditoria', $id_inspeccion);
         return $builder->get()->getResultArray();
     }
-    public function getHallazgoInspeccionAux($id_inspeccion, $tipo_auditoria) {
+    public function getHallazgoInspeccionAux($id_inspeccion, $tipo_auditoria)
+    {
         $builder = $this->db->table('obs_hallazgos');
         $builder->select('*')
-        ->where('id_auditoria', $id_inspeccion)
-        ->where('tipo_auditoria', $tipo_auditoria);
+            ->where('id_auditoria', $id_inspeccion)
+            ->where('tipo_auditoria', $tipo_auditoria);
         return $builder->get()->getRowArray();
     }
-    public function getHallazgosAdjuntosAux($id_hallazgo) {
+    public function getHallazgosAdjuntosAux($id_hallazgo)
+    {
         $builder = $this->db->table('obs_hallazgos_adj');
         $builder->select('*')
-        ->where('id_hallazgo', $id_hallazgo);
+            ->where('id_hallazgo', $id_hallazgo);
         return $builder->get()->getResultArray();
     }
 }

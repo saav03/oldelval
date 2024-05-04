@@ -90,6 +90,7 @@ function createBloque(e) {
  * y también la Observación del Hallazgo y es positiva o una Oportunidad de Mejora.
  */
 function getBloqueAuditorias(e, tipo) {
+  console.log('Tipo: ', tipo)
   document.getElementById("datos_generales").innerHTML = "";
   document.getElementById("body_checklist").innerHTML = "";
   document.getElementById("body_obs").innerHTML = "";
@@ -100,7 +101,10 @@ function getBloqueAuditorias(e, tipo) {
 
   createEncabezado(e.value, tipo);
   createBodyCheckList(e.value);
-  createObsHallazgo();
+  if (tipo != 2) {
+    createObsHallazgo();
+  }
+  _generateBloqueSubmit();
 }
 
 /**
@@ -705,7 +709,9 @@ function createObsHallazgo() {
   mount(cardBody, row);
   mount(bodyObs, cardHeader);
   mount(bodyObs, cardBody);
+}
 
+function _generateBloqueSubmit() {
   let inpSubmit = el(
     "div.d-flex justify-content-end mt-3 mb-3",
     el("button.btn_modify", { id: "btnSendInspection" }, "Enviar Inspección")
@@ -713,8 +719,6 @@ function createObsHallazgo() {
   inpSubmit.setAttribute("onclick", "submitInspection(this)");
   let br = el("br");
   mount(document.getElementById("checklist"), inpSubmit);
-  //   mount(document.getElementById("form_checklist"), br);
-  // let iconPositive = el('i.fa-solid fa-plus');
 }
 
 function _generar_bloque_preguntas(datos) {
@@ -933,7 +937,7 @@ function _generar_btns_toggle(aux, id_pregunta, pregunta) {
 function changeResponsable(contratista) {
   let id_contratista = contratista.value;
   responsables_contratista = responsable.filter(
-    (e) => e.empresa == id_contratista
+    (e) => e.id_empresa == id_contratista
   );
 
   let selectorResponsables = document.querySelectorAll(".responsable");
@@ -946,7 +950,7 @@ function changeResponsable(contratista) {
     let options = [];
     responsables_contratista.forEach((r) => {
       let objeto = {
-        label: r.nombre + " " + r.apellido,
+        label: r.responsable_name,
         value: r.id,
       };
       options.push(objeto);
@@ -959,7 +963,7 @@ function changeResponsable(contratista) {
     let options = [];
     responsables_contratista.forEach((r) => {
       let objeto = {
-        label: r.nombre + " " + r.apellido,
+        label: r.responsable_name,
         value: r.id,
       };
       options.push(objeto);

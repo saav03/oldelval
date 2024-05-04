@@ -172,6 +172,13 @@ class Helper extends Controller
                 $vista = view('emails/tarjetaObs/reconocimiento', $datos);
                 $correos[] = $datos['datos']['responsable_correo'];
                 break;
+            case '7': // Responsable a Notificar si el plan de acción ya fue previamente cargado
+                $id = $datos['datos'][0]['id_obs'];
+                $subject = 'Nueva Tarjeta de Observación #' . $id;
+                $datos['url'] = base_url('/TarjetaObs/view_obs/') . '/' . $id;
+                $vista = view('emails/tarjetaObs/responsable_read_only', $datos);
+                $correos[] = $datos['datos']['responsable']['correo_responsable'];
+                break;
         }
 
         $message = $vista;

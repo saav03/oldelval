@@ -8,6 +8,18 @@ use Config\Table;
 
 class Model_tarjeta extends Model
 {
+
+	public function getAllEmpresas() {
+		$builder = $this->db->table('empresas');
+        $builder->where('estado', 1);
+		
+		if (!session()->get('superadmin')) {
+			$builder->where('id !=', 7); // No trae a Blister Technologies si no sos Administrador
+		}
+
+        return $builder->get()->getResultArray();
+	}
+
 	/**
 	 * Inserta la tarjeta M.A.S en la tabla 'tarjeta_observaciones'
 	 */
@@ -83,7 +95,7 @@ class Model_tarjeta extends Model
 		}
 
 		# Si no es Admin, y no tengo permiso para ver todas las Tarjetas, entonces..
-		if (!session()->get('superadmin')) {
+		if (!session()->get('superadmin') && $pendientes == 0) {
 
 			if (!vista_access('ver_todo_tarjetas')) {
 				# Si tengo el permiso de ver solamente las Tarjetas que el usuario carga..
@@ -110,13 +122,10 @@ class Model_tarjeta extends Model
 
 		if ($pendientes) {
 			$builder->where('tarjeta_hallazgos.responsable', session()->get('id_usuario'))
-				->where('tarjeta_hallazgos.resuelto IS NULL');
+				->where('tarjeta_hallazgos.resuelto IS NULL')
+				->where('tarjeta_hallazgos.tipo', 2);
 		}
 
-		// echo '<pre>';
-		// var_dump($builder->getCompiledSelect());
-		// echo '</pre>';
-		// exit;
 		return $builder->get()->getResultArray();
 	}
 
@@ -156,6 +165,11 @@ class Model_tarjeta extends Model
 		return $builder->get()->getResultArray();
 	}
 
+	/**
+	 * Es para un histórico que se accede a través del Dashboard.
+	 * Realiza un dynamic table que filtra por tus Tarjetas M.A.S y te trae todas aquellas tarjetas que
+	 * estén en sus estado 'Cerrada' es decir, que ya no le darán más tratamiento.
+	 */
 	public function getTotalTarjetasAllPaged($offset, $tamanioPagina, $soloMax = FALSE)
 	{
 		$builder = $this->db->table('tarjeta_observaciones tar_obs');
@@ -165,7 +179,8 @@ class Model_tarjeta extends Model
 			$builder->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
 				->join('usuario user_responsable', 'user_responsable.id=tarjeta_hallazgos.responsable', 'left')
 				->where('tar_obs.estado', 1)
-				->where('tar_obs.usuario_carga', session()->get('id_usuario'));
+				->where('tar_obs.usuario_carga', session()->get('id_usuario'))
+				->where('tar_obs.situacion', 0);
 		} else {
 			$builder->select("tar_obs.id id_tarjeta, proyectos.nombre proyecto,modulos.nombre modulo, estaciones_bombeo.nombre estacion, sistemas_oleoductos.nombre sistema, COUNT(tarjeta_hallazgos.resuelto) resueltos, COUNT(tarjeta_hallazgos.id) hallazgos, DATE_FORMAT(tar_obs.fecha_deteccion, '%d/%m/%Y') fecha_deteccion, tar_obs.observador, tar_obs.tipo_observacion observacion, tar_obs.situacion, tar_obs.estado tar_estado")
 				->join('tarjeta_hallazgos', 'tarjeta_hallazgos.id_tarjeta=tar_obs.id', 'left')
@@ -238,7 +253,7 @@ class Model_tarjeta extends Model
 	public function getAllHallazgosTarjeta($id_tarjeta)
 	{
 		$builder = $this->db->table('tarjeta_hallazgos h');
-		$builder->select('h.id id_hallazgo, h.id_tarjeta, h.hallazgo, h.plan_accion, c.id tipo_aspecto, c.nombre aspecto, h.significancia, h.resuelto, t_p.id id_tipo, t_p.nombre tipo_obs, u_r.id id_responsable, CONCAT(u_r.nombre," ", u_r.apellido) usuario_responsable, u_r_r.id id_relevo_responsable, CONCAT(u_r_r.nombre," ", u_r_r.apellido) relevo_responsable, h.fecha_cierre, DATE_FORMAT(h.fecha_cierre, "%d/%m/%Y") fecha_cierre_f, u_c.id id_usuario_carga, CONCAT(u_c.nombre," ", u_c.apellido) usuario_carga')
+		$builder->select('h.id id_hallazgo, h.id_tarjeta, h.hallazgo, h.plan_accion, h.plan_accion_implementado, c.id tipo_aspecto, c.nombre aspecto, h.significancia, h.resuelto, t_p.id id_tipo, t_p.nombre tipo_obs, u_r.id id_responsable, CONCAT(u_r.nombre," ", u_r.apellido) usuario_responsable, u_r_r.id id_relevo_responsable, CONCAT(u_r_r.nombre," ", u_r_r.apellido) relevo_responsable, h.fecha_cierre, DATE_FORMAT(h.fecha_cierre, "%d/%m/%Y") fecha_cierre_f, u_c.id id_usuario_carga, CONCAT(u_c.nombre," ", u_c.apellido) usuario_carga')
 			->join('consecuencias c', 'c.id=h.aspecto', 'join')
 			->join('tipo_hallazgo t_p', 't_p.id=h.tipo', 'join')
 			->join('usuario u_r', 'u_r.id=h.responsable', 'join')

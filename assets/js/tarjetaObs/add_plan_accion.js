@@ -115,7 +115,13 @@ function generarObservacionMejora(id_contenedor) {
   // * Plan de Acción
   divColDoceSeis = el("div.col-xs-12 col-md-6");
   divPad = el("div.p-3 pt-1");
-  labelObs = el("label.mb-2 sz_inp fw-semibold", "Plan de Acción");
+  labelObs = el("label.mb-2 sz_inp fw-semibold d-flex items-center justify-content-between", "Plan de Acción");
+  let divCheckbox = el('div.d-flex items-center gap-2')
+  let inpCheckbox = el(`input#plan_accion_implementado_${contador}`, {type: 'checkbox', name:`hallazgos_mejoras[${contador}][plan_accion_implementado]`, value:'1', style:'cursor: pointer'})
+  let labelCheckbox = el('label', {for: `plan_accion_implementado_${contador}`, style:'cursor: pointer'}, '¿El Plan de Acción ya fue implementado?')
+  mount(divCheckbox, inpCheckbox)
+  mount(divCheckbox, labelCheckbox)
+  mount(labelObs, divCheckbox)
   textArea = el("textarea.form-control sz_inp inp_custom", {
     style: "border: 1px solid #f1f1f1;",
     name: `hallazgos_mejoras[${contador}][plan_accion]`,
@@ -140,14 +146,14 @@ function generarObservacionMejora(id_contenedor) {
     name: `hallazgos_mejoras[${contador}][responsable]`,
     id: `responsable_${contador}`,
     style: "width: 100%;",
-    "data-serach": "true",
+    "data-search": "true",
     "data-silent-initial-value-set": "true",
   });
   responsables_contratista.forEach((responsable) => {
     let option = el(
       "option",
       { value: responsable.id },
-      responsable.nombre + ' ' + responsable.apellido
+      responsable.responsable_name
     );
     mount(select, option);
   });
@@ -170,14 +176,14 @@ function generarObservacionMejora(id_contenedor) {
     name: `hallazgos_mejoras[${contador}][relevo_responsable]`,
     id: `relevo_responsable_${contador}`,
     style: "width: 100%;",
-    "data-serach": "true",
+    "data-search": "true",
     "data-silent-initial-value-set": "true",
   });
   responsables_contratista.forEach((responsable) => {
     let option = el(
       "option",
       { value: responsable.id },
-      responsable.nombre + ' ' + responsable.apellido
+      responsable.responsable_name
     );
     mount(select, option);
   });
